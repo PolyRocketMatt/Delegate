@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.github.polyrocketmatt</groupId>
+    <artifactId>Delegate</artifactId>
+    <packaging>pom</packaging>
+    <version>0.0.1</version>
+    <description>Simple and powerful command framework</description>
+
+    <!-- Properties -->
+    <properties>
+        <!-- Compiler Settings -->
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+
+        <!-- Versions -->
+        <delegate.version>0.0.1</delegate.version>
+        <paper.version>1.19.2-R0.1-SNAPSHOT</paper.version>
+        <velocity.version>1.0.0-SNAPSHOT</velocity.version>
+        <brigadier.version>1.0.18</brigadier.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <developers>
+        <developer>
+            <id>matthiaskovacic</id>
+            <name>Matthias Kovacic</name>
+            <email>matthias.kovacic@gmail.com</email>
+            <url>https://github.com/PolyRocketMatt</url>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+
+    <!-- Modules -->
+    <modules>
+        <module>delegate-core</module>
+        <module>delegate-bukkit</module>
+        <module>bukkit-velocity</module>
+    </modules>
+
+</project>

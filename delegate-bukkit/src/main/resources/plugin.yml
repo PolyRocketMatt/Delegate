@@ -1,0 +1,6 @@
+name: Delegate
+version: 0.0.1
+main: com.github.polyrocketmatt.delegate.impl.BukkitDelegate
+api-version: 1.13
+author: PolyRocketMatt
+description: Simple and powerful command delegation framework

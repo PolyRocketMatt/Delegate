@@ -1,0 +1,20 @@
+.idea/**
+*.iml
+target/**
+
+# Assembly
+delegate-assembly.iml
+delegate-assembly/target/**
+delegate-assembly/dependency-reduced-pom.xml
+
+# Bukkit
+delegate-bukkit/target/**
+delegate-bukkit/dependency-reduced-pom.xml
+
+# Core
+delegate-core/target/**
+delegate-core/dependency-reduced-pom.xml
+
+# Velocity
+delegate-velocity/target/**
+delegate-velocity/dependency-reduced-pom.xml
