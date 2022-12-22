@@ -6,6 +6,8 @@ import com.github.polyrocketmatt.delegate.core.platform.Platform;
 
 import java.io.File;
 
+import static com.github.polyrocketmatt.delegate.core.io.FileHandler.PLUGIN_CONFIG_PATH;
+
 public class Delegate {
 
     private static final Delegate instance = new Delegate();
@@ -49,6 +51,17 @@ public class Delegate {
 
     public String getDelegateVersion() {
         return this.platform.getPluginVersion();
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public void setup() {
+        if (!dataFolder().exists())
+            dataFolder().mkdirs();
+
+        File configFolder = new File(dataFolder(), PLUGIN_CONFIG_PATH);
+
+        if (!configFolder.exists())
+            configFolder.mkdirs();
     }
 
 }

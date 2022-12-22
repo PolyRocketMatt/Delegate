@@ -20,15 +20,9 @@ public class BukkitDelegate extends JavaPlugin implements Platform {
         getDelegate().setPlatform(this);
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
     public void onLoad() {
-        if (!getDataFolder().exists())
-            getDataFolder().mkdirs();
-        File configFolder = new File(getDataFolder(), PLUGIN_CONFIG_PATH);
-
-        if (!configFolder.exists())
-            configFolder.mkdirs();
+        getDelegate().setup();
     }
 
     @Override
