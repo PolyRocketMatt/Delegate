@@ -67,6 +67,13 @@ public class CommandAttributeChain {
         return properties;
     }
 
+    public <T extends CommandAttribute> CommandAttribute find(Class<T> instance) {
+        for (CommandAttribute attribute : attributes)
+            if (instance.isInstance(attribute))
+                return attribute;
+        return null;
+    }
+
     public int length() {
         return attributes.size();
     }

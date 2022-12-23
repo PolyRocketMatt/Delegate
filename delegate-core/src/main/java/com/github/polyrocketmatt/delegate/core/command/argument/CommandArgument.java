@@ -8,14 +8,20 @@ import java.util.function.Consumer;
 public abstract class CommandArgument<T> extends CommandAttribute {
 
     private final String argumentDescription;
+    private final boolean isNullable;
 
-    public CommandArgument(String identifier, String argumentDescription) {
+    public CommandArgument(String identifier, String argumentDescription, boolean isNullable) {
         super(identifier);
         this.argumentDescription = argumentDescription;
+        this.isNullable = isNullable;
     }
 
     public String getArgumentDescription() {
         return argumentDescription;
+    }
+
+    public boolean isNullable() {
+        return isNullable;
     }
 
     public T parse(String input) {

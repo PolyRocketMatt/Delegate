@@ -4,8 +4,12 @@ import java.util.function.Consumer;
 
 public class StringArgument extends CommandArgument<String> {
 
+    public StringArgument(String identifier, String description, boolean isNullable) {
+        super(identifier, description, isNullable);
+    }
+
     public StringArgument(String identifier, String description) {
-        super(identifier, description);
+        super(identifier, description, false);
     }
 
     @Override

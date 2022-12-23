@@ -4,8 +4,12 @@ import java.util.function.Consumer;
 
 public class FloatArgument extends CommandArgument<Float> {
 
+    public FloatArgument(String identifier, String argumentDescription, boolean isNullable) {
+        super(identifier, argumentDescription, isNullable);
+    }
+
     public FloatArgument(String identifier, String argumentDescription) {
-        super(identifier, argumentDescription);
+        super(identifier, argumentDescription, false);
     }
 
     @Override

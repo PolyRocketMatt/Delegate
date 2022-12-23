@@ -9,13 +9,15 @@ import java.util.List;
 
 public class VerifiedDelegateCommand implements DelegateCommand {
 
+    private final CommandPath path;
+
     private final List<CommandArgument<?>> commandArguments;
     private boolean brigadierCompatible;
     private boolean ignoreNull;
 
     protected VerifiedDelegateCommand(List<CommandArgument<?>> commandArguments, List<CommandProperty> commandProperties) {
+        this.path = null;
         this.commandArguments = commandArguments;
-
         this.brigadierCompatible = commandProperties.stream().anyMatch(property -> property instanceof BrigadierProperty);
         this.ignoreNull = commandProperties.stream().anyMatch(property -> property instanceof IgnoreNullProperty);
 
@@ -25,6 +27,19 @@ public class VerifiedDelegateCommand implements DelegateCommand {
 
     private void setupBrigadier() {
 
+    }
+
+    @Override
+    public CommandPath getPath() {
+        return path;
+    }
+
+    public boolean isBrigadierCompatible() {
+        return brigadierCompatible;
+    }
+
+    public boolean isIgnoreNull() {
+        return ignoreNull;
     }
 
     public static CommandBuilder create() {

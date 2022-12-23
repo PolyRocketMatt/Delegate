@@ -4,8 +4,12 @@ import java.util.function.Consumer;
 
 public class IntArgument extends CommandArgument<Integer> {
 
+    public IntArgument(String identifier, String argumentDescription, boolean isNullable) {
+        super(identifier, argumentDescription, isNullable);
+    }
+
     public IntArgument(String identifier, String argumentDescription) {
-        super(identifier, argumentDescription);
+        this(identifier, argumentDescription, false);
     }
 
     @Override
