@@ -4,8 +4,10 @@ import com.github.polyrocketmatt.delegate.core.command.AttributedDelegateCommand
 import com.github.polyrocketmatt.delegate.core.command.CommandAttribute;
 import com.github.polyrocketmatt.delegate.core.command.CommandAttributeChain;
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
+import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionAttribute;
 import com.github.polyrocketmatt.delegate.core.command.definition.NameAttribute;
+import com.github.polyrocketmatt.delegate.core.command.properties.CommandProperty;
 import com.github.polyrocketmatt.delegate.core.exception.AttributeException;
 import com.github.polyrocketmatt.delegate.core.utils.Tuple;
 
@@ -30,7 +32,13 @@ public class AttributeHandler implements Handler {
 
         this.commandNames.put(header.getA(), header.getB());
 
-        return new VerifiedDelegateCommand();
+        List<CommandArgument<?>> arguments = chain.getArguments();
+        List<CommandProperty> properties = chain.map(CommandProperty.class::cast);
+
+        return VerifiedDelegateCommand.create()
+                .buildArguments(arguments)
+                .buildProperties(properties)
+                .build();
     }
 
     private Tuple<NameAttribute, DescriptionAttribute> processHeader(CommandAttributeChain chain) throws AttributeException {
@@ -72,9 +80,16 @@ public class AttributeHandler implements Handler {
             throw new AttributeException("Command name must be unique: %s".formatted(nameAttribute.getIdentifier()));
     }
 
-    @Override
-    public void init() {
+    public List<CommandArgument<?>> processArguments(CommandAttributeChain chain) {
+        return chain.getArguments();
     }
+
+    public List<CommandProperty> processProperties(CommandAttributeChain chain) {
+        return chain.getProperties();
+    }
+
+    @Override
+    public void init() {}
 
     @Override
     public void destroy() {

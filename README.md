@@ -9,10 +9,16 @@ It allows for the creation, management and execution of commands.
 
 ## Why choose Delegate?
 
-Even though there are many extremely powerful command frameworks out there, they all
-lack the simplicity I was personally looking for. They either are lacking in features
-or become convoluted very quickly. Delegate tries to mitigate this by providing simple
-yet very powerful command creation.
+In the past many command frameworks have been created for various Minecraft server
+implementations. Personally, I feel like most of these weren't exactly what I
+was personally looking for. These command frameworks where either lacking features
+or becoming convoluted very quickly. 
+
+Delegate mitigates these problems by allowing the creation of simple commands, but 
+also allows for the creation of complex commands with subcommands, tab completion,
+brigadier support and more. Unlike most command frameworks, at it's core Delegate
+does not use annotation based command creation (it is however possible to use 
+annotations).
 
 ## Features
 
@@ -32,5 +38,11 @@ Currently, Delegate supports the following platforms:
 - Spigot
 - Paper
 - Velocity
+
+## Getting Started
+
+## Examples
+
+## Documentation
 
 ---

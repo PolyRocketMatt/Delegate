@@ -1,20 +1,21 @@
 package com.github.polyrocketmatt.delegate.core;
 
-import com.github.polyrocketmatt.delegate.core.command.CommandAttributeChain;
 import com.github.polyrocketmatt.delegate.core.command.CommandFactory;
 import com.github.polyrocketmatt.delegate.core.command.DelegateCommand;
+import com.github.polyrocketmatt.delegate.core.command.argument.StringArgument;
 import com.github.polyrocketmatt.delegate.core.command.definition.NameAttribute;
+import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProperty;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 public class TestArgumentChain {
 
     @Test
     public void testChain() {
         DelegateCommand cmd = CommandFactory.create()
-                .append(new NameAttribute("test"))
-                .append(new NameAttribute("test2"))
+                .append(new NameAttribute("hello"))
+                .append(new IgnoreNullProperty())
+                .append(new StringArgument("name", "The name of the player"))
+                .append(new StringArgument("message", "The message to send"))
                 .build();
     }
 
