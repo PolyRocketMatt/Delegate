@@ -1,18 +1,30 @@
 package com.github.polyrocketmatt.delegate.core.command;
 
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
+import com.github.polyrocketmatt.delegate.core.command.properties.BrigadierProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.CommandProperty;
+import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProperty;
 
 import java.util.List;
 
 public class VerifiedDelegateCommand implements DelegateCommand {
 
     private final List<CommandArgument<?>> commandArguments;
-    private final List<CommandProperty> commandProperties;
+    private boolean brigadierCompatible;
+    private boolean ignoreNull;
 
     protected VerifiedDelegateCommand(List<CommandArgument<?>> commandArguments, List<CommandProperty> commandProperties) {
         this.commandArguments = commandArguments;
-        this.commandProperties = commandProperties;
+
+        this.brigadierCompatible = commandProperties.stream().anyMatch(property -> property instanceof BrigadierProperty);
+        this.ignoreNull = commandProperties.stream().anyMatch(property -> property instanceof IgnoreNullProperty);
+
+        if (brigadierCompatible)
+            setupBrigadier();
+    }
+
+    private void setupBrigadier() {
+
     }
 
     public static CommandBuilder create() {

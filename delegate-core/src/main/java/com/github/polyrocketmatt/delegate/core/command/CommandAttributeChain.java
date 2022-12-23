@@ -2,6 +2,7 @@ package com.github.polyrocketmatt.delegate.core.command;
 
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.core.command.definition.CommandDefinition;
+import com.github.polyrocketmatt.delegate.core.command.definition.SubcommandDefinition;
 import com.github.polyrocketmatt.delegate.core.command.properties.CommandProperty;
 
 import java.util.LinkedList;

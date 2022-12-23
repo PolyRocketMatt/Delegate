@@ -1,8 +1,8 @@
 package com.github.polyrocketmatt.delegate.core.command.definition;
 
-public class NameAttribute extends CommandDefinition<String> {
+public class NameDefinition extends CommandDefinition<String> {
 
-    public NameAttribute(String name) {
+    public NameDefinition(String name) {
         super("name", name);
     }
 

@@ -3,10 +3,13 @@ package com.github.polyrocketmatt.delegate.core.handlers;
 import com.github.polyrocketmatt.delegate.core.command.AttributedDelegateCommand;
 import com.github.polyrocketmatt.delegate.core.command.CommandAttribute;
 import com.github.polyrocketmatt.delegate.core.command.CommandAttributeChain;
+import com.github.polyrocketmatt.delegate.core.command.CommandPath;
+import com.github.polyrocketmatt.delegate.core.command.DelegateCommand;
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
-import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionAttribute;
-import com.github.polyrocketmatt.delegate.core.command.definition.NameAttribute;
+import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
+import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
+import com.github.polyrocketmatt.delegate.core.command.definition.SubcommandDefinition;
 import com.github.polyrocketmatt.delegate.core.command.properties.CommandProperty;
 import com.github.polyrocketmatt.delegate.core.exception.AttributeException;
 import com.github.polyrocketmatt.delegate.core.utils.Tuple;
@@ -17,23 +20,21 @@ import java.util.Map;
 
 public class AttributeHandler implements Handler {
 
-    private final Map<NameAttribute, DescriptionAttribute> commandNames;
+    private final Map<CommandPath, DescriptionDefinition> commandMap;
 
     public AttributeHandler() {
-        this.commandNames = new HashMap<>();
+        this.commandMap = new HashMap<>();
     }
 
     public VerifiedDelegateCommand process(AttributedDelegateCommand command) {
         CommandAttributeChain chain = command.getAttributeChain();
-        Tuple<NameAttribute, DescriptionAttribute> header = processHeader(command.getAttributeChain());
+        Tuple<NameDefinition, DescriptionDefinition> header = processHeader(command.getAttributeChain());
 
         this.checkUniqueName(header.getA());
         this.checkIdentifiers(chain);
 
-        this.commandNames.put(header.getA(), header.getB());
-
-        List<CommandArgument<?>> arguments = chain.getArguments();
-        List<CommandProperty> properties = chain.map(CommandProperty.class::cast);
+        List<CommandArgument<?>> arguments = this.processArguments(chain);
+        List<CommandProperty> properties = this.processProperties(chain);
 
         return VerifiedDelegateCommand.create()
                 .buildArguments(arguments)
@@ -41,23 +42,23 @@ public class AttributeHandler implements Handler {
                 .build();
     }
 
-    private Tuple<NameAttribute, DescriptionAttribute> processHeader(CommandAttributeChain chain) throws AttributeException {
-        NameAttribute nameAttribute = getNameAttribute(chain);
-        DescriptionAttribute descriptionAttribute = getDescriptionAttribute(chain);
+    private Tuple<NameDefinition, DescriptionDefinition> processHeader(CommandAttributeChain chain) throws AttributeException {
+        NameDefinition nameAttribute = getNameAttribute(chain);
+        DescriptionDefinition descriptionAttribute = getDescriptionAttribute(chain);
 
         return new Tuple<>(nameAttribute, descriptionAttribute);
     }
 
-    private NameAttribute getNameAttribute(CommandAttributeChain chain) {
-        return chain.filter(NameAttribute.class).stream()
-                .map(NameAttribute.class::cast)
+    private NameDefinition getNameAttribute(CommandAttributeChain chain) {
+        return chain.filter(NameDefinition.class).stream()
+                .map(NameDefinition.class::cast)
                 .findFirst()
                 .orElseThrow(() -> new AttributeException("Attribute chain must contain a name attribute"));
     }
 
-    private DescriptionAttribute getDescriptionAttribute(CommandAttributeChain chain) {
-        return chain.filter(DescriptionAttribute.class).stream()
-                .map(DescriptionAttribute.class::cast)
+    private DescriptionDefinition getDescriptionAttribute(CommandAttributeChain chain) {
+        return chain.filter(DescriptionDefinition.class).stream()
+                .map(DescriptionDefinition.class::cast)
                 .findFirst()
                 .orElseThrow(() -> new AttributeException("Attribute chain must contain a description attribute"));
     }
@@ -75,8 +76,8 @@ public class AttributeHandler implements Handler {
         }
     }
 
-    public void checkUniqueName(NameAttribute nameAttribute) throws AttributeException {
-        if (this.commandNames.keySet().stream().anyMatch(attribute -> attribute.getIdentifier().equals(nameAttribute.getIdentifier())))
+    public void checkUniqueName(NameDefinition nameAttribute) throws AttributeException {
+        if (this.commandMap.keySet().stream().anyMatch(path -> path.getName().getIdentifier().equals(nameAttribute.getIdentifier())))
             throw new AttributeException("Command name must be unique: %s".formatted(nameAttribute.getIdentifier()));
     }
 
@@ -88,11 +89,33 @@ public class AttributeHandler implements Handler {
         return chain.getProperties();
     }
 
+    public List<DelegateCommand> processSubCommands(CommandAttributeChain chain) {
+        List<SubcommandDefinition> subCommandDefinitions = chain.getDefinitions()
+                .stream()
+                .filter(sc -> sc instanceof SubcommandDefinition)
+                .map(SubcommandDefinition.class::cast)
+                .toList();
+
+        //  Verify all subcommands before returning them and continuing parsing the parent command!
+        return subCommandDefinitions.stream()
+                .map(subCommandDefinition -> {
+                    DelegateCommand command = subCommandDefinition.getValue();
+
+                    if (command instanceof VerifiedDelegateCommand)
+                        return command;
+                    else if (command instanceof AttributedDelegateCommand)
+                        return this.process((AttributedDelegateCommand) command);
+                    else
+                        throw new AttributeException("Subcommand must be an attributed or verified command");
+                })
+                .toList();
+    }
+
     @Override
     public void init() {}
 
     @Override
     public void destroy() {
-        this.commandNames.clear();
+        this.commandMap.clear();
     }
 }
