@@ -19,6 +19,7 @@
         <!-- Versions -->
         <delegate.version>0.0.1</delegate.version>
         <paper.version>1.19.2-R0.1-SNAPSHOT</paper.version>
+        <sponge.version>9.0.0</sponge.version>
         <velocity.version>1.0.0-SNAPSHOT</velocity.version>
         <brigadier.version>1.0.18</brigadier.version>
 
@@ -46,6 +47,7 @@
         <module>delegate-core</module>
         <module>delegate-bukkit</module>
         <module>delegate-velocity</module>
+        <module>delegate-sponge</module>
     </modules>
 
 </project>

@@ -26,17 +26,11 @@ public class VelocityDelegate implements Platform {
 
     private final File dataFolder;
     private final ProxyServer server;
-    private final Logger logger;
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Inject
     public VelocityDelegate(ProxyServer server, Logger logger) {
         this.server = server;
-        this.logger = logger;
-
-        this.logger.info("Loaded Delegate");
-        this.logger.info("Platform: %s".formatted(getPlatformType().name()));
-
         this.dataFolder = new File("%s/%s".formatted(System.getProperty("user.dir"), "/plugins/delegate/"));
         if (!dataFolder.exists())
             dataFolder.mkdirs();
@@ -61,8 +55,6 @@ public class VelocityDelegate implements Platform {
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
-        this.logger.info("Delegate: Proxy initialization fired");
-
         getDelegate().setup();
         getDelegate().getPluginHandler().registerPlugin("Delegate");
     }

@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>bukkit-velocity</artifactId>
+    <artifactId>delegate-velocity</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -44,16 +44,6 @@
     <build>
         <finalName>Delegate-${project.version}</finalName>
         <resources>
-            <!--
-            <resource>
-                <targetPath>.</targetPath>
-                <filtering>true</filtering>
-                <directory>${basedir}/src/main/resources/</directory>
-                <includes>
-                    <include>plugin.yml</include>
-                </includes>
-            </resource>
-            -->
         </resources>
         <!-- TODO: Add surefire plugin -->
         <plugins>

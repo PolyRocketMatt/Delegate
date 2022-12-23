@@ -16,5 +16,6 @@ delegate-core/target/**
 delegate-core/dependency-reduced-pom.xml
 
 # Velocity
+delegate-velocity.iml
 delegate-velocity/target/**
 delegate-velocity/dependency-reduced-pom.xml

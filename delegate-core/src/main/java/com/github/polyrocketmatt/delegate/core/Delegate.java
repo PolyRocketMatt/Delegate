@@ -1,26 +1,24 @@
 package com.github.polyrocketmatt.delegate.core;
 
+import com.github.polyrocketmatt.delegate.core.handlers.AttributeHandler;
 import com.github.polyrocketmatt.delegate.core.handlers.CommandHandler;
-import com.github.polyrocketmatt.delegate.core.handlers.PluginHandler;
 import com.github.polyrocketmatt.delegate.core.platform.Platform;
 
 import java.io.File;
-
-import static com.github.polyrocketmatt.delegate.core.io.FileHandler.PLUGIN_CONFIG_PATH;
 
 public class Delegate {
 
     private static final Delegate instance = new Delegate();
 
     private Platform platform;
+    private final AttributeHandler attributeHandler;
     private final CommandHandler commandHandler;
-    private final PluginHandler pluginHandler;
 
     protected Delegate() {
         if (instance != null)
             throw new IllegalStateException("Delegate has already been initialized");
+        this.attributeHandler = new AttributeHandler();
         this.commandHandler = new CommandHandler();
-        this.pluginHandler = new PluginHandler();
     }
 
     public static Delegate getDelegate() {
@@ -37,12 +35,12 @@ public class Delegate {
         return platform;
     }
 
-    public CommandHandler getCommandHandler() {
-        return commandHandler;
+    public AttributeHandler getAttributeHandler() {
+        return attributeHandler;
     }
 
-    public PluginHandler getPluginHandler() {
-        return pluginHandler;
+    public CommandHandler getCommandHandler() {
+        return commandHandler;
     }
 
     public File dataFolder() {
@@ -57,11 +55,6 @@ public class Delegate {
     public void setup() {
         if (!dataFolder().exists())
             dataFolder().mkdirs();
-
-        File configFolder = new File(dataFolder(), PLUGIN_CONFIG_PATH);
-
-        if (!configFolder.exists())
-            configFolder.mkdirs();
     }
 
 }
