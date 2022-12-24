@@ -2,20 +2,25 @@ package com.github.polyrocketmatt.delegate.core.handlers;
 
 import com.github.polyrocketmatt.delegate.core.command.CommandDispatchInformation;
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
+import com.github.polyrocketmatt.delegate.core.command.tree.CommandTree;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CommandHandler implements Handler {
 
-    private final List<VerifiedDelegateCommand> commands;
+    private final List<CommandTree> trees;
 
     public CommandHandler() {
-        this.commands = new ArrayList<>();
+        this.trees = new ArrayList<>();
     }
 
-    public void register(VerifiedDelegateCommand command) {
-        commands.add(command);
+    public List<CommandTree> getTrees() {
+        return trees;
+    }
+
+    public void registerTree(CommandTree tree) {
+        this.trees.add(tree);
     }
 
     public boolean handle(CommandDispatchInformation information) {
@@ -28,7 +33,7 @@ public class CommandHandler implements Handler {
 
     @Override
     public void destroy() {
-        this.commands.clear();
+        this.trees.clear();
     }
 
 }

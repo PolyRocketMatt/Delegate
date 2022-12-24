@@ -9,15 +9,18 @@ import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProp
 
 import java.util.List;
 
-public class VerifiedDelegateCommand implements DelegateCommand {
+public class VerifiedDelegateCommand implements DelegateCommand, Descripted {
 
     private final NameDefinition nameDefinition;
+    private final DescriptionDefinition descriptionDefinition;
     private final List<CommandArgument<?>> commandArguments;
     private final boolean brigadierCompatible;
     private final boolean ignoreNull;
 
-    protected VerifiedDelegateCommand(NameDefinition nameDefinition, List<CommandArgument<?>> commandArguments, List<CommandProperty> commandProperties) {
+    protected VerifiedDelegateCommand(NameDefinition nameDefinition, DescriptionDefinition descriptionDefinition,
+                                      List<CommandArgument<?>> commandArguments, List<CommandProperty> commandProperties) {
         this.nameDefinition = nameDefinition;
+        this.descriptionDefinition = descriptionDefinition;
         this.commandArguments = commandArguments;
         this.brigadierCompatible = commandProperties.stream().anyMatch(property -> property instanceof BrigadierProperty);
         this.ignoreNull = commandProperties.stream().anyMatch(property -> property instanceof IgnoreNullProperty);
@@ -30,6 +33,11 @@ public class VerifiedDelegateCommand implements DelegateCommand {
     @Override
     public NameDefinition getNameDefinition() {
         return nameDefinition;
+    }
+
+    @Override
+    public DescriptionDefinition getDescriptionDefinition() {
+        return descriptionDefinition;
     }
 
     public boolean isBrigadierCompatible() {
@@ -47,11 +55,17 @@ public class VerifiedDelegateCommand implements DelegateCommand {
     public static class CommandBuilder {
 
         private NameDefinition nameDefinition;
+        private DescriptionDefinition descriptionDefinition;
         private List<CommandArgument<?>> commandArguments;
         private List<CommandProperty> commandProperties;
 
         public CommandBuilder buildNameDefinition(NameDefinition nameDefinition) {
             this.nameDefinition = nameDefinition;
+            return this;
+        }
+
+        public CommandBuilder buildDescriptionDefinition(DescriptionDefinition descriptionDefinition) {
+            this.descriptionDefinition = descriptionDefinition;
             return this;
         }
 
@@ -68,6 +82,7 @@ public class VerifiedDelegateCommand implements DelegateCommand {
         public VerifiedDelegateCommand build() {
             return new VerifiedDelegateCommand(
                     this.nameDefinition,
+                    this.descriptionDefinition,
                     this.commandArguments,
                     this.commandProperties
             );

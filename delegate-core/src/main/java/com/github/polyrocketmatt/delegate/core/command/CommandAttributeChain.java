@@ -3,9 +3,11 @@ package com.github.polyrocketmatt.delegate.core.command;
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.core.command.definition.CommandDefinition;
 import com.github.polyrocketmatt.delegate.core.command.properties.CommandProperty;
+import com.github.polyrocketmatt.delegate.core.command.tree.CommandTree;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 import static com.github.polyrocketmatt.delegate.core.Delegate.getDelegate;
@@ -23,8 +25,8 @@ public class CommandAttributeChain {
         return this;
     }
 
-    public DelegateCommand build() {
-        return getDelegate().getAttributeHandler().process(null, new AttributedDelegateCommand(this));
+    public void build() {
+        getDelegate().getAttributeHandler().process(null, new AttributedDelegateCommand(this));
     }
 
     public <T extends CommandAttribute> List<CommandAttribute> filter(Class<T> instance) {

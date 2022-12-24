@@ -10,6 +10,7 @@ import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProp
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandTree;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Set;
 
 import static com.github.polyrocketmatt.delegate.core.Delegate.getDelegate;
@@ -18,7 +19,7 @@ public class TestArgumentChain {
 
     @Test
     public void testChain() {
-        DelegateCommand cmd = CommandFactory.create()
+        CommandFactory.create()
                 .append(new NameDefinition("hello"))
                 .append(new DescriptionDefinition("Says hello to the user"))
                 .append(new IgnoreNullProperty())
@@ -26,13 +27,13 @@ public class TestArgumentChain {
                 .append(new StringArgument("message", "The message to send"))
                 .build();
 
-        Set<CommandTree> trees = getDelegate().getAttributeHandler().getCommandMap().keySet();
+        List<CommandTree> trees = getDelegate().getCommandHandler().getTrees();
         System.out.println("YAY");
     }
 
     @Test
     public void testSubChain() {
-        DelegateCommand cmd = CommandFactory.create()
+        CommandFactory.create()
                 .append(new NameDefinition("hello"))
                 .append(new DescriptionDefinition("Says hello to the user"))
                 .append(new StringArgument("name", "The name of the player"))
@@ -43,7 +44,7 @@ public class TestArgumentChain {
                 .append(new IgnoreNullProperty())
                 .build();
 
-        Set<CommandTree> trees = getDelegate().getAttributeHandler().getCommandMap().keySet();
+        List<CommandTree> trees = getDelegate().getCommandHandler().getTrees();
         System.out.println("DOUBLE YAY");
     }
 

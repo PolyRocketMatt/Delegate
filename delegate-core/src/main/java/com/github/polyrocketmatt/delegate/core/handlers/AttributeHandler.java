@@ -15,21 +15,15 @@ import com.github.polyrocketmatt.delegate.core.command.properties.CommandPropert
 import com.github.polyrocketmatt.delegate.core.exception.AttributeException;
 import com.github.polyrocketmatt.delegate.core.utils.Tuple;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
+import static com.github.polyrocketmatt.delegate.core.Delegate.getDelegate;
 
 public class AttributeHandler implements Handler {
 
-    private final Map<CommandTree, DescriptionDefinition> commandMap;
-
-    public AttributeHandler() {
-        this.commandMap = new HashMap<>();
-    }
-
-    public Map<CommandTree, DescriptionDefinition> getCommandMap() {
-        return commandMap;
-    }
+    public AttributeHandler() {}
 
     public VerifiedDelegateCommand process(CommandNode parent, AttributedDelegateCommand command) {
         CommandAttributeChain chain = command.getAttributeChain();
@@ -43,18 +37,21 @@ public class AttributeHandler implements Handler {
 
         VerifiedDelegateCommand verifiedCommand = VerifiedDelegateCommand.create()
                 .buildNameDefinition(header.getA())
+                .buildDescriptionDefinition(header.getB())
                 .buildArguments(arguments)
                 .buildProperties(properties)
                 .build();
+
         //  If this is a super command, add it to the map
         if (parent == null) {
             CommandNode rootNode = new CommandNode(verifiedCommand);
             CommandTree tree = new CommandTree(rootNode);
 
-            this.commandMap.put(tree, header.getB());
-
             //  Compute all sub-commands
             this.processSubCommands(rootNode, chain);
+
+            //  Add tree to command handler
+            getDelegate().getCommandHandler().registerTree(tree);
         } else {
             CommandNode childNode = new CommandNode(parent, verifiedCommand);
 
@@ -142,6 +139,6 @@ public class AttributeHandler implements Handler {
 
     @Override
     public void destroy() {
-        this.commandMap.clear();
+
     }
 }
