@@ -3,7 +3,7 @@ package com.github.polyrocketmatt.delegate.core.handlers;
 import com.github.polyrocketmatt.delegate.core.command.AttributedDelegateCommand;
 import com.github.polyrocketmatt.delegate.core.command.CommandAttribute;
 import com.github.polyrocketmatt.delegate.core.command.CommandAttributeChain;
-import com.github.polyrocketmatt.delegate.core.command.CommandPath;
+import com.github.polyrocketmatt.delegate.core.command.tree.CommandTree;
 import com.github.polyrocketmatt.delegate.core.command.DelegateCommand;
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
@@ -11,6 +11,7 @@ import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDef
 import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.SubcommandDefinition;
 import com.github.polyrocketmatt.delegate.core.command.properties.CommandProperty;
+import com.github.polyrocketmatt.delegate.core.command.tree.CommandTreeNode;
 import com.github.polyrocketmatt.delegate.core.exception.AttributeException;
 import com.github.polyrocketmatt.delegate.core.utils.Tuple;
 
@@ -21,68 +22,66 @@ import java.util.Map;
 
 public class AttributeHandler implements Handler {
 
-    private final Map<CommandPath, DescriptionDefinition> commandMap;
+    private final Map<CommandTree, DescriptionDefinition> commandMap;
 
     public AttributeHandler() {
         this.commandMap = new HashMap<>();
     }
 
-    public VerifiedDelegateCommand process(AttributedDelegateCommand command) {
+    public VerifiedDelegateCommand process(CommandTreeNode parent, AttributedDelegateCommand command) {
         CommandAttributeChain chain = command.getAttributeChain();
         Tuple<NameDefinition, DescriptionDefinition> header = processHeader(command.getAttributeChain());
 
-        this.checkUniqueName(header.getA());
+        this.checkUniqueName(parent, header.getA());
         this.checkIdentifiers(chain);
 
-        List<DelegateCommand> subCommands = this.processSubCommands(chain);
         List<CommandArgument<?>> arguments = this.processArguments(chain);
         List<CommandProperty> properties = this.processProperties(chain);
 
-        return VerifiedDelegateCommand.create()
+        VerifiedDelegateCommand verifiedCommand = VerifiedDelegateCommand.create()
+                .buildParent(parent)
+                .buildNameDefinition(header.getA())
                 .buildArguments(arguments)
                 .buildProperties(properties)
                 .build();
+        CommandTreeNode node = verifiedCommand.getAsNode();
+        List<DelegateCommand> subCommands = this.processSubCommands(node, chain);
+
+        return verifiedCommand;
     }
 
     private Tuple<NameDefinition, DescriptionDefinition> processHeader(CommandAttributeChain chain) throws AttributeException {
-        NameDefinition nameAttribute = getNameAttribute(chain);
-        DescriptionDefinition descriptionAttribute = getDescriptionAttribute(chain);
+        NameDefinition nameAttribute = chain.filter(NameDefinition.class).stream()
+                .map(NameDefinition.class::cast)
+                .findFirst()
+                .orElseThrow(() -> new AttributeException("Attribute chain must contain a name attribute"));
+        DescriptionDefinition descriptionAttribute = chain.filter(DescriptionDefinition.class).stream()
+                .map(DescriptionDefinition.class::cast)
+                .findFirst()
+                .orElseThrow(() -> new AttributeException("Attribute chain must contain a description attribute"));
 
         return new Tuple<>(nameAttribute, descriptionAttribute);
     }
 
-    private NameDefinition getNameAttribute(CommandAttributeChain chain) {
-        return chain.filter(NameDefinition.class).stream()
-                .map(NameDefinition.class::cast)
-                .findFirst()
-                .orElseThrow(() -> new AttributeException("Attribute chain must contain a name attribute"));
-    }
-
-    private DescriptionDefinition getDescriptionAttribute(CommandAttributeChain chain) {
-        return chain.filter(DescriptionDefinition.class).stream()
-                .map(DescriptionDefinition.class::cast)
-                .findFirst()
-                .orElseThrow(() -> new AttributeException("Attribute chain must contain a description attribute"));
-    }
-
     private void checkIdentifiers(CommandAttributeChain chain) throws AttributeException {
-        List<String> identifiers = chain.map(CommandAttribute::getIdentifier)
-                .stream()
-                .filter(s -> !s.equals("subCommand"))
-                .toList();
-        if (chain.length() != identifiers.stream().distinct().count()) {
+        List<CommandAttribute> filteredAttributes = chain.filter(attribute -> !(attribute instanceof SubcommandDefinition));
+        List<String> identifiers = filteredAttributes.stream().map(CommandAttribute::getIdentifier).toList();
+        if (filteredAttributes.size() != identifiers.stream().distinct().count()) {
             List<String> duplicates = identifiers.stream()
                     .filter(i -> identifiers.indexOf(i) != identifiers.lastIndexOf(i))
                     .distinct()
                     .toList();
-
             throw new AttributeException("Attribute identifiers must be unique: %s".formatted(duplicates.get(0)));
         }
     }
 
-    private void checkUniqueName(NameDefinition nameAttribute) throws AttributeException {
-        if (this.commandMap.keySet().stream().anyMatch(path -> path.getName().getIdentifier().equals(nameAttribute.getIdentifier())))
-            throw new AttributeException("Command name must be unique: %s".formatted(nameAttribute.getIdentifier()));
+    private void checkUniqueName(CommandTreeNode parent, NameDefinition definition) throws AttributeException {
+        if (parent != null) {
+            List<CommandTreeNode> parentChildren = parent.getChildren();
+
+            if (parentChildren.stream().anyMatch(node -> node.getNameDefinition().getValue().equals(definition.getValue())))
+                throw new AttributeException("Command name must be unique: %s".formatted(definition.getValue()));
+        }
     }
 
     private List<CommandArgument<?>> processArguments(CommandAttributeChain chain) {
@@ -93,51 +92,52 @@ public class AttributeHandler implements Handler {
         return chain.getProperties();
     }
 
-    private List<DelegateCommand> processSubCommands(CommandAttributeChain chain) {
-        List<SubcommandDefinition> subCommandDefinitions = chain.getDefinitions()
+    private List<DelegateCommand> processSubCommands(CommandTreeNode parent, CommandAttributeChain chain) {
+        //  In the current chain, find all sub-command definitions
+        List<DelegateCommand> subCommands = chain.filter(SubcommandDefinition.class)
                 .stream()
-                .filter(sc -> sc instanceof SubcommandDefinition)
                 .map(SubcommandDefinition.class::cast)
-                .toList();
-
-        //  Check that all subcommands have a unique name definition
-        List<DelegateCommand> subCommands = subCommandDefinitions.stream()
                 .map(SubcommandDefinition::getValue)
                 .toList();
-        List<String> identifiers = subCommands.stream()
-                .map(DelegateCommand::getPath)
-                .map(CommandPath::getName)
-                .map(NameDefinition::getIdentifier)
-                .toList();
-
-        if (identifiers.stream().distinct().count() != identifiers.size()) {
-            List<String> duplicates = identifiers.stream()
-                    .filter(i -> identifiers.indexOf(i) != identifiers.lastIndexOf(i))
-                    .distinct()
-                    .toList();
-            throw new AttributeException("Attribute identifiers must be unique: %s".formatted(duplicates.get(0)));
-        }
-
-        //  Only process attributed commands
-        List<AttributedDelegateCommand> attributedCommands = subCommands.stream()
+        List<AttributedDelegateCommand> attributedSubCommands = subCommands.stream()
                 .filter(command -> command instanceof AttributedDelegateCommand)
                 .map(AttributedDelegateCommand.class::cast)
                 .toList();
-        List<VerifiedDelegateCommand> verifiedCommands = subCommands.stream()
+        List<VerifiedDelegateCommand> verifiedSubCommands = subCommands.stream()
                 .filter(command -> command instanceof VerifiedDelegateCommand)
                 .map(VerifiedDelegateCommand.class::cast)
                 .toList();
 
-        if (attributedCommands.size() + verifiedCommands.size() != subCommands.size())
-            throw new AttributeException("Subcommands must be attributed or verified");
+        //  Process all attributed sub-commands
+        List<VerifiedDelegateCommand> processedSubCommands = attributedSubCommands.stream()
+                .map(command -> this.process(parent, command))
+                .toList();
 
-        //  Verify all subcommands before returning them and continuing parsing the parent command!
-        List<DelegateCommand> combinedSubcommands = new ArrayList<>(verifiedCommands);
-        combinedSubcommands.addAll(attributedCommands.stream()
-                .map(this::process)
-                .toList());
+        //  Combine all sub-commands
+        List<DelegateCommand> combinedSubCommands = new ArrayList<>(verifiedSubCommands);
+        combinedSubCommands.addAll(processedSubCommands);
 
-        return combinedSubcommands;
+
+        //  Make sure all verified sub-commands have unique names
+        List<String> subCommandNames = combinedSubCommands.stream()
+                .map(DelegateCommand::getAsNode)
+                .map(CommandTreeNode::getNameDefinition)
+                .map(NameDefinition::getValue)
+                .toList();
+        if (subCommandNames.size() != subCommandNames.stream().distinct().count()) {
+            List<String> duplicates = subCommandNames.stream()
+                    .filter(i -> subCommandNames.indexOf(i) != subCommandNames.lastIndexOf(i))
+                    .distinct()
+                    .toList();
+            throw new AttributeException("Sub-command names must be unique: %s".formatted(duplicates.get(0)));
+        }
+
+        //  Add sub-commands to the parent node
+        combinedSubCommands.stream()
+                .map(DelegateCommand::getAsNode)
+                .forEach(parent::addChild);
+
+        return combinedSubCommands;
     }
 
     @Override
