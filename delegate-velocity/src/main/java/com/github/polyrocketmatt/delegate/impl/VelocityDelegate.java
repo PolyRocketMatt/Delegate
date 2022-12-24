@@ -1,8 +1,10 @@
 package com.github.polyrocketmatt.delegate.impl;
 
+import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
 import com.github.polyrocketmatt.delegate.core.platform.Platform;
 import com.github.polyrocketmatt.delegate.core.platform.PlatformType;
 import com.google.inject.Inject;
+import com.velocitypowered.api.command.Command;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
@@ -56,6 +58,10 @@ public class VelocityDelegate implements Platform {
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
         getDelegate().setup();
-        getDelegate().getPluginHandler().registerPlugin("Delegate");
     }
+
+    public void registerVelocityCommand(VerifiedDelegateCommand command) {
+
+    }
+
 }

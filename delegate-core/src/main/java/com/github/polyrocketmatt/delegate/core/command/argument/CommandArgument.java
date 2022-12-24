@@ -2,10 +2,11 @@ package com.github.polyrocketmatt.delegate.core.command.argument;
 
 import com.github.polyrocketmatt.delegate.core.command.CommandAttribute;
 import com.github.polyrocketmatt.delegate.core.exception.ArgumentParseException;
+import com.github.polyrocketmatt.delegate.core.utils.Bufferable;
 
 import java.util.function.Consumer;
 
-public abstract class CommandArgument<T> extends CommandAttribute {
+public abstract class CommandArgument<T> extends CommandAttribute implements Bufferable {
 
     private final String argumentDescription;
     private final boolean isNullable;

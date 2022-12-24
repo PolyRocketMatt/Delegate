@@ -1,33 +1,26 @@
 package com.github.polyrocketmatt.delegate.core.command;
 
+import com.github.polyrocketmatt.delegate.core.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
-import com.github.polyrocketmatt.delegate.core.command.properties.BrigadierProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.CommandProperty;
-import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProperty;
-
-import java.util.List;
 
 public class VerifiedDelegateCommand implements DelegateCommand, Descripted {
 
     private final NameDefinition nameDefinition;
     private final DescriptionDefinition descriptionDefinition;
-    private final List<CommandArgument<?>> commandArguments;
-    private final boolean brigadierCompatible;
-    private final boolean ignoreNull;
+    private final CommandBuffer<CommandArgument<?>> argumentBuffer;
+    private final CommandBuffer<CommandProperty> propertyBuffer;
 
     protected VerifiedDelegateCommand(NameDefinition nameDefinition, DescriptionDefinition descriptionDefinition,
-                                      List<CommandArgument<?>> commandArguments, List<CommandProperty> commandProperties) {
+                                      CommandBuffer<CommandArgument<?>> argumentBuffer,
+                                      CommandBuffer<CommandProperty> propertyBuffer,
+                                      CommandBuffer<CommandAction> actionBuffer) {
         this.nameDefinition = nameDefinition;
         this.descriptionDefinition = descriptionDefinition;
-        this.commandArguments = commandArguments;
-        this.brigadierCompatible = commandProperties.stream().anyMatch(property -> property instanceof BrigadierProperty);
-        this.ignoreNull = commandProperties.stream().anyMatch(property -> property instanceof IgnoreNullProperty);
-    }
-
-    public List<CommandArgument<?>> getCommandArguments() {
-        return this.commandArguments;
+        this.argumentBuffer = argumentBuffer;
+        this.propertyBuffer = propertyBuffer;
     }
 
     @Override
@@ -40,12 +33,12 @@ public class VerifiedDelegateCommand implements DelegateCommand, Descripted {
         return descriptionDefinition;
     }
 
-    public boolean isBrigadierCompatible() {
-        return this.brigadierCompatible;
+    public CommandBuffer<CommandArgument<?>> getArgumentBuffer() {
+        return argumentBuffer;
     }
 
-    public boolean isIgnoreNull() {
-        return this.ignoreNull;
+    public CommandBuffer<CommandProperty> getPropertyBuffer() {
+        return propertyBuffer;
     }
 
     public static CommandBuilder create() {
@@ -56,8 +49,9 @@ public class VerifiedDelegateCommand implements DelegateCommand, Descripted {
 
         private NameDefinition nameDefinition;
         private DescriptionDefinition descriptionDefinition;
-        private List<CommandArgument<?>> commandArguments;
-        private List<CommandProperty> commandProperties;
+        private CommandBuffer<CommandArgument<?>> argumentBuffer;
+        private CommandBuffer<CommandProperty> propertyBuffer;
+        private CommandBuffer<CommandAction> actionBuffer;
 
         public CommandBuilder buildNameDefinition(NameDefinition nameDefinition) {
             this.nameDefinition = nameDefinition;
@@ -69,13 +63,18 @@ public class VerifiedDelegateCommand implements DelegateCommand, Descripted {
             return this;
         }
 
-        public CommandBuilder buildArguments(List<CommandArgument<?>> commandArguments) {
-            this.commandArguments = commandArguments;
+        public CommandBuilder buildArgumentBuffer(CommandBuffer<CommandArgument<?>> argumentBuffer) {
+            this.argumentBuffer = argumentBuffer;
             return this;
         }
 
-        public CommandBuilder buildProperties(List<CommandProperty> commandProperties) {
-            this.commandProperties = commandProperties;
+        public CommandBuilder buildPropertyBuffer(CommandBuffer<CommandProperty> propertyBuffer) {
+            this.propertyBuffer = propertyBuffer;
+            return this;
+        }
+
+        public CommandBuilder buildActionBuffer(CommandBuffer<CommandAction> actionBuffer) {
+            this.actionBuffer = actionBuffer;
             return this;
         }
 
@@ -83,8 +82,9 @@ public class VerifiedDelegateCommand implements DelegateCommand, Descripted {
             return new VerifiedDelegateCommand(
                     this.nameDefinition,
                     this.descriptionDefinition,
-                    this.commandArguments,
-                    this.commandProperties
+                    this.argumentBuffer,
+                    this.propertyBuffer,
+                    this.actionBuffer
             );
         }
 

@@ -1,5 +1,6 @@
 package com.github.polyrocketmatt.delegate.core.command;
 
+import com.github.polyrocketmatt.delegate.core.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.core.command.definition.CommandDefinition;
 import com.github.polyrocketmatt.delegate.core.command.properties.CommandProperty;
@@ -76,6 +77,13 @@ public class CommandAttributeChain {
         return properties;
     }
 
+    public List<CommandAction> getActions() {
+        List<CommandAction> actions = new LinkedList<>();
+        for (CommandAttribute attribute : attributes)
+            if (attribute instanceof CommandAction)
+                actions.add((CommandAction) attribute);
+        return actions;
+    }
     public <T extends CommandAttribute> CommandAttribute find(Class<T> instance) {
         for (CommandAttribute attribute : attributes)
             if (instance.isInstance(attribute))

@@ -1,8 +1,10 @@
 package com.github.polyrocketmatt.delegate.core.handlers;
 
 import com.github.polyrocketmatt.delegate.core.command.AttributedDelegateCommand;
+import com.github.polyrocketmatt.delegate.core.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.core.command.CommandAttribute;
 import com.github.polyrocketmatt.delegate.core.command.CommandAttributeChain;
+import com.github.polyrocketmatt.delegate.core.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandNode;
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandTree;
 import com.github.polyrocketmatt.delegate.core.command.DelegateCommand;
@@ -16,8 +18,6 @@ import com.github.polyrocketmatt.delegate.core.exception.AttributeException;
 import com.github.polyrocketmatt.delegate.core.utils.Tuple;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 import static com.github.polyrocketmatt.delegate.core.Delegate.getDelegate;
 
@@ -32,14 +32,15 @@ public class AttributeHandler implements Handler {
         this.checkUniqueName(parent, header.getA());
         this.checkIdentifiers(chain);
 
-        List<CommandArgument<?>> arguments = this.processArguments(chain);
-        List<CommandProperty> properties = this.processProperties(chain);
+        CommandBuffer<CommandArgument<?>> argumentBuffer = new CommandBuffer<>(this.processArguments(chain));
+        CommandBuffer<CommandProperty> propertyBuffer = new CommandBuffer<>(this.processProperties(chain));
+        CommandBuffer<CommandAction> actionBuffer = new CommandBuffer<>(this.processActions(chain));
 
         VerifiedDelegateCommand verifiedCommand = VerifiedDelegateCommand.create()
                 .buildNameDefinition(header.getA())
                 .buildDescriptionDefinition(header.getB())
-                .buildArguments(arguments)
-                .buildProperties(properties)
+                .buildArgumentBuffer(argumentBuffer)
+                .buildPropertyBuffer(propertyBuffer)
                 .build();
 
         //  If this is a super command, add it to the map
@@ -101,6 +102,10 @@ public class AttributeHandler implements Handler {
 
     private List<CommandProperty> processProperties(CommandAttributeChain chain) {
         return chain.getProperties();
+    }
+
+    private List<CommandAction> processActions(CommandAttributeChain chain) {
+        return chain.getActions();
     }
 
     private void processSubCommands(CommandNode parent, CommandAttributeChain chain) {
