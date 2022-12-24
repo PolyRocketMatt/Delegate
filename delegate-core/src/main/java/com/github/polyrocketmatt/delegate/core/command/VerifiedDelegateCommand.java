@@ -1,48 +1,43 @@
 package com.github.polyrocketmatt.delegate.core.command;
 
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
+import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
 import com.github.polyrocketmatt.delegate.core.command.properties.BrigadierProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.CommandProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProperty;
-import com.github.polyrocketmatt.delegate.core.command.tree.CommandTree;
-import com.github.polyrocketmatt.delegate.core.command.tree.CommandTreeNode;
 
 import java.util.List;
 
 public class VerifiedDelegateCommand implements DelegateCommand {
 
-    private final CommandTreeNode node;
-
+    private final NameDefinition nameDefinition;
     private final List<CommandArgument<?>> commandArguments;
-    private boolean brigadierCompatible;
-    private boolean ignoreNull;
+    private final boolean brigadierCompatible;
+    private final boolean ignoreNull;
 
-    protected VerifiedDelegateCommand(CommandTreeNode parent, NameDefinition nameDefinition, List<CommandArgument<?>> commandArguments, List<CommandProperty> commandProperties) {
-        this.node = new CommandTreeNode(parent, nameDefinition);
+    protected VerifiedDelegateCommand(NameDefinition nameDefinition, List<CommandArgument<?>> commandArguments, List<CommandProperty> commandProperties) {
+        this.nameDefinition = nameDefinition;
         this.commandArguments = commandArguments;
         this.brigadierCompatible = commandProperties.stream().anyMatch(property -> property instanceof BrigadierProperty);
         this.ignoreNull = commandProperties.stream().anyMatch(property -> property instanceof IgnoreNullProperty);
-
-        if (brigadierCompatible)
-            setupBrigadier();
     }
 
-    private void setupBrigadier() {
-
+    public List<CommandArgument<?>> getCommandArguments() {
+        return this.commandArguments;
     }
 
     @Override
-    public CommandTreeNode getAsNode() {
-        return this.node;
+    public NameDefinition getNameDefinition() {
+        return nameDefinition;
     }
 
     public boolean isBrigadierCompatible() {
-        return brigadierCompatible;
+        return this.brigadierCompatible;
     }
 
     public boolean isIgnoreNull() {
-        return ignoreNull;
+        return this.ignoreNull;
     }
 
     public static CommandBuilder create() {
@@ -51,15 +46,9 @@ public class VerifiedDelegateCommand implements DelegateCommand {
 
     public static class CommandBuilder {
 
-        private CommandTreeNode parent;
         private NameDefinition nameDefinition;
         private List<CommandArgument<?>> commandArguments;
         private List<CommandProperty> commandProperties;
-
-        public CommandBuilder buildParent(CommandTreeNode parent) {
-            this.parent = parent;
-            return this;
-        }
 
         public CommandBuilder buildNameDefinition(NameDefinition nameDefinition) {
             this.nameDefinition = nameDefinition;
@@ -78,7 +67,6 @@ public class VerifiedDelegateCommand implements DelegateCommand {
 
         public VerifiedDelegateCommand build() {
             return new VerifiedDelegateCommand(
-                    this.parent,
                     this.nameDefinition,
                     this.commandArguments,
                     this.commandProperties

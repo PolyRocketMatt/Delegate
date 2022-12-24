@@ -1,10 +1,10 @@
 package com.github.polyrocketmatt.delegate.core.command;
 
-import com.github.polyrocketmatt.delegate.core.command.tree.CommandTreeNode;
+import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
 
 @FunctionalInterface
 public interface DelegateCommand {
 
-    CommandTreeNode getAsNode();
+    NameDefinition getNameDefinition();
 
 }

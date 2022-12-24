@@ -1,9 +1,9 @@
 package com.github.polyrocketmatt.delegate.core.command.definition;
 
-import com.github.polyrocketmatt.delegate.core.command.DelegateCommand;
+import com.github.polyrocketmatt.delegate.core.command.CommandAttributeChain;
 
-public class SubcommandDefinition extends CommandDefinition<DelegateCommand> {
+public class SubcommandDefinition extends CommandDefinition<CommandAttributeChain> {
 
-    public SubcommandDefinition(DelegateCommand command) { super("subCommand", command); }
+    public SubcommandDefinition(CommandAttributeChain chain) { super("subCommand", chain); }
 
 }
