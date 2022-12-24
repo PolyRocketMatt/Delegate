@@ -41,6 +41,7 @@ public class AttributeHandler implements Handler {
                 .buildDescriptionDefinition(header.getB())
                 .buildArgumentBuffer(argumentBuffer)
                 .buildPropertyBuffer(propertyBuffer)
+                .buildActionBuffer(actionBuffer)
                 .build();
 
         //  If this is a super command, add it to the map
