@@ -17,4 +17,8 @@ public class StringArgument extends CommandArgument<String> {
         return new ActionItem<>(input);
     }
 
+    public static StringArgument of(String identifier, String description) {
+        return new StringArgument(identifier, description);
+    }
+
 }

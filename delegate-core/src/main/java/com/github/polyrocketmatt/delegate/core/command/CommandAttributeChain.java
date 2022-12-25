@@ -2,6 +2,7 @@ package com.github.polyrocketmatt.delegate.core.command;
 
 import com.github.polyrocketmatt.delegate.core.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
+import com.github.polyrocketmatt.delegate.core.command.argument.StringArgument;
 import com.github.polyrocketmatt.delegate.core.command.definition.CommandDefinition;
 import com.github.polyrocketmatt.delegate.core.command.properties.CommandProperty;
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandTree;
@@ -24,6 +25,23 @@ public class CommandAttributeChain {
     public CommandAttributeChain append(CommandAttribute attribute) {
         this.attributes.add(attribute);
         return this;
+    }
+
+    //  Arguments
+    public CommandAttributeChain withArgument(CommandArgument<?> argument) {
+        return this.append(argument);
+    }
+
+    public CommandAttributeChain withFloatArgument(StringArgument argument) {
+        return this.append(argument);
+    }
+
+    public CommandAttributeChain withIntArgument(StringArgument argument) {
+        return this.append(argument);
+    }
+
+    public CommandAttributeChain withStringArgument(StringArgument argument) {
+        return this.append(argument);
     }
 
     public void build() {

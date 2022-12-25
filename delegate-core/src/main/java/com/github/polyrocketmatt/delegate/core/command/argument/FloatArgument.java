@@ -23,4 +23,8 @@ public class FloatArgument extends CommandArgument<Float> {
         return null;
     }
 
+    public static FloatArgument of(String identifier, String argumentDescription) {
+        return new FloatArgument(identifier, argumentDescription);
+    }
+
 }

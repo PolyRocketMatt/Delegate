@@ -5,10 +5,12 @@ import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition
 
 public class CommandFactory {
 
+    @Deprecated
     public static CommandAttributeChain create() {
         return new CommandAttributeChain();
     }
 
+    @Deprecated
     public static CommandAttributeChain create(String name) {
         return new CommandAttributeChain().append(new NameDefinition(name));
     }

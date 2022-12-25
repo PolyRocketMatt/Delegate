@@ -22,4 +22,9 @@ public class IntArgument extends CommandArgument<Integer> {
 
         return null;
     }
+
+    public static IntArgument of(String identifier, String argumentDescription) {
+        return new IntArgument(identifier, argumentDescription);
+    }
+
 }
