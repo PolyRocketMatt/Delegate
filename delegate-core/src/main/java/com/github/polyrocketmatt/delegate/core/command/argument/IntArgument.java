@@ -1,17 +1,15 @@
 package com.github.polyrocketmatt.delegate.core.command.argument;
 
+import com.github.polyrocketmatt.delegate.core.command.argument.rule.NonNullRule;
 import com.github.polyrocketmatt.delegate.core.data.ActionItem;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public class IntArgument extends CommandArgument<Integer> {
 
-    public IntArgument(String identifier, String argumentDescription, boolean isNullable) {
-        super(identifier, argumentDescription, isNullable);
-    }
-
     public IntArgument(String identifier, String argumentDescription) {
-        this(identifier, argumentDescription, false);
+        super(identifier, argumentDescription, List.of(new NonNullRule<Integer>()));
     }
 
     @Override

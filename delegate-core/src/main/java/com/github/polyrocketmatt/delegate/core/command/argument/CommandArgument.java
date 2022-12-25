@@ -1,29 +1,37 @@
 package com.github.polyrocketmatt.delegate.core.command.argument;
 
 import com.github.polyrocketmatt.delegate.core.command.CommandAttribute;
+import com.github.polyrocketmatt.delegate.core.command.argument.rule.ArgumentRule;
 import com.github.polyrocketmatt.delegate.core.data.ActionItem;
 import com.github.polyrocketmatt.delegate.core.exception.ArgumentParseException;
 import com.github.polyrocketmatt.delegate.core.utils.Bufferable;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public abstract class CommandArgument<T> extends CommandAttribute implements Bufferable {
 
     private final String argumentDescription;
-    private final boolean isNullable;
+    private final List<ArgumentRule<?, ?>> argumentRules;
 
-    public CommandArgument(String identifier, String argumentDescription, boolean isNullable) {
+    public CommandArgument(String identifier, String argumentDescription) {
         super(identifier);
         this.argumentDescription = argumentDescription;
-        this.isNullable = isNullable;
+        this.argumentRules = List.of();
+    }
+
+    public CommandArgument(String identifier, String argumentDescription, List<ArgumentRule<?, ?>> argumentRules) {
+        super(identifier);
+        this.argumentDescription = argumentDescription;
+        this.argumentRules = argumentRules;
     }
 
     public String getArgumentDescription() {
         return argumentDescription;
     }
 
-    public boolean isNullable() {
-        return isNullable;
+    public List<ArgumentRule<?, ?>> getArgumentRules() {
+        return argumentRules;
     }
 
     public ActionItem<T> parse(String input) {
