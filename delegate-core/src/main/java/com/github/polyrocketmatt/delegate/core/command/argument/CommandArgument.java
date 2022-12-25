@@ -1,6 +1,7 @@
 package com.github.polyrocketmatt.delegate.core.command.argument;
 
 import com.github.polyrocketmatt.delegate.core.command.CommandAttribute;
+import com.github.polyrocketmatt.delegate.core.data.ActionItem;
 import com.github.polyrocketmatt.delegate.core.exception.ArgumentParseException;
 import com.github.polyrocketmatt.delegate.core.utils.Bufferable;
 
@@ -25,12 +26,12 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
         return isNullable;
     }
 
-    public T parse(String input) {
+    public ActionItem<T> parse(String input) {
         return parse(input, ex -> {
             throw new ArgumentParseException("Failed to parse argument \"%s\"".formatted(input), ex);
         });
     }
 
-    public abstract T parse(String input, Consumer<Exception> onFail);
+    public abstract ActionItem<T> parse(String input, Consumer<Exception> onFail);
 
 }

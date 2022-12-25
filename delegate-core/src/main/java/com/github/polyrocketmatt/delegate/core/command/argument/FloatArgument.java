@@ -1,5 +1,7 @@
 package com.github.polyrocketmatt.delegate.core.command.argument;
 
+import com.github.polyrocketmatt.delegate.core.data.ActionItem;
+
 import java.util.function.Consumer;
 
 public class FloatArgument extends CommandArgument<Float> {
@@ -13,9 +15,9 @@ public class FloatArgument extends CommandArgument<Float> {
     }
 
     @Override
-    public Float parse(String input, Consumer<Exception> onFail) {
+    public ActionItem<Float> parse(String input, Consumer<Exception> onFail) {
         try {
-            return Float.parseFloat(input);
+            return new ActionItem<>(Float.parseFloat(input));
         } catch (NumberFormatException ex) {
             onFail.accept(ex);
         }

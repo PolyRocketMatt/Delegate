@@ -1,5 +1,7 @@
 package com.github.polyrocketmatt.delegate.core.command.argument;
 
+import com.github.polyrocketmatt.delegate.core.data.ActionItem;
+
 import java.util.function.Consumer;
 
 public class IntArgument extends CommandArgument<Integer> {
@@ -13,9 +15,9 @@ public class IntArgument extends CommandArgument<Integer> {
     }
 
     @Override
-    public Integer parse(String input, Consumer<Exception> onFail) {
+    public ActionItem<Integer> parse(String input, Consumer<Exception> onFail) {
         try {
-            return Integer.parseInt(input);
+            return new ActionItem<>(Integer.parseInt(input));
         } catch (NumberFormatException ex) {
             onFail.accept(ex);
         }
