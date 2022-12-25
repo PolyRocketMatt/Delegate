@@ -30,7 +30,7 @@ public class Delegate {
 
     public void setPlatform(Platform platform) {
         if (this.platform != null)
-            throw new IllegalStateException("Owner has already been set");
+            throw new IllegalStateException("Platform has already been set and cannot be changed at runtime");
         this.platform = platform;
     }
 
