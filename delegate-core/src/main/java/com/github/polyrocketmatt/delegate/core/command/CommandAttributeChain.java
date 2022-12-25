@@ -4,12 +4,13 @@ import com.github.polyrocketmatt.delegate.core.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.StringArgument;
 import com.github.polyrocketmatt.delegate.core.command.definition.CommandDefinition;
+import com.github.polyrocketmatt.delegate.core.command.definition.SubcommandDefinition;
+import com.github.polyrocketmatt.delegate.core.command.properties.BrigadierProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.CommandProperty;
-import com.github.polyrocketmatt.delegate.core.command.tree.CommandTree;
+import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProperty;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Function;
 
 import static com.github.polyrocketmatt.delegate.core.Delegate.getDelegate;
@@ -27,7 +28,10 @@ public class CommandAttributeChain {
         return this;
     }
 
-    //  Arguments
+    public CommandAttributeChain withAction(CommandAction action) {
+        return this.append(action);
+    }
+
     public CommandAttributeChain withArgument(CommandArgument<?> argument) {
         return this.append(argument);
     }
@@ -42,6 +46,26 @@ public class CommandAttributeChain {
 
     public CommandAttributeChain withStringArgument(StringArgument argument) {
         return this.append(argument);
+    }
+
+    public CommandAttributeChain withDefinition(CommandDefinition<?> definition) {
+        return this.append(definition);
+    }
+
+    public CommandAttributeChain withSubCommand(SubcommandDefinition subcommand) {
+        return this.append(subcommand);
+    }
+
+    public CommandAttributeChain withProperty(CommandProperty property) {
+        return this.append(property);
+    }
+
+    public CommandAttributeChain withBrigadier() {
+        return this.append(new BrigadierProperty());
+    }
+
+    public CommandAttributeChain withIgnoreNull() {
+        return this.append(new IgnoreNullProperty());
     }
 
     public void build() {
