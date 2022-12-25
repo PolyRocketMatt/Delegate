@@ -13,6 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.Arrays;
 
 import static com.github.polyrocketmatt.delegate.core.Delegate.getDelegate;
 
@@ -61,7 +62,7 @@ public class BukkitDelegate extends JavaPlugin implements Platform {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         return getDelegate()
                 .getCommandHandler()
-                .handle(new CommandDispatchInformation(getCommanderEntity(sender), command.getName()));
+                .handle(new CommandDispatchInformation(getCommanderEntity(sender), command.getName(), Arrays.asList(args)));
     }
 
     private CommanderEntity getCommanderEntity(CommandSender sender) {

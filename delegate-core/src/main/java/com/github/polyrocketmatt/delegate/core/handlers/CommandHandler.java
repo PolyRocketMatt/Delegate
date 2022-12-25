@@ -1,33 +1,35 @@
 package com.github.polyrocketmatt.delegate.core.handlers;
 
 import com.github.polyrocketmatt.delegate.core.command.CommandDispatchInformation;
+import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
+import com.github.polyrocketmatt.delegate.core.command.tree.CommandNode;
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandTree;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CommandHandler implements Handler {
 
-    private final List<CommandTree> trees;
+    private final CommandTree commandTree;
 
     public CommandHandler() {
-        this.trees = new ArrayList<>();
+        this.commandTree = new CommandTree();
     }
 
-    public List<CommandTree> getTrees() {
-        return trees;
-    }
-
-    public void registerTree(CommandTree tree) {
-        this.trees.add(tree);
+    public void registerTree(CommandNode root) {
+        this.commandTree.add(root);
     }
 
     public boolean handle(CommandDispatchInformation information) {
-        //  TODO: Handle command dispatch
+        CommandNode root = this.commandTree.find(information.command());
+
+        //  Parse information arguments until command in root node doesn't exist
+        //  If command in root node doesn't exist, then we have found the command
+        //  We can then parse the remaining arguments, apply rules to them and parse them.
+        //  We can execute the command, which should be a verified command since it resides in a command node.
+        //  Finally, we parse argument rules, resolve possible contexts and return proper results.
+
         return true;
     }
 
-    public boolean dispatch(CommandDispatchInformation information) {
+    public boolean dispatch(VerifiedDelegateCommand command, CommandDispatchInformation information) {
         return true;
     }
 
@@ -36,7 +38,7 @@ public class CommandHandler implements Handler {
 
     @Override
     public void destroy() {
-        this.trees.clear();
+        this.commandTree.clear();
     }
 
 }

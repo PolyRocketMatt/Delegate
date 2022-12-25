@@ -1,6 +1,7 @@
 package com.github.polyrocketmatt.delegate.core.command.tree;
 
 import com.github.polyrocketmatt.delegate.core.command.DelegateCommand;
+import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,4 +39,9 @@ public class CommandNode {
     public void addChild(CommandNode child) {
         this.children.add(child);
     }
+
+    public boolean isVerified() {
+        return command instanceof VerifiedDelegateCommand;
+    }
+
 }

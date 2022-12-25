@@ -47,13 +47,12 @@ public class AttributeHandler implements Handler {
         //  If this is a super command, register the command and process the subcommands
         if (parent == null) {
             CommandNode rootNode = new CommandNode(verifiedCommand);
-            CommandTree tree = new CommandTree(rootNode);
 
             //  Compute all sub-commands
             this.processSubCommands(rootNode, chain);
 
             //  Add tree to command handler
-            getDelegate().getCommandHandler().registerTree(tree);
+            getDelegate().getCommandHandler().registerTree(rootNode);
         } else {
             CommandNode childNode = new CommandNode(parent, verifiedCommand);
 

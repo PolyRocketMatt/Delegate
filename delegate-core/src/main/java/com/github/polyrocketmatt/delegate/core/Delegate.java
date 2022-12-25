@@ -1,5 +1,6 @@
 package com.github.polyrocketmatt.delegate.core;
 
+import com.github.polyrocketmatt.delegate.core.handlers.AnnotationHandler;
 import com.github.polyrocketmatt.delegate.core.handlers.AttributeHandler;
 import com.github.polyrocketmatt.delegate.core.handlers.CommandHandler;
 import com.github.polyrocketmatt.delegate.core.platform.Platform;
@@ -11,12 +12,14 @@ public class Delegate {
     private static final Delegate instance = new Delegate();
 
     private Platform platform;
+    private final AnnotationHandler annotationHandler;
     private final AttributeHandler attributeHandler;
     private final CommandHandler commandHandler;
 
     protected Delegate() {
         if (instance != null)
             throw new IllegalStateException("Delegate has already been initialized");
+        this.annotationHandler = new AnnotationHandler();
         this.attributeHandler = new AttributeHandler();
         this.commandHandler = new CommandHandler();
     }
@@ -33,6 +36,10 @@ public class Delegate {
 
     public Platform getPlatform() {
         return platform;
+    }
+
+    public AnnotationHandler getAnnotationHandler() {
+        return annotationHandler;
     }
 
     public AttributeHandler getAttributeHandler() {

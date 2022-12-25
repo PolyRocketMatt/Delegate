@@ -16,7 +16,6 @@ public class BufferResolveAction extends CommandResolveAction {
 
             for (int i = 0; i < arguments.size(); i++)
                 resultingBuffer.add(arguments.get(i).parse(values.get(i)));
-
             return resultingBuffer;
         });
     }
