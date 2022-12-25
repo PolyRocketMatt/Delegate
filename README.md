@@ -41,31 +41,15 @@ Currently, Delegate supports the following platforms:
 
 ## Getting Started
 
-Every command must have a name and a description. The name of the command is used 
-internally to identify the command. The description is used to generate automatic
-help messages. 
-
-```java
-public class ExampleCommand {
-    
-    public ExampleCommand() {
-        CommandFactory.create()
-                .append(new NameDefinition("hello"))
-                .append(new DescriptionDefinition("Says hello to the player"))
-                .build();
-    }
-    
-}
-```
-
-To reduce boilerplate code, the `create()` method of the `CommandFactory` class can 
-take a name and description as parameters. 
+This is an example command, which will print a message to the requested player.
 
 ```java
 public class ExampleCommand {
     
     public ExampleCommand() {
         CommandFactory.create("hello", "Says hello to the player")
+                .argument(StringArgument.of("player"))
+                .action((args, inputs) -> { System.out.println("Hello, %s!".formatted(inputs[0])); })
                 .build();
     }
     
