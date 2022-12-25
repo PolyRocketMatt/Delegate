@@ -11,8 +11,10 @@ import java.util.function.Function;
 
 public class CommandResolveAction extends CommandAction {
 
-    public CommandResolveAction(String identifier, Function<Tuple<CommandBuffer<CommandArgument<?>>, List<String>>, ActionResult> action) {
-        super(identifier, action);
+    public CommandResolveAction(String identifier, int precedence, Function<Tuple<CommandBuffer<CommandArgument<?>>, List<String>>, ActionResult> action) {
+        super(identifier, precedence, action);
     }
+
+
 
 }

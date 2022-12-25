@@ -44,4 +44,18 @@ public class CommandNode {
         return command instanceof VerifiedDelegateCommand;
     }
 
+    public QueryResultNode findDeepest(String[] names) {
+        if (this.children.isEmpty())
+            return new QueryResultNode(this, names);
+
+        String name = names[0];
+        String[] remaining = new String[names.length - 1];
+        System.arraycopy(names, 1, remaining, 0, remaining.length);
+
+        for (CommandNode child : this.children)
+            if (child.getCommand().getNameDefinition().getValue().equalsIgnoreCase(name))
+                return child.findDeepest(remaining);
+        return new QueryResultNode(this, names);
+    }
+
 }

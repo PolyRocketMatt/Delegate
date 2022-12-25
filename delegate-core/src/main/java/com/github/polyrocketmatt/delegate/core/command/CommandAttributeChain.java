@@ -1,6 +1,7 @@
 package com.github.polyrocketmatt.delegate.core.command;
 
 import com.github.polyrocketmatt.delegate.core.command.action.CommandAction;
+import com.github.polyrocketmatt.delegate.core.command.action.resolver.BufferResolveAction;
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.StringArgument;
 import com.github.polyrocketmatt.delegate.core.command.definition.CommandDefinition;
@@ -8,6 +9,7 @@ import com.github.polyrocketmatt.delegate.core.command.definition.SubcommandDefi
 import com.github.polyrocketmatt.delegate.core.command.properties.BrigadierProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.CommandProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProperty;
+import com.github.polyrocketmatt.delegate.core.exception.AttributeException;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -17,6 +19,8 @@ import static com.github.polyrocketmatt.delegate.core.Delegate.getDelegate;
 
 public class CommandAttributeChain {
 
+    private static final BufferResolveAction PRIMARY_RESOLVER = new BufferResolveAction("primaryResolver");
+
     private final LinkedList<CommandAttribute> attributes;
 
     protected CommandAttributeChain() {
@@ -24,11 +28,18 @@ public class CommandAttributeChain {
     }
 
     public CommandAttributeChain append(CommandAttribute attribute) {
+        if (attribute instanceof CommandAction && ((CommandAction) attribute).getPrecedence() < 0)
+            throw new AttributeException("Action precedence must be greater than 0");
+
         this.attributes.add(attribute);
         return this;
     }
 
     public CommandAttributeChain withAction(CommandAction action) {
+        //  Check that action precedence is greater than or equal to 0
+        if (action.getPrecedence() <= 0)
+            throw new AttributeException("Action precedence must be greater than 0");
+
         return this.append(action);
     }
 
@@ -69,6 +80,9 @@ public class CommandAttributeChain {
     }
 
     public void build() {
+        //  Add primary resolver to every command
+        this.append(PRIMARY_RESOLVER);
+
         getDelegate().getAttributeHandler().process(null, new AttributedDelegateCommand(this));
     }
 

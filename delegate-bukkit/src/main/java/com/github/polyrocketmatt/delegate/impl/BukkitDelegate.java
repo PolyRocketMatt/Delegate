@@ -62,7 +62,7 @@ public class BukkitDelegate extends JavaPlugin implements Platform {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         return getDelegate()
                 .getCommandHandler()
-                .handle(new CommandDispatchInformation(getCommanderEntity(sender), command.getName(), Arrays.asList(args)));
+                .handle(new CommandDispatchInformation(getCommanderEntity(sender), command.getName(), args));
     }
 
     private CommanderEntity getCommanderEntity(CommandSender sender) {

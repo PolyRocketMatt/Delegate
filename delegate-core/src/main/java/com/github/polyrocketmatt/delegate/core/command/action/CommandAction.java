@@ -12,11 +12,17 @@ import java.util.function.Function;
 
 public class CommandAction extends CommandAttribute implements Bufferable {
 
+    private final int precedence;
     private final Function<Tuple<CommandBuffer<CommandArgument<?>>, List<String>>, ActionResult> action;
 
-    public CommandAction(String identifier, Function<Tuple<CommandBuffer<CommandArgument<?>>, List<String>>, ActionResult> action) {
+    public CommandAction(String identifier, int precedence, Function<Tuple<CommandBuffer<CommandArgument<?>>, List<String>>, ActionResult> action) {
         super(identifier);
+        this.precedence = precedence;
         this.action = action;
+    }
+
+    public int getPrecedence() {
+        return precedence;
     }
 
     public Function<Tuple<CommandBuffer<CommandArgument<?>>, List<String>>, ActionResult> getAction() {

@@ -9,7 +9,7 @@ import java.util.List;
 public class BufferResolveAction extends CommandResolveAction {
 
     public BufferResolveAction(String identifier) {
-        super(identifier, input -> {
+        super(identifier, -1, input -> {
             CommandBuffer<CommandArgument<?>> arguments = input.getA();
             List<String> values = input.getB();
             ActionBuffer resultingBuffer = new ActionBuffer();
