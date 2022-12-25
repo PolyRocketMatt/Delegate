@@ -44,17 +44,24 @@ public class Delegate {
     }
 
     public File dataFolder() {
+        if (this.platform == null)
+            return null;
         return platform.getFileStorage();
     }
 
     public String getDelegateVersion() {
+        if (this.platform == null)
+            return null;
         return this.platform.getPluginVersion();
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void setup() {
+    public boolean setup() {
+        if (this.platform == null || dataFolder() == null)
+            return false;
         if (!dataFolder().exists())
-            dataFolder().mkdirs();
+            return dataFolder().mkdirs();
+        else
+            return true;
     }
 
 }

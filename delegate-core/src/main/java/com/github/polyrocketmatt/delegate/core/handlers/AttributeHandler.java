@@ -44,7 +44,7 @@ public class AttributeHandler implements Handler {
                 .buildActionBuffer(actionBuffer)
                 .build();
 
-        //  If this is a super command, add it to the map
+        //  If this is a super command, register the command and process the subcommands
         if (parent == null) {
             CommandNode rootNode = new CommandNode(verifiedCommand);
             CommandTree tree = new CommandTree(rootNode);

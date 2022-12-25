@@ -4,15 +4,10 @@ import com.github.polyrocketmatt.delegate.core.utils.Bufferable;
 
 import java.util.List;
 
-public class CommandBuffer<T extends Bufferable> {
+public record CommandBuffer<T extends Bufferable>(List<T> bufferElements) {
 
-    private final List<T> bufferElements;
-
-    public CommandBuffer(List<T> bufferElements) {
-        this.bufferElements = bufferElements;
+    public int size() {
+        return bufferElements.size();
     }
 
-    public List<T> getBufferElements() {
-        return bufferElements;
-    }
 }

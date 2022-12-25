@@ -12,6 +12,7 @@ public class VerifiedDelegateCommand implements DelegateCommand, Descripted {
     private final DescriptionDefinition descriptionDefinition;
     private final CommandBuffer<CommandArgument<?>> argumentBuffer;
     private final CommandBuffer<CommandProperty> propertyBuffer;
+    private final CommandBuffer<CommandAction> actionBuffer;
 
     protected VerifiedDelegateCommand(NameDefinition nameDefinition, DescriptionDefinition descriptionDefinition,
                                       CommandBuffer<CommandArgument<?>> argumentBuffer,
@@ -21,6 +22,7 @@ public class VerifiedDelegateCommand implements DelegateCommand, Descripted {
         this.descriptionDefinition = descriptionDefinition;
         this.argumentBuffer = argumentBuffer;
         this.propertyBuffer = propertyBuffer;
+        this.actionBuffer = actionBuffer;
     }
 
     @Override
@@ -39,6 +41,10 @@ public class VerifiedDelegateCommand implements DelegateCommand, Descripted {
 
     public CommandBuffer<CommandProperty> getPropertyBuffer() {
         return propertyBuffer;
+    }
+
+    public CommandBuffer<CommandAction> getActionBuffer() {
+        return actionBuffer;
     }
 
     public static CommandBuilder create() {

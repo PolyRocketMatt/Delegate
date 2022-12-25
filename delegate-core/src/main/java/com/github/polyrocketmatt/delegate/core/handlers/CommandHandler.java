@@ -1,7 +1,6 @@
 package com.github.polyrocketmatt.delegate.core.handlers;
 
 import com.github.polyrocketmatt.delegate.core.command.CommandDispatchInformation;
-import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandTree;
 
 import java.util.ArrayList;
@@ -25,6 +24,10 @@ public class CommandHandler implements Handler {
 
     public boolean handle(CommandDispatchInformation information) {
         //  TODO: Handle command dispatch
+        return true;
+    }
+
+    public boolean dispatch(CommandDispatchInformation information) {
         return true;
     }
 
