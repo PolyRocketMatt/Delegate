@@ -95,12 +95,12 @@ public class CommandAttributeChain {
         return mapped;
     }
 
-    public List<CommandDefinition<?>> getDefinitions() {
-        List<CommandDefinition<?>> definitions = new LinkedList<>();
+    public List<CommandAction> getActions() {
+        List<CommandAction> actions = new LinkedList<>();
         for (CommandAttribute attribute : attributes)
-            if (attribute instanceof CommandDefinition<?>)
-                definitions.add((CommandDefinition<?>) attribute);
-        return definitions;
+            if (attribute instanceof CommandAction)
+                actions.add((CommandAction) attribute);
+        return actions;
     }
 
     public List<CommandArgument<?>> getArguments() {
@@ -111,6 +111,14 @@ public class CommandAttributeChain {
         return arguments;
     }
 
+    public List<CommandDefinition<?>> getDefinitions() {
+        List<CommandDefinition<?>> definitions = new LinkedList<>();
+        for (CommandAttribute attribute : attributes)
+            if (attribute instanceof CommandDefinition<?>)
+                definitions.add((CommandDefinition<?>) attribute);
+        return definitions;
+    }
+
     public List<CommandProperty> getProperties() {
         List<CommandProperty> properties = new LinkedList<>();
         for (CommandAttribute attribute : attributes)
@@ -119,13 +127,6 @@ public class CommandAttributeChain {
         return properties;
     }
 
-    public List<CommandAction> getActions() {
-        List<CommandAction> actions = new LinkedList<>();
-        for (CommandAttribute attribute : attributes)
-            if (attribute instanceof CommandAction)
-                actions.add((CommandAction) attribute);
-        return actions;
-    }
     public <T extends CommandAttribute> CommandAttribute find(Class<T> instance) {
         for (CommandAttribute attribute : attributes)
             if (instance.isInstance(attribute))
@@ -133,7 +134,7 @@ public class CommandAttributeChain {
         return null;
     }
 
-    public int length() {
+    public int size() {
         return attributes.size();
     }
 
