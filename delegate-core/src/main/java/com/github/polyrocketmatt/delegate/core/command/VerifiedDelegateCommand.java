@@ -6,7 +6,7 @@ import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDef
 import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
 import com.github.polyrocketmatt.delegate.core.command.properties.CommandProperty;
 
-public class VerifiedDelegateCommand implements DelegateCommand, Descripted {
+public class VerifiedDelegateCommand implements DelegateCommand {
 
     private final NameDefinition nameDefinition;
     private final DescriptionDefinition descriptionDefinition;

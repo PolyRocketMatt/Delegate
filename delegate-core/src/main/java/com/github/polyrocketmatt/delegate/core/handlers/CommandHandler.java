@@ -51,8 +51,11 @@ public class CommandHandler implements Handler {
         CommandBuffer<CommandProperty> commandProperties = command.getPropertyBuffer();
         CommandBuffer<CommandArgument<?>> commandArguments = command.getArgumentBuffer();
 
+        //  Check
         if (commandProperties.stream().noneMatch(property -> property instanceof IgnoreNullProperty) && commandArguments.size() != arguments.length)
             throw new CommandExecutionException("Expected " + commandArguments.size() + " arguments, found " + arguments.length);
+
+
     }
 
     public boolean dispatch(VerifiedDelegateCommand command, CommandDispatchInformation information) {
