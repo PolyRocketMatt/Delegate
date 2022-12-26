@@ -11,8 +11,6 @@ import com.github.polyrocketmatt.delegate.core.command.tree.CommandTree;
 import com.github.polyrocketmatt.delegate.core.command.tree.QueryResultNode;
 import com.github.polyrocketmatt.delegate.core.exception.CommandExecutionException;
 
-import java.util.Arrays;
-
 public class CommandHandler implements Handler {
 
     private final CommandTree commandTree;
