@@ -9,11 +9,11 @@ import java.lang.reflect.Field;
 public class DefaultRule<T> extends ArgumentRule<String, T> {
 
     public DefaultRule(T defaultValue) {
-        super(input -> new RuleIO<>(defaultValue));
+        super(input -> new RuleData<>(defaultValue));
     }
 
     @Override
-    public ArgumentRuleResult interpretResult(CommandArgument<?> argument, RuleIO<String> input, RuleIO<?> output) {
+    public ArgumentRuleResult interpretResult(CommandArgument<?> argument, RuleData<String> input, RuleData<?> output) {
         if (input.value() == null) {
             ActionItem<?> actionItem = new ActionItem<>(output.value());
 

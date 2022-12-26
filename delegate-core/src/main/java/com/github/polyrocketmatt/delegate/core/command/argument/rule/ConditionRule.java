@@ -8,11 +8,11 @@ import java.util.function.Function;
 public class ConditionRule extends ArgumentRule<String, Boolean> {
 
     public ConditionRule(Function<String, Boolean> condition) {
-        super(input -> new RuleIO<>(condition.apply(input.value())));
+        super(input -> new RuleData<>(condition.apply(input.value())));
     }
 
     @Override
-    public ArgumentRuleResult interpretResult(CommandArgument<?> argument, RuleIO<String> input, RuleIO<?> output) {
+    public ArgumentRuleResult interpretResult(CommandArgument<?> argument, RuleData<String> input, RuleData<?> output) {
         if (!(output.value() instanceof Boolean result))
             return new ArgumentRuleResult(ArgumentRuleResult.Result.FAILURE, "Expected result of rule did not match");
         if (!result)

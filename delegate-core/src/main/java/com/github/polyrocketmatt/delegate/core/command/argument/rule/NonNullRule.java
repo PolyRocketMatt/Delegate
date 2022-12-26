@@ -8,11 +8,11 @@ import java.util.Objects;
 public class NonNullRule extends ArgumentRule<String, Boolean> {
 
     public NonNullRule() {
-        super(input -> new RuleIO<>(Objects.nonNull(input)));
+        super(input -> new RuleData<>(Objects.nonNull(input)));
     }
 
     @Override
-    public ArgumentRuleResult interpretResult(CommandArgument<?> argument, RuleIO<String> input, RuleIO<?> output) {
+    public ArgumentRuleResult interpretResult(CommandArgument<?> argument, RuleData<String> input, RuleData<?> output) {
         if (!(output.value() instanceof Boolean result))
             return new ArgumentRuleResult(ArgumentRuleResult.Result.FAILURE, "Expected result of rule did not match");
         if (!result)
