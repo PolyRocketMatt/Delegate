@@ -7,4 +7,5 @@ public class IgnoreNullProperty extends CommandProperty{
     public IgnoreNullProperty() {
         super(IGNORE_NULL_IDENTIFIER);
     }
+
 }

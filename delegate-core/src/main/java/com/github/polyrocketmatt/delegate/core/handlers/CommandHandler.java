@@ -3,20 +3,33 @@ package com.github.polyrocketmatt.delegate.core.handlers;
 import com.github.polyrocketmatt.delegate.core.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.core.command.CommandDispatchInformation;
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
+import com.github.polyrocketmatt.delegate.core.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
+import com.github.polyrocketmatt.delegate.core.command.properties.AsyncProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.CommandProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProperty;
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandNode;
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandTree;
 import com.github.polyrocketmatt.delegate.core.command.tree.QueryResultNode;
 import com.github.polyrocketmatt.delegate.core.exception.CommandExecutionException;
+import com.github.polyrocketmatt.delegate.core.utils.Tuple;
+
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ForkJoinPool;
 
 public class CommandHandler implements Handler {
 
     private final CommandTree commandTree;
 
+    private int availableProcessors;
+    private int maxStealCount;
+
+    //  TODO: Fix a configuration for max available processors
     public CommandHandler() {
         this.commandTree = new CommandTree();
+        this.availableProcessors = 32;
+        this.maxStealCount = 8;
     }
 
     public void registerTree(CommandNode root) {
@@ -32,22 +45,21 @@ public class CommandHandler implements Handler {
         QueryResultNode queryResultNode = root.findDeepest(commandArguments);
         CommandNode executionNode = queryResultNode.node();
 
+        //  Check if the command is verified
         if (!executionNode.isVerified())
             throw new CommandExecutionException("Expected to execute a verified command, found an attributed command instead");
 
         //  We can then parse the remaining arguments, apply rules to them and parse them.
         String[] remainingArguments = queryResultNode.remainingArgs();
         VerifiedDelegateCommand command = (VerifiedDelegateCommand) executionNode.getCommand();
+        String[] verifiedArguments = this.verifyArguments(command, remainingArguments);
 
-        this.verifyArguments(command, remainingArguments);
-
-        //  We can execute the command, which should be a verified command since it resides in a command node.
-        //  Finally, we parse argument rules, resolve possible contexts and return proper results.
+        //  We can execute the command with the remaining arguments
 
         return true;
     }
 
-    private void verifyArguments(VerifiedDelegateCommand command, String[] arguments) {
+    private String[] verifyArguments(VerifiedDelegateCommand command, String[] arguments) {
         CommandBuffer<CommandProperty> commandProperties = command.getPropertyBuffer();
         CommandBuffer<CommandArgument<?>> commandArguments = command.getArgumentBuffer();
         String[] verifiedArguments = new String[arguments.length];
@@ -91,6 +103,45 @@ public class CommandHandler implements Handler {
             String argument = verifiedArguments[i];
 
             commandArgument.parseRules(argument);
+        }
+
+        return verifiedArguments;
+    }
+
+    private void execute(VerifiedDelegateCommand command, String[] arguments) {
+        //  Get the arguments
+        CommandBuffer<CommandArgument<?>> commandArguments = command.getArgumentBuffer();
+
+        //  Run all command actions in order of precedence
+        CommandBuffer<CommandAction> actions = command.getActionBuffer();
+        List<Integer> precedences = actions.stream()
+                .map(CommandAction::getPrecedence)
+                .sorted()
+                .toList();
+
+        //  Check async-property and initialize parameters
+        boolean async = command.getPropertyBuffer().stream()
+                .anyMatch(property -> property instanceof AsyncProperty);
+        int availableThreadCount = Math.min(this.availableProcessors, this.maxStealCount);
+        int threadCount = Math.min(availableThreadCount, actions.size());
+
+        //  Verification of arguments ensures correct order of arguments
+        List<String> inputs = List.of(arguments);
+        Tuple<CommandBuffer<CommandArgument<?>>, List<String>> functionInput = new Tuple<>(commandArguments, inputs);
+        ExecutorService executor = new ForkJoinPool(threadCount);
+
+        for (int precedence : precedences) {
+            List<CommandAction> actionsWithPrecedence = actions.stream()
+                    .filter(action -> action.getPrecedence() == precedence)
+                    .toList();
+
+            if (async) {
+                for (CommandAction action : actionsWithPrecedence)
+                    executor.execute(() -> action.getAction().apply(functionInput));
+            } else {
+                for (CommandAction action : actionsWithPrecedence)
+                    action.getAction().apply(functionInput);
+            }
         }
     }
 

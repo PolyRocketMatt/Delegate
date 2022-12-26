@@ -72,7 +72,10 @@ for creating commands is exactly the same for all platforms.
 </p>
 
 Delegate is integrated with [Ensemble](https://github.com/PolyRocketMatt/Ensemble). It ensures command execution/handling is
-atomic per user. 
+atomic per user. Furthermore, the orchestrating nature of Ensemble allows for the handling of thousands of commands per second,
+without any performance degradation*.
+
+(*: This depends on the actions associated with commands!)
 
 ---
 <h5 align="center">Icons provided by [Flaticon](https://www.flaticon.com/)</h5>
