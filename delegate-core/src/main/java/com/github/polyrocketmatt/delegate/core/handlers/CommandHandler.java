@@ -2,7 +2,6 @@ package com.github.polyrocketmatt.delegate.core.handlers;
 
 import com.github.polyrocketmatt.delegate.core.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.core.command.CommandDispatchInformation;
-import com.github.polyrocketmatt.delegate.core.command.DelegateCommand;
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.core.command.properties.CommandProperty;

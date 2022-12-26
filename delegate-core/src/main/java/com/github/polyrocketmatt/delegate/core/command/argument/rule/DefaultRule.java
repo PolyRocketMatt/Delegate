@@ -1,8 +1,8 @@
 package com.github.polyrocketmatt.delegate.core.command.argument.rule;
 
+import com.github.polyrocketmatt.delegate.core.command.argument.ArgumentRuleResult;
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.core.data.ActionItem;
-import com.github.polyrocketmatt.delegate.core.exception.ArgumentParseException;
 
 import java.lang.reflect.Field;
 
@@ -13,7 +13,7 @@ public class DefaultRule<T> extends ArgumentRule<String, T> {
     }
 
     @Override
-    public void interpretResult(CommandArgument<?> argument, RuleInput<String> input, RuleOutput<?> output) {
+    public ArgumentRuleResult interpretResult(CommandArgument<?> argument, RuleInput<String> input, RuleOutput<?> output) {
         if (input.input() == null) {
             ActionItem<?> actionItem = new ActionItem<>(output.result());
 
@@ -24,9 +24,13 @@ public class DefaultRule<T> extends ArgumentRule<String, T> {
                 defaultArgField.setAccessible(true);
                 defaultArgField.set(argument, actionItem);
                 defaultArgField.setAccessible(false);
+
+                return new ArgumentRuleResult(ArgumentRuleResult.Result.SUCCESS, "Successfully passed %s".formatted(getClass().getSimpleName()));
             } catch (IllegalAccessException | NoSuchFieldException ex) {
-                throw new ArgumentParseException("Argument does not have a default value", ex);
+                return new ArgumentRuleResult(ArgumentRuleResult.Result.FAILURE, "Argument already has a value");
             }
         }
+
+        return new ArgumentRuleResult(ArgumentRuleResult.Result.SUCCESS, "Successfully passed %s".formatted(getClass().getSimpleName()));
     }
 }

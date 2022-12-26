@@ -1,5 +1,6 @@
 package com.github.polyrocketmatt.delegate.core.command.argument.rule;
 
+import com.github.polyrocketmatt.delegate.core.command.argument.ArgumentRuleResult;
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
 
 import java.util.function.Function;
@@ -16,6 +17,6 @@ public abstract class ArgumentRule<I, O> {
         return rule;
     }
 
-    public abstract void interpretResult(CommandArgument<?> argument, RuleInput<I> input, RuleOutput<?> output);
+    public abstract ArgumentRuleResult interpretResult(CommandArgument<?> argument, RuleInput<I> input, RuleOutput<?> output);
 
 }

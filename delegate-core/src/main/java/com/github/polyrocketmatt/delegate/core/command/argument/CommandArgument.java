@@ -58,8 +58,10 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
     public boolean parseRules(String input) {
         for (ArgumentRule<String, ?> rule : getArgumentRules()) {
             RuleOutput<?> result = rule.getRule().apply(new RuleInput<>(input));
+            ArgumentRuleResult ruleResult = rule.interpretResult(this, new RuleInput<>(input), result);
 
-            rule.interpretResult(this, new RuleInput<>(input), result);
+            if (ruleResult.result() == ArgumentRuleResult.Result.FAILURE)
+                throw onFail(ruleResult.info(), null);
         }
 
         return true;

@@ -3,12 +3,12 @@ package com.github.polyrocketmatt.delegate.core.command.argument.rule;
 import com.github.polyrocketmatt.delegate.core.command.argument.ArgumentRuleResult;
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
 
-import java.util.Objects;
+import java.util.function.Function;
 
-public class NonNullRule extends ArgumentRule<String, Boolean> {
+public class ConditionRule extends ArgumentRule<String, Boolean> {
 
-    public NonNullRule() {
-        super(input -> new RuleOutput<>(Objects.nonNull(input)));
+    public ConditionRule(Function<String, Boolean> condition) {
+        super(input -> new RuleOutput<>(condition.apply(input.input())));
     }
 
     @Override
@@ -16,7 +16,7 @@ public class NonNullRule extends ArgumentRule<String, Boolean> {
         if (!(output.result() instanceof Boolean result))
             return new ArgumentRuleResult(ArgumentRuleResult.Result.FAILURE, "Expected result of rule did not match");
         if (!result)
-            return new ArgumentRuleResult(ArgumentRuleResult.Result.FAILURE, "Non-nullity of input was not met");
+            return new ArgumentRuleResult(ArgumentRuleResult.Result.FAILURE, "Condition was not met");
         return new ArgumentRuleResult(ArgumentRuleResult.Result.SUCCESS, "Successfully passed %s".formatted(getClass().getSimpleName()));
     }
 
