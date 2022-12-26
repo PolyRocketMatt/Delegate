@@ -65,4 +65,16 @@ for creating commands is exactly the same for all platforms.
 
 ## Documentation
 
+## Integration
+
+<p align="center">
+    <img width="48" height="48" src="img/ensemble.png" />
+</p>
+
+Delegate is integrated with [Ensemble](https://github.com/PolyRocketMatt/Ensemble). It ensures command execution/handling is
+atomic per user. 
+
+---
+<h5 align="center">Icons provided by [Flaticon](https://www.flaticon.com/)</h5>
+
 ---
