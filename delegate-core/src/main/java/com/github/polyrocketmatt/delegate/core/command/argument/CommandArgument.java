@@ -40,11 +40,15 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
         return argumentRules;
     }
 
+    private void addRule(ArgumentRule<String, ?> rule) {
+        this.argumentRules.add(rule);
+    }
+
     public ActionItem<T> getDefault() {
         return defaultValue;
     }
 
-    public void setDefaultValue(ActionItem<T> defaultValue) {
+    private void setDefaultValue(ActionItem<T> defaultValue) {
         this.defaultValue = defaultValue;
     }
 
@@ -65,6 +69,23 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
         }
 
         return true;
+    }
+
+    public CommandArgument<T> withRule(ArgumentRule<String, ?> rule) {
+        this.addRule(rule);
+        return this;
+    }
+
+    @SafeVarargs
+    public final CommandArgument<?> withRules(ArgumentRule<String, ?>... rules) {
+        for (ArgumentRule<String, ?> rule : rules)
+            this.addRule(rule);
+        return this;
+    }
+
+    public CommandArgument<T> withDefault(ActionItem<T> defaultValue) {
+        this.setDefaultValue(defaultValue);
+        return this;
     }
 
 }
