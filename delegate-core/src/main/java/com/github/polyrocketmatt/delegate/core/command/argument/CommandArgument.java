@@ -58,7 +58,7 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
     @Override
     public abstract ActionItem<T> parse(String input, Consumer<Exception> consumer);
 
-    public boolean parseRules(String input) {
+    public void parseRules(String input) {
         for (ArgumentRule<String, ?> rule : getArgumentRules()) {
             RuleData<?> result = rule.getRule().apply(new RuleData<>(input));
             ArgumentRuleResult ruleResult = rule.interpretResult(this, new RuleData<>(input), result);
@@ -66,8 +66,6 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
             if (ruleResult.result() == ArgumentRuleResult.Result.FAILURE)
                 throw onFail(ruleResult.info(), null);
         }
-
-        return true;
     }
 
     public CommandArgument<T> withRule(ArgumentRule<String, ?> rule) {
