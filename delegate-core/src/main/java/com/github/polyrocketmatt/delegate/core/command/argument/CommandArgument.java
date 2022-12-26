@@ -2,17 +2,21 @@ package com.github.polyrocketmatt.delegate.core.command.argument;
 
 import com.github.polyrocketmatt.delegate.core.command.CommandAttribute;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.ArgumentRule;
+import com.github.polyrocketmatt.delegate.core.command.argument.rule.RuleInput;
+import com.github.polyrocketmatt.delegate.core.command.argument.rule.RuleOutput;
 import com.github.polyrocketmatt.delegate.core.data.ActionItem;
-import com.github.polyrocketmatt.delegate.core.exception.ArgumentParseException;
 import com.github.polyrocketmatt.delegate.core.utils.Bufferable;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public abstract class CommandArgument<T> extends CommandAttribute implements Bufferable {
+public abstract class CommandArgument<T> extends CommandAttribute implements Bufferable, ArgumentParser<T> {
 
     private final String argumentDescription;
-    private final List<ArgumentRule<?, ?>> argumentRules;
+    private final List<ArgumentRule<String, ?>> argumentRules;
+
+    private ActionItem<T> defaultValue;
 
     public CommandArgument(String identifier, String argumentDescription) {
         super(identifier);
@@ -20,26 +24,45 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
         this.argumentRules = List.of();
     }
 
-    public CommandArgument(String identifier, String argumentDescription, List<ArgumentRule<?, ?>> argumentRules) {
+    @SafeVarargs
+    public CommandArgument(String identifier, String argumentDescription, ArgumentRule<String, ?>... argumentRules) {
         super(identifier);
         this.argumentDescription = argumentDescription;
-        this.argumentRules = argumentRules;
+        this.defaultValue = null;
+        this.argumentRules = Arrays.asList(argumentRules);
     }
 
     public String getArgumentDescription() {
         return argumentDescription;
     }
 
-    public List<ArgumentRule<?, ?>> getArgumentRules() {
+    public List<ArgumentRule<String, ?>> getArgumentRules() {
         return argumentRules;
     }
 
-    public ActionItem<T> parse(String input) {
-        return parse(input, ex -> {
-            throw new ArgumentParseException("Failed to parse argument \"%s\"".formatted(input), ex);
-        });
+    public ActionItem<T> getDefault() {
+        return defaultValue;
     }
 
-    public abstract ActionItem<T> parse(String input, Consumer<Exception> onFail);
+    public void setDefaultValue(ActionItem<T> defaultValue) {
+        this.defaultValue = defaultValue;
+    }
+
+    public ActionItem<T> parse(String input) {
+        return this.parse(input, ex -> { throw onFail(input, ex); });
+    }
+
+    @Override
+    public abstract ActionItem<T> parse(String input, Consumer<Exception> consumer);
+
+    public boolean parseRules(String input) {
+        for (ArgumentRule<String, ?> rule : getArgumentRules()) {
+            RuleOutput<?> result = rule.getRule().apply(new RuleInput<>(input));
+
+            rule.interpretResult(this, new RuleInput<>(input), result);
+        }
+
+        return true;
+    }
 
 }

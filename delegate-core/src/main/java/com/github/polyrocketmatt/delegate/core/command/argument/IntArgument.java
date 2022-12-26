@@ -3,13 +3,12 @@ package com.github.polyrocketmatt.delegate.core.command.argument;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.NonNullRule;
 import com.github.polyrocketmatt.delegate.core.data.ActionItem;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 public class IntArgument extends CommandArgument<Integer> {
 
     public IntArgument(String identifier, String argumentDescription) {
-        super(identifier, argumentDescription, List.of(new NonNullRule<Integer>()));
+        super(identifier, argumentDescription, new NonNullRule());
     }
 
     @Override
