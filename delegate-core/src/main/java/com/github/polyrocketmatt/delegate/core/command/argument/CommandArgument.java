@@ -2,8 +2,7 @@ package com.github.polyrocketmatt.delegate.core.command.argument;
 
 import com.github.polyrocketmatt.delegate.core.command.CommandAttribute;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.ArgumentRule;
-import com.github.polyrocketmatt.delegate.core.command.argument.rule.RuleInput;
-import com.github.polyrocketmatt.delegate.core.command.argument.rule.RuleOutput;
+import com.github.polyrocketmatt.delegate.core.command.argument.rule.RuleIO;
 import com.github.polyrocketmatt.delegate.core.data.ActionItem;
 import com.github.polyrocketmatt.delegate.core.utils.Bufferable;
 
@@ -61,8 +60,8 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
 
     public boolean parseRules(String input) {
         for (ArgumentRule<String, ?> rule : getArgumentRules()) {
-            RuleOutput<?> result = rule.getRule().apply(new RuleInput<>(input));
-            ArgumentRuleResult ruleResult = rule.interpretResult(this, new RuleInput<>(input), result);
+            RuleIO<?> result = rule.getRule().apply(new RuleIO<>(input));
+            ArgumentRuleResult ruleResult = rule.interpretResult(this, new RuleIO<>(input), result);
 
             if (ruleResult.result() == ArgumentRuleResult.Result.FAILURE)
                 throw onFail(ruleResult.info(), null);

@@ -7,16 +7,16 @@ import java.util.function.Function;
 
 public abstract class ArgumentRule<I, O> {
 
-    private final Function<RuleInput<I>, RuleOutput<O>> rule;
+    private final Function<RuleIO<I>, RuleIO<O>> rule;
 
-    public ArgumentRule(Function<RuleInput<I>, RuleOutput<O>> rule) {
+    public ArgumentRule(Function<RuleIO<I>, RuleIO<O>> rule) {
         this.rule = rule;
     }
 
-    public Function<RuleInput<I>, RuleOutput<O>> getRule() {
+    public Function<RuleIO<I>, RuleIO<O>> getRule() {
         return rule;
     }
 
-    public abstract ArgumentRuleResult interpretResult(CommandArgument<?> argument, RuleInput<I> input, RuleOutput<?> output);
+    public abstract ArgumentRuleResult interpretResult(CommandArgument<?> argument, RuleIO<I> input, RuleIO<?> output);
 
 }

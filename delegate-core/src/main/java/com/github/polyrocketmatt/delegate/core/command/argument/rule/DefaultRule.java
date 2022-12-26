@@ -9,13 +9,13 @@ import java.lang.reflect.Field;
 public class DefaultRule<T> extends ArgumentRule<String, T> {
 
     public DefaultRule(T defaultValue) {
-        super(input -> new RuleOutput<>(defaultValue));
+        super(input -> new RuleIO<>(defaultValue));
     }
 
     @Override
-    public ArgumentRuleResult interpretResult(CommandArgument<?> argument, RuleInput<String> input, RuleOutput<?> output) {
-        if (input.input() == null) {
-            ActionItem<?> actionItem = new ActionItem<>(output.result());
+    public ArgumentRuleResult interpretResult(CommandArgument<?> argument, RuleIO<String> input, RuleIO<?> output) {
+        if (input.value() == null) {
+            ActionItem<?> actionItem = new ActionItem<>(output.value());
 
             try {
                 //  TODO: Fix this hacky thing
