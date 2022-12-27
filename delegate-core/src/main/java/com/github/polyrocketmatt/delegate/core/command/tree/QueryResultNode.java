@@ -7,6 +7,6 @@ package com.github.polyrocketmatt.delegate.core.command.tree;
  * @param remainingArgs The remaining arguments after the query.
  *
  * @since 0.0.1
- * @author Matthias Kovacic 
+ * @author Matthias Kovacic
  */
 public record QueryResultNode(CommandNode node, String[] remainingArgs) {}
