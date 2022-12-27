@@ -11,10 +11,12 @@ import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProp
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandNode;
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandTree;
 import com.github.polyrocketmatt.delegate.core.command.tree.QueryResultNode;
+import com.github.polyrocketmatt.delegate.core.data.ActionResult;
 import com.github.polyrocketmatt.delegate.core.exception.CommandExecutionException;
-import com.github.polyrocketmatt.delegate.core.utils.Tuple;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
@@ -108,7 +110,7 @@ public class CommandHandler implements Handler {
         return verifiedArguments;
     }
 
-    private void execute(VerifiedDelegateCommand command, String[] arguments) {
+    private Map<String, ActionResult> execute(VerifiedDelegateCommand command, String[] arguments) {
         //  Get the arguments
         CommandBuffer<CommandArgument<?>> commandArguments = command.getArgumentBuffer();
 
@@ -127,7 +129,7 @@ public class CommandHandler implements Handler {
 
         //  Verification of arguments ensures correct order of arguments
         List<String> inputs = List.of(arguments);
-        Tuple<CommandBuffer<CommandArgument<?>>, List<String>> functionInput = new Tuple<>(commandArguments, inputs);
+        Map<String, ActionResult> results = new HashMap<>();
         ExecutorService executor = new ForkJoinPool(threadCount);
 
         for (int precedence : precedences) {
@@ -137,12 +139,14 @@ public class CommandHandler implements Handler {
 
             if (async) {
                 for (CommandAction action : actionsWithPrecedence)
-                    executor.execute(() -> action.getAction().apply(functionInput));
+                        executor.execute(() -> results.put(action.getIdentifier(), action.run(commandArguments, inputs)));
             } else {
                 for (CommandAction action : actionsWithPrecedence)
-                    action.getAction().apply(functionInput);
+                    results.put(action.getIdentifier(), action.run(commandArguments, inputs));
             }
         }
+
+        return results;
     }
 
     public boolean dispatch(VerifiedDelegateCommand command, CommandDispatchInformation information) {

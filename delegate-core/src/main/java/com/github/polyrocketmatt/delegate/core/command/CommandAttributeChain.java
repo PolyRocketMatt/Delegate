@@ -1,7 +1,6 @@
 package com.github.polyrocketmatt.delegate.core.command;
 
 import com.github.polyrocketmatt.delegate.core.command.action.CommandAction;
-import com.github.polyrocketmatt.delegate.core.command.action.resolver.BufferResolveAction;
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.StringArgument;
 import com.github.polyrocketmatt.delegate.core.command.definition.CommandDefinition;
