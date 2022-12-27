@@ -47,10 +47,7 @@ This is an example command, which will print a message to the requested player.
 public class ExampleCommand {
     
     public ExampleCommand() {
-        CommandFactory.create("hello", "Says hello to the player")
-                .argument(StringArgument.of("player"))
-                .action((args, inputs) -> { System.out.println("Hello, %s!".formatted(inputs[0])); })
-                .build();
+        //  TODO
     }
     
 }
