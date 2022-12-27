@@ -2,10 +2,10 @@ package com.github.polyrocketmatt.delegate.core.command.action;
 
 import com.github.polyrocketmatt.delegate.core.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
-import com.github.polyrocketmatt.delegate.core.data.ActionResult;
-import com.github.polyrocketmatt.delegate.core.data.Argument;
-import com.github.polyrocketmatt.delegate.core.data.FailureActionResult;
-import com.github.polyrocketmatt.delegate.core.data.SuccessActionResult;
+import com.github.polyrocketmatt.delegate.core.command.data.ActionResult;
+import com.github.polyrocketmatt.delegate.core.command.data.Argument;
+import com.github.polyrocketmatt.delegate.core.command.data.FailureActionResult;
+import com.github.polyrocketmatt.delegate.core.command.data.SuccessActionResult;
 
 import java.util.ArrayList;
 import java.util.List;

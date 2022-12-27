@@ -5,8 +5,17 @@ import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
 
 import java.util.Objects;
 
+/**
+ * A rule that enforces an input string to not be null.
+ *
+ * @since 0.0.1
+ * @author Matthias Kovacic
+ */
 public class NonNullRule extends ArgumentRule<String, Boolean> {
 
+    /**
+     * Creates a new rule that enforces an input string to not be null.
+     */
     public NonNullRule() {
         super(input -> new RuleData<>(Objects.nonNull(input)));
     }

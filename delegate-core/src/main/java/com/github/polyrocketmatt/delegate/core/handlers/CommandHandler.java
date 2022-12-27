@@ -11,7 +11,7 @@ import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProp
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandNode;
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandTree;
 import com.github.polyrocketmatt.delegate.core.command.tree.QueryResultNode;
-import com.github.polyrocketmatt.delegate.core.data.ActionResult;
+import com.github.polyrocketmatt.delegate.core.command.data.ActionResult;
 import com.github.polyrocketmatt.delegate.core.exception.CommandExecutionException;
 
 import java.util.HashMap;

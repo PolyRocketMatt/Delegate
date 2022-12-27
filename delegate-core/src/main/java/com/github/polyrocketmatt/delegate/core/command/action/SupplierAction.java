@@ -2,9 +2,9 @@ package com.github.polyrocketmatt.delegate.core.command.action;
 
 import com.github.polyrocketmatt.delegate.core.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
-import com.github.polyrocketmatt.delegate.core.data.ActionResult;
-import com.github.polyrocketmatt.delegate.core.data.FailureActionResult;
-import com.github.polyrocketmatt.delegate.core.data.SuccessActionResult;
+import com.github.polyrocketmatt.delegate.core.command.data.ActionResult;
+import com.github.polyrocketmatt.delegate.core.command.data.FailureActionResult;
+import com.github.polyrocketmatt.delegate.core.command.data.SuccessActionResult;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -14,7 +14,7 @@ import java.util.function.Supplier;
  * A {@link Supplier}-based command action that does not take any arguments and only yields a result.
  *
  * @since 0.0.1
- * @author Matthias Kovacic 
+ * @author Matthias Kovacic
  */
 public class SupplierAction<T> extends CommandAction {
 

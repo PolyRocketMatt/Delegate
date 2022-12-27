@@ -5,8 +5,19 @@ import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
 
 import java.util.function.Function;
 
+/**
+ * A rule that checks if a condition on an input string is met.
+ *
+ * @since 0.0.1
+ * @author Matthias Kovacic
+ */
 public class ConditionRule extends ArgumentRule<String, Boolean> {
 
+    /**
+     * Creates a new rule that checks if a condition on an input string is met.
+     *
+     * @param condition The condition to check.
+     */
     public ConditionRule(Function<String, Boolean> condition) {
         super(input -> new RuleData<>(condition.apply(input.value())));
     }

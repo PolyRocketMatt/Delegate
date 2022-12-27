@@ -3,8 +3,8 @@ package com.github.polyrocketmatt.delegate.core.command.argument;
 import com.github.polyrocketmatt.delegate.core.command.CommandAttribute;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.ArgumentRule;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.RuleData;
-import com.github.polyrocketmatt.delegate.core.data.ActionItem;
-import com.github.polyrocketmatt.delegate.core.data.Argument;
+import com.github.polyrocketmatt.delegate.core.command.data.ActionItem;
+import com.github.polyrocketmatt.delegate.core.command.data.Argument;
 import com.github.polyrocketmatt.delegate.core.utils.Bufferable;
 
 import java.util.Arrays;

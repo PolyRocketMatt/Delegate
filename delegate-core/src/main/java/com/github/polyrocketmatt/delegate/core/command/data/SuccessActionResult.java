@@ -1,4 +1,4 @@
-package com.github.polyrocketmatt.delegate.core.data;
+package com.github.polyrocketmatt.delegate.core.command.data;
 
 public class SuccessActionResult extends ActionResult {
 
