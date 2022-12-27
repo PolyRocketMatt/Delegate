@@ -3,7 +3,8 @@ package com.github.polyrocketmatt.delegate.core.command.action;
 import com.github.polyrocketmatt.delegate.core.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.core.data.ActionResult;
-import com.github.polyrocketmatt.delegate.core.data.EmptyActionItem;
+import com.github.polyrocketmatt.delegate.core.data.FailureActionResult;
+import com.github.polyrocketmatt.delegate.core.data.SuccessActionResult;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -24,9 +25,13 @@ public class SupplierAction<T> extends CommandAction {
 
     @Override
     public ActionResult run(CommandBuffer<CommandArgument<?>> arguments, List<String> inputs) {
-        action.get();
+        try {
+            action.get();
+        } catch (Exception ex) {
+            return new FailureActionResult(ex);
+        }
 
-        return new EmptyActionItem();
+        return new SuccessActionResult();
     }
 
 }

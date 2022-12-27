@@ -27,7 +27,7 @@ public class CommandActionTest {
 
         assertNotNull(result);
         assertTrue(result instanceof ActionItem);
-        assertNull(((ActionItem<?>) result).item());
+        assertNull(((ActionItem<?>) result).getItem());
     }
 
     @SuppressWarnings("unchecked")
@@ -39,7 +39,7 @@ public class CommandActionTest {
         assertTrue(result instanceof ActionItem);
 
         ActionItem<Float> item = (ActionItem<Float>) result;
-        Float value = item.item();
+        Float value = item.getItem();
 
         assertNotNull(result);
         assertEquals(3.0f, value);
@@ -52,7 +52,7 @@ public class CommandActionTest {
 
         assertNotNull(result);
         assertTrue(result instanceof ActionItem);
-        assertNull(((ActionItem<?>) result).item());
+        assertNull(((ActionItem<?>) result).getItem());
     }
 
 }

@@ -1,3 +1,15 @@
 package com.github.polyrocketmatt.delegate.core.data;
 
-public record ActionItem<T>(T item) implements ActionResult { }
+public class ActionItem<T> extends ActionResult {
+
+    private final T item;
+
+    public ActionItem(Result result, T item) {
+        super(result);
+        this.item = item;
+    }
+
+    public T getItem() {
+        return item;
+    }
+}

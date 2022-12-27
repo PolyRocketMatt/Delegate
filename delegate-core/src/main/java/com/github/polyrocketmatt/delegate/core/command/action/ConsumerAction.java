@@ -4,7 +4,8 @@ import com.github.polyrocketmatt.delegate.core.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.core.data.ActionResult;
 import com.github.polyrocketmatt.delegate.core.data.Argument;
-import com.github.polyrocketmatt.delegate.core.data.EmptyActionItem;
+import com.github.polyrocketmatt.delegate.core.data.FailureActionResult;
+import com.github.polyrocketmatt.delegate.core.data.SuccessActionResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +34,13 @@ public class ConsumerAction extends CommandAction {
         List<Argument<?>> inputItems = new ArrayList<>();
         for (int i = 0; i < maxIndex; i++)
             inputItems.add(arguments.get(i).parse(inputs.get(i)));
-        action.accept(inputItems);
+        try {
+            action.accept(inputItems);
+        } catch (Exception ex) {
+            return new FailureActionResult(ex);
+        }
 
-        return new EmptyActionItem();
+        return new SuccessActionResult();
     }
 
 }

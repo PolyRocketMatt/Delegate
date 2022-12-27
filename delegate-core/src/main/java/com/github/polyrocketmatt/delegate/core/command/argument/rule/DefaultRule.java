@@ -3,6 +3,7 @@ package com.github.polyrocketmatt.delegate.core.command.argument.rule;
 import com.github.polyrocketmatt.delegate.core.command.argument.ArgumentRuleResult;
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.core.data.ActionItem;
+import com.github.polyrocketmatt.delegate.core.data.ActionResult;
 
 import java.lang.reflect.Field;
 
@@ -15,7 +16,7 @@ public class DefaultRule<T> extends ArgumentRule<String, T> {
     @Override
     public ArgumentRuleResult interpretResult(CommandArgument<?> argument, RuleData<String> input, RuleData<?> output) {
         if (input.value() == null) {
-            ActionItem<?> actionItem = new ActionItem<>(output.value());
+            ActionItem<?> actionItem = new ActionItem<>(ActionResult.Result.SUCCESS, output.value());
 
             try {
                 //  TODO: Fix this hacky thing

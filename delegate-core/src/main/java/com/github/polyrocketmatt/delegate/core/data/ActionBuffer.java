@@ -3,11 +3,12 @@ package com.github.polyrocketmatt.delegate.core.data;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActionBuffer implements ActionResult {
+public class ActionBuffer extends ActionResult {
 
     private final List<ActionItem<?>> bufferElements;
 
-    public ActionBuffer() {
+    public ActionBuffer(Result result) {
+        super(result);
         this.bufferElements = new ArrayList<>();
     }
 
