@@ -1,6 +1,6 @@
 package com.github.polyrocketmatt.delegate.core.command;
 
-import com.github.polyrocketmatt.delegate.core.command.action.CommandAction;
+import com.github.polyrocketmatt.delegate.core.command.action.DefaultAction;
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.StringArgument;
 import com.github.polyrocketmatt.delegate.core.command.definition.CommandDefinition;
@@ -18,8 +18,6 @@ import static com.github.polyrocketmatt.delegate.core.Delegate.getDelegate;
 
 public class CommandAttributeChain {
 
-    private static final BufferResolveAction PRIMARY_RESOLVER = new BufferResolveAction("primaryResolver");
-
     private final LinkedList<CommandAttribute> attributes;
 
     protected CommandAttributeChain() {
@@ -27,14 +25,14 @@ public class CommandAttributeChain {
     }
 
     public CommandAttributeChain append(CommandAttribute attribute) {
-        if (attribute instanceof CommandAction && ((CommandAction) attribute).getPrecedence() < 0)
+        if (attribute instanceof DefaultAction && ((DefaultAction) attribute).getPrecedence() < 0)
             throw new AttributeException("Action precedence must be greater than 0");
 
         this.attributes.add(attribute);
         return this;
     }
 
-    public CommandAttributeChain withAction(CommandAction action) {
+    public CommandAttributeChain withAction(DefaultAction action) {
         //  Check that action precedence is greater than or equal to 0
         if (action.getPrecedence() <= 0)
             throw new AttributeException("Action precedence must be greater than 0");
@@ -80,7 +78,7 @@ public class CommandAttributeChain {
 
     public void build() {
         //  Add primary resolver to every command
-        this.append(PRIMARY_RESOLVER);
+        //  this.append(PRIMARY_RESOLVER);
 
         getDelegate().getAttributeHandler().process(null, new AttributedDelegateCommand(this));
     }
@@ -108,11 +106,11 @@ public class CommandAttributeChain {
         return mapped;
     }
 
-    public List<CommandAction> getActions() {
-        List<CommandAction> actions = new LinkedList<>();
+    public List<DefaultAction> getActions() {
+        List<DefaultAction> actions = new LinkedList<>();
         for (CommandAttribute attribute : attributes)
-            if (attribute instanceof CommandAction)
-                actions.add((CommandAction) attribute);
+            if (attribute instanceof DefaultAction)
+                actions.add((DefaultAction) attribute);
         return actions;
     }
 
