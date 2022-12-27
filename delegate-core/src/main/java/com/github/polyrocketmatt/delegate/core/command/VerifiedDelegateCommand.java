@@ -1,6 +1,6 @@
 package com.github.polyrocketmatt.delegate.core.command;
 
-import com.github.polyrocketmatt.delegate.core.command.action.DefaultAction;
+import com.github.polyrocketmatt.delegate.core.command.action.FunctionAction;
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
@@ -12,12 +12,12 @@ public class VerifiedDelegateCommand implements DelegateCommand {
     private final DescriptionDefinition descriptionDefinition;
     private final CommandBuffer<CommandArgument<?>> argumentBuffer;
     private final CommandBuffer<CommandProperty> propertyBuffer;
-    private final CommandBuffer<DefaultAction> actionBuffer;
+    private final CommandBuffer<FunctionAction> actionBuffer;
 
     protected VerifiedDelegateCommand(NameDefinition nameDefinition, DescriptionDefinition descriptionDefinition,
                                       CommandBuffer<CommandArgument<?>> argumentBuffer,
                                       CommandBuffer<CommandProperty> propertyBuffer,
-                                      CommandBuffer<DefaultAction> actionBuffer) {
+                                      CommandBuffer<FunctionAction> actionBuffer) {
         this.nameDefinition = nameDefinition;
         this.descriptionDefinition = descriptionDefinition;
         this.argumentBuffer = argumentBuffer;
@@ -43,7 +43,7 @@ public class VerifiedDelegateCommand implements DelegateCommand {
         return propertyBuffer;
     }
 
-    public CommandBuffer<DefaultAction> getActionBuffer() {
+    public CommandBuffer<FunctionAction> getActionBuffer() {
         return actionBuffer;
     }
 
@@ -57,7 +57,7 @@ public class VerifiedDelegateCommand implements DelegateCommand {
         private DescriptionDefinition descriptionDefinition;
         private CommandBuffer<CommandArgument<?>> argumentBuffer;
         private CommandBuffer<CommandProperty> propertyBuffer;
-        private CommandBuffer<DefaultAction> actionBuffer;
+        private CommandBuffer<FunctionAction> actionBuffer;
 
         public CommandBuilder buildNameDefinition(NameDefinition nameDefinition) {
             this.nameDefinition = nameDefinition;
@@ -79,7 +79,7 @@ public class VerifiedDelegateCommand implements DelegateCommand {
             return this;
         }
 
-        public CommandBuilder buildActionBuffer(CommandBuffer<DefaultAction> actionBuffer) {
+        public CommandBuilder buildActionBuffer(CommandBuffer<FunctionAction> actionBuffer) {
             this.actionBuffer = actionBuffer;
             return this;
         }

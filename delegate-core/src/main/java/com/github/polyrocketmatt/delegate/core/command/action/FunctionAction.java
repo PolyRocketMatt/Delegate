@@ -2,14 +2,14 @@ package com.github.polyrocketmatt.delegate.core.command.action;
 
 import com.github.polyrocketmatt.delegate.core.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
+import com.github.polyrocketmatt.delegate.core.data.ActionItem;
 import com.github.polyrocketmatt.delegate.core.data.ActionResult;
 import com.github.polyrocketmatt.delegate.core.data.Argument;
 import com.github.polyrocketmatt.delegate.core.data.FailureActionResult;
-import com.github.polyrocketmatt.delegate.core.data.SuccessActionResult;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static java.lang.Math.min;
 
@@ -17,32 +17,32 @@ import static java.lang.Math.min;
  * @author Matthias Kovacic
  * @since 0.0.1
  *
- * A {@link Consumer}-based command action that does not yield a result.
+ * A {@link Function}-based command action that takes arguments and yields a result.
  */
-public class ConsumerAction extends CommandAction {
+public class FunctionAction extends CommandAction {
 
-    private final Consumer<List<Argument<?>>> action;
+    private final Function<List<Argument<?>>, ?> action;
 
     /**
-     * Creates a new {@link ConsumerAction} with the given identifier, precedence and {@link Consumer}.
+     * Creates a new {@link FunctionAction} with the given identifier, precedence and {@link Function}.
      *
      * @param identifier The identifier of the command action.
      * @param precedence The precedence of the command action.
-     * @param action The {@link Consumer} that will be executed.
+     * @param action The {@link Function} that will be executed.
      */
-    public ConsumerAction(String identifier, int precedence, Consumer<List<Argument<?>>> action) {
+    public FunctionAction(String identifier, int precedence, Function<List<Argument<?>>, ?> action) {
         super(identifier, precedence);
         this.action = action;
     }
 
     /**
-     * Creates a new {@link ConsumerAction} with the given identifier and {@link Consumer} and
+     * Creates a new {@link FunctionAction} with the given identifier and {@link Function} and
      * a default precedence of 0.
      *
      * @param identifier The identifier of the command action.
-     * @param action The {@link Consumer} that will be executed.
+     * @param action The {@link Function} that will be executed.
      */
-    public ConsumerAction(String identifier, Consumer<List<Argument<?>>> action) {
+    public FunctionAction(String identifier, Function<List<Argument<?>>, ?> action) {
         super(identifier, 0);
         this.action = action;
     }
@@ -55,12 +55,10 @@ public class ConsumerAction extends CommandAction {
         for (int i = 0; i < maxIndex; i++)
             inputItems.add(arguments.get(i).parse(inputs.get(i)));
         try {
-            action.accept(inputItems);
+            return new ActionItem<>(ActionResult.Result.SUCCESS, action.apply(inputItems));
         } catch (Exception ex) {
             return new FailureActionResult(ex);
         }
-
-        return new SuccessActionResult();
     }
 
 }

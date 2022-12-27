@@ -1,6 +1,6 @@
 package com.github.polyrocketmatt.delegate.core.command;
 
-import com.github.polyrocketmatt.delegate.core.command.action.DefaultAction;
+import com.github.polyrocketmatt.delegate.core.command.action.FunctionAction;
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.StringArgument;
 import com.github.polyrocketmatt.delegate.core.command.definition.CommandDefinition;
@@ -25,14 +25,14 @@ public class CommandAttributeChain {
     }
 
     public CommandAttributeChain append(CommandAttribute attribute) {
-        if (attribute instanceof DefaultAction && ((DefaultAction) attribute).getPrecedence() < 0)
+        if (attribute instanceof FunctionAction && ((FunctionAction) attribute).getPrecedence() < 0)
             throw new AttributeException("Action precedence must be greater than 0");
 
         this.attributes.add(attribute);
         return this;
     }
 
-    public CommandAttributeChain withAction(DefaultAction action) {
+    public CommandAttributeChain withAction(FunctionAction action) {
         //  Check that action precedence is greater than or equal to 0
         if (action.getPrecedence() <= 0)
             throw new AttributeException("Action precedence must be greater than 0");
@@ -106,11 +106,11 @@ public class CommandAttributeChain {
         return mapped;
     }
 
-    public List<DefaultAction> getActions() {
-        List<DefaultAction> actions = new LinkedList<>();
+    public List<FunctionAction> getActions() {
+        List<FunctionAction> actions = new LinkedList<>();
         for (CommandAttribute attribute : attributes)
-            if (attribute instanceof DefaultAction)
-                actions.add((DefaultAction) attribute);
+            if (attribute instanceof FunctionAction)
+                actions.add((FunctionAction) attribute);
         return actions;
     }
 

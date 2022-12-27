@@ -4,7 +4,7 @@ import com.github.polyrocketmatt.delegate.core.command.AttributedDelegateCommand
 import com.github.polyrocketmatt.delegate.core.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.core.command.CommandAttribute;
 import com.github.polyrocketmatt.delegate.core.command.CommandAttributeChain;
-import com.github.polyrocketmatt.delegate.core.command.action.DefaultAction;
+import com.github.polyrocketmatt.delegate.core.command.action.FunctionAction;
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandNode;
 import com.github.polyrocketmatt.delegate.core.command.DelegateCommand;
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
@@ -33,7 +33,7 @@ public class AttributeHandler implements Handler {
 
         CommandBuffer<CommandArgument<?>> argumentBuffer = new CommandBuffer<>(this.processArguments(chain));
         CommandBuffer<CommandProperty> propertyBuffer = new CommandBuffer<>(this.processProperties(chain));
-        CommandBuffer<DefaultAction> actionBuffer = new CommandBuffer<>(this.processActions(chain));
+        CommandBuffer<FunctionAction> actionBuffer = new CommandBuffer<>(this.processActions(chain));
 
         VerifiedDelegateCommand verifiedCommand = VerifiedDelegateCommand.create()
                 .buildNameDefinition(header.getA())
@@ -103,7 +103,7 @@ public class AttributeHandler implements Handler {
         return chain.getProperties();
     }
 
-    private List<DefaultAction> processActions(CommandAttributeChain chain) {
+    private List<FunctionAction> processActions(CommandAttributeChain chain) {
         return chain.getActions();
     }
 

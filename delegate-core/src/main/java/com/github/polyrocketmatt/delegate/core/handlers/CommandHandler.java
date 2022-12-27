@@ -3,7 +3,7 @@ package com.github.polyrocketmatt.delegate.core.handlers;
 import com.github.polyrocketmatt.delegate.core.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.core.command.CommandDispatchInformation;
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
-import com.github.polyrocketmatt.delegate.core.command.action.DefaultAction;
+import com.github.polyrocketmatt.delegate.core.command.action.FunctionAction;
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.core.command.properties.AsyncProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.CommandProperty;
@@ -115,9 +115,9 @@ public class CommandHandler implements Handler {
         CommandBuffer<CommandArgument<?>> commandArguments = command.getArgumentBuffer();
 
         //  Run all command actions in order of precedence
-        CommandBuffer<DefaultAction> actions = command.getActionBuffer();
+        CommandBuffer<FunctionAction> actions = command.getActionBuffer();
         List<Integer> precedences = actions.stream()
-                .map(DefaultAction::getPrecedence)
+                .map(FunctionAction::getPrecedence)
                 .sorted()
                 .toList();
 
@@ -133,15 +133,15 @@ public class CommandHandler implements Handler {
         ExecutorService executor = new ForkJoinPool(threadCount);
 
         for (int precedence : precedences) {
-            List<DefaultAction> actionsWithPrecedence = actions.stream()
+            List<FunctionAction> actionsWithPrecedence = actions.stream()
                     .filter(action -> action.getPrecedence() == precedence)
                     .toList();
 
             if (async) {
-                for (DefaultAction action : actionsWithPrecedence)
+                for (FunctionAction action : actionsWithPrecedence)
                         executor.execute(() -> results.put(action.getIdentifier(), action.run(commandArguments, inputs)));
             } else {
-                for (DefaultAction action : actionsWithPrecedence)
+                for (FunctionAction action : actionsWithPrecedence)
                     results.put(action.getIdentifier(), action.run(commandArguments, inputs));
             }
         }
