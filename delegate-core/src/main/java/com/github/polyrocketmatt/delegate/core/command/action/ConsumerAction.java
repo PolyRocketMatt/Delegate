@@ -24,7 +24,7 @@ public class ConsumerAction extends CommandAction {
     private final Consumer<List<Argument<?>>> action;
 
     /**
-     * Creates a new {@link ConsumerAction} with the given identifier, precedence and {@link Consumer}.
+     * Creates a new {@link ConsumerAction} with an identifier, precedence and {@link Consumer}.
      *
      * @param identifier The identifier of the command action.
      * @param precedence The precedence of the command action.
@@ -36,7 +36,7 @@ public class ConsumerAction extends CommandAction {
     }
 
     /**
-     * Creates a new {@link ConsumerAction} with the given identifier and {@link Consumer} and
+     * Creates a new {@link ConsumerAction} with an identifier and {@link Consumer} and
      * a default precedence of 0.
      *
      * @param identifier The identifier of the command action.

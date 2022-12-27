@@ -24,7 +24,7 @@ public class FunctionAction extends CommandAction {
     private final Function<List<Argument<?>>, ?> action;
 
     /**
-     * Creates a new {@link FunctionAction} with the given identifier, precedence and {@link Function}.
+     * Creates a new {@link FunctionAction} with an identifier, precedence and {@link Function}.
      *
      * @param identifier The identifier of the command action.
      * @param precedence The precedence of the command action.
@@ -36,7 +36,7 @@ public class FunctionAction extends CommandAction {
     }
 
     /**
-     * Creates a new {@link FunctionAction} with the given identifier and {@link Function} and
+     * Creates a new {@link FunctionAction} with an identifier and {@link Function} and
      * a default precedence of 0.
      *
      * @param identifier The identifier of the command action.

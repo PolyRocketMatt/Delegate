@@ -9,31 +9,113 @@ import com.github.polyrocketmatt.delegate.core.utils.ArrayUtils;
 import java.util.List;
 import java.util.function.Consumer;
 
+/**
+ * Represents a {@link CommandArgument} that parses a string from the input.
+ *
+ * @since 0.0.1
+ * @author Matthias Kovacic
+ */
 public class StringArgument extends CommandArgument<String> {
 
-    public StringArgument(String identifier, String description) {
-        super(identifier, description, new NonNullRule());
+    /**
+     * Creates a new {@link StringArgument} with an identifier and a description.
+     *
+     * @param identifier The identifier of the argument.
+     * @param argumentDescription The description of the argument.
+     */
+    public StringArgument(String identifier, String argumentDescription) {
+        super(identifier, argumentDescription, new NonNullRule());
     }
 
+    /**
+     * Creates a new {@link StringArgument} with an identifier, a description and a
+     * default value.
+     *
+     * @param identifier The identifier of the argument.
+     * @param argumentDescription The description of the argument.
+     * @param defaultValue The default value of the argument.
+     */
     public StringArgument(String identifier, String argumentDescription, String defaultValue) {
         super(identifier, argumentDescription, new DefaultRule<>(defaultValue));
     }
 
-    public StringArgument(String identifier, String argumentDescription, ArgumentRule<String, ?> rules) {
-        super(identifier, argumentDescription, rules);
+    /**
+     * Creates a new {@link StringArgument} with an identifier, a description and an {@link ArgumentRule}.
+     *
+     * @param identifier The identifier of the argument.
+     * @param argumentDescription The description of the argument.
+     * @param rule The rule of the argument.
+     */
+    public StringArgument(String identifier, String argumentDescription, ArgumentRule<String, ?> rule) {
+        super(identifier, argumentDescription, rule);
     }
 
+    /**
+     * Creates a new {@link StringArgument} with an identifier, a description, a default value and a
+     * list of {@link ArgumentRule}s.
+     *
+     * @param identifier The identifier of the argument.
+     * @param argumentDescription The description of the argument.
+     * @param defaultValue The default value of the argument.
+     * @param rules The rules of the argument.
+     */
     public StringArgument(String identifier, String argumentDescription, String defaultValue, ArgumentRule<String, ?> rules) {
         super(identifier, argumentDescription, ArrayUtils.combine(List.of(new DefaultRule<>(defaultValue)), List.of(rules)));
     }
 
     @Override
     public Argument<String> parse(String input, Consumer<Exception> onFail) {
-        return new Argument<>(input);
+        return (input == null) ? getDefault() : new Argument<>(input);
     }
 
-    public static StringArgument of(String identifier, String description) {
-        return new StringArgument(identifier, description);
+    /**
+     * Creates a new {@link StringArgument} with an identifier and a description.
+     *
+     * @param identifier The identifier of the argument.
+     * @param argumentDescription The description of the argument.
+     * @return The created {@link StringArgument}.
+     */
+    public static StringArgument of(String identifier, String argumentDescription) {
+        return new StringArgument(identifier, argumentDescription);
+    }
+
+    /**
+     * Creates a new {@link StringArgument} with an identifier, a description and a
+     * default value.
+     *
+     * @param identifier The identifier of the argument.
+     * @param argumentDescription The description of the argument.
+     * @param defaultValue The default value of the argument.
+     * @return The created {@link StringArgument}.
+     */
+    public static StringArgument of(String identifier, String argumentDescription, String defaultValue) {
+        return new StringArgument(identifier, argumentDescription, defaultValue);
+    }
+
+    /**
+     * Creates a new {@link StringArgument} with an identifier, a description and an {@link ArgumentRule}.
+     *
+     * @param identifier The identifier of the argument.
+     * @param argumentDescription The description of the argument.
+     * @param rule The rule of the argument.
+     * @return The created {@link StringArgument}.
+     */
+    public static StringArgument of(String identifier, String argumentDescription, ArgumentRule<String, ?> rule) {
+        return new StringArgument(identifier, argumentDescription, rule);
+    }
+
+    /**
+     * Creates a new {@link StringArgument} with an identifier, a description, a default value and a
+     * list of {@link ArgumentRule}s.
+     *
+     * @param identifier The identifier of the argument.
+     * @param argumentDescription The description of the argument.
+     * @param defaultValue The default value of the argument.
+     * @param rules The rules of the argument.
+     * @return The created {@link StringArgument}.
+     */
+    public static StringArgument of(String identifier, String argumentDescription, String defaultValue, ArgumentRule<String, ?> rules) {
+        return new StringArgument(identifier, argumentDescription, defaultValue, rules);
     }
 
 }
