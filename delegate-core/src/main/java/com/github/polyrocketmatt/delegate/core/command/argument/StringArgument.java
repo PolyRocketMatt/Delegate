@@ -3,7 +3,6 @@ package com.github.polyrocketmatt.delegate.core.command.argument;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.ArgumentRule;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.DefaultRule;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.NonNullRule;
-import com.github.polyrocketmatt.delegate.core.command.data.Argument;
 import com.github.polyrocketmatt.delegate.core.utils.ArrayUtils;
 
 import java.util.List;

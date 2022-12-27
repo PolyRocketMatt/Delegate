@@ -3,7 +3,7 @@ package com.github.polyrocketmatt.delegate.core.command.action;
 import com.github.polyrocketmatt.delegate.core.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.core.command.data.ActionResult;
-import com.github.polyrocketmatt.delegate.core.command.data.Argument;
+import com.github.polyrocketmatt.delegate.core.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.core.command.data.FailureActionResult;
 import com.github.polyrocketmatt.delegate.core.command.data.SuccessActionResult;
 

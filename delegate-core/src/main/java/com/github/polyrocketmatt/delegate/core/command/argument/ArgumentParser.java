@@ -1,6 +1,5 @@
 package com.github.polyrocketmatt.delegate.core.command.argument;
 
-import com.github.polyrocketmatt.delegate.core.command.data.Argument;
 import com.github.polyrocketmatt.delegate.core.exception.ArgumentParseException;
 
 import java.util.function.Consumer;
