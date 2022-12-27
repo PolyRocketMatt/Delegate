@@ -11,10 +11,10 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * @author Matthias Kovacic
- * @since 0.0.1
- *
  * A {@link Supplier}-based command action that does not take any arguments and only yields a result.
+ *
+ * @since 0.0.1
+ * @author Matthias Kovacic 
  */
 public class SupplierAction<T> extends CommandAction {
 

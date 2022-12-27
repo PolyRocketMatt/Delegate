@@ -7,13 +7,13 @@ import com.github.polyrocketmatt.delegate.core.data.ActionResult;
 import java.util.List;
 
 /**
- * @author Matthias Kovacic
- * @since 0.0.1
- *
  * Defines a function that runs some block of code given the expected
  * {@link CommandArgument}s and the actual inputs provided by the user
  * and returns an {@link ActionResult} that can be used to determine
  * if the command was successful or not.
+ *
+ * @since 0.0.1
+ * @author Matthias Kovacic
  */
 public interface RunnableCommandAction {
 

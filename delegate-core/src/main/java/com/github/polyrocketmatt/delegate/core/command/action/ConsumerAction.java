@@ -14,10 +14,10 @@ import java.util.function.Consumer;
 import static java.lang.Math.min;
 
 /**
- * @author Matthias Kovacic
- * @since 0.0.1
- *
  * A {@link Consumer}-based command action that does not yield a result.
+ *
+ * @since 0.0.1
+ * @author Matthias Kovacic
  */
 public class ConsumerAction extends CommandAction {
 

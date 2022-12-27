@@ -4,10 +4,10 @@ import com.github.polyrocketmatt.delegate.core.command.CommandAttribute;
 import com.github.polyrocketmatt.delegate.core.utils.Bufferable;
 
 /**
- * @author Matthias Kovacic
- * @since 0.0.1
- *
  * Defines a command action with a precedence.
+ *
+ * @since 0.0.1
+ * @author Matthias Kovacic
  */
 public abstract class CommandAction extends CommandAttribute implements Bufferable, RunnableCommandAction {
 

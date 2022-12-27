@@ -14,10 +14,10 @@ import java.util.function.Function;
 import static java.lang.Math.min;
 
 /**
- * @author Matthias Kovacic
- * @since 0.0.1
- *
  * A {@link Function}-based command action that takes arguments and yields a result.
+ *
+ * @since 0.0.1
+ * @author Matthias Kovacic
  */
 public class FunctionAction extends CommandAction {
 
