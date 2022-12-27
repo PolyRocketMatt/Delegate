@@ -24,8 +24,8 @@ public class CommandHandler implements Handler {
 
     private final CommandTree commandTree;
 
-    private int availableProcessors;
-    private int maxStealCount;
+    private final int availableProcessors;
+    private final int maxStealCount;
 
     //  TODO: Fix a configuration for max available processors
     public CommandHandler() {

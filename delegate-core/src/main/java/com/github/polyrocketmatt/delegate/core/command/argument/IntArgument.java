@@ -3,7 +3,7 @@ package com.github.polyrocketmatt.delegate.core.command.argument;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.ArgumentRule;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.DefaultRule;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.NonNullRule;
-import com.github.polyrocketmatt.delegate.core.data.ActionItem;
+import com.github.polyrocketmatt.delegate.core.data.Argument;
 import com.github.polyrocketmatt.delegate.core.utils.ArrayUtils;
 
 import java.util.List;
@@ -28,9 +28,9 @@ public class IntArgument extends CommandArgument<Integer> {
     }
 
     @Override
-    public ActionItem<Integer> parse(String input, Consumer<Exception> onFail) {
+    public Argument<Integer> parse(String input, Consumer<Exception> onFail) {
         try {
-            return new ActionItem<>(Integer.parseInt(input));
+            return new Argument<>(Integer.parseInt(input));
         } catch (NumberFormatException ex) {
             onFail.accept(ex);
         }

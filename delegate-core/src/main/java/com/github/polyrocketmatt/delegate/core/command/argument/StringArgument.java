@@ -3,7 +3,7 @@ package com.github.polyrocketmatt.delegate.core.command.argument;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.ArgumentRule;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.DefaultRule;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.NonNullRule;
-import com.github.polyrocketmatt.delegate.core.data.ActionItem;
+import com.github.polyrocketmatt.delegate.core.data.Argument;
 import com.github.polyrocketmatt.delegate.core.utils.ArrayUtils;
 
 import java.util.List;
@@ -28,8 +28,8 @@ public class StringArgument extends CommandArgument<String> {
     }
 
     @Override
-    public ActionItem<String> parse(String input, Consumer<Exception> onFail) {
-        return new ActionItem<>(input);
+    public Argument<String> parse(String input, Consumer<Exception> onFail) {
+        return new Argument<>(input);
     }
 
     public static StringArgument of(String identifier, String description) {

@@ -4,6 +4,7 @@ import com.github.polyrocketmatt.delegate.core.command.CommandAttribute;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.ArgumentRule;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.RuleData;
 import com.github.polyrocketmatt.delegate.core.data.ActionItem;
+import com.github.polyrocketmatt.delegate.core.data.Argument;
 import com.github.polyrocketmatt.delegate.core.utils.Bufferable;
 
 import java.util.Arrays;
@@ -51,12 +52,12 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
         this.defaultValue = defaultValue;
     }
 
-    public ActionItem<T> parse(String input) {
+    public Argument<T> parse(String input) {
         return this.parse(input, ex -> { throw onFail(input, ex); });
     }
 
     @Override
-    public abstract ActionItem<T> parse(String input, Consumer<Exception> consumer);
+    public abstract Argument<T> parse(String input, Consumer<Exception> consumer);
 
     public void parseRules(String input) {
         for (ArgumentRule<String, ?> rule : getArgumentRules()) {
