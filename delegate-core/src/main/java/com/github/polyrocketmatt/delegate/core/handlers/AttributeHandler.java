@@ -5,7 +5,6 @@ import com.github.polyrocketmatt.delegate.core.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.core.command.CommandAttribute;
 import com.github.polyrocketmatt.delegate.core.command.CommandAttributeChain;
 import com.github.polyrocketmatt.delegate.core.command.action.CommandAction;
-import com.github.polyrocketmatt.delegate.core.command.action.FunctionAction;
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandNode;
 import com.github.polyrocketmatt.delegate.core.command.DelegateCommand;
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
@@ -21,10 +20,29 @@ import java.util.List;
 
 import static com.github.polyrocketmatt.delegate.core.Delegate.getDelegate;
 
+/**
+ * Handler that is responsible for processing and verifying the attributes of a command.
+ *
+ * @since 0.0.1
+ * @author Matthias Kovacic
+ */
 public class AttributeHandler implements Handler {
 
+    /**
+     * Creates a new {@link AttributeHandler} instance.
+     */
     public AttributeHandler() {}
 
+    /**
+     * Processes an {@link AttributedDelegateCommand} and verifies the attributes. If the
+     * command is valid, it will create and register a {@link VerifiedDelegateCommand} and
+     * add it to the provided {@link CommandNode}.
+     *
+     * @param parent The parent {@link CommandNode} to add the command to.
+     * @param command The {@link AttributedDelegateCommand} to process.
+     * @return A {@link VerifiedDelegateCommand} if the command is valid.
+     * @throws AttributeException If the command is invalid.
+     */
     public VerifiedDelegateCommand process(CommandNode parent, AttributedDelegateCommand command) {
         CommandAttributeChain chain = command.getAttributeChain();
         Tuple<NameDefinition, DescriptionDefinition> header = processHeader(command.getAttributeChain());
@@ -139,11 +157,4 @@ public class AttributeHandler implements Handler {
         }
     }
 
-    @Override
-    public void init() {}
-
-    @Override
-    public void destroy() {
-
-    }
 }

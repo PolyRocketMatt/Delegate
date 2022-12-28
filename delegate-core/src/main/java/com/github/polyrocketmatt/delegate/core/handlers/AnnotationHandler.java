@@ -8,8 +8,19 @@ import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.Optional;
 
+/**
+ * Handler that is responsible for processing and annotation-based command object.
+ *
+ * @since 0.0.1
+ * @author Matthias Kovacic
+ */
 public class AnnotationHandler implements Handler {
 
+    /**
+     * Processes the given object and tries to parse command information from it.
+     *
+     * @param object The object to process.
+     */
     public void process(Object object) {
         //  Process object's annotations into a command tree
         Annotation[] annotations = object.getClass().getAnnotations();
@@ -30,14 +41,5 @@ public class AnnotationHandler implements Handler {
                 .findFirst()
                 .map(annotation -> (T) annotation);
     }
-
-    @Override
-    public void init() {
-
-    }
-
-    @Override
-    public void destroy() {
-
-    }
+    
 }

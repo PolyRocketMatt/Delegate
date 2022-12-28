@@ -20,6 +20,12 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
+/**
+ * Handler that is responsible for processing and dispatching commands.
+ *
+ * @since 0.0.1
+ * @author Matthias Kovacic
+ */
 public class CommandHandler implements Handler {
 
     private final CommandTree commandTree;
@@ -27,6 +33,9 @@ public class CommandHandler implements Handler {
     private final int availableProcessors;
     private final int maxStealCount;
 
+    /**
+     * Creates a new {@link CommandHandler} instance.
+     */
     //  TODO: Fix a configuration for max available processors
     public CommandHandler() {
         this.commandTree = new CommandTree();
@@ -34,10 +43,23 @@ public class CommandHandler implements Handler {
         this.maxStealCount = 8;
     }
 
+    /**
+     * Adds a {@link CommandNode} as root to the command tree.
+     *
+     * @param root The root {@link CommandNode} to add.
+     */
     public void registerTree(CommandNode root) {
         this.commandTree.add(root);
     }
 
+    /**
+     * Handles the given {@link CommandDispatchInformation} and tries to execute the
+     * command associated with the information.
+     *
+     * @param information The {@link CommandDispatchInformation} to handle.
+     * @return True if the information was handled successfully, false otherwise.
+     * @throws CommandExecutionException If an error occurred while parsing the information.
+     */
     public boolean handle(CommandDispatchInformation information) throws CommandExecutionException {
         String commandName = information.command();
         String[] commandArguments = information.arguments();
@@ -149,16 +171,15 @@ public class CommandHandler implements Handler {
         return results;
     }
 
+    /**
+     * Dispatches the given {@link VerifiedDelegateCommand} with the given {@link CommandDispatchInformation}.
+     *
+     * @param command The {@link VerifiedDelegateCommand} to dispatch.
+     * @param information The {@link CommandDispatchInformation} to dispatch with.
+     * @return True if the command was dispatched successfully, false otherwise.
+     */
     public boolean dispatch(VerifiedDelegateCommand command, CommandDispatchInformation information) {
         return true;
-    }
-
-    @Override
-    public void init() {}
-
-    @Override
-    public void destroy() {
-        this.commandTree.clear();
     }
 
 }

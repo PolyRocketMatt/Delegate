@@ -39,6 +39,7 @@ public class CommandAttributeChain {
      *
      * @param attribute The attribute to append.
      * @return The current chain.
+     * @throws AttributeException If the attribute is a {@link CommandAction} whose precedence is less than 0.
      */
     public CommandAttributeChain append(CommandAttribute attribute) {
         if (attribute instanceof FunctionAction && ((FunctionAction) attribute).getPrecedence() < 0)
@@ -53,6 +54,7 @@ public class CommandAttributeChain {
      *
      * @param action The action to append.
      * @return The current chain.
+     * @throws AttributeException If the action's precedence is less than 0.
      */
     public CommandAttributeChain withAction(CommandAction action) {
         //  Check that action precedence is greater than or equal to 0
