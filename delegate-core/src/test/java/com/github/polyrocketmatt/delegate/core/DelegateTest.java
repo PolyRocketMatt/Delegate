@@ -4,9 +4,7 @@ import com.github.polyrocketmatt.delegate.core.platform.Platform;
 import com.github.polyrocketmatt.delegate.core.platform.PlatformType;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-
-import static com.github.polyrocketmatt.delegate.core.Delegate.getDelegate;
+import static com.github.polyrocketmatt.delegate.core.DelegateFramework.getDelegate;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DelegateTest {
@@ -16,9 +14,7 @@ public class DelegateTest {
         assertNotNull(getDelegate());
         assertNotNull(getDelegate().getAttributeHandler());
         assertNotNull(getDelegate().getCommandHandler());
-        assertFalse(getDelegate().setup());
         assertNull(getDelegate().getPlatform());
-        assertNull(getDelegate().dataFolder());
         assertNull(getDelegate().getDelegateVersion());
     }
 
@@ -27,17 +23,11 @@ public class DelegateTest {
         getDelegate().setPlatform(new MockPlatform());
         Platform platform = getDelegate().getPlatform();
 
-        assertNull(platform.getFileStorage());
         assertEquals("mockPlatform", platform.getPluginVersion());
         assertEquals(PlatformType.BUKKIT, platform.getPlatformType());
     }
 
     private static class MockPlatform implements Platform {
-
-        @Override
-        public File getFileStorage() {
-            return null;
-        }
 
         @Override
         public String getPluginVersion() {
@@ -49,6 +39,10 @@ public class DelegateTest {
             return PlatformType.BUKKIT;
         }
 
+        @Override
+        public boolean hasPermission(String permission) throws UnsupportedOperationException {
+            return false;
+        }
     }
 
 }

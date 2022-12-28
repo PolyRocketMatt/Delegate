@@ -74,12 +74,12 @@ public class VerifiedDelegateCommand implements DelegateCommand {
     }
 
     /**
-     * Creates a new {@link CommandBuilder} that is used to create a new {@link VerifiedDelegateCommand}.
+     * Creates a new {@link VerifiedCommandBuilder} that is used to create a new {@link VerifiedDelegateCommand}.
      *
-     * @return A new {@link CommandBuilder} that is used to create a new {@link VerifiedDelegateCommand}.
+     * @return A new {@link VerifiedCommandBuilder} that is used to create a new {@link VerifiedDelegateCommand}.
      */
-    public static CommandBuilder create() {
-        return new CommandBuilder();
+    public static VerifiedCommandBuilder create() {
+        return new VerifiedCommandBuilder();
     }
 
     /**
@@ -88,7 +88,7 @@ public class VerifiedDelegateCommand implements DelegateCommand {
      * @since 0.0.1
      * @author Matthias Kovacic
      */
-    public static class CommandBuilder {
+    public static class VerifiedCommandBuilder {
 
         private NameDefinition nameDefinition;
         private DescriptionDefinition descriptionDefinition;
@@ -102,7 +102,7 @@ public class VerifiedDelegateCommand implements DelegateCommand {
          * @param nameDefinition The name of the command.
          * @return The builder.
          */
-        public CommandBuilder buildNameDefinition(NameDefinition nameDefinition) {
+        public VerifiedCommandBuilder buildNameDefinition(NameDefinition nameDefinition) {
             this.nameDefinition = nameDefinition;
             return this;
         }
@@ -113,7 +113,7 @@ public class VerifiedDelegateCommand implements DelegateCommand {
          * @param descriptionDefinition The description of the command.
          * @return The builder.
          */
-        public CommandBuilder buildDescriptionDefinition(DescriptionDefinition descriptionDefinition) {
+        public VerifiedCommandBuilder buildDescriptionDefinition(DescriptionDefinition descriptionDefinition) {
             this.descriptionDefinition = descriptionDefinition;
             return this;
         }
@@ -124,7 +124,7 @@ public class VerifiedDelegateCommand implements DelegateCommand {
          * @param argumentBuffer The {@link CommandBuffer} that stores the {@link CommandArgument}s of the command.
          * @return The builder.
          */
-        public CommandBuilder buildArgumentBuffer(CommandBuffer<CommandArgument<?>> argumentBuffer) {
+        public VerifiedCommandBuilder buildArgumentBuffer(CommandBuffer<CommandArgument<?>> argumentBuffer) {
             this.argumentBuffer = argumentBuffer;
             return this;
         }
@@ -135,7 +135,7 @@ public class VerifiedDelegateCommand implements DelegateCommand {
          * @param propertyBuffer The {@link CommandBuffer} that stores the {@link CommandProperty}s of the command.
          * @return The builder.
          */
-        public CommandBuilder buildPropertyBuffer(CommandBuffer<CommandProperty> propertyBuffer) {
+        public VerifiedCommandBuilder buildPropertyBuffer(CommandBuffer<CommandProperty> propertyBuffer) {
             this.propertyBuffer = propertyBuffer;
             return this;
         }
@@ -146,7 +146,7 @@ public class VerifiedDelegateCommand implements DelegateCommand {
          * @param actionBuffer The {@link CommandBuffer} that stores the {@link CommandAction}s of the command.
          * @return The builder.
          */
-        public CommandBuilder buildActionBuffer(CommandBuffer<CommandAction> actionBuffer) {
+        public VerifiedCommandBuilder buildActionBuffer(CommandBuffer<CommandAction> actionBuffer) {
             this.actionBuffer = actionBuffer;
             return this;
         }

@@ -11,7 +11,7 @@ public class CommandFactoryTest {
 
     @Test
     public void testNameAndDescCreate() {
-        CommandAttributeChain chain = CommandFactory.create("test", "this is a test description");
+        DelegateCommandBuilder chain = CommandFactory.create("test", "this is a test description");
 
         assertNotNull(chain);
         assertEquals(2, chain.size());

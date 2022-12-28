@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.polyrocketmatt</groupId>
-    <artifactId>Delegate</artifactId>
+    <artifactId>delegate</artifactId>
     <packaging>pom</packaging>
     <version>0.0.1</version>
     <description>Simple and powerful command framework</description>
@@ -48,6 +48,7 @@
         <module>delegate-bukkit</module>
         <module>delegate-velocity</module>
         <module>delegate-sponge</module>
+        <module>delegate-api</module>
     </modules>
 
 </project>

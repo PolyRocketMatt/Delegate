@@ -1,5 +1,7 @@
 package com.github.polyrocketmatt.delegate.core.command;
 
+import com.github.polyrocketmatt.delegate.api.ICommandAttribute;
+
 /**
  * Represents a command attribute that can be used to describe or modify
  * a command.
@@ -7,7 +9,7 @@ package com.github.polyrocketmatt.delegate.core.command;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
-public abstract class CommandAttribute {
+public abstract class CommandAttribute implements ICommandAttribute {
 
     private final String identifier;
 

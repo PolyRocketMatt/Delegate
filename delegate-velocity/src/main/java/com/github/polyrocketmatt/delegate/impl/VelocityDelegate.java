@@ -4,7 +4,6 @@ import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
 import com.github.polyrocketmatt.delegate.core.platform.Platform;
 import com.github.polyrocketmatt.delegate.core.platform.PlatformType;
 import com.google.inject.Inject;
-import com.velocitypowered.api.command.Command;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
@@ -13,7 +12,7 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import java.io.File;
 import java.util.logging.Logger;
 
-import static com.github.polyrocketmatt.delegate.core.Delegate.getDelegate;
+import static com.github.polyrocketmatt.delegate.core.DelegateFramework.getDelegate;
 
 @Plugin(
         id = "delegate",
@@ -41,11 +40,6 @@ public class VelocityDelegate implements Platform {
     }
 
     @Override
-    public File getFileStorage() {
-        return this.dataFolder;
-    }
-
-    @Override
     public String getPluginVersion() {
         return "0.0.1";
     }
@@ -55,9 +49,14 @@ public class VelocityDelegate implements Platform {
         return PlatformType.VELOCITY;
     }
 
+    @Override
+    public boolean hasPermission(String permission) throws UnsupportedOperationException {
+        return false;
+    }
+
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
-        getDelegate().setup();
+
     }
 
     public void registerVelocityCommand(VerifiedDelegateCommand command) {

@@ -41,5 +41,5 @@ public class AnnotationHandler implements Handler {
                 .findFirst()
                 .map(annotation -> (T) annotation);
     }
-    
+
 }

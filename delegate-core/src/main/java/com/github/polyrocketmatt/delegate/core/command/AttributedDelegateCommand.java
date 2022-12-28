@@ -5,7 +5,7 @@ import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition
 
 /**
  * Implements the {@link DelegateCommand} interface and provides a class that
- * stores the name and description of the command together with the {@link CommandAttributeChain}
+ * stores the name and description of the command together with the {@link DelegateCommandBuilder}
  * that is used to store the attributes of the command.
  *
  * @since 0.0.1
@@ -15,14 +15,14 @@ public class AttributedDelegateCommand implements DelegateCommand{
 
     private final NameDefinition nameDefinition;
     private final DescriptionDefinition descriptionDefinition;
-    private final CommandAttributeChain attributeChain;
+    private final DelegateCommandBuilder attributeChain;
 
     /**
-     * Creates a new {@link AttributedDelegateCommand} with the given {@link CommandAttributeChain}.
+     * Creates a new {@link AttributedDelegateCommand} with the given {@link DelegateCommandBuilder}.
      *
      * @param attributeChain The attribute chain that is used to store the attributes of the command.
      */
-    public AttributedDelegateCommand(CommandAttributeChain attributeChain) {
+    public AttributedDelegateCommand(DelegateCommandBuilder attributeChain) {
         this.nameDefinition = (NameDefinition) attributeChain.find(NameDefinition.class);
         this.descriptionDefinition = (DescriptionDefinition) attributeChain.find(DescriptionDefinition.class);
         this.attributeChain = attributeChain;
@@ -33,7 +33,7 @@ public class AttributedDelegateCommand implements DelegateCommand{
      *
      * @return The attribute chain that is used to store the attributes of the command.
      */
-    public CommandAttributeChain getAttributeChain() {
+    public DelegateCommandBuilder getAttributeChain() {
         return attributeChain;
     }
 

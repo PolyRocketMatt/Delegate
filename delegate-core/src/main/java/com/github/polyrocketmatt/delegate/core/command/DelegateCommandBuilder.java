@@ -1,5 +1,8 @@
 package com.github.polyrocketmatt.delegate.core.command;
 
+import com.github.polyrocketmatt.delegate.api.AttributeType;
+import com.github.polyrocketmatt.delegate.api.ICommandAttribute;
+import com.github.polyrocketmatt.delegate.api.ICommandBuilder;
 import com.github.polyrocketmatt.delegate.core.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.core.command.action.FunctionAction;
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
@@ -18,7 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
 
-import static com.github.polyrocketmatt.delegate.core.Delegate.getDelegate;
+import static com.github.polyrocketmatt.delegate.core.DelegateFramework.getDelegate;
 
 /**
  * Represents an extendable chain of attributes that can be applied to a command.
@@ -26,11 +29,11 @@ import static com.github.polyrocketmatt.delegate.core.Delegate.getDelegate;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
-public class CommandAttributeChain {
+public class DelegateCommandBuilder implements ICommandBuilder {
 
     private final LinkedList<CommandAttribute> attributes;
 
-    protected CommandAttributeChain() {
+    protected DelegateCommandBuilder() {
         this.attributes = new LinkedList<>();
     }
 
@@ -41,11 +44,11 @@ public class CommandAttributeChain {
      * @return The current chain.
      * @throws AttributeException If the attribute is a {@link CommandAction} whose precedence is less than 0.
      */
-    public CommandAttributeChain append(CommandAttribute attribute) {
-        if (attribute instanceof FunctionAction && ((FunctionAction) attribute).getPrecedence() < 0)
+    @Override
+    public DelegateCommandBuilder with(ICommandAttribute attribute) {
+        if (attribute instanceof CommandAction && ((CommandAction) attribute).getPrecedence() < 0)
             throw new AttributeException("Action precedence must be greater than 0");
-
-        this.attributes.add(attribute);
+        this.attributes.add((CommandAttribute) attribute);
         return this;
     }
 
@@ -56,12 +59,16 @@ public class CommandAttributeChain {
      * @return The current chain.
      * @throws AttributeException If the action's precedence is less than 0.
      */
-    public CommandAttributeChain withAction(CommandAction action) {
-        //  Check that action precedence is greater than or equal to 0
-        if (action.getPrecedence() <= 0)
-            throw new AttributeException("Action precedence must be greater than 0");
+    @Override
+    public DelegateCommandBuilder withAction(ICommandAttribute action) {
+        if (action.getType() != AttributeType.ACTION && !(action instanceof CommandAction))
+            throw new AttributeException("Action must be an instance of CommandAction");
+        CommandAction commandAction = (CommandAction) action;
 
-        return this.append(action);
+        //  Check that action precedence is greater than or equal to 0
+        if (commandAction.getPrecedence() <= 0)
+            throw new AttributeException("Action precedence must be greater than 0");
+        return this.with(commandAction);
     }
 
     /**
@@ -70,8 +77,11 @@ public class CommandAttributeChain {
      * @param argument The argument to append.
      * @return The current chain.
      */
-    public CommandAttributeChain withArgument(CommandArgument<?> argument) {
-        return this.append(argument);
+    @Override
+    public DelegateCommandBuilder withArgument(ICommandAttribute argument) {
+        if (argument.getType() != AttributeType.ARGUMENT && !(argument instanceof CommandArgument<?>))
+            throw new AttributeException("Argument must be a CommandArgument");
+        return this.with((CommandArgument<?>) argument);
     }
 
     /**
@@ -80,8 +90,11 @@ public class CommandAttributeChain {
      * @param argument The argument to append.
      * @return The current chain.
      */
-    public CommandAttributeChain withFloatArgument(FloatArgument argument) {
-        return this.append(argument);
+    @Override
+    public DelegateCommandBuilder withFloat(ICommandAttribute argument) {
+        if (argument.getType() != AttributeType.ARGUMENT && !(argument instanceof FloatArgument))
+            throw new AttributeException("Argument must be a FloatArgument");
+        return this.with((FloatArgument) argument);
     }
 
     /**
@@ -90,8 +103,11 @@ public class CommandAttributeChain {
      * @param argument The argument to append.
      * @return The current chain.
      */
-    public CommandAttributeChain withIntArgument(IntArgument argument) {
-        return this.append(argument);
+    @Override
+    public DelegateCommandBuilder withInt(ICommandAttribute argument) {
+        if (argument.getType() != AttributeType.ARGUMENT && !(argument instanceof IntArgument))
+            throw new AttributeException("Argument must be an IntArgument");
+        return this.with((IntArgument) argument);
     }
 
     /**
@@ -100,8 +116,11 @@ public class CommandAttributeChain {
      * @param argument The argument to append.
      * @return The current chain.
      */
-    public CommandAttributeChain withStringArgument(StringArgument argument) {
-        return this.append(argument);
+    @Override
+    public DelegateCommandBuilder withString(ICommandAttribute argument) {
+        if (!(argument instanceof StringArgument))
+            throw new AttributeException("Argument must be a StringArgument");
+        return this.with((StringArgument) argument);
     }
 
     /**
@@ -110,8 +129,9 @@ public class CommandAttributeChain {
      * @param definition The definition to append.
      * @return The current chain.
      */
-    public CommandAttributeChain withDefinition(CommandDefinition<?> definition) {
-        return this.append(definition);
+    @Override
+    public DelegateCommandBuilder withDefinition(ICommandAttribute definition) {
+        return this.with((CommandDefinition<?>) definition);
     }
 
     /**
@@ -120,8 +140,11 @@ public class CommandAttributeChain {
      * @param subcommand The subcommand to append.
      * @return The current chain.
      */
-    public CommandAttributeChain withSubCommand(SubcommandDefinition subcommand) {
-        return this.append(subcommand);
+    @Override
+    public DelegateCommandBuilder withSubcommand(ICommandAttribute subcommand) {
+        if (!(subcommand instanceof SubcommandDefinition))
+            throw new AttributeException("Subcommand must be a SubcommandDefinition");
+        return this.with((SubcommandDefinition) subcommand);
     }
 
     /**
@@ -130,8 +153,11 @@ public class CommandAttributeChain {
      * @param property The property to append.
      * @return The current chain.
      */
-    public CommandAttributeChain withProperty(CommandProperty property) {
-        return this.append(property);
+    @Override
+    public DelegateCommandBuilder withProperty(ICommandAttribute property) {
+        if (!(property instanceof CommandProperty))
+            throw new AttributeException("Subcommand must be a SubcommandDefinition");
+        return this.with((CommandProperty) property);
     }
 
     /**
@@ -139,8 +165,9 @@ public class CommandAttributeChain {
      *
      * @return The current chain.
      */
-    public CommandAttributeChain async() {
-        return this.withProperty(new AsyncProperty());
+    @Override
+    public DelegateCommandBuilder withAsync() {
+        return this.with(new AsyncProperty());
     }
 
     /**
@@ -148,8 +175,9 @@ public class CommandAttributeChain {
      *
      * @return The current chain.
      */
-    public CommandAttributeChain withBrigadier() {
-        return this.append(new BrigadierProperty());
+    @Override
+    public DelegateCommandBuilder withBrigadier() {
+        return this.with(new BrigadierProperty());
     }
 
     /**
@@ -157,19 +185,17 @@ public class CommandAttributeChain {
      *
      * @return The current chain.
      */
-    public CommandAttributeChain withIgnoreNull() {
-        return this.append(new IgnoreNullProperty());
+    @Override
+    public DelegateCommandBuilder withIgnoreNull() {
+        return this.with(new IgnoreNullProperty());
     }
 
     /**
      * Uses the {@link com.github.polyrocketmatt.delegate.core.handlers.AttributeHandler} to
      * process the attributes in the chain and constructs a new {@link DelegateCommand} instance.
      */
-    public void build() {
-        //  Add primary resolver to every command
-        //  this.append(PRIMARY_RESOLVER);
-
-        getDelegate().getAttributeHandler().process(null, new AttributedDelegateCommand(this));
+    public DelegateCommand build() {
+        return getDelegate().getAttributeHandler().process(null, new AttributedDelegateCommand(this));
     }
 
     /**

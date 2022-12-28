@@ -1,6 +1,12 @@
 .idea/**
 *.iml
 target/**
+docs/**
+
+# API
+delegate-api.iml
+delegate-api/target/**
+delegate-api/dependency-reduced-pom.xml
 
 # Assembly
 delegate-assembly.iml

@@ -22,7 +22,7 @@ public class FloatArgument extends CommandArgument<Float> {
      * @param identifier The identifier of the argument.
      * @param argumentDescription The description of the argument.
      */
-    public FloatArgument(String identifier, String argumentDescription) {
+    private FloatArgument(String identifier, String argumentDescription) {
         super(identifier, argumentDescription, new NonNullRule());
     }
 
@@ -34,7 +34,7 @@ public class FloatArgument extends CommandArgument<Float> {
      * @param argumentDescription The description of the argument.
      * @param defaultValue The default value of the argument.
      */
-    public FloatArgument(String identifier, String argumentDescription, Float defaultValue) {
+    private FloatArgument(String identifier, String argumentDescription, Float defaultValue) {
         super(identifier, argumentDescription, new DefaultRule<>(defaultValue));
     }
 
@@ -45,7 +45,7 @@ public class FloatArgument extends CommandArgument<Float> {
      * @param argumentDescription The description of the argument.
      * @param rule The rule of the argument.
      */
-    public FloatArgument(String identifier, String argumentDescription, ArgumentRule<String, ?> rule) {
+    private FloatArgument(String identifier, String argumentDescription, ArgumentRule<String, ?> rule) {
         super(identifier, argumentDescription, rule);
     }
 
@@ -58,7 +58,7 @@ public class FloatArgument extends CommandArgument<Float> {
      * @param defaultValue The default value of the argument.
      * @param rules The rules of the argument.
      */
-    public FloatArgument(String identifier, String argumentDescription, Float defaultValue, ArgumentRule<String, ?> rules) {
+    private FloatArgument(String identifier, String argumentDescription, Float defaultValue, ArgumentRule<String, ?> rules) {
         super(identifier, argumentDescription, ArrayUtils.combine(List.of(new DefaultRule<>(defaultValue)), List.of(rules)));
     }
 

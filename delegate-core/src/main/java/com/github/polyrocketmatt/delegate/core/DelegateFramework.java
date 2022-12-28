@@ -5,18 +5,16 @@ import com.github.polyrocketmatt.delegate.core.handlers.AttributeHandler;
 import com.github.polyrocketmatt.delegate.core.handlers.CommandHandler;
 import com.github.polyrocketmatt.delegate.core.platform.Platform;
 
-import java.io.File;
+public class DelegateFramework {
 
-public class Delegate {
-
-    private static final Delegate instance = new Delegate();
+    private static final DelegateFramework instance = new DelegateFramework();
 
     private Platform platform;
     private final AnnotationHandler annotationHandler;
     private final AttributeHandler attributeHandler;
     private final CommandHandler commandHandler;
 
-    protected Delegate() {
+    protected DelegateFramework() {
         if (instance != null)
             throw new IllegalStateException("Delegate has already been initialized");
         this.annotationHandler = new AnnotationHandler();
@@ -24,7 +22,7 @@ public class Delegate {
         this.commandHandler = new CommandHandler();
     }
 
-    public static Delegate getDelegate() {
+    public static DelegateFramework getDelegate() {
         return instance;
     }
 
@@ -50,25 +48,10 @@ public class Delegate {
         return commandHandler;
     }
 
-    public File dataFolder() {
-        if (this.platform == null)
-            return null;
-        return platform.getFileStorage();
-    }
-
     public String getDelegateVersion() {
         if (this.platform == null)
             return null;
         return this.platform.getPluginVersion();
-    }
-
-    public boolean setup() {
-        if (this.platform == null || dataFolder() == null)
-            return false;
-        if (!dataFolder().exists())
-            return dataFolder().mkdirs();
-        else
-            return true;
     }
 
 }

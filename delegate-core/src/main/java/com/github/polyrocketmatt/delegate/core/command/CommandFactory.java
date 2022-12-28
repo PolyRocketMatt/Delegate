@@ -12,24 +12,24 @@ import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition
 public class CommandFactory {
 
     @Deprecated
-    public static CommandAttributeChain create() {
-        return new CommandAttributeChain();
+    public static DelegateCommandBuilder create() {
+        return new DelegateCommandBuilder();
     }
 
     @Deprecated
-    public static CommandAttributeChain create(String name) {
-        return new CommandAttributeChain().append(new NameDefinition(name));
+    public static DelegateCommandBuilder create(String name) {
+        return new DelegateCommandBuilder().with(new NameDefinition(name));
     }
 
     /**
-     * Creates a new {@link CommandAttributeChain} with the given name and description.
+     * Creates a new {@link DelegateCommandBuilder} with the given name and description.
      *
      * @param name The name of the command.
      * @param description The description of the command.
-     * @return The new {@link CommandAttributeChain}.
+     * @return The new {@link DelegateCommandBuilder}.
      */
-    public static CommandAttributeChain create(String name, String description) {
-        return new CommandAttributeChain().append(new NameDefinition(name)).append(new DescriptionDefinition(description));
+    public static DelegateCommandBuilder create(String name, String description) {
+        return new DelegateCommandBuilder().with(new NameDefinition(name)).with(new DescriptionDefinition(description));
     }
 
 }

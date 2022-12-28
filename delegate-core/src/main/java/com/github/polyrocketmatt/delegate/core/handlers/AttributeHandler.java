@@ -3,7 +3,7 @@ package com.github.polyrocketmatt.delegate.core.handlers;
 import com.github.polyrocketmatt.delegate.core.command.AttributedDelegateCommand;
 import com.github.polyrocketmatt.delegate.core.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.core.command.CommandAttribute;
-import com.github.polyrocketmatt.delegate.core.command.CommandAttributeChain;
+import com.github.polyrocketmatt.delegate.core.command.DelegateCommandBuilder;
 import com.github.polyrocketmatt.delegate.core.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandNode;
 import com.github.polyrocketmatt.delegate.core.command.DelegateCommand;
@@ -18,7 +18,7 @@ import com.github.polyrocketmatt.delegate.core.utils.Tuple;
 
 import java.util.List;
 
-import static com.github.polyrocketmatt.delegate.core.Delegate.getDelegate;
+import static com.github.polyrocketmatt.delegate.core.DelegateFramework.getDelegate;
 
 /**
  * Handler that is responsible for processing and verifying the attributes of a command.
@@ -44,7 +44,7 @@ public class AttributeHandler implements Handler {
      * @throws AttributeException If the command is invalid.
      */
     public VerifiedDelegateCommand process(CommandNode parent, AttributedDelegateCommand command) {
-        CommandAttributeChain chain = command.getAttributeChain();
+        DelegateCommandBuilder chain = command.getAttributeChain();
         Tuple<NameDefinition, DescriptionDefinition> header = processHeader(command.getAttributeChain());
 
         this.checkUniqueName(parent, header.getA());
@@ -80,7 +80,7 @@ public class AttributeHandler implements Handler {
         return verifiedCommand;
     }
 
-    private Tuple<NameDefinition, DescriptionDefinition> processHeader(CommandAttributeChain chain) throws AttributeException {
+    private Tuple<NameDefinition, DescriptionDefinition> processHeader(DelegateCommandBuilder chain) throws AttributeException {
         NameDefinition nameAttribute = chain.filter(NameDefinition.class).stream()
                 .map(NameDefinition.class::cast)
                 .findFirst()
@@ -93,7 +93,7 @@ public class AttributeHandler implements Handler {
         return new Tuple<>(nameAttribute, descriptionAttribute);
     }
 
-    private void checkIdentifiers(CommandAttributeChain chain) throws AttributeException {
+    private void checkIdentifiers(DelegateCommandBuilder chain) throws AttributeException {
         List<CommandAttribute> filteredAttributes = chain.filter(attribute -> !(attribute instanceof SubcommandDefinition));
         List<String> identifiers = filteredAttributes.stream().map(CommandAttribute::getIdentifier).toList();
         if (filteredAttributes.size() != identifiers.stream().distinct().count()) {
@@ -114,21 +114,21 @@ public class AttributeHandler implements Handler {
         }
     }
 
-    private List<CommandArgument<?>> processArguments(CommandAttributeChain chain) {
+    private List<CommandArgument<?>> processArguments(DelegateCommandBuilder chain) {
         return chain.getArguments();
     }
 
-    private List<CommandProperty> processProperties(CommandAttributeChain chain) {
+    private List<CommandProperty> processProperties(DelegateCommandBuilder chain) {
         return chain.getProperties();
     }
 
-    private List<CommandAction> processActions(CommandAttributeChain chain) {
+    private List<CommandAction> processActions(DelegateCommandBuilder chain) {
         return chain.getActions();
     }
 
-    private void processSubCommands(CommandNode parent, CommandAttributeChain chain) {
+    private void processSubCommands(CommandNode parent, DelegateCommandBuilder chain) {
         //  In the current chain, find all sub-command definitions
-        List<CommandAttributeChain> subCommandChains = chain.filter(SubcommandDefinition.class)
+        List<DelegateCommandBuilder> subCommandChains = chain.filter(SubcommandDefinition.class)
                 .stream()
                 .map(SubcommandDefinition.class::cast)
                 .map(SubcommandDefinition::getValue)
