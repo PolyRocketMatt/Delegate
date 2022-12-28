@@ -2,6 +2,8 @@ package com.github.polyrocketmatt.delegate.api;
 
 public interface ICommandBuilder {
 
+    IDelegateCommand build();
+
     ICommandBuilder with(ICommandAttribute attribute);
 
     ICommandBuilder withAction(ICommandAttribute action);

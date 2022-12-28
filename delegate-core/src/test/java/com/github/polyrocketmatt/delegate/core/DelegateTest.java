@@ -1,10 +1,10 @@
 package com.github.polyrocketmatt.delegate.core;
 
-import com.github.polyrocketmatt.delegate.core.platform.Platform;
-import com.github.polyrocketmatt.delegate.core.platform.PlatformType;
+import com.github.polyrocketmatt.delegate.api.IPlatform;
+import com.github.polyrocketmatt.delegate.api.PlatformType;
 import org.junit.jupiter.api.Test;
 
-import static com.github.polyrocketmatt.delegate.core.DelegateFramework.getDelegate;
+import static com.github.polyrocketmatt.delegate.core.Delegate.getDelegate;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DelegateTest {
@@ -21,13 +21,13 @@ public class DelegateTest {
     @Test
     public void testBukkitPlatform() {
         getDelegate().setPlatform(new MockPlatform());
-        Platform platform = getDelegate().getPlatform();
+        IPlatform platform = getDelegate().getPlatform();
 
         assertEquals("mockPlatform", platform.getPluginVersion());
         assertEquals(PlatformType.BUKKIT, platform.getPlatformType());
     }
 
-    private static class MockPlatform implements Platform {
+    private static class MockPlatform implements IPlatform {
 
         @Override
         public String getPluginVersion() {

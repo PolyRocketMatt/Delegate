@@ -1,5 +1,6 @@
 package com.github.polyrocketmatt.delegate.core.handlers;
 
+import com.github.polyrocketmatt.delegate.api.IHandler;
 import com.github.polyrocketmatt.delegate.core.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.core.command.CommandDispatchInformation;
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
@@ -26,7 +27,7 @@ import java.util.concurrent.ForkJoinPool;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
-public class CommandHandler implements Handler {
+public class CommandHandler implements IHandler {
 
     private final CommandTree commandTree;
 

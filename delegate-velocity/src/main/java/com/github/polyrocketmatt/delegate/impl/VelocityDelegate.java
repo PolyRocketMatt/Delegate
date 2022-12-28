@@ -1,8 +1,8 @@
 package com.github.polyrocketmatt.delegate.impl;
 
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
-import com.github.polyrocketmatt.delegate.core.platform.Platform;
-import com.github.polyrocketmatt.delegate.core.platform.PlatformType;
+import com.github.polyrocketmatt.delegate.api.IPlatform;
+import com.github.polyrocketmatt.delegate.api.PlatformType;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
@@ -12,7 +12,7 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import java.io.File;
 import java.util.logging.Logger;
 
-import static com.github.polyrocketmatt.delegate.core.DelegateFramework.getDelegate;
+import static com.github.polyrocketmatt.delegate.core.Delegate.getDelegate;
 
 @Plugin(
         id = "delegate",
@@ -23,7 +23,7 @@ import static com.github.polyrocketmatt.delegate.core.DelegateFramework.getDeleg
                 "Matthias Kovacic"
         }
 )
-public class VelocityDelegate implements Platform {
+public class VelocityDelegate implements IPlatform {
 
     private final File dataFolder;
     private final ProxyServer server;

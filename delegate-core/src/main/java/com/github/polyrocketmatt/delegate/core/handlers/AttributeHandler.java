@@ -1,5 +1,6 @@
 package com.github.polyrocketmatt.delegate.core.handlers;
 
+import com.github.polyrocketmatt.delegate.api.IHandler;
 import com.github.polyrocketmatt.delegate.core.command.AttributedDelegateCommand;
 import com.github.polyrocketmatt.delegate.core.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.core.command.CommandAttribute;
@@ -18,7 +19,7 @@ import com.github.polyrocketmatt.delegate.core.utils.Tuple;
 
 import java.util.List;
 
-import static com.github.polyrocketmatt.delegate.core.DelegateFramework.getDelegate;
+import static com.github.polyrocketmatt.delegate.core.Delegate.getDelegate;
 
 /**
  * Handler that is responsible for processing and verifying the attributes of a command.
@@ -26,7 +27,7 @@ import static com.github.polyrocketmatt.delegate.core.DelegateFramework.getDeleg
  * @since 0.0.1
  * @author Matthias Kovacic
  */
-public class AttributeHandler implements Handler {
+public class AttributeHandler implements IHandler {
 
     /**
      * Creates a new {@link AttributeHandler} instance.
@@ -70,7 +71,7 @@ public class AttributeHandler implements Handler {
             this.processSubCommands(rootNode, chain);
 
             //  Add tree to command handler
-            getDelegate().getCommandHandler().registerTree(rootNode);
+            ((CommandHandler) getDelegate().getCommandHandler()).registerTree(rootNode);
         } else {
             CommandNode childNode = new CommandNode(parent, verifiedCommand);
 

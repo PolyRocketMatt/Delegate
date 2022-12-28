@@ -1,6 +1,6 @@
-package com.github.polyrocketmatt.delegate.core.platform;
+package com.github.polyrocketmatt.delegate.api;
 
-public interface Platform {
+public interface IPlatform {
 
     String getPluginVersion();
 

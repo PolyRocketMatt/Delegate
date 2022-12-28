@@ -11,7 +11,7 @@ import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition
  * @since 0.0.1
  * @author Matthias Kovacic
  */
-public class AttributedDelegateCommand implements DelegateCommand{
+public class AttributedDelegateCommand extends DelegateCommand{
 
     private final NameDefinition nameDefinition;
     private final DescriptionDefinition descriptionDefinition;

@@ -17,7 +17,7 @@ import com.github.polyrocketmatt.delegate.core.command.properties.CommandPropert
  * @since 0.0.1
  * @author Matthias Kovacic
  */
-public class VerifiedDelegateCommand implements DelegateCommand {
+public class VerifiedDelegateCommand extends DelegateCommand {
 
     private final NameDefinition nameDefinition;
     private final DescriptionDefinition descriptionDefinition;

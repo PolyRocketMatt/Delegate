@@ -1,4 +1,4 @@
-package com.github.polyrocketmatt.delegate.core.handlers;
+package com.github.polyrocketmatt.delegate.api;
 
 /**
  * Defines a handler that is responsible for handling a single
@@ -7,4 +7,4 @@ package com.github.polyrocketmatt.delegate.core.handlers;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
-public interface Handler { }
+public interface IHandler { }

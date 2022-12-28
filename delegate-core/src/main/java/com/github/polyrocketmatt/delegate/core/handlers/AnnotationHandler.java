@@ -1,5 +1,6 @@
 package com.github.polyrocketmatt.delegate.core.handlers;
 
+import com.github.polyrocketmatt.delegate.api.IHandler;
 import com.github.polyrocketmatt.delegate.core.annotations.Command;
 import com.github.polyrocketmatt.delegate.core.annotations.CommandAlias;
 import com.github.polyrocketmatt.delegate.core.exception.AnnotationParseException;
@@ -14,7 +15,7 @@ import java.util.Optional;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
-public class AnnotationHandler implements Handler {
+public class AnnotationHandler implements IHandler {
 
     /**
      * Processes the given object and tries to parse command information from it.

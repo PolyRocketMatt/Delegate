@@ -4,7 +4,6 @@ import com.github.polyrocketmatt.delegate.api.AttributeType;
 import com.github.polyrocketmatt.delegate.api.ICommandAttribute;
 import com.github.polyrocketmatt.delegate.api.ICommandBuilder;
 import com.github.polyrocketmatt.delegate.core.command.action.CommandAction;
-import com.github.polyrocketmatt.delegate.core.command.action.FunctionAction;
 import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.FloatArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.IntArgument;
@@ -16,12 +15,13 @@ import com.github.polyrocketmatt.delegate.core.command.properties.BrigadierPrope
 import com.github.polyrocketmatt.delegate.core.command.properties.CommandProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProperty;
 import com.github.polyrocketmatt.delegate.core.exception.AttributeException;
+import com.github.polyrocketmatt.delegate.core.handlers.AttributeHandler;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
 
-import static com.github.polyrocketmatt.delegate.core.DelegateFramework.getDelegate;
+import static com.github.polyrocketmatt.delegate.core.Delegate.getDelegate;
 
 /**
  * Represents an extendable chain of attributes that can be applied to a command.
@@ -194,8 +194,9 @@ public class DelegateCommandBuilder implements ICommandBuilder {
      * Uses the {@link com.github.polyrocketmatt.delegate.core.handlers.AttributeHandler} to
      * process the attributes in the chain and constructs a new {@link DelegateCommand} instance.
      */
+    @Override
     public DelegateCommand build() {
-        return getDelegate().getAttributeHandler().process(null, new AttributedDelegateCommand(this));
+        return ((AttributeHandler) getDelegate().getAttributeHandler()).process(null, new AttributedDelegateCommand(this));
     }
 
     /**
