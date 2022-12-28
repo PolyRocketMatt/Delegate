@@ -1,49 +1,50 @@
 package com.github.polyrocketmatt.delegate.core.exception;
 
 /**
- * @author Matthias Kovacic
- * @since 0.0.1
+ * Exception thrown when some illegal state concerning an {@link com.github.polyrocketmatt.delegate.core.command.CommandAttribute}
+ * is encountered.
  *
- * Exception that is thrown when an illegal state concerning
- * a {@link com.github.polyrocketmatt.delegate.core.command.CommandAttribute} is encountered.
+ * @since 0.0.1
+ * @author Matthias Kovacic
  */
 public class AttributeException extends RuntimeException {
 
     /**
-     * Create a new AttributeException.
-     */
-    public AttributeException() {
-        super();
-    }
-
-    /**
-     * Create a new AttributeException with the given message.
+     * Constructs a new exception with the specified detail message.
      *
-     * @param message The message to use.
+     * @param message The detail message.
      */
     public AttributeException(String message) {
         super(message);
     }
 
     /**
-     * Create a new AttributeException with the given message and cause.
+     * Constructs a new exception with the specified detail message and cause.
      *
-     * @param message The message to use.
-     * @param cause The cause to use.
+     * @param message The detail message.
+     * @param cause The cause.
      */
     public AttributeException(String message, Throwable cause) {
         super(message, cause);
     }
 
     /**
-     * Create a new AttributeException with the given cause.
+     * Constructs a new exception with the specified cause.
      *
-     * @param cause The cause to use.
+     * @param cause The cause.
      */
     public AttributeException(Throwable cause) {
         super(cause);
     }
 
+    /**
+     * Constructs a new exception with the specified detail message, cause, suppression enabled or disabled,
+     *
+     * @param message The detail message.
+     * @param cause The cause.
+     * @param enableSuppression Whether suppression is enabled or disabled.
+     * @param writableStackTrace Whether the stack trace should be writable.
+     */
     protected AttributeException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
