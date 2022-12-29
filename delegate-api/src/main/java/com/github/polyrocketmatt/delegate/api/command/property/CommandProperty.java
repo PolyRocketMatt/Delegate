@@ -4,6 +4,8 @@ import com.github.polyrocketmatt.delegate.api.AttributeType;
 import com.github.polyrocketmatt.delegate.api.Bufferable;
 import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
 
+import static com.github.polyrocketmatt.delegate.api.StringUtils.newId;
+
 /**
  * Represents a command property that defines special
  * behavior for a command.
@@ -20,6 +22,10 @@ public abstract class CommandProperty extends CommandAttribute implements Buffer
      */
     public CommandProperty(String identifier) {
         super(identifier);
+    }
+
+    public CommandProperty() {
+        super(newId());
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.github.polyrocketmatt.delegate.core.utils;
+package com.github.polyrocketmatt.delegate.api;
 
 import java.util.UUID;
 

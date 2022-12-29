@@ -70,11 +70,11 @@ do not wish to register the command, you can use the `construct()` method instea
 
 ## Feature Matrix
 
-|      Feature      | Paper  | Velocity  | Sponge |
-|:-----------------:|:------:|:---------:|:------:|
-| Fluent Interface  |   ✔    |     ✔     |   ❌    |
-|     Brigadier     |   ✔    |     ✔     |   ❌    |
-|  Tab Completion   |   ✔    |     ✔     |   ❌    |
+|      Feature      | Paper  | Velocity | Sponge |
+|:-----------------:|:------:|:--------:|:------:|
+| Fluent Interface  |   ✔    |    ❌     |   ❌    |
+|     Brigadier     |   ✔    |    ❌     |   ❌    |
+|  Tab Completion   |   ✔    |    ❌     |   ❌    |
 
 
 ## Documentation

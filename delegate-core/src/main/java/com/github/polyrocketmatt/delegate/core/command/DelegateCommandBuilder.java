@@ -20,7 +20,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
-import static com.github.polyrocketmatt.delegate.core.utils.StringUtils.newId;
 
 /**
  * Represents an extendable chain of attributes that can be applied to a command.
@@ -153,16 +152,32 @@ public abstract class DelegateCommandBuilder implements ICommandBuilder {
         return this.with(new ConsumerAction(action));
     }
 
+    public ICommandBuilder withAction(int precedence, Consumer<List<Argument<?>>> action) {
+        return this.with(new ConsumerAction(precedence, action));
+    }
+
     public ICommandBuilder withAction(Function<List<Argument<?>>, ?> action) {
         return this.with(new FunctionAction(action));
+    }
+
+    public ICommandBuilder withAction(int precedence, Function<List<Argument<?>>, ?> action) {
+        return this.with(new FunctionAction(precedence, action));
     }
 
     public ICommandBuilder withAction(Runnable action) {
         return this.with(new RunnableAction(action));
     }
 
+    public ICommandBuilder withAction(int precedence, Runnable action) {
+        return this.with(new RunnableAction(precedence, action));
+    }
+
     public <T> ICommandBuilder withAction(Supplier<T> action) {
         return this.with(new SupplierAction<>(action));
+    }
+
+    public <T> ICommandBuilder withAction(int precedence, Supplier<T> action) {
+        return this.with(new SupplierAction<>(precedence, action));
     }
 
 }

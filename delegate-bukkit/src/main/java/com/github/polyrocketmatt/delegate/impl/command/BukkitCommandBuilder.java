@@ -22,7 +22,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static com.github.polyrocketmatt.delegate.core.utils.StringUtils.newId;
+import static com.github.polyrocketmatt.delegate.api.StringUtils.newId;
 
 public class BukkitCommandBuilder extends DelegateCommandBuilder {
 

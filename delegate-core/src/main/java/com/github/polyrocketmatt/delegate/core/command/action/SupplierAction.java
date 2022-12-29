@@ -5,14 +5,13 @@ import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
 import com.github.polyrocketmatt.delegate.api.command.data.ActionResult;
 import com.github.polyrocketmatt.delegate.api.command.data.FailureActionResult;
-import com.github.polyrocketmatt.delegate.api.command.data.SuccessActionResult;
 import com.github.polyrocketmatt.delegate.api.command.CommandBuffer;
 
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static com.github.polyrocketmatt.delegate.core.utils.StringUtils.newId;
+import static com.github.polyrocketmatt.delegate.api.StringUtils.newId;
 
 /**
  * A {@link Supplier}-based command action that does not take any arguments and only yields a result.

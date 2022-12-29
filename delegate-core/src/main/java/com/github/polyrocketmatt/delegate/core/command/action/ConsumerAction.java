@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static com.github.polyrocketmatt.delegate.core.utils.StringUtils.newId;
+import static com.github.polyrocketmatt.delegate.api.StringUtils.newId;
 import static java.lang.Math.min;
 
 /**

@@ -10,7 +10,7 @@ import com.github.polyrocketmatt.delegate.api.command.data.SuccessActionResult;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static com.github.polyrocketmatt.delegate.core.utils.StringUtils.newId;
+import static com.github.polyrocketmatt.delegate.api.StringUtils.newId;
 
 /**
  * A {@link Consumer}-based command action that does not yield a result.
