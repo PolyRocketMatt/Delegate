@@ -3,7 +3,7 @@ package com.github.polyrocketmatt.delegate.core;
 import com.github.polyrocketmatt.delegate.api.DelegateAPI;
 import com.github.polyrocketmatt.delegate.api.IHandler;
 import com.github.polyrocketmatt.delegate.api.IPlatform;
-import com.github.polyrocketmatt.delegate.core.command.CommandFactory;
+import com.github.polyrocketmatt.delegate.api.command.ICommandFactory;
 import com.github.polyrocketmatt.delegate.core.handlers.AnnotationHandler;
 import com.github.polyrocketmatt.delegate.core.handlers.AttributeHandler;
 import com.github.polyrocketmatt.delegate.core.handlers.CommandHandler;
@@ -16,7 +16,6 @@ public class DelegateCore implements DelegateAPI {
     private final AnnotationHandler annotationHandler;
     private final AttributeHandler attributeHandler;
     private final CommandHandler commandHandler;
-    private final CommandFactory commandFactory;
 
     protected DelegateCore() {
         if (instance != null)
@@ -24,7 +23,6 @@ public class DelegateCore implements DelegateAPI {
         this.annotationHandler = new AnnotationHandler();
         this.attributeHandler = new AttributeHandler();
         this.commandHandler = new CommandHandler();
-        this.commandFactory = new CommandFactory();
     }
 
     public static DelegateAPI getDelegateAPI() {
@@ -47,8 +45,8 @@ public class DelegateCore implements DelegateAPI {
     }
 
     @Override
-    public CommandFactory getCommandFactory() {
-        return commandFactory;
+    public ICommandFactory getCommandFactory() {
+        return null;
     }
 
     public IHandler getAttributeHandler() {

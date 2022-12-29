@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import static com.github.polyrocketmatt.delegate.core.utils.StringUtils.newId;
 import static java.lang.Math.min;
 
 /**
@@ -31,8 +32,8 @@ public class ConsumerAction extends CommandAction {
      * @param precedence The precedence of the command action.
      * @param action The {@link Consumer} that will be executed.
      */
-    public ConsumerAction(String identifier, int precedence, Consumer<List<Argument<?>>> action) {
-        super(identifier, precedence);
+    public ConsumerAction(int precedence, Consumer<List<Argument<?>>> action) {
+        super(newId(), precedence);
         this.action = action;
     }
 
@@ -43,8 +44,8 @@ public class ConsumerAction extends CommandAction {
      * @param identifier The identifier of the command action.
      * @param action The {@link Consumer} that will be executed.
      */
-    public ConsumerAction(String identifier, Consumer<List<Argument<?>>> action) {
-        super(identifier, 0);
+    public ConsumerAction(Consumer<List<Argument<?>>> action) {
+        super(newId(), 0);
         this.action = action;
     }
 

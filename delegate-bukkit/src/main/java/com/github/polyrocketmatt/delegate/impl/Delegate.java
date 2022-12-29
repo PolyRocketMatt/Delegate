@@ -6,25 +6,29 @@ import com.github.polyrocketmatt.delegate.api.DelegateAPI;
 import com.github.polyrocketmatt.delegate.api.IPlatform;
 import com.github.polyrocketmatt.delegate.api.PlatformType;
 import com.github.polyrocketmatt.delegate.core.DelegateCore;
+import com.github.polyrocketmatt.delegate.impl.command.BukkitCommandFactory;
 import com.github.polyrocketmatt.delegate.impl.entity.BukkitPlayerCommander;
 
 public class Delegate implements IPlatform {
+
+    private static final BukkitCommandFactory factory = new BukkitCommandFactory();
 
     public static DelegateAPI getDelegateAPI() {
         return DelegateCore.getDelegateAPI();
     }
 
-    public static IPlatform getPlatform() {
-        return getDelegateAPI().getPlatform();
-    }
-
-    public static ICommandFactory getFactory() {
-        return getDelegateAPI().getCommandFactory();
+    public static BukkitCommandFactory getFactory() {
+        return factory;
     }
 
     @Override
     public PlatformType getPlatformType() {
         return PlatformType.BUKKIT;
+    }
+
+    @Override
+    public ICommandFactory getFactoryImplementation() {
+        return factory;
     }
 
     @Override

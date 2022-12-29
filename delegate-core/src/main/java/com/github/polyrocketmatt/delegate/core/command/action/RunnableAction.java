@@ -10,6 +10,8 @@ import com.github.polyrocketmatt.delegate.api.command.data.SuccessActionResult;
 import java.util.List;
 import java.util.function.Consumer;
 
+import static com.github.polyrocketmatt.delegate.core.utils.StringUtils.newId;
+
 /**
  * A {@link Consumer}-based command action that does not yield a result.
  *
@@ -27,8 +29,8 @@ public class RunnableAction extends CommandAction {
      * @param precedence The precedence of the command action.
      * @param action The {@link Runnable} that will be executed.
      */
-    public RunnableAction(String identifier, int precedence, Runnable action) {
-        super(identifier, precedence);
+    public RunnableAction(int precedence, Runnable action) {
+        super(newId(), precedence);
         this.action = action;
     }
 
@@ -39,8 +41,8 @@ public class RunnableAction extends CommandAction {
      * @param identifier The identifier of the command action.
      * @param action The {@link Runnable} that will be executed.
      */
-    public RunnableAction(String identifier, Runnable action) {
-        super(identifier, 0);
+    public RunnableAction(Runnable action) {
+        super(newId(), 0);
         this.action = action;
     }
 

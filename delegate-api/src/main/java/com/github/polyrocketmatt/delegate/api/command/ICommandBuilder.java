@@ -1,5 +1,10 @@
 package com.github.polyrocketmatt.delegate.api.command;
 
+import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
+import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
+import com.github.polyrocketmatt.delegate.api.command.definition.CommandDefinition;
+import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
+
 /**
  * Builder that allows to build a command.
  *
@@ -10,21 +15,27 @@ public interface ICommandBuilder {
 
     ICommandBuilder with(ICommandAttribute attribute);
 
-    ICommandBuilder withAction(ICommandAttribute action);
+    ICommandBuilder withAction(CommandAction action);
 
-    ICommandBuilder withArgument(ICommandAttribute argument);
+    ICommandBuilder withArgument(CommandArgument<?> argument);
 
-    ICommandBuilder withFloat(ICommandAttribute argument);
+    ICommandBuilder withFloat(String description);
 
-    ICommandBuilder withInt(ICommandAttribute argument);
+    ICommandBuilder withFloat(String description, float defaultValue);
 
-    ICommandBuilder withString(ICommandAttribute argument);
+    ICommandBuilder withInt(String description);
 
-    ICommandBuilder withDefinition(ICommandAttribute definition);
+    ICommandBuilder withInt(String description, int defaultValue);
 
-    ICommandBuilder withSubcommand(ICommandAttribute subcommand);
+    ICommandBuilder withString(String description);
 
-    ICommandBuilder withProperty(ICommandAttribute property);
+    ICommandBuilder withString(String description, String defaultValue);
+
+    ICommandBuilder withDefinition(CommandDefinition<?> definition);
+
+    ICommandBuilder withSubcommand(CommandDefinition<?> subcommand);
+
+    ICommandBuilder withProperty(CommandProperty property);
 
     ICommandBuilder withAsync();
 

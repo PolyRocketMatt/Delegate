@@ -1,5 +1,6 @@
 package com.github.polyrocketmatt.delegate.impl;
 
+import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
 import com.github.polyrocketmatt.delegate.api.IPlatform;
 import com.github.polyrocketmatt.delegate.api.PlatformType;
@@ -40,17 +41,12 @@ public class VelocityDelegate implements IPlatform {
     }
 
     @Override
-    public String getPluginVersion() {
-        return "0.0.1";
-    }
-
-    @Override
     public PlatformType getPlatformType() {
         return PlatformType.VELOCITY;
     }
 
     @Override
-    public boolean hasPermission(String permission) throws UnsupportedOperationException {
+    public boolean hasPermission(CommanderEntity entity, String permission) throws UnsupportedOperationException {
         return false;
     }
 

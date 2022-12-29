@@ -1,28 +1,26 @@
 package com.github.polyrocketmatt.delegate.core.command;
 
-import com.github.polyrocketmatt.delegate.api.AttributeType;
 import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
-import com.github.polyrocketmatt.delegate.api.command.ICommandAttribute;
 import com.github.polyrocketmatt.delegate.api.command.ICommandBuilder;
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
+import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
-import com.github.polyrocketmatt.delegate.core.command.argument.FloatArgument;
-import com.github.polyrocketmatt.delegate.core.command.argument.IntArgument;
-import com.github.polyrocketmatt.delegate.core.command.argument.StringArgument;
 import com.github.polyrocketmatt.delegate.api.command.definition.CommandDefinition;
-import com.github.polyrocketmatt.delegate.core.command.definition.SubcommandDefinition;
-import com.github.polyrocketmatt.delegate.core.command.properties.AsyncProperty;
-import com.github.polyrocketmatt.delegate.core.command.properties.BrigadierProperty;
 import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
-import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProperty;
-import com.github.polyrocketmatt.delegate.api.exception.AttributeException;
+import com.github.polyrocketmatt.delegate.core.command.action.ConsumerAction;
+import com.github.polyrocketmatt.delegate.core.command.action.FunctionAction;
+import com.github.polyrocketmatt.delegate.core.command.action.RunnableAction;
+import com.github.polyrocketmatt.delegate.core.command.action.SupplierAction;
 import com.github.polyrocketmatt.delegate.core.handlers.AttributeHandler;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
+import static com.github.polyrocketmatt.delegate.core.utils.StringUtils.newId;
 
 /**
  * Represents an extendable chain of attributes that can be applied to a command.
@@ -30,165 +28,12 @@ import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
-public class DelegateCommandBuilder implements ICommandBuilder {
+public abstract class DelegateCommandBuilder implements ICommandBuilder {
 
-    private final LinkedList<CommandAttribute> attributes;
+    protected final LinkedList<CommandAttribute> attributes;
 
     protected DelegateCommandBuilder() {
         this.attributes = new LinkedList<>();
-    }
-
-    /**
-     * Append a new {@link CommandAttribute} to the chain.
-     *
-     * @param attribute The attribute to append.
-     * @return The current chain.
-     * @throws AttributeException If the attribute is a {@link CommandAction} whose precedence is less than 0.
-     */
-    @Override
-    public DelegateCommandBuilder with(ICommandAttribute attribute) {
-        if (attribute instanceof CommandAction && ((CommandAction) attribute).getPrecedence() < 0)
-            throw new AttributeException("Action precedence must be greater than 0");
-        this.attributes.add((CommandAttribute) attribute);
-        return this;
-    }
-
-    /**
-     * Append a new {@link CommandAction} to the chain.
-     *
-     * @param action The action to append.
-     * @return The current chain.
-     * @throws AttributeException If the action's precedence is less than 0.
-     */
-    @Override
-    public DelegateCommandBuilder withAction(ICommandAttribute action) {
-        if (action.getType() != AttributeType.ACTION && !(action instanceof CommandAction))
-            throw new AttributeException("Action must be an instance of CommandAction");
-        CommandAction commandAction = (CommandAction) action;
-
-        //  Check that action precedence is greater than or equal to 0
-        if (commandAction.getPrecedence() <= 0)
-            throw new AttributeException("Action precedence must be greater than 0");
-        return this.with(commandAction);
-    }
-
-    /**
-     * Append a new {@link CommandArgument} to the chain.
-     *
-     * @param argument The argument to append.
-     * @return The current chain.
-     */
-    @Override
-    public DelegateCommandBuilder withArgument(ICommandAttribute argument) {
-        if (argument.getType() != AttributeType.ARGUMENT && !(argument instanceof CommandArgument<?>))
-            throw new AttributeException("Argument must be a CommandArgument");
-        return this.with((CommandArgument<?>) argument);
-    }
-
-    /**
-     * Append a new {@link FloatArgument} to the chain.
-     *
-     * @param argument The argument to append.
-     * @return The current chain.
-     */
-    @Override
-    public DelegateCommandBuilder withFloat(ICommandAttribute argument) {
-        if (argument.getType() != AttributeType.ARGUMENT && !(argument instanceof FloatArgument))
-            throw new AttributeException("Argument must be a FloatArgument");
-        return this.with((FloatArgument) argument);
-    }
-
-    /**
-     * Append a new {@link IntArgument} to the chain.
-     *
-     * @param argument The argument to append.
-     * @return The current chain.
-     */
-    @Override
-    public DelegateCommandBuilder withInt(ICommandAttribute argument) {
-        if (argument.getType() != AttributeType.ARGUMENT && !(argument instanceof IntArgument))
-            throw new AttributeException("Argument must be an IntArgument");
-        return this.with((IntArgument) argument);
-    }
-
-    /**
-     * Append a new {@link StringArgument} to the chain.
-     *
-     * @param argument The argument to append.
-     * @return The current chain.
-     */
-    @Override
-    public DelegateCommandBuilder withString(ICommandAttribute argument) {
-        if (!(argument instanceof StringArgument))
-            throw new AttributeException("Argument must be a StringArgument");
-        return this.with((StringArgument) argument);
-    }
-
-    /**
-     * Append a new {@link CommandDefinition} to the chain.
-     *
-     * @param definition The definition to append.
-     * @return The current chain.
-     */
-    @Override
-    public DelegateCommandBuilder withDefinition(ICommandAttribute definition) {
-        return this.with((CommandDefinition<?>) definition);
-    }
-
-    /**
-     * Append a new {@link SubcommandDefinition} to the chain.
-     *
-     * @param subcommand The subcommand to append.
-     * @return The current chain.
-     */
-    @Override
-    public DelegateCommandBuilder withSubcommand(ICommandAttribute subcommand) {
-        if (!(subcommand instanceof SubcommandDefinition))
-            throw new AttributeException("Subcommand must be a SubcommandDefinition");
-        return this.with((SubcommandDefinition) subcommand);
-    }
-
-    /**
-     * Append a new {@link CommandProperty} to the chain.
-     *
-     * @param property The property to append.
-     * @return The current chain.
-     */
-    @Override
-    public DelegateCommandBuilder withProperty(ICommandAttribute property) {
-        if (!(property instanceof CommandProperty))
-            throw new AttributeException("Subcommand must be a SubcommandDefinition");
-        return this.with((CommandProperty) property);
-    }
-
-    /**
-     * Append a new {@link AsyncProperty} to the chain.
-     *
-     * @return The current chain.
-     */
-    @Override
-    public DelegateCommandBuilder withAsync() {
-        return this.with(new AsyncProperty());
-    }
-
-    /**
-     * Append a new {@link BrigadierProperty} to the chain.
-     *
-     * @return The current chain.
-     */
-    @Override
-    public DelegateCommandBuilder withBrigadier() {
-        return this.with(new BrigadierProperty());
-    }
-
-    /**
-     * Append a new {@link IgnoreNullProperty} to the chain.
-     *
-     * @return The current chain.
-     */
-    @Override
-    public DelegateCommandBuilder withIgnoreNull() {
-        return this.with(new IgnoreNullProperty());
     }
 
     /**
@@ -302,6 +147,22 @@ public class DelegateCommandBuilder implements ICommandBuilder {
      */
     public int size() {
         return attributes.size();
+    }
+
+    public ICommandBuilder withAction(Consumer<List<Argument<?>>> action) {
+        return this.with(new ConsumerAction(action));
+    }
+
+    public ICommandBuilder withAction(Function<List<Argument<?>>, ?> action) {
+        return this.with(new FunctionAction(action));
+    }
+
+    public ICommandBuilder withAction(Runnable action) {
+        return this.with(new RunnableAction(action));
+    }
+
+    public <T> ICommandBuilder withAction(Supplier<T> action) {
+        return this.with(new SupplierAction<>(action));
     }
 
 }

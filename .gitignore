@@ -2,6 +2,7 @@
 *.iml
 target/**
 docs/**
+build/**
 
 # API
 delegate-api.iml

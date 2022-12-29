@@ -41,22 +41,27 @@ Currently, Delegate supports the following platforms:
 
 ## Getting Started
 
-This is an example command, which will print a message to the requested player.
+Delegate is designed with [fluent interfaces](https://en.wikipedia.org/wiki/Fluent_interface) in mind. 
+This means that you can easily chain methods together to create a command. For example:
 
 ```java
-public class ExampleCommand {
+public class ExamplePlugin extends JavaPlugin {
     
-    public ExampleCommand() {
-        //  TODO
+    @Override
+    public void onLoad() {
+        //  Create / Register a new Delegate command
+        Delegate.getFactory().create("hello", "Broadcasts a message to the server")
+                .withString("name", "The name of the person you want to say hello to")
+                .withAction((str) -> Bukkit.getServer().broadcastMessage("Hello, %s".formatted(str)))
+                .build();
     }
     
 }
 ```
 
 When you are finished creating the definition of the command, the `build()` method 
-must be called. This will construct and register the command behind the scenes. Keep in 
-mind that this process is completely platform-agnostic, which means that the procedure 
-for creating commands is exactly the same for all platforms. 
+can be called. This will construct and register the command behind the scenes. If you
+do not wish to register the command, you can use the `construct()` method instead.
 
 ## Examples
 

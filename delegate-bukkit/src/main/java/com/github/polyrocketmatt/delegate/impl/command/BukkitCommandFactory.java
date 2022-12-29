@@ -1,16 +1,11 @@
-package com.github.polyrocketmatt.delegate.core.command;
+package com.github.polyrocketmatt.delegate.impl.command;
 
 import com.github.polyrocketmatt.delegate.api.command.ICommandFactory;
+import com.github.polyrocketmatt.delegate.core.command.DelegateCommandBuilder;
 import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
 
-/**
- * Represents a factory for creating commands.
- *
- * @since 0.0.1
- * @author Matthias Kovacic
- */
-public class CommandFactory implements ICommandFactory {
+public class BukkitCommandFactory implements ICommandFactory {
 
     /**
      * Creates a new {@link DelegateCommandBuilder} with the given name and description.
@@ -19,8 +14,13 @@ public class CommandFactory implements ICommandFactory {
      * @param description The description of the command.
      * @return The new {@link DelegateCommandBuilder}.
      */
-    public DelegateCommandBuilder create(String name, String description) {
-        return new DelegateCommandBuilder().with(new NameDefinition(name)).with(new DescriptionDefinition(description));
-    }
+    @Override
+    public BukkitCommandBuilder create(String name, String description) {
+        BukkitCommandBuilder builder = new BukkitCommandBuilder();
 
+        builder.withDefinition(new NameDefinition(name));
+        builder.withDefinition(new DescriptionDefinition(description));
+
+        return builder;
+    }
 }
