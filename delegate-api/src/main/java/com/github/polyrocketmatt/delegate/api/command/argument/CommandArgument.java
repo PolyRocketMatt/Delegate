@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
+import static com.github.polyrocketmatt.delegate.api.StringUtils.newId;
+
 /**
  * Represents a command argument of a specific type.
  *
@@ -30,6 +32,18 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
     /**
      * Creates a new command argument with an identifier and description.
      *
+     * @param argumentDescription The description of the argument.
+     */
+    public CommandArgument(String argumentDescription) {
+        super(newId());
+        this.argumentDescription = argumentDescription;
+        this.argumentRules = List.of();
+        this.defaultValue = null;
+    }
+
+    /**
+     * Creates a new command argument with an identifier and description.
+     *
      * @param identifier The identifier of the argument.
      * @param argumentDescription The description of the argument.
      */
@@ -37,6 +51,21 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
         super(identifier);
         this.argumentDescription = argumentDescription;
         this.argumentRules = List.of();
+        this.defaultValue = null;
+    }
+
+    /**
+     * Creates a new command argument with an identifier, description and
+     * argument rules that must be met for the argument to be valid.
+     *
+     * @param argumentDescription The description of the argument.
+     * @param argumentRules The argument rules that must be met for the argument to be valid.
+     */
+    @SafeVarargs
+    public CommandArgument(String argumentDescription, ArgumentRule<String, ?>... argumentRules) {
+        super(newId());
+        this.argumentDescription = argumentDescription;
+        this.argumentRules = Arrays.asList(argumentRules);
         this.defaultValue = null;
     }
 
