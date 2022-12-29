@@ -1,5 +1,7 @@
 package com.github.polyrocketmatt.delegate.core.command.properties;
 
+import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
+
 /**
  * Represents a {@link CommandProperty} that allows the command to be integrated with the
  * Minecraft Brigadier system.

@@ -1,6 +1,6 @@
 package com.github.polyrocketmatt.delegate.core.command;
 
-import com.github.polyrocketmatt.delegate.core.entity.CommanderEntity;
+import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 
 /**
  * Record that contains information about a command that has been dispatched

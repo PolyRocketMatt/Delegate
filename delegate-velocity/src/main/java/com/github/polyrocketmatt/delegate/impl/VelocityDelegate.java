@@ -12,7 +12,7 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import java.io.File;
 import java.util.logging.Logger;
 
-import static com.github.polyrocketmatt.delegate.core.Delegate.getDelegate;
+import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
 
 @Plugin(
         id = "delegate",

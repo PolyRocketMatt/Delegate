@@ -1,5 +1,6 @@
 package com.github.polyrocketmatt.delegate.core.command.definition;
 
+import com.github.polyrocketmatt.delegate.api.command.definition.CommandDefinition;
 import com.github.polyrocketmatt.delegate.core.command.DelegateCommandBuilder;
 
 /**

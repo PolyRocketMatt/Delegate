@@ -1,27 +1,28 @@
 package com.github.polyrocketmatt.delegate.core.command;
 
 import com.github.polyrocketmatt.delegate.api.AttributeType;
-import com.github.polyrocketmatt.delegate.api.ICommandAttribute;
-import com.github.polyrocketmatt.delegate.api.ICommandBuilder;
-import com.github.polyrocketmatt.delegate.core.command.action.CommandAction;
-import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
+import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
+import com.github.polyrocketmatt.delegate.api.command.ICommandAttribute;
+import com.github.polyrocketmatt.delegate.api.command.ICommandBuilder;
+import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
+import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.FloatArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.IntArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.StringArgument;
-import com.github.polyrocketmatt.delegate.core.command.definition.CommandDefinition;
+import com.github.polyrocketmatt.delegate.api.command.definition.CommandDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.SubcommandDefinition;
 import com.github.polyrocketmatt.delegate.core.command.properties.AsyncProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.BrigadierProperty;
-import com.github.polyrocketmatt.delegate.core.command.properties.CommandProperty;
+import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProperty;
-import com.github.polyrocketmatt.delegate.core.exception.AttributeException;
+import com.github.polyrocketmatt.delegate.api.exception.AttributeException;
 import com.github.polyrocketmatt.delegate.core.handlers.AttributeHandler;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
 
-import static com.github.polyrocketmatt.delegate.core.Delegate.getDelegate;
+import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
 
 /**
  * Represents an extendable chain of attributes that can be applied to a command.

@@ -1,8 +1,11 @@
 package com.github.polyrocketmatt.delegate.core.command.argument.rule;
 
-import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
-import com.github.polyrocketmatt.delegate.core.command.data.ActionItem;
-import com.github.polyrocketmatt.delegate.core.command.data.ActionResult;
+import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
+import com.github.polyrocketmatt.delegate.api.command.argument.rule.ArgumentRule;
+import com.github.polyrocketmatt.delegate.api.command.argument.rule.ArgumentRuleResult;
+import com.github.polyrocketmatt.delegate.api.command.argument.rule.RuleData;
+import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
+import com.github.polyrocketmatt.delegate.api.command.data.ActionResult;
 
 import java.lang.reflect.Field;
 

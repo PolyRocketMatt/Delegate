@@ -1,9 +1,9 @@
 package com.github.polyrocketmatt.delegate.core.handlers;
 
 import com.github.polyrocketmatt.delegate.api.IHandler;
-import com.github.polyrocketmatt.delegate.core.annotations.Command;
-import com.github.polyrocketmatt.delegate.core.annotations.CommandAlias;
-import com.github.polyrocketmatt.delegate.core.exception.AnnotationParseException;
+import com.github.polyrocketmatt.delegate.api.annotations.Command;
+import com.github.polyrocketmatt.delegate.api.annotations.CommandAlias;
+import com.github.polyrocketmatt.delegate.api.exception.AnnotationParseException;
 
 import java.lang.annotation.Annotation;
 import java.util.Arrays;

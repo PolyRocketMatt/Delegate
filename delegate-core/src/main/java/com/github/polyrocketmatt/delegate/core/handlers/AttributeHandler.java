@@ -2,24 +2,24 @@ package com.github.polyrocketmatt.delegate.core.handlers;
 
 import com.github.polyrocketmatt.delegate.api.IHandler;
 import com.github.polyrocketmatt.delegate.core.command.AttributedDelegateCommand;
-import com.github.polyrocketmatt.delegate.core.command.CommandBuffer;
-import com.github.polyrocketmatt.delegate.core.command.CommandAttribute;
+import com.github.polyrocketmatt.delegate.api.command.CommandBuffer;
+import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
 import com.github.polyrocketmatt.delegate.core.command.DelegateCommandBuilder;
-import com.github.polyrocketmatt.delegate.core.command.action.CommandAction;
+import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandNode;
 import com.github.polyrocketmatt.delegate.core.command.DelegateCommand;
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
-import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
+import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.SubcommandDefinition;
-import com.github.polyrocketmatt.delegate.core.command.properties.CommandProperty;
-import com.github.polyrocketmatt.delegate.core.exception.AttributeException;
+import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
+import com.github.polyrocketmatt.delegate.api.exception.AttributeException;
 import com.github.polyrocketmatt.delegate.core.utils.Tuple;
 
 import java.util.List;
 
-import static com.github.polyrocketmatt.delegate.core.Delegate.getDelegate;
+import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
 
 /**
  * Handler that is responsible for processing and verifying the attributes of a command.

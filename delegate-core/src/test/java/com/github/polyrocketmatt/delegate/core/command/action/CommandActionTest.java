@@ -1,9 +1,9 @@
 package com.github.polyrocketmatt.delegate.core.command.action;
 
-import com.github.polyrocketmatt.delegate.core.command.CommandBuffer;
+import com.github.polyrocketmatt.delegate.api.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.core.command.argument.StringArgument;
-import com.github.polyrocketmatt.delegate.core.command.data.ActionItem;
-import com.github.polyrocketmatt.delegate.core.command.data.ActionResult;
+import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
+import com.github.polyrocketmatt.delegate.api.command.data.ActionResult;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

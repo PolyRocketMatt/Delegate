@@ -1,11 +1,11 @@
 package com.github.polyrocketmatt.delegate.api;
 
-public interface IPlatform {
+import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 
-    String getPluginVersion();
+public interface IPlatform {
 
     PlatformType getPlatformType();
 
-    boolean hasPermission(String permission) throws UnsupportedOperationException;
+    boolean hasPermission(CommanderEntity entity, String permission) throws UnsupportedOperationException;
 
 }

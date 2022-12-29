@@ -1,10 +1,11 @@
 package com.github.polyrocketmatt.delegate.core.command;
 
-import com.github.polyrocketmatt.delegate.core.command.action.CommandAction;
-import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
+import com.github.polyrocketmatt.delegate.api.command.CommandBuffer;
+import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
+import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
-import com.github.polyrocketmatt.delegate.core.command.properties.CommandProperty;
+import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
 
 /**
  * Implements the {@link DelegateCommand} interface and provides a class that stores

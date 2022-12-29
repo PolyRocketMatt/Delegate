@@ -1,19 +1,19 @@
 package com.github.polyrocketmatt.delegate.core.handlers;
 
 import com.github.polyrocketmatt.delegate.api.IHandler;
-import com.github.polyrocketmatt.delegate.core.command.CommandBuffer;
+import com.github.polyrocketmatt.delegate.api.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.core.command.CommandDispatchInformation;
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
-import com.github.polyrocketmatt.delegate.core.command.action.CommandAction;
-import com.github.polyrocketmatt.delegate.core.command.argument.CommandArgument;
+import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
+import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.core.command.properties.AsyncProperty;
-import com.github.polyrocketmatt.delegate.core.command.properties.CommandProperty;
+import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProperty;
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandNode;
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandTree;
 import com.github.polyrocketmatt.delegate.core.command.tree.QueryResultNode;
-import com.github.polyrocketmatt.delegate.core.command.data.ActionResult;
-import com.github.polyrocketmatt.delegate.core.exception.CommandExecutionException;
+import com.github.polyrocketmatt.delegate.api.command.data.ActionResult;
+import com.github.polyrocketmatt.delegate.api.exception.CommandExecutionException;
 
 import java.util.HashMap;
 import java.util.List;
