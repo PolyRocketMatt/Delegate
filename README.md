@@ -30,6 +30,9 @@ annotations).
 - Runtime-based command registration and execution
 - Many more...
 
+*Note*: Some features are only available on certain platforms. Please check the 
+[feature matrix](#feature-matrix) below  to see which features are available on which platform.
+
 ## Supported Platforms
 
 Currently, Delegate supports the following platforms:
@@ -41,7 +44,9 @@ Currently, Delegate supports the following platforms:
 
 ## Getting Started
 
-Delegate is designed with [fluent interfaces](https://en.wikipedia.org/wiki/Fluent_interface) in mind. 
+## Examples
+
+Delegate is designed with [fluent interfaces](https://en.wikipedia.org/wiki/Fluent_interface) in mind.
 This means that you can easily chain methods together to create a command. For example:
 
 ```java
@@ -59,11 +64,18 @@ public class ExamplePlugin extends JavaPlugin {
 }
 ```
 
-When you are finished creating the definition of the command, the `build()` method 
+When you are finished creating the definition of the command, the `build()` method
 can be called. This will construct and register the command behind the scenes. If you
 do not wish to register the command, you can use the `construct()` method instead.
 
-## Examples
+## Feature Matrix
+
+|      Feature      | Paper  | Velocity  | Sponge |
+|:-----------------:|:------:|:---------:|:------:|
+| Fluent Interface  |   ✔    |     ✔     |   ❌    |
+|     Brigadier     |   ✔    |     ✔     |   ❌    |
+|  Tab Completion   |   ✔    |     ✔     |   ❌    |
+
 
 ## Documentation
 
