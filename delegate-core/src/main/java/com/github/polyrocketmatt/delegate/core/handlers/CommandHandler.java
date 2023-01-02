@@ -53,6 +53,8 @@ public class CommandHandler implements IHandler {
      */
     public void registerTree(CommandNode root) {
         this.commandTree.add(root);
+
+        getDelegate().getPlatform().register(root.getCommand());
     }
 
     /**

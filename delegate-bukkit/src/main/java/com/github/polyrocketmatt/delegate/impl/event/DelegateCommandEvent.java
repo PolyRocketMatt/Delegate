@@ -2,12 +2,10 @@ package com.github.polyrocketmatt.delegate.impl.event;
 
 import com.github.polyrocketmatt.delegate.api.command.CommandDispatchInformation;
 import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
-import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.entity.PlayerCommander;
 import com.github.polyrocketmatt.delegate.api.event.CommandEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
