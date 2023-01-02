@@ -67,7 +67,7 @@ public class IntArgument extends CommandArgument<Integer> {
     @Override
     public Argument<Integer> parse(String input, Consumer<Exception> onFail) {
         try {
-            return new Argument<>(Integer.parseInt(input));
+            return new Argument<>(getIdentifier(), Integer.parseInt(input));
         } catch (NumberFormatException ex) {
             onFail.accept(ex);
         }

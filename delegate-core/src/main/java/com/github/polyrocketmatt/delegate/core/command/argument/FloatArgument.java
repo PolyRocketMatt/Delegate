@@ -67,7 +67,7 @@ public class FloatArgument extends CommandArgument<Float> {
     @Override
     public Argument<Float> parse(String input, Consumer<Exception> consumer) {
         try {
-            return new Argument<>(Float.parseFloat(input));
+            return new Argument<>(getIdentifier(), Float.parseFloat(input));
         } catch (NumberFormatException ex) {
             consumer.accept(ex);
         }

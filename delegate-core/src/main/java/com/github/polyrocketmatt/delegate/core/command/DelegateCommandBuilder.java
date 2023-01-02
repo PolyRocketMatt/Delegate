@@ -5,6 +5,7 @@ import com.github.polyrocketmatt.delegate.api.command.ICommandBuilder;
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
+import com.github.polyrocketmatt.delegate.api.command.argument.Index;
 import com.github.polyrocketmatt.delegate.api.command.definition.CommandDefinition;
 import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
 import com.github.polyrocketmatt.delegate.core.command.action.ConsumerAction;
@@ -148,19 +149,20 @@ public abstract class DelegateCommandBuilder implements ICommandBuilder {
         return attributes.size();
     }
 
-    public ICommandBuilder withAction(Consumer<List<Argument<?>>> action) {
+    /*
+    public ICommandBuilder withAction(Consumer<Index> action) {
         return this.with(new ConsumerAction(action));
     }
 
-    public ICommandBuilder withAction(int precedence, Consumer<List<Argument<?>>> action) {
+    public ICommandBuilder withAction(int precedence, Consumer<Index> action) {
         return this.with(new ConsumerAction(precedence, action));
     }
 
-    public ICommandBuilder withAction(Function<List<Argument<?>>, ?> action) {
+    public ICommandBuilder withAction(Function<Index, ?> action) {
         return this.with(new FunctionAction(action));
     }
 
-    public ICommandBuilder withAction(int precedence, Function<List<Argument<?>>, ?> action) {
+    public ICommandBuilder withAction(int precedence, Function<Index, ?> action) {
         return this.with(new FunctionAction(precedence, action));
     }
 
@@ -179,5 +181,7 @@ public abstract class DelegateCommandBuilder implements ICommandBuilder {
     public <T> ICommandBuilder withAction(int precedence, Supplier<T> action) {
         return this.with(new SupplierAction<>(precedence, action));
     }
+
+     */
 
 }

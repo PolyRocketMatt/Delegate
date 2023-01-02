@@ -66,7 +66,7 @@ public class StringArgument extends CommandArgument<String> {
 
     @Override
     public Argument<String> parse(String input, Consumer<Exception> onFail) {
-        return (input == null) ? getDefault() : new Argument<>(input);
+        return (input == null) ? getDefault() : new Argument<>(getIdentifier(), input);
     }
 
     /**

@@ -46,7 +46,6 @@ public class LocationArgument extends CommandArgument<Location> {
         SIMPLE_DOT(Pattern.compile("-?\\d+\\.-?\\d+\\.-?\\d+")),
         SIMPLE_COMMA(Pattern.compile("-?\\d+,-?\\d+,-?\\d+")),
         VERBOSE(Pattern.compile("\\[x=\\d+,y=\\d+,z=\\d+\\]")),
-
         WORLD_VERBOSE(Pattern.compile("\\[world=[a-zA-Z0-9],x=\\d+,y=\\d+,z=\\d+\\]"));
 
         private final Pattern format;

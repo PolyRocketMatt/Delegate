@@ -19,17 +19,17 @@ public interface ICommandBuilder {
 
     ICommandBuilder withArgument(CommandArgument<?> argument);
 
-    ICommandBuilder withFloat(String description);
+    ICommandBuilder withFloat(String name, String description);
 
-    ICommandBuilder withFloat(String description, float defaultValue);
+    ICommandBuilder withFloat(String name, String description, float defaultValue);
 
-    ICommandBuilder withInt(String description);
+    ICommandBuilder withInt(String name, String description);
 
-    ICommandBuilder withInt(String description, int defaultValue);
+    ICommandBuilder withInt(String name, String description, int defaultValue);
 
-    ICommandBuilder withString(String description);
+    ICommandBuilder withString(String name, String description);
 
-    ICommandBuilder withString(String description, String defaultValue);
+    ICommandBuilder withString(String name, String description, String defaultValue);
 
     ICommandBuilder withDefinition(CommandDefinition<?> definition);
 

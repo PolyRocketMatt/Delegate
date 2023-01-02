@@ -5,10 +5,16 @@ import com.github.polyrocketmatt.delegate.api.command.ICommandAttribute;
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
+import com.github.polyrocketmatt.delegate.api.command.argument.Index;
 import com.github.polyrocketmatt.delegate.api.command.definition.CommandDefinition;
 import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
+import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.exception.AttributeException;
 import com.github.polyrocketmatt.delegate.core.command.DelegateCommandBuilder;
+import com.github.polyrocketmatt.delegate.core.command.action.ConsumerAction;
+import com.github.polyrocketmatt.delegate.core.command.action.FunctionAction;
+import com.github.polyrocketmatt.delegate.core.command.action.RunnableAction;
+import com.github.polyrocketmatt.delegate.core.command.action.SupplierAction;
 import com.github.polyrocketmatt.delegate.core.command.argument.FloatArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.IntArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.StringArgument;
@@ -18,6 +24,8 @@ import com.github.polyrocketmatt.delegate.core.command.properties.BrigadierPrope
 import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProperty;
 
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -74,70 +82,76 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
     /**
      * Append a new {@link FloatArgument} to the chain with the given description.
      *
+     * @param name The name of the argument.
      * @param description The description of the argument.
      * @return The current chain.
      */
     @Override
-    public BukkitCommandBuilder withFloat(String description) {
-        return this.with(FloatArgument.of(newId(), description));
+    public BukkitCommandBuilder withFloat(String name, String description) {
+        return this.with(FloatArgument.of(name, description));
     }
 
     /**
      * Append a new {@link FloatArgument} to the chain with the given description and default value.
      *
+     * @param name The name of the argument.
      * @param description The description of the argument.
      * @param defaultValue The default value of the argument.
      * @return The current chain.
      */
     @Override
-    public BukkitCommandBuilder withFloat(String description, float defaultValue) {
-        return this.with(FloatArgument.of(newId(), description, defaultValue));
+    public BukkitCommandBuilder withFloat(String name, String description, float defaultValue) {
+        return this.with(FloatArgument.of(name, description, defaultValue));
     }
 
     /**
      * Append a new {@link IntArgument} to the chain with the given description.
      *
+     * @param name The name of the argument.
      * @param description The description of the argument.
      * @return The current chain.
      */
     @Override
-    public BukkitCommandBuilder withInt(String description) {
-        return this.with(IntArgument.of(newId(), description));
+    public BukkitCommandBuilder withInt(String name, String description) {
+        return this.with(IntArgument.of(name, description));
     }
 
     /**
      * Append a new {@link IntArgument} to the chain with the given description and default value.
      *
+     * @param name The name of the argument.
      * @param description The description of the argument.
      * @param defaultValue The default value of the argument.
      * @return The current chain.
      */
     @Override
-    public BukkitCommandBuilder withInt(String description, int defaultValue) {
-        return this.with(IntArgument.of(newId(), description, defaultValue));
+    public BukkitCommandBuilder withInt(String name, String description, int defaultValue) {
+        return this.with(IntArgument.of(name, description, defaultValue));
     }
 
     /**
      * Append a new {@link StringArgument} to the chain with the given description.
      *
+     * @param name The name of the argument.
      * @param description The description of the argument.
      * @return The current chain.
      */
     @Override
-    public BukkitCommandBuilder withString(String description) {
-        return this.with(StringArgument.of(newId(), description));
+    public BukkitCommandBuilder withString(String name, String description) {
+        return this.with(StringArgument.of(name, description));
     }
 
     /**
      * Append a new {@link StringArgument} to the chain with the given description and default value.
      *
+     * @param name The name of the argument.
      * @param description The description of the argument.
      * @param defaultValue The default value of the argument.
      * @return The current chain.
      */
     @Override
-    public BukkitCommandBuilder withString(String description, String defaultValue) {
-        return this.with(StringArgument.of(newId(), description, defaultValue));
+    public BukkitCommandBuilder withString(String name, String description, String defaultValue) {
+        return this.with(StringArgument.of(name, description, defaultValue));
     }
 
     /**
@@ -205,23 +219,19 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
         return this.with(new IgnoreNullProperty());
     }
 
-    @Override
-    public BukkitCommandBuilder withAction(Consumer<List<Argument<?>>> action) {
-        return (BukkitCommandBuilder) super.withAction(action);
+    public BukkitCommandBuilder withAction(BiConsumer<CommanderEntity, Index> action) {
+        return this.with(new ConsumerAction(action));
     }
 
-    @Override
-    public BukkitCommandBuilder withAction(Function<List<Argument<?>>, ?> action) {
-        return (BukkitCommandBuilder) super.withAction(action);
+    public BukkitCommandBuilder withAction(BiFunction<CommanderEntity, Index, ?> action) {
+        return this.with(new FunctionAction(action));
     }
 
-    @Override
     public BukkitCommandBuilder withAction(Runnable action) {
-        return (BukkitCommandBuilder) super.withAction(action);
+        return this.with(new RunnableAction(action));
     }
 
-    @Override
     public <T> BukkitCommandBuilder withAction(Supplier<T> action) {
-        return (BukkitCommandBuilder) super.withAction(action);
+        return this.with(new SupplierAction<>(action));
     }
 }

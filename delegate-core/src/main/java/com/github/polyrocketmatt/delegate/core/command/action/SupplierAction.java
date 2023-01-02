@@ -6,6 +6,7 @@ import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
 import com.github.polyrocketmatt.delegate.api.command.data.ActionResult;
 import com.github.polyrocketmatt.delegate.api.command.data.FailureActionResult;
 import com.github.polyrocketmatt.delegate.api.command.CommandBuffer;
+import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -24,18 +25,6 @@ public class SupplierAction<T> extends CommandAction {
     private final Supplier<T> action;
 
     /**
-     * Creates a new {@link SupplierAction} with an identifier, precedence and {@link Supplier}.
-     *
-     * @param identifier The identifier of the command action.
-     * @param precedence The precedence of the command action.
-     * @param action The {@link Consumer} that will be executed.
-     */
-    public SupplierAction(int precedence, Supplier<T> action) {
-        super(newId(), precedence);
-        this.action = action;
-    }
-
-    /**
      * Creates a new {@link SupplierAction} with an identifier and {@link Consumer} and
      * a default precedence of 0.
      *
@@ -47,8 +36,31 @@ public class SupplierAction<T> extends CommandAction {
         this.action = action;
     }
 
+    /**
+     * Creates a new {@link SupplierAction} with an identifier, precedence and {@link Supplier}.
+     *
+     * @param precedence The precedence of the command action.
+     * @param action The {@link Consumer} that will be executed.
+     */
+    public SupplierAction(int precedence, Supplier<T> action) {
+        super(newId(), precedence);
+        this.action = action;
+    }
+
+    /**
+     * Creates a new {@link SupplierAction} with an identifier, precedence and {@link Supplier}.
+     *
+     * @param identifier The identifier of the command action.
+     * @param precedence The precedence of the command action.
+     * @param action The {@link Consumer} that will be executed.
+     */
+    public SupplierAction(String identifier, int precedence, Supplier<T> action) {
+        super(identifier, precedence);
+        this.action = action;
+    }
+
     @Override
-    public ActionResult run(CommandBuffer<CommandArgument<?>> arguments, List<String> inputs) {
+    public ActionResult run(CommanderEntity commander, CommandBuffer<CommandArgument<?>> arguments, List<String> inputs) {
         try {
             return new ActionItem<>(ActionResult.Result.SUCCESS, action.get());
         } catch (Exception ex) {

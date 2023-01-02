@@ -2,6 +2,7 @@ package com.github.polyrocketmatt.delegate.core.handlers;
 
 import com.github.polyrocketmatt.delegate.api.IHandler;
 import com.github.polyrocketmatt.delegate.api.command.CommandBuffer;
+import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.core.command.CommandDispatchInformation;
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
@@ -62,6 +63,7 @@ public class CommandHandler implements IHandler {
      * @throws CommandExecutionException If an error occurred while parsing the information.
      */
     public boolean handle(CommandDispatchInformation information) throws CommandExecutionException {
+        CommanderEntity commander = information.commander();
         String commandName = information.command();
         String[] commandArguments = information.arguments();
 
@@ -133,7 +135,7 @@ public class CommandHandler implements IHandler {
         return verifiedArguments;
     }
 
-    private Map<String, ActionResult> execute(VerifiedDelegateCommand command, String[] arguments) {
+    private Map<String, ActionResult> execute(CommanderEntity commander, VerifiedDelegateCommand command, String[] arguments) {
         //  Get the arguments
         CommandBuffer<CommandArgument<?>> commandArguments = command.getArgumentBuffer();
 
@@ -162,10 +164,10 @@ public class CommandHandler implements IHandler {
 
             if (async) {
                 for (CommandAction action : actionsWithPrecedence)
-                        executor.execute(() -> results.put(action.getIdentifier(), action.run(commandArguments, inputs)));
+                        executor.execute(() -> results.put(action.getIdentifier(), action.run(commander, commandArguments, inputs)));
             } else {
                 for (CommandAction action : actionsWithPrecedence)
-                    results.put(action.getIdentifier(), action.run(commandArguments, inputs));
+                    results.put(action.getIdentifier(), action.run(commander, commandArguments, inputs));
             }
         }
 
