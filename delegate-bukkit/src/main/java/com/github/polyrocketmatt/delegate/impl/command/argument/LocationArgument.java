@@ -26,15 +26,10 @@ public class LocationArgument extends CommandArgument<Location> {
 
     @Override
     public Argument<Location> parse(String input, Consumer<Exception> consumer) {
-        try {
-            if (format.getRuleFormat().matches(input)) {
-
-            }
-        } catch (NumberFormatException ex) {
-            onFail("", ex);
-        }
-
-        return getDefault();
+        if (format.getRuleFormat().matches(input))
+            return new Argument<>(getIdentifier(), format.getRuleFormat().parse(input));
+        else
+            throw onFail(input, new ArgumentParseException("The input '" + input + "' does not match the required format."));
     }
 
     @Override
