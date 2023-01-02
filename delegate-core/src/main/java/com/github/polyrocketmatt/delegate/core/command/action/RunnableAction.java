@@ -3,7 +3,7 @@ package com.github.polyrocketmatt.delegate.core.command.action;
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.api.command.CommandBuffer;
-import com.github.polyrocketmatt.delegate.api.command.data.ActionResult;
+import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
 import com.github.polyrocketmatt.delegate.api.command.data.FailureActionResult;
 import com.github.polyrocketmatt.delegate.api.command.data.SuccessActionResult;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
@@ -48,7 +48,7 @@ public class RunnableAction extends CommandAction {
     }
 
     @Override
-    public ActionResult run(CommanderEntity commander, CommandBuffer<CommandArgument<?>> arguments, List<String> inputs) {
+    public ActionItem<?> run(CommanderEntity commander, CommandBuffer<CommandArgument<?>> arguments, List<String> inputs) {
         try {
             action.run();
         } catch (Exception ex) {

@@ -2,7 +2,7 @@ package com.github.polyrocketmatt.delegate.api.command.action;
 
 import com.github.polyrocketmatt.delegate.api.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
-import com.github.polyrocketmatt.delegate.api.command.data.ActionResult;
+import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Defines a function that runs some block of code given the expected
  * {@link CommandArgument}s and the actual inputs provided by the user
- * and returns an {@link ActionResult} that can be used to determine
+ * and returns an {@link ActionItem} that can be used to determine
  * if the command was successful or not.
  *
  * @since 0.0.1
@@ -20,7 +20,7 @@ public interface RunnableCommandAction {
 
     /**
      * Runs the command action with the given arguments, inputs and
-     * returns an {@link ActionResult} that can be used to determine
+     * returns an {@link ActionItem} that can be used to determine
      * if the command was successful or not.
      *
      * @param commander The {@link CommanderEntity} that dispatched the command.
@@ -28,6 +28,6 @@ public interface RunnableCommandAction {
      * @param inputs The actual inputs provided by the user.
      * @return The result of the command.
      */
-    ActionResult run(CommanderEntity commander, CommandBuffer<CommandArgument<?>> arguments, List<String> inputs);
+    ActionItem<?> run(CommanderEntity commander, CommandBuffer<CommandArgument<?>> arguments, List<String> inputs);
 
 }

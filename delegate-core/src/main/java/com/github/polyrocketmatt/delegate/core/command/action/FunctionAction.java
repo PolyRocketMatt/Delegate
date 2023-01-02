@@ -5,7 +5,6 @@ import com.github.polyrocketmatt.delegate.api.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.api.command.argument.Index;
 import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
-import com.github.polyrocketmatt.delegate.api.command.data.ActionResult;
 import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.data.FailureActionResult;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
@@ -64,7 +63,7 @@ public class FunctionAction extends CommandAction {
     }
 
     @Override
-    public ActionResult run(CommanderEntity commander, CommandBuffer<CommandArgument<?>> arguments, List<String> inputs) {
+    public ActionItem<?> run(CommanderEntity commander, CommandBuffer<CommandArgument<?>> arguments, List<String> inputs) {
         int maxIndex = min(inputs.size(), arguments.size());
 
         List<Argument<?>> inputItems = new ArrayList<>();
@@ -74,7 +73,7 @@ public class FunctionAction extends CommandAction {
             //  Convert to index
             Index index = new Index(inputItems);
 
-            return new ActionItem<>(ActionResult.Result.SUCCESS, action.apply(commander, index));
+            return new ActionItem<>(ActionItem.Result.SUCCESS, action.apply(commander, index));
         } catch (Exception ex) {
             return new FailureActionResult(ex);
         }

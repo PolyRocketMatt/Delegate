@@ -60,9 +60,9 @@ public class SupplierAction<T> extends CommandAction {
     }
 
     @Override
-    public ActionResult run(CommanderEntity commander, CommandBuffer<CommandArgument<?>> arguments, List<String> inputs) {
+    public ActionItem<?> run(CommanderEntity commander, CommandBuffer<CommandArgument<?>> arguments, List<String> inputs) {
         try {
-            return new ActionItem<>(ActionResult.Result.SUCCESS, action.get());
+            return new ActionItem<>(ActionItem.Result.SUCCESS, action.get());
         } catch (Exception ex) {
             return new FailureActionResult(ex);
         }

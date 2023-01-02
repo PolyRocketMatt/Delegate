@@ -1,4 +1,4 @@
-package com.github.polyrocketmatt.delegate.core.command;
+package com.github.polyrocketmatt.delegate.api.command;
 
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 

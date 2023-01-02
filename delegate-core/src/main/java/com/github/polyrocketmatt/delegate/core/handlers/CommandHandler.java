@@ -2,8 +2,9 @@ package com.github.polyrocketmatt.delegate.core.handlers;
 
 import com.github.polyrocketmatt.delegate.api.IHandler;
 import com.github.polyrocketmatt.delegate.api.command.CommandBuffer;
+import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
-import com.github.polyrocketmatt.delegate.core.command.CommandDispatchInformation;
+import com.github.polyrocketmatt.delegate.api.command.CommandDispatchInformation;
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
@@ -13,14 +14,14 @@ import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProp
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandNode;
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandTree;
 import com.github.polyrocketmatt.delegate.core.command.tree.QueryResultNode;
-import com.github.polyrocketmatt.delegate.api.command.data.ActionResult;
 import com.github.polyrocketmatt.delegate.api.exception.CommandExecutionException;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
+
+import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
 
 /**
  * Handler that is responsible for processing and dispatching commands.
@@ -82,8 +83,10 @@ public class CommandHandler implements IHandler {
         String[] verifiedArguments = this.verifyArguments(command, remainingArguments);
 
         //  We can execute the command with the remaining arguments
+        List<CommandCapture.Capture> captures = this.execute(commander, command, verifiedArguments);
+        CommandCapture capture = new CommandCapture(captures);
 
-        return true;
+        return getDelegate().getPlatform().dispatch(information, capture);
     }
 
     private String[] verifyArguments(VerifiedDelegateCommand command, String[] arguments) {
@@ -135,7 +138,7 @@ public class CommandHandler implements IHandler {
         return verifiedArguments;
     }
 
-    private Map<String, ActionResult> execute(CommanderEntity commander, VerifiedDelegateCommand command, String[] arguments) {
+    private List<CommandCapture.Capture> execute(CommanderEntity commander, VerifiedDelegateCommand command, String[] arguments) {
         //  Get the arguments
         CommandBuffer<CommandArgument<?>> commandArguments = command.getArgumentBuffer();
 
@@ -154,7 +157,7 @@ public class CommandHandler implements IHandler {
 
         //  Verification of arguments ensures correct order of arguments
         List<String> inputs = List.of(arguments);
-        Map<String, ActionResult> results = new HashMap<>();
+        List<CommandCapture.Capture> captures = new ArrayList<>();
         ExecutorService executor = new ForkJoinPool(threadCount);
 
         for (int precedence : precedences) {
@@ -164,14 +167,16 @@ public class CommandHandler implements IHandler {
 
             if (async) {
                 for (CommandAction action : actionsWithPrecedence)
-                        executor.execute(() -> results.put(action.getIdentifier(), action.run(commander, commandArguments, inputs)));
+                        executor.execute(() -> captures.add(
+                                new CommandCapture.Capture(action.getIdentifier(), action.run(commander, commandArguments, inputs))));
             } else {
                 for (CommandAction action : actionsWithPrecedence)
-                    results.put(action.getIdentifier(), action.run(commander, commandArguments, inputs));
+                    captures.add(
+                            new CommandCapture.Capture(action.getIdentifier(), action.run(commander, commandArguments, inputs)));
             }
         }
 
-        return results;
+        return captures;
     }
 
     /**

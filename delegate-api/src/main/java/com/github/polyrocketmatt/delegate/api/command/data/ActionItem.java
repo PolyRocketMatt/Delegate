@@ -3,27 +3,34 @@ package com.github.polyrocketmatt.delegate.api.command.data;
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
 
 /**
- * Represents an {@link ActionResult} from a {@link CommandAction}
- * that produced an object of type {@link T}.
- *
- * @param <T> The type of object produced by the {@link CommandAction}.
+ * Represents a result produced by a {@link CommandAction}.
  *
  * @since 0.0.1
  * @author Matthias Kovacic
  */
-public class ActionItem<T> extends ActionResult {
+public class ActionItem<T> implements ActionResult {
 
+    private final Result result;
     private final T item;
 
     /**
-     * Creates a new {@link ActionItem} with the given {@link Result} and item.
+     * Creates a new {@link ActionItem} with the given {@link Result}.
      *
      * @param result The {@link Result} of the {@link CommandAction}.
-     * @param item The item produced by the {@link CommandAction}.
+     * @param item The item that was produced by the {@link CommandAction}.
      */
     public ActionItem(Result result, T item) {
-        super(result);
+        this.result = result;
         this.item = item;
+    }
+
+    /**
+     * Gets the result produced by the {@link CommandAction}.
+     *
+     * @return The result produced by the {@link CommandAction}.
+     */
+    public Result getResult() {
+        return result;
     }
 
     /**
@@ -34,4 +41,13 @@ public class ActionItem<T> extends ActionResult {
     public T getItem() {
         return item;
     }
+
+    /**
+     * Enum representing the result of a {@link CommandAction}.
+     */
+    public enum Result {
+        SUCCESS,
+        FAILURE
+    }
+
 }
