@@ -223,15 +223,32 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
         return this.with(new ConsumerAction(action));
     }
 
+    public BukkitCommandBuilder withAction(String identifier, BiConsumer<CommanderEntity, Index> action) {
+        return this.with(new ConsumerAction(identifier, action));
+    }
+
     public BukkitCommandBuilder withAction(BiFunction<CommanderEntity, Index, ?> action) {
         return this.with(new FunctionAction(action));
+    }
+
+    public BukkitCommandBuilder withAction(String identifier, BiFunction<CommanderEntity, Index, ?> action) {
+        return this.with(new FunctionAction(identifier, action));
     }
 
     public BukkitCommandBuilder withAction(Runnable action) {
         return this.with(new RunnableAction(action));
     }
 
+    public BukkitCommandBuilder withAction(String identifier, Runnable action) {
+        return this.with(new RunnableAction(identifier, action));
+    }
+
     public <T> BukkitCommandBuilder withAction(Supplier<T> action) {
         return this.with(new SupplierAction<>(action));
     }
+
+    public <T> BukkitCommandBuilder withAction(String identifier, Supplier<T> action) {
+        return this.with(new SupplierAction<>(identifier, action));
+    }
+
 }

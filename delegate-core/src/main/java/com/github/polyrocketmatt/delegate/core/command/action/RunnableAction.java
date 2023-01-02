@@ -47,6 +47,30 @@ public class RunnableAction extends CommandAction {
         this.action = action;
     }
 
+    /**
+     * Creates a new {@link RunnableAction} with an identifier and {@link Runnable} and
+     * a default precedence of 0.
+     *
+     * @param identifier The identifier of the command action.
+     * @param action The {@link Runnable} that will be executed.
+     */
+    public RunnableAction(String identifier, Runnable action) {
+        super(identifier, 0);
+        this.action = action;
+    }
+
+    /**
+     * Creates a new {@link RunnableAction} with an identifier, precedence and {@link Runnable}.
+     *
+     * @param identifier The identifier of the command action.
+     * @param precedence The precedence of the command action.
+     * @param action The {@link Runnable} that will be executed.
+     */
+    public RunnableAction(String identifier, int precedence, Runnable action) {
+        super(identifier, precedence);
+        this.action = action;
+    }
+
     @Override
     public ActionItem<?> run(CommanderEntity commander, CommandBuffer<CommandArgument<?>> arguments, List<String> inputs) {
         try {

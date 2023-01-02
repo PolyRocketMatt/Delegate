@@ -55,6 +55,17 @@ public class ConsumerAction extends CommandAction {
      * Creates a new {@link ConsumerAction} with an identifier, precedence and {@link Consumer}.
      *
      * @param identifier The identifier of the command action.
+     * @param action The {@link Consumer} that will be executed.
+     */
+    public ConsumerAction(String identifier, BiConsumer<CommanderEntity, Index> action) {
+        super(identifier, 0);
+        this.action = action;
+    }
+
+    /**
+     * Creates a new {@link ConsumerAction} with an identifier, precedence and {@link Consumer}.
+     *
+     * @param identifier The identifier of the command action.
      * @param precedence The precedence of the command action.
      * @param action The {@link Consumer} that will be executed.
      */

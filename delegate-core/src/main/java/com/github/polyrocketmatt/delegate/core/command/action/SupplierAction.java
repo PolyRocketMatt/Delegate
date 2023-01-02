@@ -51,6 +51,17 @@ public class SupplierAction<T> extends CommandAction {
      * Creates a new {@link SupplierAction} with an identifier, precedence and {@link Supplier}.
      *
      * @param identifier The identifier of the command action.
+     * @param action The {@link Consumer} that will be executed.
+     */
+    public SupplierAction(String identifier, Supplier<T> action) {
+        super(identifier, 0);
+        this.action = action;
+    }
+
+    /**
+     * Creates a new {@link SupplierAction} with an identifier, precedence and {@link Supplier}.
+     *
+     * @param identifier The identifier of the command action.
      * @param precedence The precedence of the command action.
      * @param action The {@link Consumer} that will be executed.
      */

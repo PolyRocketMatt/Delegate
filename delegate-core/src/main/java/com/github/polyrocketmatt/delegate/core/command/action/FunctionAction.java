@@ -54,6 +54,17 @@ public class FunctionAction extends CommandAction {
      * Creates a new {@link FunctionAction} with an identifier, precedence and {@link Function}.
      *
      * @param identifier The identifier of the command action.
+     * @param action The {@link Function} that will be executed.
+     */
+    public FunctionAction(String identifier, BiFunction<CommanderEntity, Index, ?> action) {
+        super(identifier, 0);
+        this.action = action;
+    }
+
+    /**
+     * Creates a new {@link FunctionAction} with an identifier, precedence and {@link Function}.
+     *
+     * @param identifier The identifier of the command action.
      * @param precedence The precedence of the command action.
      * @param action The {@link Function} that will be executed.
      */
