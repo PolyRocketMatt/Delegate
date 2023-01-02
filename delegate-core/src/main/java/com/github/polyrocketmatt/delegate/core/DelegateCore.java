@@ -1,6 +1,7 @@
 package com.github.polyrocketmatt.delegate.core;
 
 import com.github.polyrocketmatt.delegate.api.DelegateAPI;
+import com.github.polyrocketmatt.delegate.api.DelegateHook;
 import com.github.polyrocketmatt.delegate.api.IHandler;
 import com.github.polyrocketmatt.delegate.api.IPlatform;
 import com.github.polyrocketmatt.delegate.api.command.ICommandFactory;
@@ -12,6 +13,7 @@ public class DelegateCore implements DelegateAPI {
 
     private static final DelegateCore instance = new DelegateCore();
 
+    private DelegateHook hook;
     private IPlatform platform;
     private final AnnotationHandler annotationHandler;
     private final AttributeHandler attributeHandler;
@@ -23,6 +25,16 @@ public class DelegateCore implements DelegateAPI {
         this.annotationHandler = new AnnotationHandler();
         this.attributeHandler = new AttributeHandler();
         this.commandHandler = new CommandHandler();
+    }
+
+    public void hook(DelegateHook hook) {
+        if (this.hook != null)
+            throw new IllegalStateException("Delegate was already hooked");
+        this.hook = hook;
+    }
+
+    public DelegateHook getHook() {
+        return hook;
     }
 
     public static DelegateAPI getDelegateAPI() {

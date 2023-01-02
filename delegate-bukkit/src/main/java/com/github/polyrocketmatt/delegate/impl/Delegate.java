@@ -28,10 +28,10 @@ public class Delegate implements IPlatform, CommandExecutor {
 
     private static final BukkitCommandFactory factory = new BukkitCommandFactory();
 
-    private Plugin plugin;
+    public Delegate() {}
 
-    public Delegate() {
-        this.plugin = null;
+    public static void hook(Plugin plugin) {
+        DelegateCore.getDelegate().hook(new BukkitHook(plugin));
     }
 
     public static DelegateAPI getDelegateAPI() {
@@ -42,8 +42,10 @@ public class Delegate implements IPlatform, CommandExecutor {
         return factory;
     }
 
-    public void hook(Plugin plugin) {
-        this.plugin = plugin;
+    private Plugin getPlugin() {
+        if (DelegateCore.getDelegate().getHook() == null)
+            throw new CommandRegistrationException("Plugin is not hooked into Delegate!");
+        return ((BukkitHook) DelegateCore.getDelegate().getHook()).plugin();
     }
 
     @Override
@@ -69,7 +71,7 @@ public class Delegate implements IPlatform, CommandExecutor {
 
             PluginCommand pluginCmd = PluginCommand.class
                     .getDeclaredConstructor(String.class, org.bukkit.plugin.Plugin.class)
-                    .newInstance(command.getNameDefinition().getValue(), this.plugin);
+                    .newInstance(command.getNameDefinition().getValue(), this.getPlugin());
 
             //  Set the command executor
             pluginCmd.setExecutor(this);
