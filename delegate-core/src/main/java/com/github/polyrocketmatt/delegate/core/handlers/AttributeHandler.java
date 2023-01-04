@@ -45,6 +45,7 @@ public class AttributeHandler implements IHandler {
      * @throws AttributeException If the command is invalid.
      */
     public VerifiedDelegateCommand process(CommandNode parent, AttributedDelegateCommand command) {
+        System.out.println("Processing command: " + command.getNameDefinition().getValue());
         DelegateCommandBuilder chain = command.getAttributeChain();
         Tuple<NameDefinition, DescriptionDefinition> header = processHeader(command.getAttributeChain());
 
@@ -77,6 +78,11 @@ public class AttributeHandler implements IHandler {
 
             parent.addChild(childNode);
         }
+
+        System.out.println("Processing Report: " + verifiedCommand.getNameDefinition().getValue());
+        System.out.println("Arguments: " + verifiedCommand.getArgumentBuffer().size());
+        System.out.println("Actions: " + verifiedCommand.getActionBuffer().size());
+        System.out.println("Properties: " + verifiedCommand.getPropertyBuffer().size());
 
         return verifiedCommand;
     }

@@ -49,6 +49,7 @@
         <module>delegate-velocity</module>
         <module>delegate-sponge</module>
         <module>delegate-api</module>
+        <module>delegate-example</module>
     </modules>
 
 </project>

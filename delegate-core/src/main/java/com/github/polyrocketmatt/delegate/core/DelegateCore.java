@@ -46,6 +46,8 @@ public class DelegateCore implements DelegateAPI {
     }
 
     public void setPlatform(IPlatform platform) {
+        System.out.println("DELEGATE -> Setting platform to " + platform.getPlatformType().name());
+
         if (this.platform != null)
             throw new IllegalStateException("Platform has already been set and cannot be changed at runtime");
         this.platform = platform;
@@ -54,11 +56,6 @@ public class DelegateCore implements DelegateAPI {
     @Override
     public IPlatform getPlatform() {
         return platform;
-    }
-
-    @Override
-    public ICommandFactory getCommandFactory() {
-        return null;
     }
 
     public IHandler getAttributeHandler() {

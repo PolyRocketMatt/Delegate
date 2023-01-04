@@ -3,22 +3,14 @@ package com.github.polyrocketmatt.delegate.core.command;
 import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
 import com.github.polyrocketmatt.delegate.api.command.ICommandBuilder;
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
-import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
-import com.github.polyrocketmatt.delegate.api.command.argument.Index;
 import com.github.polyrocketmatt.delegate.api.command.definition.CommandDefinition;
 import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
-import com.github.polyrocketmatt.delegate.core.command.action.ConsumerAction;
-import com.github.polyrocketmatt.delegate.core.command.action.FunctionAction;
-import com.github.polyrocketmatt.delegate.core.command.action.RunnableAction;
-import com.github.polyrocketmatt.delegate.core.command.action.SupplierAction;
 import com.github.polyrocketmatt.delegate.core.handlers.AttributeHandler;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
 
@@ -42,6 +34,7 @@ public abstract class DelegateCommandBuilder implements ICommandBuilder {
      */
     @Override
     public DelegateCommand build() {
+        System.out.println("Should build");
         return ((AttributeHandler) getDelegate().getAttributeHandler()).process(null, new AttributedDelegateCommand(this));
     }
 

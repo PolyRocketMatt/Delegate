@@ -26,3 +26,13 @@ delegate-core/dependency-reduced-pom.xml
 delegate-velocity.iml
 delegate-velocity/target/**
 delegate-velocity/dependency-reduced-pom.xml
+
+# Example
+delegate-example.iml
+delegate-example/**
+
+# Debug
+eula.txt
+server.properties
+logs/**
+bundler/**

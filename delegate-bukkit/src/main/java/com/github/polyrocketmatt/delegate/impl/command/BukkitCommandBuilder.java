@@ -3,7 +3,6 @@ package com.github.polyrocketmatt.delegate.impl.command;
 import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
 import com.github.polyrocketmatt.delegate.api.command.ICommandAttribute;
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
-import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.api.command.argument.Index;
 import com.github.polyrocketmatt.delegate.api.command.definition.CommandDefinition;
@@ -23,14 +22,9 @@ import com.github.polyrocketmatt.delegate.core.command.properties.AsyncProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.BrigadierProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProperty;
 
-import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Supplier;
-
-import static com.github.polyrocketmatt.delegate.api.StringUtils.newId;
 
 public class BukkitCommandBuilder extends DelegateCommandBuilder {
 

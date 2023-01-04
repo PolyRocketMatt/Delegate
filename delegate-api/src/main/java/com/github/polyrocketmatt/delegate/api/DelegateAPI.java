@@ -1,7 +1,5 @@
 package com.github.polyrocketmatt.delegate.api;
 
-import com.github.polyrocketmatt.delegate.api.command.ICommandFactory;
-
 /**
  * The Delegate API which is the entry point for platform implementations
  * to access the Delegate command framework.
@@ -17,14 +15,5 @@ public interface DelegateAPI {
      * @return The platform that is implemented.
      */
     IPlatform getPlatform();
-
-    /**
-     * Gets the {@link ICommandFactory} command factory.
-     *
-     * @return The command factory.
-     */
-    ICommandFactory getCommandFactory();
-
-
 
 }

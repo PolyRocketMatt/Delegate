@@ -9,6 +9,7 @@ import com.github.polyrocketmatt.delegate.api.DelegateAPI;
 import com.github.polyrocketmatt.delegate.api.IPlatform;
 import com.github.polyrocketmatt.delegate.api.PlatformType;
 import com.github.polyrocketmatt.delegate.api.exception.CommandRegistrationException;
+import com.github.polyrocketmatt.delegate.api.exception.DelegateRuntimeException;
 import com.github.polyrocketmatt.delegate.core.DelegateCore;
 import com.github.polyrocketmatt.delegate.impl.command.BukkitCommandFactory;
 import com.github.polyrocketmatt.delegate.impl.entity.BukkitPlayerCommander;
@@ -22,15 +23,29 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 
 public class Delegate implements IPlatform, CommandExecutor {
 
     private static final BukkitCommandFactory factory = new BukkitCommandFactory();
+    private final CommandMap commandMap;
 
-    public Delegate() {}
+    protected Delegate() {
+        try {
+            final Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+
+            bukkitCommandMap.setAccessible(true);
+            this.commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
+        } catch(Exception ex) {
+            throw new DelegateRuntimeException("Unable to retrieve command map", ex);
+        }
+    }
 
     public static void hook(Plugin plugin) {
+        DelegateCore.getDelegate().setPlatform(new Delegate());
         DelegateCore.getDelegate().hook(new BukkitHook(plugin));
     }
 
@@ -58,24 +73,26 @@ public class Delegate implements IPlatform, CommandExecutor {
         return factory;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void register(IDelegateCommand command) throws CommandRegistrationException {
+        if (this.getPlugin() == null)
+            throw new CommandRegistrationException("Plugin is not hooked into Delegate!");
+
         try {
-            CommandMap commandMap = Bukkit.getServer().getCommandMap();
-            Command cmd = Command.class
-                    .getDeclaredConstructor(String.class)
-                    .newInstance(command.getNameDefinition().getValue());
+            Constructor<PluginCommand> commandConstructor = (Constructor<PluginCommand>) PluginCommand.class.getDeclaredConstructors()[0];
+            commandConstructor.setAccessible(true);
+            PluginCommand cmd = commandConstructor.newInstance(command.getNameDefinition().getValue(), this.getPlugin());
 
             //  Register command to the command map
             commandMap.register(command.getNameDefinition().getValue(), cmd);
 
-            PluginCommand pluginCmd = PluginCommand.class
-                    .getDeclaredConstructor(String.class, org.bukkit.plugin.Plugin.class)
-                    .newInstance(command.getNameDefinition().getValue(), this.getPlugin());
-
             //  Set the command executor
-            pluginCmd.setExecutor(this);
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException ex) {
+            cmd.setExecutor(this);
+
+            //  Setting description
+            cmd.setDescription(command.getDescriptionDefinition().getValue());
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException ex) {
             throw new CommandRegistrationException("Unable to register command: %s".formatted(command.getNameDefinition().getValue()), ex);
         }
     }
