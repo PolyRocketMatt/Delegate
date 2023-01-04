@@ -30,6 +30,7 @@ delegate-velocity/dependency-reduced-pom.xml
 # Example
 delegate-example.iml
 delegate-example/**
+delegate-example/pom.xml
 
 # Debug
 eula.txt
