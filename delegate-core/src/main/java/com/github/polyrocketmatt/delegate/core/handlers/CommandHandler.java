@@ -107,11 +107,11 @@ public class CommandHandler implements IHandler {
 
         List<Argument<?>> parsedArguments = this.parseArguments(information, command, verifiedArguments);
 
-        /**
+        System.out.println("Parsed arguments: " + parsedArguments.size());
+
         //  We can execute the command with the remaining arguments
-        List<CommandCapture.Capture> captures = this.execute(commander, command, verifiedArguments);
+        List<CommandCapture.Capture> captures = this.execute(commander, command, parsedArguments);
         CommandCapture capture = new CommandCapture(captures);
-         */
 
         return true; //getDelegate().getPlatform().dispatch(information, capture);
     }
