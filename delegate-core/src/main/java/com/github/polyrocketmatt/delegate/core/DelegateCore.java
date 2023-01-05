@@ -64,10 +64,12 @@ public class DelegateCore implements DelegateAPI {
         return this.configuration;
     }
 
+    @Override
     public IHandler getAttributeHandler() {
         return this.attributeHandler;
     }
 
+    @Override
     public IHandler getCommandHandler() {
         return this.commandHandler;
     }

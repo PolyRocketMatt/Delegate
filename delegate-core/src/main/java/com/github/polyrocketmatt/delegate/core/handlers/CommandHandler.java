@@ -3,8 +3,10 @@ package com.github.polyrocketmatt.delegate.core.handlers;
 import com.github.polyrocketmatt.delegate.api.IHandler;
 import com.github.polyrocketmatt.delegate.api.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
+import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
 import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
 import com.github.polyrocketmatt.delegate.api.command.feedback.FeedbackType;
+import com.github.polyrocketmatt.delegate.api.command.trigger.CommandTrigger;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.command.CommandDispatchInformation;
 import com.github.polyrocketmatt.delegate.api.exception.ArgumentParseException;
@@ -93,8 +95,8 @@ public class CommandHandler implements IHandler {
             throw createException(information, FeedbackType.COMMAND_UNVERIFIED, commandName);
 
         //  We can then parse the remaining arguments, apply rules to them and parse them.
-        String[] remainingArguments = queryResultNode.remainingArgs();
         VerifiedDelegateCommand command = (VerifiedDelegateCommand) executionNode.getCommand();
+        String[] remainingArguments = queryResultNode.remainingArgs();
         String[] verifiedArguments = this.verifyArguments(information, command, remainingArguments);
         List<Argument<?>> parsedArguments = this.parseArguments(information, command, verifiedArguments);
 
@@ -102,15 +104,17 @@ public class CommandHandler implements IHandler {
         List<CommandCapture.Capture> captures = this.execute(commander, command, parsedArguments);
         CommandCapture capture = new CommandCapture(captures);
 
-        return true; //getDelegate().getPlatform().dispatch(information, capture);
+        //  Execute triggers
+        this.executeTriggers(information, command, capture);
+
+        //  Call event for other plugins possibly?
+        return getDelegate().getPlatform().dispatch(information, capture);
     }
 
     private String[] verifyArguments(CommandDispatchInformation information, VerifiedDelegateCommand command, String[] arguments) {
         CommandBuffer<CommandProperty> commandProperties = command.getPropertyBuffer();
         CommandBuffer<CommandArgument<?>> commandArguments = command.getArgumentBuffer();
         String[] verifiedArguments = new String[arguments.length];
-
-        //  TODO: STRING MATCHING
 
         //  Check properties
         boolean ignoreNull = commandProperties.stream().anyMatch(property -> property instanceof IgnoreNullProperty);
@@ -197,7 +201,7 @@ public class CommandHandler implements IHandler {
         //  Verification of arguments ensures correct order of arguments
         List<CommandCapture.Capture> captures = new ArrayList<>();
         ExecutorService executor = new ForkJoinPool(threadCount);
-        
+
         for (int precedence : precedences) {
             List<CommandAction> actionsWithPrecedence = actions.stream()
                     .filter(action -> action.getPrecedence() == precedence)
@@ -205,8 +209,7 @@ public class CommandHandler implements IHandler {
 
             if (async) {
                 for (CommandAction action : actionsWithPrecedence)
-                        executor.execute(() -> captures.add(
-                                new CommandCapture.Capture(action.getIdentifier(), action.run(commander, arguments))));
+                        executor.execute(() -> captures.add(new CommandCapture.Capture(action.getIdentifier(), action.run(commander, arguments))));
             } else {
                 for (CommandAction action : actionsWithPrecedence)
                     captures.add(new CommandCapture.Capture(action.getIdentifier(), action.run(commander, arguments)));
@@ -214,6 +217,18 @@ public class CommandHandler implements IHandler {
         }
 
         return captures;
+    }
+
+    private void executeTriggers(CommandDispatchInformation information, VerifiedDelegateCommand command, CommandCapture capture) {
+        CommandBuffer<CommandTrigger> triggers = command.getTriggerBuffer();
+        List<ActionItem.Result> results = capture.getResults();
+
+        //  TODO: Async triggers?
+
+        triggers.forEach(trigger -> {
+            if (trigger.shouldTrigger(results))
+                trigger.call(information, capture);
+        });
     }
 
     /**

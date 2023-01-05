@@ -16,6 +16,7 @@ import com.github.polyrocketmatt.delegate.core.handlers.CommandHandler;
 import com.github.polyrocketmatt.delegate.impl.command.BukkitCommandFactory;
 import com.github.polyrocketmatt.delegate.impl.entity.BukkitPlayerCommander;
 import com.github.polyrocketmatt.delegate.impl.event.DelegateCommandEvent;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -24,6 +25,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
@@ -32,11 +34,17 @@ import java.lang.reflect.InvocationTargetException;
 
 public class Delegate implements IPlatform, CommandExecutor {
 
+    private static final int BUKKIT_DELEGATE_ID = 17314;
+
     private static final BukkitCommandFactory factory = new BukkitCommandFactory();
+
+    private final Plugin plugin;
     private final CommandMap commandMap;
     private final CommandHandler commandHandler;
+    private final boolean metricsEnabled;
 
-    protected Delegate() {
+    protected Delegate(JavaPlugin plugin, boolean metricsEnabled) {
+        this.plugin = plugin;
         try {
             final Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
 
@@ -47,11 +55,19 @@ public class Delegate implements IPlatform, CommandExecutor {
         }
 
         this.commandHandler = (CommandHandler) DelegateCore.getDelegate().getCommandHandler();
+        this.metricsEnabled = metricsEnabled;
+
+        if (metricsEnabled) {
+            new Metrics(plugin, BUKKIT_DELEGATE_ID);
+        }
     }
 
-    public static void hook(Plugin plugin) {
-        DelegateCore.getDelegate().setPlatform(new Delegate());
-        DelegateCore.getDelegate().hook(new BukkitHook(plugin));
+    public static void hook(JavaPlugin plugin) {
+        hook(plugin, true);
+    }
+
+    public static void hook(JavaPlugin plugin, boolean enableMetrics) {
+        DelegateCore.getDelegate().setPlatform(new Delegate(plugin, enableMetrics));
     }
 
     public static DelegateAPI getDelegateAPI() {
@@ -63,9 +79,7 @@ public class Delegate implements IPlatform, CommandExecutor {
     }
 
     private Plugin getPlugin() {
-        if (DelegateCore.getDelegate().getHook() == null)
-            throw new CommandRegistrationException("Plugin is not hooked into Delegate!");
-        return ((BukkitHook) DelegateCore.getDelegate().getHook()).plugin();
+        return plugin;
     }
 
     @Override
@@ -114,6 +128,11 @@ public class Delegate implements IPlatform, CommandExecutor {
         Bukkit.getServer().getPluginManager().callEvent(new DelegateCommandEvent(information, capture));
 
         return true;
+    }
+
+    @Override
+    public boolean metricsEnabled() {
+        return metricsEnabled;
     }
 
     @Override

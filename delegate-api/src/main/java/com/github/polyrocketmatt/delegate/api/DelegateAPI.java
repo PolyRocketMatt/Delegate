@@ -25,4 +25,18 @@ public interface DelegateAPI {
      */
     DelegateConfiguration getConfiguration();
 
+    /**
+     * Gets the attribute handler that is used by the Delegate API.
+     *
+     * @return The attribute handler that is used by the Delegate API.
+     */
+    IHandler getAttributeHandler();
+
+    /**
+     * Gets the command handler that is used by the Delegate API.
+     *
+     * @return The command handler that is used by the Delegate API.
+     */
+    IHandler getCommandHandler();
+
 }

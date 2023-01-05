@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class DelegateConfiguration {
-
     private final Map<FeedbackType, String> feedbackMessages;
 
     public DelegateConfiguration() {
@@ -19,7 +18,7 @@ public class DelegateConfiguration {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
     }
 
-    public DelegateConfiguration set(FeedbackType type, String message) {
+    public DelegateConfiguration setFeedback(FeedbackType type, String message) {
         this.feedbackMessages.put(type, message);
         return this;
     }

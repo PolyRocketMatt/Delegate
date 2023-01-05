@@ -47,7 +47,16 @@ public class ActionItem<T> implements ActionResult {
      */
     public enum Result {
         SUCCESS,
-        FAILURE
+        FAILURE;
+
+        public boolean isSuccess() {
+            return this == SUCCESS;
+        }
+
+        public boolean isFailure() {
+            return this == FAILURE;
+        }
+
     }
 
 }

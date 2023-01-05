@@ -19,4 +19,6 @@ public interface IPlatform {
 
     boolean dispatch(CommandDispatchInformation information, CommandCapture capture);
 
+    boolean metricsEnabled();
+
 }
