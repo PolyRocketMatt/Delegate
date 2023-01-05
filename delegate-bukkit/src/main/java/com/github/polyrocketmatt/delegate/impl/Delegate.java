@@ -8,9 +8,11 @@ import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.DelegateAPI;
 import com.github.polyrocketmatt.delegate.api.IPlatform;
 import com.github.polyrocketmatt.delegate.api.PlatformType;
+import com.github.polyrocketmatt.delegate.api.entity.ConsoleCommander;
 import com.github.polyrocketmatt.delegate.api.exception.CommandRegistrationException;
 import com.github.polyrocketmatt.delegate.api.exception.DelegateRuntimeException;
 import com.github.polyrocketmatt.delegate.core.DelegateCore;
+import com.github.polyrocketmatt.delegate.core.handlers.CommandHandler;
 import com.github.polyrocketmatt.delegate.impl.command.BukkitCommandFactory;
 import com.github.polyrocketmatt.delegate.impl.entity.BukkitPlayerCommander;
 import com.github.polyrocketmatt.delegate.impl.event.DelegateCommandEvent;
@@ -20,18 +22,19 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 
 public class Delegate implements IPlatform, CommandExecutor {
 
     private static final BukkitCommandFactory factory = new BukkitCommandFactory();
     private final CommandMap commandMap;
+    private final CommandHandler commandHandler;
 
     protected Delegate() {
         try {
@@ -42,6 +45,8 @@ public class Delegate implements IPlatform, CommandExecutor {
         } catch(Exception ex) {
             throw new DelegateRuntimeException("Unable to retrieve command map", ex);
         }
+
+        this.commandHandler = (CommandHandler) DelegateCore.getDelegate().getCommandHandler();
     }
 
     public static void hook(Plugin plugin) {
@@ -113,6 +118,9 @@ public class Delegate implements IPlatform, CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        return false;
+        CommanderEntity entity = (sender instanceof Player) ? new BukkitPlayerCommander((Player) sender) : new ConsoleCommander();
+        CommandDispatchInformation information = new CommandDispatchInformation(entity, command.getName(), args);
+
+        return commandHandler.handle(information);
     }
 }

@@ -3,6 +3,7 @@ package com.github.polyrocketmatt.delegate.core.command.argument;
 import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.api.command.argument.rule.ArgumentRule;
+import com.github.polyrocketmatt.delegate.api.exception.ArgumentParseException;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.DefaultRule;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.NonNullRule;
 import com.github.polyrocketmatt.delegate.core.utils.ArrayUtils;
@@ -25,7 +26,7 @@ public class FloatArgument extends CommandArgument<Float> {
      * @param argumentDescription The description of the argument.
      */
     private FloatArgument(String identifier, String argumentDescription) {
-        super(identifier, argumentDescription, new NonNullRule());
+        super(identifier, argumentDescription, Float.class, new NonNullRule());
     }
 
     /**
@@ -37,7 +38,7 @@ public class FloatArgument extends CommandArgument<Float> {
      * @param defaultValue The default value of the argument.
      */
     private FloatArgument(String identifier, String argumentDescription, Float defaultValue) {
-        super(identifier, argumentDescription, new DefaultRule<>(defaultValue));
+        super(identifier, argumentDescription, Float.class, new DefaultRule<>(defaultValue));
     }
 
     /**
@@ -48,7 +49,7 @@ public class FloatArgument extends CommandArgument<Float> {
      * @param rule The rule of the argument.
      */
     private FloatArgument(String identifier, String argumentDescription, ArgumentRule<String, ?> rule) {
-        super(identifier, argumentDescription, rule);
+        super(identifier, argumentDescription, Float.class, rule);
     }
 
     /**
@@ -61,7 +62,7 @@ public class FloatArgument extends CommandArgument<Float> {
      * @param rules The rules of the argument.
      */
     private FloatArgument(String identifier, String argumentDescription, Float defaultValue, ArgumentRule<String, ?> rules) {
-        super(identifier, argumentDescription, ArrayUtils.combine(List.of(new DefaultRule<>(defaultValue)), List.of(rules)));
+        super(identifier, argumentDescription, Float.class, ArrayUtils.combine(List.of(new DefaultRule<>(defaultValue)), List.of(rules)));
     }
 
     @Override

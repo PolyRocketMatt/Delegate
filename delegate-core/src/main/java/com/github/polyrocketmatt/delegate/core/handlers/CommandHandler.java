@@ -2,14 +2,18 @@ package com.github.polyrocketmatt.delegate.core.handlers;
 
 import com.github.polyrocketmatt.delegate.api.IHandler;
 import com.github.polyrocketmatt.delegate.api.command.CommandBuffer;
+import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
+import com.github.polyrocketmatt.delegate.api.command.feedback.FeedbackType;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.command.CommandDispatchInformation;
+import com.github.polyrocketmatt.delegate.api.exception.ArgumentParseException;
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.core.command.properties.AsyncProperty;
 import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
+import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNonPresentProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProperty;
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandNode;
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandTree;
@@ -17,6 +21,7 @@ import com.github.polyrocketmatt.delegate.core.command.tree.QueryResultNode;
 import com.github.polyrocketmatt.delegate.api.exception.CommandExecutionException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
@@ -46,6 +51,10 @@ public class CommandHandler implements IHandler {
         this.maxStealCount = 8;
     }
 
+    private CommandExecutionException createException(CommandDispatchInformation information, FeedbackType type, Object... args) {
+        return new CommandExecutionException(information, getDelegate().getConfiguration().get(type), type, args);
+    }
+
     /**
      * Adds a {@link CommandNode} as root to the command tree.
      *
@@ -72,61 +81,83 @@ public class CommandHandler implements IHandler {
 
         //  Parse information arguments until command in root node doesn't exist
         CommandNode root = this.commandTree.find(commandName);
+        if (root == null)
+            throw createException(information, FeedbackType.COMMAND_NOT_FOUND, commandName);
+
         QueryResultNode queryResultNode = root.findDeepest(commandArguments);
         CommandNode executionNode = queryResultNode.node();
 
-        //  Check if the command is verified
+        //  Check if the command is verified & non-null
+        if (executionNode == null)
+            throw createException(information, FeedbackType.COMMAND_NOT_FOUND, commandName);
         if (!executionNode.isVerified())
-            throw new CommandExecutionException("Expected to execute a verified command, found an attributed command instead");
+            throw createException(information, FeedbackType.COMMAND_UNVERIFIED, commandName);
 
         //  We can then parse the remaining arguments, apply rules to them and parse them.
         String[] remainingArguments = queryResultNode.remainingArgs();
         VerifiedDelegateCommand command = (VerifiedDelegateCommand) executionNode.getCommand();
-        String[] verifiedArguments = this.verifyArguments(command, remainingArguments);
+        String[] verifiedArguments = this.verifyArguments(information, command, remainingArguments);
 
+        System.out.println("Listing command dispatch information:");
+        System.out.println("Commander: " + commander.getClass().getName());
+        System.out.println("Command: " + commandName);
+        System.out.println("Arguments: " + String.join(", ", commandArguments));
+        System.out.println("Remaining arguments: " + String.join(", ", remainingArguments));
+        System.out.println("Verified arguments: " + String.join(", ", verifiedArguments));
+        System.out.println("Expected arguments: " + command.getArgumentBuffer().size());
+
+        List<Argument<?>> parsedArguments = this.parseArguments(information, command, verifiedArguments);
+
+        /**
         //  We can execute the command with the remaining arguments
         List<CommandCapture.Capture> captures = this.execute(commander, command, verifiedArguments);
         CommandCapture capture = new CommandCapture(captures);
+         */
 
-        return getDelegate().getPlatform().dispatch(information, capture);
+        return true; //getDelegate().getPlatform().dispatch(information, capture);
     }
 
-    private String[] verifyArguments(VerifiedDelegateCommand command, String[] arguments) {
+    private String[] verifyArguments(CommandDispatchInformation information, VerifiedDelegateCommand command, String[] arguments) {
         CommandBuffer<CommandProperty> commandProperties = command.getPropertyBuffer();
         CommandBuffer<CommandArgument<?>> commandArguments = command.getArgumentBuffer();
         String[] verifiedArguments = new String[arguments.length];
+
+        //  TODO: STRING MATCHING
+
+        //  Check properties
+        boolean ignoreNull = commandProperties.stream().anyMatch(property -> property instanceof IgnoreNullProperty);
+        boolean ignoreNonPresent = commandProperties.stream().anyMatch(property -> property instanceof IgnoreNonPresentProperty);
+
+        //  Check argument counts
+        if (commandArguments.size() > arguments.length && !ignoreNonPresent)
+            throw createException(information, FeedbackType.ARGS_INVALID_COUNT, commandArguments.size(), arguments.length);
 
         //  Check argument types
         int isAssigmentOperator = 0;
         for (int i = 0; i < arguments.length; i++) {
             String argument = arguments[i];
-            String[] parts = argument.split("=");
+            String[] parts = argument.split("=", 2);
 
             if (parts.length == 2) {
                 //  Find the argument index in the argument buffer
                 int argumentIndex = commandArguments.indexWhere(arg -> arg.getIdentifier().equals(parts[0]));
                 if (argumentIndex == -1)
-                    throw new CommandExecutionException("Argument %s does not exist in command %s"
-                            .formatted(parts[0], command.getNameDefinition().getIdentifier()));
+                    throw createException(information, FeedbackType.ARGS_INVALID_IDENTIFIER, parts[0]);
                 verifiedArguments[argumentIndex] = parts[1];
                 isAssigmentOperator++;
             } else {
                 if (isAssigmentOperator != 0)
-                    throw new CommandExecutionException("Expected assignment operator '=' for all arguments");
+                    throw createException(information, FeedbackType.ARGS_INVALID_FORMAT, argument);
                 else
                     verifiedArguments[i] = argument;
             }
         }
 
-        //  Check ignore null property
-        boolean ignoreNull = commandProperties.stream().anyMatch(property -> property instanceof IgnoreNullProperty);
-
         //  Check that all arguments have been successfully parsed
         if (!ignoreNull)
             for (int i = 0; i < verifiedArguments.length; i++) {
                 if (verifiedArguments[i] == null)
-                    throw new CommandExecutionException("Argument %s was not parsed successfully or was not found"
-                            .formatted(commandArguments.get(i).getIdentifier()));
+                    throw createException(information, FeedbackType.ARGS_INVALID_FORMAT, arguments[i]);
             }
 
         //  Parse all argument rules
@@ -140,7 +171,26 @@ public class CommandHandler implements IHandler {
         return verifiedArguments;
     }
 
-    private List<CommandCapture.Capture> execute(CommanderEntity commander, VerifiedDelegateCommand command, String[] arguments) {
+    private List<Argument<?>> parseArguments(CommandDispatchInformation information, VerifiedDelegateCommand command, String[] arguments) {
+        List<Argument<?>> parsedArguments = new ArrayList<>();
+        CommandBuffer<CommandArgument<?>> commandArguments = command.getArgumentBuffer();
+
+        //  Parse all arguments
+        for (int i = 0; i < arguments.length; i++) {
+            CommandArgument<?> commandArgument = commandArguments.get(i);
+            String argument = arguments[i];
+
+            try {
+                parsedArguments.add(commandArgument.parse(argument));
+            } catch (ArgumentParseException ex) {
+                throw createException(information, FeedbackType.ARGS_INVALID_PARSE_RESULT, argument, ex.getParseType().getName());
+            }
+        }
+
+        return parsedArguments;
+    }
+
+    private List<CommandCapture.Capture> execute(CommanderEntity commander, VerifiedDelegateCommand command, List<Argument<?>> arguments) {
         //  Get the arguments
         CommandBuffer<CommandArgument<?>> commandArguments = command.getArgumentBuffer();
 
@@ -158,7 +208,6 @@ public class CommandHandler implements IHandler {
         int threadCount = Math.min(availableThreadCount, actions.size());
 
         //  Verification of arguments ensures correct order of arguments
-        List<String> inputs = List.of(arguments);
         List<CommandCapture.Capture> captures = new ArrayList<>();
         ExecutorService executor = new ForkJoinPool(threadCount);
 
@@ -170,11 +219,11 @@ public class CommandHandler implements IHandler {
             if (async) {
                 for (CommandAction action : actionsWithPrecedence)
                         executor.execute(() -> captures.add(
-                                new CommandCapture.Capture(action.getIdentifier(), action.run(commander, commandArguments, inputs))));
+                                new CommandCapture.Capture(action.getIdentifier(), action.run(commander, arguments))));
             } else {
                 for (CommandAction action : actionsWithPrecedence)
                     captures.add(
-                            new CommandCapture.Capture(action.getIdentifier(), action.run(commander, commandArguments, inputs)));
+                            new CommandCapture.Capture(action.getIdentifier(), action.run(commander, arguments)));
             }
         }
 

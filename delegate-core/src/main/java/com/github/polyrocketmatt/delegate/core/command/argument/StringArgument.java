@@ -25,7 +25,7 @@ public class StringArgument extends CommandArgument<String> {
      * @param argumentDescription The description of the argument.
      */
     public StringArgument(String identifier, String argumentDescription) {
-        super(identifier, argumentDescription, new NonNullRule());
+        super(identifier, argumentDescription, String.class, new NonNullRule());
     }
 
     /**
@@ -37,7 +37,7 @@ public class StringArgument extends CommandArgument<String> {
      * @param defaultValue The default value of the argument.
      */
     public StringArgument(String identifier, String argumentDescription, String defaultValue) {
-        super(identifier, argumentDescription, new DefaultRule<>(defaultValue));
+        super(identifier, argumentDescription, String.class, new DefaultRule<>(defaultValue));
     }
 
     /**
@@ -48,7 +48,7 @@ public class StringArgument extends CommandArgument<String> {
      * @param rule The rule of the argument.
      */
     public StringArgument(String identifier, String argumentDescription, ArgumentRule<String, ?> rule) {
-        super(identifier, argumentDescription, rule);
+        super(identifier, argumentDescription, String.class, rule);
     }
 
     /**
@@ -61,7 +61,7 @@ public class StringArgument extends CommandArgument<String> {
      * @param rules The rules of the argument.
      */
     public StringArgument(String identifier, String argumentDescription, String defaultValue, ArgumentRule<String, ?> rules) {
-        super(identifier, argumentDescription, ArrayUtils.combine(List.of(new DefaultRule<>(defaultValue)), List.of(rules)));
+        super(identifier, argumentDescription, String.class, ArrayUtils.combine(List.of(new DefaultRule<>(defaultValue)), List.of(rules)));
     }
 
     @Override

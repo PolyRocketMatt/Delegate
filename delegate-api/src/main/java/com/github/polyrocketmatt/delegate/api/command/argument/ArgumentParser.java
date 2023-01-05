@@ -30,13 +30,14 @@ public interface ArgumentParser<T> {
      *
      * @param input The string that failed to parse.
      * @param wrappedException The exception that was thrown when parsing the string.
+     * @param parseType The type that the string was supposed to be parsed into.
      * @return The wrapped exception.
      */
-    default ArgumentParseException onFail(String input, Exception wrappedException) {
+    default ArgumentParseException onFail(String input, Exception wrappedException, Class<T> parseType) {
         return (wrappedException == null) ?
-                new ArgumentParseException("Failed to parse argument \"%s\"".formatted(input))
+                new ArgumentParseException("Failed to parse argument \"%s\"".formatted(input), parseType)
             :
-                new ArgumentParseException("Failed to parse argument \"%s\"".formatted(input), wrappedException);
+                new ArgumentParseException("Failed to parse argument \"%s\"".formatted(input), wrappedException, parseType);
     }
 
 }

@@ -26,6 +26,7 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
 
     private final String argumentDescription;
     private final List<ArgumentRule<String, ?>> argumentRules;
+    private final Class<T> argumentType;
 
     private Argument<T> defaultValue;
 
@@ -34,10 +35,11 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      *
      * @param argumentDescription The description of the argument.
      */
-    public CommandArgument(String argumentDescription) {
+    public CommandArgument(String argumentDescription, Class<T> argumentType) {
         super(newId());
         this.argumentDescription = argumentDescription;
         this.argumentRules = List.of();
+        this.argumentType = argumentType;
         this.defaultValue = null;
     }
 
@@ -47,10 +49,11 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @param identifier The identifier of the argument.
      * @param argumentDescription The description of the argument.
      */
-    public CommandArgument(String identifier, String argumentDescription) {
+    public CommandArgument(String identifier, String argumentDescription, Class<T> argumentType) {
         super(identifier);
         this.argumentDescription = argumentDescription;
         this.argumentRules = List.of();
+        this.argumentType = argumentType;
         this.defaultValue = null;
     }
 
@@ -62,10 +65,11 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @param argumentRules The argument rules that must be met for the argument to be valid.
      */
     @SafeVarargs
-    public CommandArgument(String argumentDescription, ArgumentRule<String, ?>... argumentRules) {
+    public CommandArgument(String argumentDescription, Class<T> argumentType, ArgumentRule<String, ?>... argumentRules) {
         super(newId());
         this.argumentDescription = argumentDescription;
         this.argumentRules = Arrays.asList(argumentRules);
+        this.argumentType = argumentType;
         this.defaultValue = null;
     }
 
@@ -78,10 +82,11 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @param argumentRules The argument rules that must be met for the argument to be valid.
      */
     @SafeVarargs
-    public CommandArgument(String identifier, String argumentDescription, ArgumentRule<String, ?>... argumentRules) {
+    public CommandArgument(String identifier, String argumentDescription, Class<T> argumentType, ArgumentRule<String, ?>... argumentRules) {
         super(identifier);
         this.argumentDescription = argumentDescription;
         this.argumentRules = Arrays.asList(argumentRules);
+        this.argumentType = argumentType;
         this.defaultValue = null;
     }
 
@@ -137,8 +142,8 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @param input The input to parse.
      * @return The parsed argument as an {@link Argument}.
      */
-    public Argument<T> parse(String input) {
-        return this.parse(input, ex -> { throw onFail(input, ex); });
+    public Argument<T> parse(String input) throws ArgumentParseException {
+        return this.parse(input, ex -> { throw onFail(input, ex, argumentType); });
     }
 
     /**
@@ -150,7 +155,7 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @return The parsed argument as an {@link Argument}.
      */
     @Override
-    public abstract Argument<T> parse(String input, Consumer<Exception> consumer);
+    public abstract Argument<T> parse(String input, Consumer<Exception> consumer) throws ArgumentParseException;
 
     /**
      * Parses the given input string and applies the argument rules to the input.
@@ -164,7 +169,7 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
             ArgumentRuleResult ruleResult = rule.interpretResult(this, new RuleData<>(input), result);
 
             if (ruleResult.result() == ArgumentRuleResult.Result.FAILURE)
-                throw onFail(ruleResult.info(), null);
+                throw onFail(ruleResult.info(), null, argumentType);
         }
     }
 

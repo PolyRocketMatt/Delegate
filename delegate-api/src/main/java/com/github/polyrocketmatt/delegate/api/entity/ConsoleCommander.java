@@ -6,4 +6,4 @@ package com.github.polyrocketmatt.delegate.api.entity;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
-public abstract class ConsoleCommander implements CommanderEntity { }
+public class ConsoleCommander implements CommanderEntity { }

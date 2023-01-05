@@ -25,7 +25,7 @@ public class IntArgument extends CommandArgument<Integer> {
      * @param argumentDescription The description of the argument.
      */
     public IntArgument(String identifier, String argumentDescription) {
-        super(identifier, argumentDescription, new NonNullRule());
+        super(identifier, argumentDescription, Integer.class, new NonNullRule());
     }
 
     /**
@@ -37,7 +37,7 @@ public class IntArgument extends CommandArgument<Integer> {
      * @param defaultValue The default value of the argument.
      */
     public IntArgument(String identifier, String argumentDescription, Integer defaultValue) {
-        super(identifier, argumentDescription, new DefaultRule<>(defaultValue));
+        super(identifier, argumentDescription, Integer.class, new DefaultRule<>(defaultValue));
     }
 
     /**
@@ -48,7 +48,7 @@ public class IntArgument extends CommandArgument<Integer> {
      * @param rule The rule of the argument.
      */
     public IntArgument(String identifier, String argumentDescription, ArgumentRule<String, ?> rule) {
-        super(identifier, argumentDescription, rule);
+        super(identifier, argumentDescription, Integer.class, rule);
     }
 
     /**
@@ -61,7 +61,7 @@ public class IntArgument extends CommandArgument<Integer> {
      * @param rules The rules of the argument.
      */
     public IntArgument(String identifier, String argumentDescription, Integer defaultValue, ArgumentRule<String, ?> rules) {
-        super(identifier, argumentDescription, ArrayUtils.combine(List.of(new DefaultRule<>(defaultValue)), List.of(rules)));
+        super(identifier, argumentDescription, Integer.class, ArrayUtils.combine(List.of(new DefaultRule<>(defaultValue)), List.of(rules)));
     }
 
     @Override

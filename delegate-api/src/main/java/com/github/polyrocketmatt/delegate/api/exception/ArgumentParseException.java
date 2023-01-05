@@ -10,13 +10,17 @@ import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
  */
 public class ArgumentParseException extends RuntimeException {
 
+    private final Class<?> parseType;
+
     /**
      * Constructs a new exception with the specified detail message.
      *
      * @param message The detail message.
+     * @param parseType The type of the argument that failed to parse.
      */
-    public ArgumentParseException(String message) {
+    public ArgumentParseException(String message, Class<?> parseType) {
         super(message);
+        this.parseType = parseType;
     }
 
     /**
@@ -24,29 +28,14 @@ public class ArgumentParseException extends RuntimeException {
      *
      * @param message The detail message.
      * @param cause The cause.
+     * @param parseType The type of the argument that failed to parse.
      */
-    public ArgumentParseException(String message, Throwable cause) {
+    public ArgumentParseException(String message, Throwable cause, Class<?> parseType) {
         super(message, cause);
+        this.parseType = parseType;
     }
 
-    /**
-     * Constructs a new exception with the specified cause.
-     *
-     * @param cause The cause.
-     */
-    public ArgumentParseException(Throwable cause) {
-        super(cause);
-    }
-
-    /**
-     * Constructs a new exception with the specified detail message, cause, suppression enabled or disabled,
-     *
-     * @param message The detail message.
-     * @param cause The cause.
-     * @param enableSuppression Whether suppression is enabled or disabled.
-     * @param writableStackTrace Whether the stack trace should be writable.
-     */
-    public ArgumentParseException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
+    public Class<?> getParseType() {
+        return parseType;
     }
 }
