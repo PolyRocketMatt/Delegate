@@ -75,21 +75,12 @@ public class ConsumerAction extends CommandAction {
     }
 
     @Override
-    public ActionItem<?> run(CommanderEntity commander, CommandBuffer<CommandArgument<?>> arguments, List<String> inputs) {
-        int maxIndex = min(inputs.size(), arguments.size());
-
-        List<Argument<?>> inputItems = new ArrayList<>();
-        for (int i = 0; i < maxIndex; i++)
-            inputItems.add(arguments.get(i).parse(inputs.get(i)));
+    public ActionItem<?> run(CommanderEntity commander, List<Argument<?>> arguments) {
         try {
-            //  Convert to index
-            Index index = new Index(inputItems);
-
-            action.accept(commander, index);
+            action.accept(commander, new Index(arguments));
         } catch (Exception ex) {
             return new FailureActionResult(ex);
         }
-
         return new SuccessActionResult();
     }
 

@@ -74,17 +74,9 @@ public class FunctionAction extends CommandAction {
     }
 
     @Override
-    public ActionItem<?> run(CommanderEntity commander, CommandBuffer<CommandArgument<?>> arguments, List<String> inputs) {
-        int maxIndex = min(inputs.size(), arguments.size());
-
-        List<Argument<?>> inputItems = new ArrayList<>();
-        for (int i = 0; i < maxIndex; i++)
-            inputItems.add(arguments.get(i).parse(inputs.get(i)));
+    public ActionItem<?> run(CommanderEntity commander, List<Argument<?>> arguments) {
         try {
-            //  Convert to index
-            Index index = new Index(inputItems);
-
-            return new ActionItem<>(ActionItem.Result.SUCCESS, action.apply(commander, index));
+            return new ActionItem<>(ActionItem.Result.SUCCESS, action.apply(commander, new Index(arguments)));
         } catch (Exception ex) {
             return new FailureActionResult(ex);
         }

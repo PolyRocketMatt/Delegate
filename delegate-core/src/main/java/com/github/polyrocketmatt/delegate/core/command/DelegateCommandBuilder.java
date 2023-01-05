@@ -142,39 +142,4 @@ public abstract class DelegateCommandBuilder implements ICommandBuilder {
         return attributes.size();
     }
 
-    /*
-    public ICommandBuilder withAction(Consumer<Index> action) {
-        return this.with(new ConsumerAction(action));
-    }
-
-    public ICommandBuilder withAction(int precedence, Consumer<Index> action) {
-        return this.with(new ConsumerAction(precedence, action));
-    }
-
-    public ICommandBuilder withAction(Function<Index, ?> action) {
-        return this.with(new FunctionAction(action));
-    }
-
-    public ICommandBuilder withAction(int precedence, Function<Index, ?> action) {
-        return this.with(new FunctionAction(precedence, action));
-    }
-
-    public ICommandBuilder withAction(Runnable action) {
-        return this.with(new RunnableAction(action));
-    }
-
-    public ICommandBuilder withAction(int precedence, Runnable action) {
-        return this.with(new RunnableAction(precedence, action));
-    }
-
-    public <T> ICommandBuilder withAction(Supplier<T> action) {
-        return this.with(new SupplierAction<>(action));
-    }
-
-    public <T> ICommandBuilder withAction(int precedence, Supplier<T> action) {
-        return this.with(new SupplierAction<>(precedence, action));
-    }
-
-     */
-
 }

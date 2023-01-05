@@ -21,7 +21,6 @@ import com.github.polyrocketmatt.delegate.core.command.tree.QueryResultNode;
 import com.github.polyrocketmatt.delegate.api.exception.CommandExecutionException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;

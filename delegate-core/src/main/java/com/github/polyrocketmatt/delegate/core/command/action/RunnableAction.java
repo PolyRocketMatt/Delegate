@@ -1,6 +1,7 @@
 package com.github.polyrocketmatt.delegate.core.command.action;
 
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
+import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.api.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
@@ -72,7 +73,7 @@ public class RunnableAction extends CommandAction {
     }
 
     @Override
-    public ActionItem<?> run(CommanderEntity commander, CommandBuffer<CommandArgument<?>> arguments, List<String> inputs) {
+    public ActionItem<?> run(CommanderEntity commander, List<Argument<?>> arguments) {
         try {
             action.run();
         } catch (Exception ex) {
