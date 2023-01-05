@@ -96,18 +96,7 @@ public class CommandHandler implements IHandler {
         String[] remainingArguments = queryResultNode.remainingArgs();
         VerifiedDelegateCommand command = (VerifiedDelegateCommand) executionNode.getCommand();
         String[] verifiedArguments = this.verifyArguments(information, command, remainingArguments);
-
-        System.out.println("Listing command dispatch information:");
-        System.out.println("Commander: " + commander.getClass().getName());
-        System.out.println("Command: " + commandName);
-        System.out.println("Arguments: " + String.join(", ", commandArguments));
-        System.out.println("Remaining arguments: " + String.join(", ", remainingArguments));
-        System.out.println("Verified arguments: " + String.join(", ", verifiedArguments));
-        System.out.println("Expected arguments: " + command.getArgumentBuffer().size());
-
         List<Argument<?>> parsedArguments = this.parseArguments(information, command, verifiedArguments);
-
-        System.out.println("Parsed arguments: " + parsedArguments.size());
 
         //  We can execute the command with the remaining arguments
         List<CommandCapture.Capture> captures = this.execute(commander, command, parsedArguments);
@@ -159,8 +148,10 @@ public class CommandHandler implements IHandler {
                     throw createException(information, FeedbackType.ARGS_INVALID_FORMAT, arguments[i]);
             }
 
-        //  Parse all argument rules
-        for (int i = 0; i < verifiedArguments.length; i++) {
+        //  Parse all argument rules, the index should be equal to the amount of command arguments
+        //  except if the ignore non-present property is set.
+        int maxIndex = Math.min(verifiedArguments.length, commandArguments.size());
+        for (int i = 0; i < maxIndex; i++) {
             CommandArgument<?> commandArgument = commandArguments.get(i);
             String argument = verifiedArguments[i];
 
@@ -190,9 +181,6 @@ public class CommandHandler implements IHandler {
     }
 
     private List<CommandCapture.Capture> execute(CommanderEntity commander, VerifiedDelegateCommand command, List<Argument<?>> arguments) {
-        //  Get the arguments
-        CommandBuffer<CommandArgument<?>> commandArguments = command.getArgumentBuffer();
-
         //  Run all command actions in order of precedence
         CommandBuffer<CommandAction> actions = command.getActionBuffer();
         List<Integer> precedences = actions.stream()
@@ -209,7 +197,7 @@ public class CommandHandler implements IHandler {
         //  Verification of arguments ensures correct order of arguments
         List<CommandCapture.Capture> captures = new ArrayList<>();
         ExecutorService executor = new ForkJoinPool(threadCount);
-
+        
         for (int precedence : precedences) {
             List<CommandAction> actionsWithPrecedence = actions.stream()
                     .filter(action -> action.getPrecedence() == precedence)
@@ -221,8 +209,7 @@ public class CommandHandler implements IHandler {
                                 new CommandCapture.Capture(action.getIdentifier(), action.run(commander, arguments))));
             } else {
                 for (CommandAction action : actionsWithPrecedence)
-                    captures.add(
-                            new CommandCapture.Capture(action.getIdentifier(), action.run(commander, arguments)));
+                    captures.add(new CommandCapture.Capture(action.getIdentifier(), action.run(commander, arguments)));
             }
         }
 

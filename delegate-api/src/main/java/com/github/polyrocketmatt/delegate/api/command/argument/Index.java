@@ -1,6 +1,7 @@
 package com.github.polyrocketmatt.delegate.api.command.argument;
 
 import java.util.List;
+import java.util.Optional;
 
 public class Index {
 
@@ -12,10 +13,10 @@ public class Index {
 
     @SuppressWarnings("unchecked")
     public <T> T find(String identifier) {
-        return (T) arguments.stream()
+        Optional<Argument<?>> element = arguments.stream()
                 .filter(argument -> argument.identifier().equals(identifier))
-                .findFirst()
-                .orElse(null);
+                .findFirst();
+        return element.map(argument -> (T) argument.output()).orElse(null);
     }
 
     public Argument<?> get(int index) {

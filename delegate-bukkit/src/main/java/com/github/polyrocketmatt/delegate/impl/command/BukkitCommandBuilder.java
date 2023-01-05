@@ -2,6 +2,7 @@ package com.github.polyrocketmatt.delegate.impl.command;
 
 import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
 import com.github.polyrocketmatt.delegate.api.command.ICommandAttribute;
+import com.github.polyrocketmatt.delegate.api.command.ICommandBuilder;
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.api.command.argument.Index;
@@ -20,6 +21,7 @@ import com.github.polyrocketmatt.delegate.core.command.argument.StringArgument;
 import com.github.polyrocketmatt.delegate.core.command.definition.SubcommandDefinition;
 import com.github.polyrocketmatt.delegate.core.command.properties.AsyncProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.BrigadierProperty;
+import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNonPresentProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProperty;
 
 import java.util.function.BiConsumer;
@@ -211,6 +213,16 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
     @Override
     public BukkitCommandBuilder withIgnoreNull() {
         return this.with(new IgnoreNullProperty());
+    }
+
+    /**
+     * Append a new {@link IgnoreNonPresentProperty} to the chain.
+     *
+     * @return The current chain.
+     */
+    @Override
+    public ICommandBuilder withIgnoreNonPresent() {
+        return this.with(new IgnoreNonPresentProperty());
     }
 
     public BukkitCommandBuilder withAction(BiConsumer<CommanderEntity, Index> action) {

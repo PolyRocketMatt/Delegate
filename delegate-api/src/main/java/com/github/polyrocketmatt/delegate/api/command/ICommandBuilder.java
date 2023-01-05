@@ -43,4 +43,6 @@ public interface ICommandBuilder {
 
     ICommandBuilder withIgnoreNull();
 
+    ICommandBuilder withIgnoreNonPresent();
+
 }

@@ -76,11 +76,19 @@ public class ConsumerAction extends CommandAction {
 
     @Override
     public ActionItem<?> run(CommanderEntity commander, List<Argument<?>> arguments) {
+        System.out.println("Trying to run! -> " + arguments.size());
+
+        for (Argument<?> argument : arguments)
+            System.out.println("Argument: " + argument);
+
         try {
             action.accept(commander, new Index(arguments));
         } catch (Exception ex) {
+            ex.printStackTrace();
+
             return new FailureActionResult(ex);
         }
+
         return new SuccessActionResult();
     }
 
