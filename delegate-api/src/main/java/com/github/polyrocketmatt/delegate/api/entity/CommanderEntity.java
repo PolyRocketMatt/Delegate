@@ -6,4 +6,10 @@ package com.github.polyrocketmatt.delegate.api.entity;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
-public interface CommanderEntity { }
+public interface CommanderEntity {
+
+    boolean hasPermission(String permission);
+
+    boolean isOperator();
+
+}

@@ -31,6 +31,4 @@ public abstract class PlayerCommander implements CommanderEntity {
         return uuid;
     }
 
-    public abstract boolean hasPermission(String permission);
-
 }

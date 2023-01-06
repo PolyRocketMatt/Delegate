@@ -17,6 +17,8 @@ public interface IPlatform {
 
     boolean hasPermission(CommanderEntity entity, String permission) throws UnsupportedOperationException;
 
+    boolean isOperator(CommanderEntity entity) throws UnsupportedOperationException;
+
     boolean dispatch(CommandDispatchInformation information, CommandCapture capture);
 
     boolean metricsEnabled();

@@ -1,6 +1,5 @@
 package com.github.polyrocketmatt.delegate.api.command.action;
 
-import com.github.polyrocketmatt.delegate.api.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;

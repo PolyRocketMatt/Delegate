@@ -12,7 +12,7 @@ import com.github.polyrocketmatt.delegate.api.entity.ConsoleCommander;
 import com.github.polyrocketmatt.delegate.api.exception.CommandRegistrationException;
 import com.github.polyrocketmatt.delegate.api.exception.DelegateRuntimeException;
 import com.github.polyrocketmatt.delegate.core.DelegateCore;
-import com.github.polyrocketmatt.delegate.core.handlers.CommandHandler;
+import com.github.polyrocketmatt.delegate.core.handlers.DelegateCommandHandler;
 import com.github.polyrocketmatt.delegate.impl.command.BukkitCommandFactory;
 import com.github.polyrocketmatt.delegate.impl.entity.BukkitPlayerCommander;
 import com.github.polyrocketmatt.delegate.impl.event.DelegateCommandEvent;
@@ -40,7 +40,7 @@ public class Delegate implements IPlatform, CommandExecutor {
 
     private final Plugin plugin;
     private final CommandMap commandMap;
-    private final CommandHandler commandHandler;
+    private final DelegateCommandHandler commandHandler;
     private final boolean metricsEnabled;
 
     protected Delegate(JavaPlugin plugin, boolean metricsEnabled) {
@@ -54,7 +54,7 @@ public class Delegate implements IPlatform, CommandExecutor {
             throw new DelegateRuntimeException("Unable to retrieve command map", ex);
         }
 
-        this.commandHandler = (CommandHandler) DelegateCore.getDelegate().getCommandHandler();
+        this.commandHandler = (DelegateCommandHandler) DelegateCore.getDelegate().getCommandHandler();
         this.metricsEnabled = metricsEnabled;
 
         if (metricsEnabled) {
@@ -121,6 +121,13 @@ public class Delegate implements IPlatform, CommandExecutor {
         if (!(entity instanceof BukkitPlayerCommander commander))
             throw new UnsupportedOperationException("Expected entity to be of type BukkitPlayerCommander, but got %s".formatted(entity.getClass().getName()));
         return commander.hasPermission(permission);
+    }
+
+    @Override
+    public boolean isOperator(CommanderEntity entity) throws UnsupportedOperationException {
+        if (!(entity instanceof BukkitPlayerCommander commander))
+            throw new UnsupportedOperationException("Expected entity to be of type BukkitPlayerCommander, but got %s".formatted(entity.getClass().getName()));
+        return commander.isOperator();
     }
 
     @Override

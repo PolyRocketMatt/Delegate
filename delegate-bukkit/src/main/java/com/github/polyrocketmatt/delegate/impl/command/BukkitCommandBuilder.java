@@ -1,11 +1,13 @@
 package com.github.polyrocketmatt.delegate.impl.command;
 
 import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
+import com.github.polyrocketmatt.delegate.api.command.CommandDispatchInformation;
 import com.github.polyrocketmatt.delegate.api.command.ICommandAttribute;
 import com.github.polyrocketmatt.delegate.api.command.ICommandBuilder;
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.api.command.argument.Index;
+import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
 import com.github.polyrocketmatt.delegate.api.command.definition.CommandDefinition;
 import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
@@ -23,6 +25,8 @@ import com.github.polyrocketmatt.delegate.core.command.properties.AsyncProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.BrigadierProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNonPresentProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProperty;
+import com.github.polyrocketmatt.delegate.core.command.trigger.FailureTrigger;
+import com.github.polyrocketmatt.delegate.core.command.trigger.SuccessTrigger;
 
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -255,6 +259,14 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
 
     public <T> BukkitCommandBuilder withAction(String identifier, Supplier<T> action) {
         return this.with(new SupplierAction<>(identifier, action));
+    }
+
+    public BukkitCommandBuilder onSucces(BiConsumer<CommandDispatchInformation, CommandCapture> onSuccess) {
+        return this.with(new SuccessTrigger(onSuccess));
+    }
+
+    public BukkitCommandBuilder onFail(BiConsumer<CommandDispatchInformation, CommandCapture> onFail) {
+        return this.with(new FailureTrigger(onFail));
     }
 
 }

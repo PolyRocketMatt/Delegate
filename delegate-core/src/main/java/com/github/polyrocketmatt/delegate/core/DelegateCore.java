@@ -4,11 +4,10 @@ import com.github.polyrocketmatt.delegate.api.DelegateAPI;
 import com.github.polyrocketmatt.delegate.api.DelegateHook;
 import com.github.polyrocketmatt.delegate.api.IHandler;
 import com.github.polyrocketmatt.delegate.api.IPlatform;
-import com.github.polyrocketmatt.delegate.api.command.ICommandFactory;
 import com.github.polyrocketmatt.delegate.api.configuration.DelegateConfiguration;
 import com.github.polyrocketmatt.delegate.core.handlers.AnnotationHandler;
 import com.github.polyrocketmatt.delegate.core.handlers.AttributeHandler;
-import com.github.polyrocketmatt.delegate.core.handlers.CommandHandler;
+import com.github.polyrocketmatt.delegate.core.handlers.DelegateCommandHandler;
 
 public class DelegateCore implements DelegateAPI {
 
@@ -19,7 +18,7 @@ public class DelegateCore implements DelegateAPI {
     private final DelegateConfiguration configuration;
     private final AnnotationHandler annotationHandler;
     private final AttributeHandler attributeHandler;
-    private final CommandHandler commandHandler;
+    private final DelegateCommandHandler commandHandler;
 
     protected DelegateCore() {
         if (instance != null)
@@ -27,7 +26,7 @@ public class DelegateCore implements DelegateAPI {
         this.configuration = new DelegateConfiguration();
         this.annotationHandler = new AnnotationHandler();
         this.attributeHandler = new AttributeHandler();
-        this.commandHandler = new CommandHandler();
+        this.commandHandler = new DelegateCommandHandler();
     }
 
     public void hook(DelegateHook hook) {

@@ -8,6 +8,8 @@ import com.github.polyrocketmatt.delegate.api.command.data.ActionResult;
 import com.github.polyrocketmatt.delegate.api.command.data.FailureActionResult;
 import com.github.polyrocketmatt.delegate.api.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
+import com.github.polyrocketmatt.delegate.api.permission.PermissionTier;
+import com.github.polyrocketmatt.delegate.core.permission.PermissionTiers;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -26,14 +28,25 @@ public class SupplierAction<T> extends CommandAction {
     private final Supplier<T> action;
 
     /**
-     * Creates a new {@link SupplierAction} with an identifier and {@link Consumer} and
+     * Creates a new {@link SupplierAction} with an identifier and {@link Supplier} and
      * a default precedence of 0.
      *
-     * @param identifier The identifier of the command action.
-     * @param action The {@link Consumer} that will be executed.
+     * @param action The supplier that will be executed.
      */
     public SupplierAction(Supplier<T> action) {
-        super(newId(), 0);
+        super(newId(), PermissionTiers.GLOBAL.getTier(), 0);
+        this.action = action;
+    }
+
+    /**
+     * Creates a new {@link SupplierAction} with an identifier and {@link Supplier} and
+     * a default precedence of 0.
+     *
+     * @param permissionTier The permission tier required to execute this action.
+     * @param action The supplier that will be executed.
+     */
+    public SupplierAction(PermissionTier permissionTier, Supplier<T> action) {
+        super(newId(), permissionTier, 0);
         this.action = action;
     }
 
@@ -41,10 +54,22 @@ public class SupplierAction<T> extends CommandAction {
      * Creates a new {@link SupplierAction} with an identifier, precedence and {@link Supplier}.
      *
      * @param precedence The precedence of the command action.
-     * @param action The {@link Consumer} that will be executed.
+     * @param action The supplier that will be executed.
      */
     public SupplierAction(int precedence, Supplier<T> action) {
-        super(newId(), precedence);
+        super(newId(), PermissionTiers.GLOBAL.getTier(), precedence);
+        this.action = action;
+    }
+
+    /**
+     * Creates a new {@link SupplierAction} with an identifier, precedence and {@link Supplier}.
+     *
+     * @param permissionTier The permission tier required to execute this command.
+     * @param precedence The precedence of the command action.
+     * @param action The supplier that will be executed.
+     */
+    public SupplierAction(PermissionTier permissionTier, int precedence, Supplier<T> action) {
+        super(newId(), permissionTier, precedence);
         this.action = action;
     }
 
@@ -52,10 +77,22 @@ public class SupplierAction<T> extends CommandAction {
      * Creates a new {@link SupplierAction} with an identifier, precedence and {@link Supplier}.
      *
      * @param identifier The identifier of the command action.
-     * @param action The {@link Consumer} that will be executed.
+     * @param action The supplier that will be executed.
      */
     public SupplierAction(String identifier, Supplier<T> action) {
-        super(identifier, 0);
+        super(identifier, PermissionTiers.GLOBAL.getTier(), 0);
+        this.action = action;
+    }
+
+    /**
+     * Creates a new {@link SupplierAction} with an identifier, precedence and {@link Supplier}.
+     *
+     * @param identifier The identifier of the command action.
+     * @param permissionTier The permission tier required to execute this command.
+     * @param action The supplier that will be executed.
+     */
+    public SupplierAction(String identifier, PermissionTier permissionTier, Supplier<T> action) {
+        super(identifier, permissionTier, 0);
         this.action = action;
     }
 
@@ -67,7 +104,20 @@ public class SupplierAction<T> extends CommandAction {
      * @param action The {@link Consumer} that will be executed.
      */
     public SupplierAction(String identifier, int precedence, Supplier<T> action) {
-        super(identifier, precedence);
+        super(identifier, PermissionTiers.GLOBAL.getTier(), precedence);
+        this.action = action;
+    }
+
+    /**
+     * Creates a new {@link SupplierAction} with an identifier, precedence and {@link Supplier}.
+     *
+     * @param identifier The identifier of the command action.
+     * @param permissionTier The permission tier required to execute this command.
+     * @param precedence The precedence of the command action.
+     * @param action The {@link Consumer} that will be executed.
+     */
+    public SupplierAction(String identifier, PermissionTier permissionTier, int precedence, Supplier<T> action) {
+        super(identifier, permissionTier, precedence);
         this.action = action;
     }
 

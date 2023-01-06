@@ -32,4 +32,9 @@ public class BukkitPlayerCommander extends PlayerCommander {
     public boolean hasPermission(String permission) {
         return this.player.hasPermission(permission);
     }
+
+    @Override
+    public boolean isOperator() {
+        return this.player.isOp();
+    }
 }

@@ -35,7 +35,7 @@ import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
-public class CommandHandler implements IHandler {
+public class DelegateCommandHandler implements IHandler {
 
     private final CommandTree commandTree;
 
@@ -43,10 +43,10 @@ public class CommandHandler implements IHandler {
     private final int maxStealCount;
 
     /**
-     * Creates a new {@link CommandHandler} instance.
+     * Creates a new {@link DelegateCommandHandler} instance.
      */
     //  TODO: Fix a configuration for max available processors
-    public CommandHandler() {
+    public DelegateCommandHandler() {
         this.commandTree = new CommandTree();
         this.availableProcessors = 32;
         this.maxStealCount = 8;
