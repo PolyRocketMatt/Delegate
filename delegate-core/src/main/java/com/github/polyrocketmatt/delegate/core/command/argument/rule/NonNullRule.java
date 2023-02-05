@@ -13,7 +13,7 @@ import java.util.Objects;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
-public class NonNullRule extends ArgumentRule<String, Boolean> {
+public class NonNullRule extends ArgumentRule<Boolean> {
 
     /**
      * Creates a new rule that enforces an input string to not be null.
@@ -23,7 +23,7 @@ public class NonNullRule extends ArgumentRule<String, Boolean> {
     }
 
     @Override
-    public ArgumentRuleResult interpretResult(CommandArgument<?> argument, RuleData<String> input, RuleData<?> output) {
+    public ArgumentRuleResult interpretResult(CommandArgument<?> argument, String input, RuleData<?> output) {
         if (!(output.value() instanceof Boolean result))
             return new ArgumentRuleResult(ArgumentRuleResult.Result.FAILURE, "Expected result of rule did not match");
         if (!result)

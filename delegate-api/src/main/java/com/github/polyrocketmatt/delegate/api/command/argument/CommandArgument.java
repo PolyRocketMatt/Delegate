@@ -25,7 +25,7 @@ import static com.github.polyrocketmatt.delegate.api.StringUtils.newId;
 public abstract class CommandArgument<T> extends CommandAttribute implements Bufferable, ArgumentParser<T> {
 
     private final String argumentDescription;
-    private final List<ArgumentRule<String, ?>> argumentRules;
+    private final List<ArgumentRule<?>> argumentRules;
     private final Class<T> argumentType;
 
     private Argument<T> defaultValue;
@@ -57,15 +57,7 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
         this.defaultValue = null;
     }
 
-    /**
-     * Creates a new command argument with an identifier, description and
-     * argument rules that must be met for the argument to be valid.
-     *
-     * @param argumentDescription The description of the argument.
-     * @param argumentRules The argument rules that must be met for the argument to be valid.
-     */
-    @SafeVarargs
-    public CommandArgument(String argumentDescription, Class<T> argumentType, ArgumentRule<String, ?>... argumentRules) {
+    public CommandArgument(String argumentDescription, Class<T> argumentType, ArgumentRule<?>... argumentRules) {
         super(newId());
         this.argumentDescription = argumentDescription;
         this.argumentRules = Arrays.asList(argumentRules);
@@ -81,8 +73,7 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @param argumentDescription The description of the argument.
      * @param argumentRules The argument rules that must be met for the argument to be valid.
      */
-    @SafeVarargs
-    public CommandArgument(String identifier, String argumentDescription, Class<T> argumentType, ArgumentRule<String, ?>... argumentRules) {
+    public CommandArgument(String identifier, String argumentDescription, Class<T> argumentType, ArgumentRule<?>... argumentRules) {
         super(identifier);
         this.argumentDescription = argumentDescription;
         this.argumentRules = Arrays.asList(argumentRules);
@@ -104,7 +95,7 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      *
      * @return The argument rules that must be met for the argument to be valid.
      */
-    public List<ArgumentRule<String, ?>> getArgumentRules() {
+    public List<ArgumentRule<?>> getArgumentRules() {
         return argumentRules;
     }
 
@@ -113,7 +104,7 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      *
      * @param rule The argument rule to add.
      */
-    private void addRule(ArgumentRule<String, ?> rule) {
+    private void addRule(ArgumentRule<?> rule) {
         this.argumentRules.add(rule);
     }
 
@@ -164,9 +155,9 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @throws ArgumentParseException If the result of applying any argument rule to the input is not valid.
      */
     public void parseRules(String input) {
-        for (ArgumentRule<String, ?> rule : getArgumentRules()) {
-            RuleData<?> result = rule.getRule().apply(new RuleData<>(input));
-            ArgumentRuleResult ruleResult = rule.interpretResult(this, new RuleData<>(input), result);
+        for (ArgumentRule<?> rule : getArgumentRules()) {
+            RuleData<?> result = rule.getRule().apply(input);
+            ArgumentRuleResult ruleResult = rule.interpretResult(this, input, result);
 
             if (ruleResult.result() == ArgumentRuleResult.Result.FAILURE)
                 throw onFail(ruleResult.info(), null, argumentType);
@@ -179,7 +170,7 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @param rule The argument rule to add.
      * @return The argument.
      */
-    public CommandArgument<T> withRule(ArgumentRule<String, ?> rule) {
+    public CommandArgument<T> withRule(ArgumentRule<?> rule) {
         this.addRule(rule);
         return this;
     }
@@ -190,9 +181,8 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @param rules The argument rules to add.
      * @return The argument.
      */
-    @SafeVarargs
-    public final CommandArgument<?> withRules(ArgumentRule<String, ?>... rules) {
-        for (ArgumentRule<String, ?> rule : rules)
+    public final CommandArgument<?> withRules(ArgumentRule<?>... rules) {
+        for (ArgumentRule<?> rule : rules)
             this.addRule(rule);
         return this;
     }

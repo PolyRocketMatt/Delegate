@@ -6,17 +6,16 @@ import java.util.function.Function;
 
 /**
  * Represents a rule that must apply to a command argument.
- * The rule takes a {@link Function} with the input object of
- * type {@link I} and return object of type {@link O}.
+ * The rule takes a {@link Function} with the input string
+ * and return object of type {@link O}.
  *
- * @param <I> The input type of the rule.
  * @param <O> The output type of the rule.
  * @since 0.0.1
  * @author Matthias Kovacic
  */
-public abstract class ArgumentRule<I, O> {
+public abstract class ArgumentRule<O> {
 
-    private final Function<RuleData<I>, RuleData<O>> rule;
+    private final Function<String, RuleData<O>> rule;
 
     /**
      * Creates a new argument rule with the given {@link Function} which
@@ -24,7 +23,7 @@ public abstract class ArgumentRule<I, O> {
      *
      * @param rule The {@link Function} which represents the rule to apply.
      */
-    public ArgumentRule(Function<RuleData<I>, RuleData<O>> rule) {
+    public ArgumentRule(Function<String, RuleData<O>> rule) {
         this.rule = rule;
     }
 
@@ -33,7 +32,7 @@ public abstract class ArgumentRule<I, O> {
      *
      * @return The {@link Function} which represents the rule to apply.
      */
-    public Function<RuleData<I>, RuleData<O>> getRule() {
+    public Function<String, RuleData<O>> getRule() {
         return rule;
     }
 
@@ -46,6 +45,6 @@ public abstract class ArgumentRule<I, O> {
      * @param output The output object of the rule.
      * @return The interpretation of the application of the rule in an {@link ArgumentRuleResult}.
      */
-    public abstract ArgumentRuleResult interpretResult(CommandArgument<?> argument, RuleData<I> input, RuleData<?> output);
+    public abstract ArgumentRuleResult interpretResult(CommandArgument<?> argument, String input, RuleData<?> output);
 
 }

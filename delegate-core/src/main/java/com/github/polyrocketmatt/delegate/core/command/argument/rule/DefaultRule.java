@@ -17,7 +17,7 @@ import java.lang.reflect.Field;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
-public class DefaultRule<T> extends ArgumentRule<String, T> {
+public class DefaultRule<T> extends ArgumentRule<T> {
 
     /**
      * Creates a new rule that assigns a default value to an argument if it is not present.
@@ -29,8 +29,8 @@ public class DefaultRule<T> extends ArgumentRule<String, T> {
     }
 
     @Override
-    public ArgumentRuleResult interpretResult(CommandArgument<?> argument, RuleData<String> input, RuleData<?> output) {
-        if (input.value() == null) {
+    public ArgumentRuleResult interpretResult(CommandArgument<?> argument, String input, RuleData<?> output) {
+        if (input == null) {
             ActionItem<?> actionItem = new ActionItem<>(ActionItem.Result.SUCCESS, output.value());
 
             try {
