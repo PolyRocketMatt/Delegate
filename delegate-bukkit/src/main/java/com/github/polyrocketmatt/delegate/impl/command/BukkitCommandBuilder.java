@@ -12,6 +12,7 @@ import com.github.polyrocketmatt.delegate.api.command.definition.CommandDefiniti
 import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.exception.AttributeException;
+import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
 import com.github.polyrocketmatt.delegate.core.command.DelegateCommandBuilder;
 import com.github.polyrocketmatt.delegate.core.command.action.ConsumerAction;
 import com.github.polyrocketmatt.delegate.core.command.action.FunctionAction;
@@ -27,6 +28,7 @@ import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNonPrese
 import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProperty;
 import com.github.polyrocketmatt.delegate.core.command.trigger.FailureTrigger;
 import com.github.polyrocketmatt.delegate.core.command.trigger.SuccessTrigger;
+import com.github.polyrocketmatt.delegate.core.permission.StandardPermission;
 
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -227,6 +229,21 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
     @Override
     public ICommandBuilder withIgnoreNonPresent() {
         return this.with(new IgnoreNonPresentProperty());
+    }
+
+    @Override
+    public ICommandBuilder withPermission(PermissionTier tier) {
+        return this.with(tier);
+    }
+
+    @Override
+    public ICommandBuilder withPermission(String permission, PermissionTier parent) {
+        return this.with(new StandardPermission(permission, parent));
+    }
+
+    @Override
+    public ICommandBuilder withPermission(String permission) {
+        return this.withPermission(new StandardPermission(permission));
     }
 
     public BukkitCommandBuilder withAction(BiConsumer<CommanderEntity, Index> action) {

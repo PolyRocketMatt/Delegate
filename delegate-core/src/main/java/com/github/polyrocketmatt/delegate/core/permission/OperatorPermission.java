@@ -1,7 +1,7 @@
 package com.github.polyrocketmatt.delegate.core.permission;
 
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
-import com.github.polyrocketmatt.delegate.api.permission.PermissionTier;
+import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
 
 public class OperatorPermission extends PermissionTier {
 

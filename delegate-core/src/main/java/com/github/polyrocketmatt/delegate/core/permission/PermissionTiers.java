@@ -1,6 +1,6 @@
 package com.github.polyrocketmatt.delegate.core.permission;
 
-import com.github.polyrocketmatt.delegate.api.permission.PermissionTier;
+import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
 
 public enum PermissionTiers {
 

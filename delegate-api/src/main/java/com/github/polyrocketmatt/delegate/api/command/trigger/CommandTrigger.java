@@ -1,5 +1,6 @@
 package com.github.polyrocketmatt.delegate.api.command.trigger;
 
+import com.github.polyrocketmatt.delegate.api.AttributeType;
 import com.github.polyrocketmatt.delegate.api.Bufferable;
 import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
 import com.github.polyrocketmatt.delegate.api.command.CommandDispatchInformation;
@@ -26,4 +27,8 @@ public abstract class CommandTrigger extends CommandAttribute implements Buffera
 
     public abstract boolean shouldTrigger(List<ActionItem.Result> results);
 
+    @Override
+    public AttributeType getType() {
+        return AttributeType.TRIGGER;
+    }
 }

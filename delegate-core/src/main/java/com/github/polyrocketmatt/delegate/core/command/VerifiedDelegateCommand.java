@@ -4,6 +4,7 @@ import com.github.polyrocketmatt.delegate.api.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.api.command.trigger.CommandTrigger;
+import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
 import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
 import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
@@ -27,18 +28,21 @@ public class VerifiedDelegateCommand extends DelegateCommand {
     private final CommandBuffer<CommandProperty> propertyBuffer;
     private final CommandBuffer<CommandAction> actionBuffer;
     private final CommandBuffer<CommandTrigger> triggerBuffer;
+    private final CommandBuffer<PermissionTier> permissionBuffer;
 
     protected VerifiedDelegateCommand(NameDefinition nameDefinition, DescriptionDefinition descriptionDefinition,
                                       CommandBuffer<CommandArgument<?>> argumentBuffer,
                                       CommandBuffer<CommandProperty> propertyBuffer,
                                       CommandBuffer<CommandAction> actionBuffer,
-                                      CommandBuffer<CommandTrigger> triggerBuffer) {
+                                      CommandBuffer<CommandTrigger> triggerBuffer,
+                                      CommandBuffer<PermissionTier> permissionBuffer) {
         this.nameDefinition = nameDefinition;
         this.descriptionDefinition = descriptionDefinition;
         this.argumentBuffer = argumentBuffer;
         this.propertyBuffer = propertyBuffer;
         this.actionBuffer = actionBuffer;
         this.triggerBuffer = triggerBuffer;
+        this.permissionBuffer = permissionBuffer;
     }
 
     @Override
@@ -88,6 +92,15 @@ public class VerifiedDelegateCommand extends DelegateCommand {
     }
 
     /**
+     * Gets the {@link CommandBuffer} that stores the {@link PermissionTier}s of the command.
+     *
+     * @return The {@link CommandBuffer} that stores the {@link PermissionTier}s of the command.
+     */
+    public CommandBuffer<PermissionTier> getPermissionBuffer() {
+        return permissionBuffer;
+    }
+
+    /**
      * Creates a new {@link VerifiedCommandBuilder} that is used to create a new {@link VerifiedDelegateCommand}.
      *
      * @return A new {@link VerifiedCommandBuilder} that is used to create a new {@link VerifiedDelegateCommand}.
@@ -110,6 +123,7 @@ public class VerifiedDelegateCommand extends DelegateCommand {
         private CommandBuffer<CommandProperty> propertyBuffer;
         private CommandBuffer<CommandAction> actionBuffer;
         private CommandBuffer<CommandTrigger> triggerBuffer;
+        private CommandBuffer<PermissionTier> permissionBuffer;
 
         /**
          * Builds a new {@link NameDefinition} and stores it in the builder.
@@ -178,6 +192,17 @@ public class VerifiedDelegateCommand extends DelegateCommand {
         }
 
         /**
+         * Builds a new {@link CommandBuffer} that stores the {@link PermissionTier}s of the command.
+         *
+         * @param permissionBuffer The {@link CommandBuffer} that stores the {@link PermissionTier}s of the command.
+         * @return The builder.
+         */
+        public VerifiedCommandBuilder buildPermissionBuffer(CommandBuffer<PermissionTier> permissionBuffer) {
+            this.permissionBuffer = permissionBuffer;
+            return this;
+        }
+
+        /**
          * Builds a new {@link VerifiedDelegateCommand} using the attributes that were stored in the builder.
          *
          * @return A new {@link VerifiedDelegateCommand} using the attributes that were stored in the builder.
@@ -189,7 +214,8 @@ public class VerifiedDelegateCommand extends DelegateCommand {
                     this.argumentBuffer,
                     this.propertyBuffer,
                     this.actionBuffer,
-                    this.triggerBuffer
+                    this.triggerBuffer,
+                    this.permissionBuffer
             );
         }
 

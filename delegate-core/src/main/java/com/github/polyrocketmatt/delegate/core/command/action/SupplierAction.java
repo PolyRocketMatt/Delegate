@@ -5,7 +5,7 @@ import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
 import com.github.polyrocketmatt.delegate.api.command.data.FailureActionResult;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
-import com.github.polyrocketmatt.delegate.api.permission.PermissionTier;
+import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
 import com.github.polyrocketmatt.delegate.core.permission.PermissionTiers;
 
 import java.util.List;

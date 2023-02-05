@@ -2,6 +2,7 @@ package com.github.polyrocketmatt.delegate.core.handlers;
 
 import com.github.polyrocketmatt.delegate.api.IHandler;
 import com.github.polyrocketmatt.delegate.api.command.trigger.CommandTrigger;
+import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
 import com.github.polyrocketmatt.delegate.core.command.AttributedDelegateCommand;
 import com.github.polyrocketmatt.delegate.api.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
@@ -56,6 +57,7 @@ public class AttributeHandler implements IHandler {
         CommandBuffer<CommandProperty> propertyBuffer = new CommandBuffer<>(this.processProperties(chain));
         CommandBuffer<CommandAction> actionBuffer = new CommandBuffer<>(this.processActions(chain));
         CommandBuffer<CommandTrigger> triggerBuffer = new CommandBuffer<>(this.processTriggers(chain));
+        CommandBuffer<PermissionTier> permissionBuffer = new CommandBuffer<>(this.processPermissionTiers(chain));
 
         VerifiedDelegateCommand verifiedCommand = VerifiedDelegateCommand.create()
                 .buildNameDefinition(header.getA())
@@ -64,6 +66,7 @@ public class AttributeHandler implements IHandler {
                 .buildPropertyBuffer(propertyBuffer)
                 .buildActionBuffer(actionBuffer)
                 .buildTriggerBuffer(triggerBuffer)
+                .buildPermissionBuffer(permissionBuffer)
                 .build();
 
         //  If this is a super command, register the command and process the subcommands
@@ -132,6 +135,10 @@ public class AttributeHandler implements IHandler {
 
     private List<CommandTrigger> processTriggers(DelegateCommandBuilder chain) {
         return chain.getTriggers();
+    }
+
+    private List<PermissionTier> processPermissionTiers(DelegateCommandBuilder chain) {
+        return chain.getPermissionTiers();
     }
 
     private void processSubCommands(CommandNode parent, DelegateCommandBuilder chain) {

@@ -7,6 +7,7 @@ import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.api.command.definition.CommandDefinition;
 import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
 import com.github.polyrocketmatt.delegate.api.command.trigger.CommandTrigger;
+import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
 import com.github.polyrocketmatt.delegate.core.handlers.AttributeHandler;
 
 import java.util.LinkedList;
@@ -126,6 +127,14 @@ public abstract class DelegateCommandBuilder implements ICommandBuilder {
             if (attribute instanceof CommandTrigger)
                 triggers.add((CommandTrigger) attribute);
         return triggers;
+    }
+
+    public List<PermissionTier> getPermissionTiers() {
+        List<PermissionTier> tiers = new LinkedList<>();
+        for (CommandAttribute attribute : attributes)
+            if (attribute instanceof PermissionTier)
+                tiers.add((PermissionTier) attribute);
+        return tiers;
     }
 
     /**

@@ -11,6 +11,8 @@ public enum AttributeType {
     ARGUMENT,
     DEFINITION,
     PROPERTY,
+    TRIGGER,
+    PERMISSION,
     UNKNOWN
 
 }

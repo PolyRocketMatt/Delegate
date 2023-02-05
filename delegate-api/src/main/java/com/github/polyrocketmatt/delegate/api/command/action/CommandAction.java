@@ -3,7 +3,7 @@ package com.github.polyrocketmatt.delegate.api.command.action;
 import com.github.polyrocketmatt.delegate.api.AttributeType;
 import com.github.polyrocketmatt.delegate.api.Bufferable;
 import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
-import com.github.polyrocketmatt.delegate.api.permission.PermissionTier;
+import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
 
 /**
  * Defines a command action with a precedence.
