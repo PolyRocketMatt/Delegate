@@ -93,5 +93,4 @@ without any performance degradation*.
 
 ---
 <h5 align="center">Icons provided by [Flaticon](https://www.flaticon.com/)</h5>
-
 ---
