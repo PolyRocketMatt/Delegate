@@ -6,6 +6,7 @@ import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
 import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
 import com.github.polyrocketmatt.delegate.api.command.feedback.FeedbackType;
+import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
 import com.github.polyrocketmatt.delegate.api.command.trigger.CommandTrigger;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.command.CommandDispatchInformation;
@@ -96,6 +97,11 @@ public class DelegateCommandHandler implements IHandler {
 
         //  We can then parse the remaining arguments, apply rules to them and parse them.
         VerifiedDelegateCommand command = (VerifiedDelegateCommand) executionNode.getCommand();
+
+        //  Check if the commander has permission to execute the command
+        if (canExecute(information.commander(), command.getPermissionBuffer()))
+            throw createException(information, FeedbackType.UNAUTHORIZED, commandName);
+
         String[] remainingArguments = queryResultNode.remainingArgs();
         String[] verifiedArguments = this.verifyArguments(information, command, remainingArguments);
         List<Argument<?>> parsedArguments = this.parseArguments(information, command, verifiedArguments);
@@ -109,6 +115,12 @@ public class DelegateCommandHandler implements IHandler {
 
         //  Call event for other plugins possibly?
         return getDelegate().getPlatform().dispatch(information, capture);
+    }
+
+    private boolean canExecute(CommanderEntity commander, CommandBuffer<PermissionTier> permissionTiers) {
+        if (permissionTiers.size() == 0)
+            return true;
+        return permissionTiers.stream().anyMatch(tier -> tier.hasPermission(commander));
     }
 
     private String[] verifyArguments(CommandDispatchInformation information, VerifiedDelegateCommand command, String[] arguments) {

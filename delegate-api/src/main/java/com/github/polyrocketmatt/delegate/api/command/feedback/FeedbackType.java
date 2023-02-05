@@ -6,6 +6,8 @@ public enum FeedbackType {
     COMMAND_NOT_FOUND("Command %s does not exist."),
     COMMAND_UNVERIFIED("Command %s is not verified and therefor not allowed to be executed."),
 
+    UNAUTHORIZED("You do not have permission to execute the command: %"),
+
     ARGS_INVALID_COUNT("Wrong number of arguments. Expected %d, got %d."),
     ARGS_INVALID_IDENTIFIER("Invalid identifier %s."),
     ARGS_INVALID_FORMAT("Wrong argument format. Expected %s, got %s."),
