@@ -3,6 +3,7 @@ package com.github.polyrocketmatt.delegate.core.handlers;
 import com.github.polyrocketmatt.delegate.api.IHandler;
 import com.github.polyrocketmatt.delegate.api.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
+import com.github.polyrocketmatt.delegate.api.command.argument.Index;
 import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
 import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
 import com.github.polyrocketmatt.delegate.api.command.feedback.FeedbackType;
@@ -17,6 +18,7 @@ import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.core.command.action.ExceptAction;
 import com.github.polyrocketmatt.delegate.core.command.properties.AsyncProperty;
 import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
+import com.github.polyrocketmatt.delegate.core.command.properties.CatchExceptionProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNonPresentProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProperty;
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandNode;
@@ -71,7 +73,10 @@ public class DelegateCommandHandler implements IHandler {
             }
         }
 
-        throw new CommandExecutionException(information, getDelegate().getConfiguration().get(type), type, args);
+        if (getDelegate().verbose())
+            throw new CommandExecutionException(information, getDelegate().getConfiguration().get(type), type, args);
+        else
+            return true;
     }
 
     /**
@@ -115,24 +120,46 @@ public class DelegateCommandHandler implements IHandler {
 
         //  We can then parse the remaining arguments, apply rules to them and parse them.
         VerifiedDelegateCommand command = (VerifiedDelegateCommand) executionNode.getCommand();
-        String[] remainingArguments = queryResultNode.remainingArgs();
-        String[] verifiedArguments = this.verifyArguments(information, command, remainingArguments);
-        List<Argument<?>> parsedArguments = this.parseArguments(information, command, verifiedArguments);
 
-        //  Check if the commander has permission to execute the command
-        if (!canExecute(information.commander(), command.getPermissionBuffer()))
-            if (exceptOrThrow(information, command, FeedbackType.UNAUTHORIZED, commandName))
-                return true;
+        //  Check if the command is executed safely
+        boolean safeExecute = command.getPropertyBuffer().stream()
+                .anyMatch(property -> property instanceof CatchExceptionProperty);
+        try {
+            String[] remainingArguments = queryResultNode.remainingArgs();
+            String[] verifiedArguments = this.verifyArguments(information, command, remainingArguments);
+            List<Argument<?>> parsedArguments = this.parseArguments(information, command, verifiedArguments);
 
-        //  We can execute the command with the remaining arguments
-        List<CommandCapture.Capture> captures = this.execute(commander, command, parsedArguments);
-        CommandCapture capture = new CommandCapture(captures);
+            //  Check if the commander has permission to execute the command
+            if (!canExecute(information.commander(), command.getPermissionBuffer()))
+                if (exceptOrThrow(information, command, FeedbackType.UNAUTHORIZED, commandName))
+                    return true;
 
-        //  Execute triggers
-        this.executeTriggers(information, command, capture);
+            //  We can execute the command with the remaining arguments
+            List<CommandCapture.Capture> captures = this.execute(commander, command, parsedArguments);
+            CommandCapture capture = new CommandCapture(captures);
 
-        //  Call event for other plugins possibly?
-        return getDelegate().getPlatform().dispatch(information, capture);
+            //  Execute triggers
+            this.executeTriggers(information, command, capture);
+
+            //  Call event for other plugins possibly?
+            return getDelegate().getPlatform().dispatch(information, capture);
+        } catch (Exception ex) {
+            if (safeExecute) {
+                StackTraceElement[] stackTrace = ex.getStackTrace();
+                StringBuilder builder = new StringBuilder();
+                for (StackTraceElement element : stackTrace)
+                    builder.append(element.toString()).append("\n");
+
+                CommandCapture capture = new CommandCapture(List.of(
+                        new CommandCapture.Capture("exception", new ActionItem<>(ActionItem.Result.FAILURE, ex.getMessage())),
+                        new CommandCapture.Capture("stacktrace", new ActionItem<>(ActionItem.Result.FAILURE, builder.toString()))
+                ));
+
+                return getDelegate().getPlatform().dispatch(information, capture);
+            }
+        }
+
+        return false;
     }
 
     private boolean canExecute(CommanderEntity commander, CommandBuffer<PermissionTier> permissionTiers) {

@@ -1,7 +1,6 @@
 package com.github.polyrocketmatt.delegate.core;
 
 import com.github.polyrocketmatt.delegate.api.DelegateAPI;
-import com.github.polyrocketmatt.delegate.api.DelegateHook;
 import com.github.polyrocketmatt.delegate.api.IHandler;
 import com.github.polyrocketmatt.delegate.api.IPlatform;
 import com.github.polyrocketmatt.delegate.api.command.tree.ICommandTree;
@@ -14,12 +13,12 @@ public class DelegateCore implements DelegateAPI {
 
     private static final DelegateCore instance = new DelegateCore();
 
-    private DelegateHook hook;
     private IPlatform platform;
     private final DelegateConfiguration configuration;
     private final AnnotationHandler annotationHandler;
     private final AttributeHandler attributeHandler;
     private final DelegateCommandHandler commandHandler;
+    private boolean verbose = false;
 
     protected DelegateCore() {
         if (instance != null)
@@ -30,14 +29,8 @@ public class DelegateCore implements DelegateAPI {
         this.commandHandler = new DelegateCommandHandler();
     }
 
-    public void hook(DelegateHook hook) {
-        if (this.hook != null)
-            throw new IllegalStateException("Delegate was already hooked");
-        this.hook = hook;
-    }
-
-    public DelegateHook getHook() {
-        return hook;
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
     }
 
     public static DelegateAPI getDelegateAPI() {
@@ -77,5 +70,10 @@ public class DelegateCore implements DelegateAPI {
     @Override
     public ICommandTree getCommandTree() {
         return this.commandHandler.getCommandTree();
+    }
+
+    @Override
+    public boolean verbose() {
+        return verbose;
     }
 }

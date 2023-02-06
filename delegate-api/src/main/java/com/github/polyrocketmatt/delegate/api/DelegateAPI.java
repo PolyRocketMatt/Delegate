@@ -47,4 +47,11 @@ public interface DelegateAPI {
      */
     ICommandTree getCommandTree();
 
+    /**
+     * Gets whether the Delegate API is in verbose mode and will throw exceptions.
+     *
+     * @return Whether the Delegate API is in verbose mode and will throw exceptions.
+     */
+    boolean verbose();
+
 }

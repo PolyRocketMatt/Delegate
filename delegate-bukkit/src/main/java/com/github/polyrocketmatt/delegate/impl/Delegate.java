@@ -65,11 +65,12 @@ public class Delegate implements IPlatform, CommandExecutor {
     }
 
     public static void hook(JavaPlugin plugin) {
-        hook(plugin, true);
+        hook(plugin, true, true);
     }
 
-    public static void hook(JavaPlugin plugin, boolean enableMetrics) {
+    public static void hook(JavaPlugin plugin, boolean enableMetrics, boolean verbose) {
         DelegateCore.getDelegate().setPlatform(new Delegate(plugin, enableMetrics));
+        DelegateCore.getDelegate().setVerbose(verbose);
     }
 
     public static void unhook(JavaPlugin plugin) {
