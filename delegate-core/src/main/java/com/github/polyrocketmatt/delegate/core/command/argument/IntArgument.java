@@ -47,7 +47,7 @@ public class IntArgument extends CommandArgument<Integer> {
      * @param argumentDescription The description of the argument.
      * @param rule The rule of the argument.
      */
-    public IntArgument(String identifier, String argumentDescription, ArgumentRule<String, ?> rule) {
+    public IntArgument(String identifier, String argumentDescription, ArgumentRule<?> rule) {
         super(identifier, argumentDescription, Integer.class, rule);
     }
 
@@ -60,7 +60,7 @@ public class IntArgument extends CommandArgument<Integer> {
      * @param defaultValue The default value of the argument.
      * @param rules The rules of the argument.
      */
-    public IntArgument(String identifier, String argumentDescription, Integer defaultValue, ArgumentRule<String, ?> rules) {
+    public IntArgument(String identifier, String argumentDescription, Integer defaultValue, ArgumentRule<?> rules) {
         super(identifier, argumentDescription, Integer.class, ArrayUtils.combine(List.of(new DefaultRule<>(defaultValue)), List.of(rules)));
     }
 
@@ -107,7 +107,7 @@ public class IntArgument extends CommandArgument<Integer> {
      * @param rule The rule of the argument.
      * @return The created {@link IntArgument}.
      */
-    public static IntArgument of(String identifier, String argumentDescription, ArgumentRule<String, ?> rule) {
+    public static IntArgument of(String identifier, String argumentDescription, ArgumentRule<?> rule) {
         return new IntArgument(identifier, argumentDescription, rule);
     }
 
@@ -121,7 +121,7 @@ public class IntArgument extends CommandArgument<Integer> {
      * @param rules The rules of the argument.
      * @return The created {@link IntArgument}.
      */
-    public static IntArgument of(String identifier, String argumentDescription, int defaultValue, ArgumentRule<String, ?> rules) {
+    public static IntArgument of(String identifier, String argumentDescription, int defaultValue, ArgumentRule<?> rules) {
         return new IntArgument(identifier, argumentDescription, defaultValue, rules);
     }
 }

@@ -47,7 +47,7 @@ public class StringArgument extends CommandArgument<String> {
      * @param argumentDescription The description of the argument.
      * @param rule The rule of the argument.
      */
-    public StringArgument(String identifier, String argumentDescription, ArgumentRule<String, ?> rule) {
+    public StringArgument(String identifier, String argumentDescription, ArgumentRule<?> rule) {
         super(identifier, argumentDescription, String.class, rule);
     }
 
@@ -60,7 +60,7 @@ public class StringArgument extends CommandArgument<String> {
      * @param defaultValue The default value of the argument.
      * @param rules The rules of the argument.
      */
-    public StringArgument(String identifier, String argumentDescription, String defaultValue, ArgumentRule<String, ?> rules) {
+    public StringArgument(String identifier, String argumentDescription, String defaultValue, ArgumentRule<?> rules) {
         super(identifier, argumentDescription, String.class, ArrayUtils.combine(List.of(new DefaultRule<>(defaultValue)), List.of(rules)));
     }
 
@@ -101,7 +101,7 @@ public class StringArgument extends CommandArgument<String> {
      * @param rule The rule of the argument.
      * @return The created {@link StringArgument}.
      */
-    public static StringArgument of(String identifier, String argumentDescription, ArgumentRule<String, ?> rule) {
+    public static StringArgument of(String identifier, String argumentDescription, ArgumentRule<?> rule) {
         return new StringArgument(identifier, argumentDescription, rule);
     }
 
@@ -115,7 +115,7 @@ public class StringArgument extends CommandArgument<String> {
      * @param rules The rules of the argument.
      * @return The created {@link StringArgument}.
      */
-    public static StringArgument of(String identifier, String argumentDescription, String defaultValue, ArgumentRule<String, ?> rules) {
+    public static StringArgument of(String identifier, String argumentDescription, String defaultValue, ArgumentRule<?> rules) {
         return new StringArgument(identifier, argumentDescription, defaultValue, rules);
     }
 

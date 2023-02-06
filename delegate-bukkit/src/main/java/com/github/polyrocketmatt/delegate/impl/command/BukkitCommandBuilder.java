@@ -29,6 +29,10 @@ import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProp
 import com.github.polyrocketmatt.delegate.core.command.trigger.FailureTrigger;
 import com.github.polyrocketmatt.delegate.core.command.trigger.SuccessTrigger;
 import com.github.polyrocketmatt.delegate.core.permission.StandardPermission;
+import com.github.polyrocketmatt.delegate.impl.command.argument.PlayerArgument;
+import com.github.polyrocketmatt.delegate.impl.command.argument.WorldArgument;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
 
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -246,35 +250,35 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
         return this.withPermission(new StandardPermission(permission));
     }
 
-    public BukkitCommandBuilder withAction(BiConsumer<CommanderEntity, Index> action) {
+    public BukkitCommandBuilder withConsumerAction(BiConsumer<CommanderEntity, Index> action) {
         return this.with(new ConsumerAction(action));
     }
 
-    public BukkitCommandBuilder withAction(String identifier, BiConsumer<CommanderEntity, Index> action) {
+    public BukkitCommandBuilder withConsumerAction(String identifier, BiConsumer<CommanderEntity, Index> action) {
         return this.with(new ConsumerAction(identifier, action));
     }
 
-    public BukkitCommandBuilder withAction(BiFunction<CommanderEntity, Index, ?> action) {
+    public BukkitCommandBuilder withFunctionAction(BiFunction<CommanderEntity, Index, ?> action) {
         return this.with(new FunctionAction(action));
     }
 
-    public BukkitCommandBuilder withAction(String identifier, BiFunction<CommanderEntity, Index, ?> action) {
+    public BukkitCommandBuilder withFunctionAction(String identifier, BiFunction<CommanderEntity, Index, ?> action) {
         return this.with(new FunctionAction(identifier, action));
     }
 
-    public BukkitCommandBuilder withAction(Runnable action) {
+    public BukkitCommandBuilder withRunnableAction(Runnable action) {
         return this.with(new RunnableAction(action));
     }
 
-    public BukkitCommandBuilder withAction(String identifier, Runnable action) {
+    public BukkitCommandBuilder withRunnableAction(String identifier, Runnable action) {
         return this.with(new RunnableAction(identifier, action));
     }
 
-    public <T> BukkitCommandBuilder withAction(Supplier<T> action) {
+    public <T> BukkitCommandBuilder withSupplierAction(Supplier<T> action) {
         return this.with(new SupplierAction<>(action));
     }
 
-    public <T> BukkitCommandBuilder withAction(String identifier, Supplier<T> action) {
+    public <T> BukkitCommandBuilder withSupplierAction(String identifier, Supplier<T> action) {
         return this.with(new SupplierAction<>(identifier, action));
     }
 
@@ -284,6 +288,52 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
 
     public BukkitCommandBuilder onFail(BiConsumer<CommandDispatchInformation, CommandCapture> onFail) {
         return this.with(new FailureTrigger(onFail));
+    }
+
+    /**
+     * Append a new {@link PlayerArgument} to the chain with the given description.
+     *
+     * @param name The name of the argument.
+     * @param description The description of the argument.
+     * @return The current chain.
+     */
+    public BukkitCommandBuilder withPlayer(String name, String description) {
+        return this.with(PlayerArgument.of(name, description));
+    }
+
+    /**
+     * Append a new {@link PlayerArgument} to the chain with the given description and default value.
+     *
+     * @param name The name of the argument.
+     * @param description The description of the argument.
+     * @param defaultValue The default value of the argument.
+     * @return The current chain.
+     */
+    public BukkitCommandBuilder withPlayer(String name, String description, Player defaultValue) {
+        return this.with(PlayerArgument.of(name, description, defaultValue));
+    }
+
+    /**
+     * Append a new {@link WorldArgument} to the chain with the given description.
+     *
+     * @param name The name of the argument.
+     * @param description The description of the argument.
+     * @return The current chain.
+     */
+    public BukkitCommandBuilder withWorld(String name, String description) {
+        return this.with(WorldArgument.of(name, description));
+    }
+
+    /**
+     * Append a new {@link WorldArgument} to the chain with the given description and default value.
+     *
+     * @param name The name of the argument.
+     * @param description The description of the argument.
+     * @param defaultValue The default value of the argument.
+     * @return The current chain.
+     */
+    public BukkitCommandBuilder withWorld(String name, String description, World defaultValue) {
+        return this.with(WorldArgument.of(name, description, defaultValue));
     }
 
 }
