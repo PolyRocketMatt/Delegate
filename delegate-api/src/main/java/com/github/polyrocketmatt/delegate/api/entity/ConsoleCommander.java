@@ -18,4 +18,8 @@ public class ConsoleCommander implements CommanderEntity {
         return true;
     }
 
+    @Override
+    public void sendMessage(String message) {
+        System.out.println(message);
+    }
 }

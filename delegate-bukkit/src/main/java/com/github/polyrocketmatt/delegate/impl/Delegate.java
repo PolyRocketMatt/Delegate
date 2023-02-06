@@ -9,7 +9,7 @@ import com.github.polyrocketmatt.delegate.api.DelegateAPI;
 import com.github.polyrocketmatt.delegate.api.IPlatform;
 import com.github.polyrocketmatt.delegate.api.PlatformType;
 import com.github.polyrocketmatt.delegate.api.entity.ConsoleCommander;
-import com.github.polyrocketmatt.delegate.api.exception.CommandRegistrationException;
+import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException;
 import com.github.polyrocketmatt.delegate.api.exception.DelegateRuntimeException;
 import com.github.polyrocketmatt.delegate.core.DelegateCore;
 import com.github.polyrocketmatt.delegate.core.handlers.DelegateCommandHandler;
@@ -31,6 +31,8 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Delegate implements IPlatform, CommandExecutor {
 
@@ -40,6 +42,7 @@ public class Delegate implements IPlatform, CommandExecutor {
 
     private final Plugin plugin;
     private final CommandMap commandMap;
+    private final List<IDelegateCommand> commands = new ArrayList<>();
     private final DelegateCommandHandler commandHandler;
     private final boolean metricsEnabled;
 
@@ -57,9 +60,8 @@ public class Delegate implements IPlatform, CommandExecutor {
         this.commandHandler = (DelegateCommandHandler) DelegateCore.getDelegate().getCommandHandler();
         this.metricsEnabled = metricsEnabled;
 
-        if (metricsEnabled) {
+        if (metricsEnabled)
             new Metrics(plugin, BUKKIT_DELEGATE_ID);
-        }
     }
 
     public static void hook(JavaPlugin plugin) {
@@ -68,6 +70,13 @@ public class Delegate implements IPlatform, CommandExecutor {
 
     public static void hook(JavaPlugin plugin, boolean enableMetrics) {
         DelegateCore.getDelegate().setPlatform(new Delegate(plugin, enableMetrics));
+    }
+
+    public static void unhook(JavaPlugin plugin) {
+        Delegate delegate = (Delegate) DelegateCore.getDelegate().getPlatform();
+        delegate.unregister();
+
+        DelegateCore.getDelegate().setPlatform(null);
     }
 
     public static DelegateAPI getDelegateAPI() {
@@ -94,9 +103,16 @@ public class Delegate implements IPlatform, CommandExecutor {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void register(IDelegateCommand command) throws CommandRegistrationException {
+    public void register(IDelegateCommand command) throws CommandRegisterException {
         if (this.getPlugin() == null)
-            throw new CommandRegistrationException("Plugin is not hooked into Delegate!");
+            throw new CommandRegisterException("Plugin is not hooked into Delegate!");
+        if (this.commandMap == null)
+            throw new CommandRegisterException("Unable to retrieve command map!");
+        if (command == null)
+            throw new CommandRegisterException("Command is null!");
+        if (commands.stream().anyMatch(cmd -> cmd.getNameDefinition().getValue().equalsIgnoreCase(command.getNameDefinition().getValue())))
+            throw new CommandRegisterException("Command already registered: %s".formatted(command.getNameDefinition().getValue()));
+        commands.add(command);
 
         try {
             Constructor<PluginCommand> commandConstructor = (Constructor<PluginCommand>) PluginCommand.class.getDeclaredConstructors()[0];
@@ -112,8 +128,12 @@ public class Delegate implements IPlatform, CommandExecutor {
             //  Setting description
             cmd.setDescription(command.getDescriptionDefinition().getValue());
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException ex) {
-            throw new CommandRegistrationException("Unable to register command: %s".formatted(command.getNameDefinition().getValue()), ex);
+            throw new CommandRegisterException("Unable to register command: %s".formatted(command.getNameDefinition().getValue()), ex);
         }
+    }
+
+    private void unregister() throws CommandRegisterException {
+        commands.clear();
     }
 
     @Override

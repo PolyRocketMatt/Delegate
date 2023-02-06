@@ -48,7 +48,7 @@ public class DelegateCore implements DelegateAPI {
     }
 
     public void setPlatform(IPlatform platform) {
-        if (this.platform != null)
+        if (this.platform != null && platform != null)
             throw new IllegalStateException("Platform has already been set and cannot be changed at runtime");
         this.platform = platform;
     }

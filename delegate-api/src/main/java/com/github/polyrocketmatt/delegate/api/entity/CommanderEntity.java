@@ -12,4 +12,6 @@ public interface CommanderEntity {
 
     boolean isOperator();
 
+    void sendMessage(String message);
+
 }

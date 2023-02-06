@@ -1,19 +1,19 @@
 package com.github.polyrocketmatt.delegate.api.exception;
 
 /**
- * Exception thrown when the registration of a {@link com.github.polyrocketmatt.delegate.api.command.IDelegateCommand} fails.
+ * Exception thrown when the register of a {@link com.github.polyrocketmatt.delegate.api.command.IDelegateCommand} fails.
  *
  * @since 0.0.1
  * @author Matthias Kovacic
  */
-public class CommandRegistrationException extends RuntimeException {
+public class CommandRegisterException extends RuntimeException {
 
     /**
      * Constructs a new exception with the specified detail message.
      *
      * @param message The detail message.
      */
-    public CommandRegistrationException(String message) {
+    public CommandRegisterException(String message) {
         super(message);
     }
 
@@ -23,7 +23,7 @@ public class CommandRegistrationException extends RuntimeException {
      * @param message The detail message.
      * @param cause The cause.
      */
-    public CommandRegistrationException(String message, Throwable cause) {
+    public CommandRegisterException(String message, Throwable cause) {
         super(message, cause);
     }
 
@@ -32,7 +32,7 @@ public class CommandRegistrationException extends RuntimeException {
      *
      * @param cause The cause.
      */
-    public CommandRegistrationException(Throwable cause) {
+    public CommandRegisterException(Throwable cause) {
         super(cause);
     }
 
@@ -44,7 +44,7 @@ public class CommandRegistrationException extends RuntimeException {
      * @param enableSuppression Whether suppression is enabled or disabled.
      * @param writableStackTrace Whether the stack trace should be writable.
      */
-    public CommandRegistrationException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public CommandRegisterException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }
