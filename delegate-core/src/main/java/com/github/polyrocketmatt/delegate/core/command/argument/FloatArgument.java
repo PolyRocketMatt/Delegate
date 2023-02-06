@@ -48,7 +48,7 @@ public class FloatArgument extends CommandArgument<Float> {
      * @param argumentDescription The description of the argument.
      * @param rule The rule of the argument.
      */
-    private FloatArgument(String identifier, String argumentDescription, ArgumentRule<String, ?> rule) {
+    private FloatArgument(String identifier, String argumentDescription, ArgumentRule<?> rule) {
         super(identifier, argumentDescription, Float.class, rule);
     }
 
@@ -61,7 +61,7 @@ public class FloatArgument extends CommandArgument<Float> {
      * @param defaultValue The default value of the argument.
      * @param rules The rules of the argument.
      */
-    private FloatArgument(String identifier, String argumentDescription, Float defaultValue, ArgumentRule<String, ?> rules) {
+    private FloatArgument(String identifier, String argumentDescription, Float defaultValue, ArgumentRule<?> rules) {
         super(identifier, argumentDescription, Float.class, ArrayUtils.combine(List.of(new DefaultRule<>(defaultValue)), List.of(rules)));
     }
 
@@ -108,7 +108,7 @@ public class FloatArgument extends CommandArgument<Float> {
      * @param rule The rule of the argument.
      * @return The created {@link FloatArgument}.
      */
-    public static FloatArgument of(String identifier, String argumentDescription, ArgumentRule<String, ?> rule) {
+    public static FloatArgument of(String identifier, String argumentDescription, ArgumentRule<?> rule) {
         return new FloatArgument(identifier, argumentDescription, rule);
     }
 
@@ -122,7 +122,7 @@ public class FloatArgument extends CommandArgument<Float> {
      * @param rules The rules of the argument.
      * @return The created {@link FloatArgument}.
      */
-    public static FloatArgument of(String identifier, String argumentDescription, float defaultValue, ArgumentRule<String, ?> rules) {
+    public static FloatArgument of(String identifier, String argumentDescription, float defaultValue, ArgumentRule<?> rules) {
         return new FloatArgument(identifier, argumentDescription, defaultValue, rules);
     }
 
