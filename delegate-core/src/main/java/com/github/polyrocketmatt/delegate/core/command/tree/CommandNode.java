@@ -1,5 +1,7 @@
 package com.github.polyrocketmatt.delegate.core.command.tree;
 
+import com.github.polyrocketmatt.delegate.api.command.definition.CommandDefinition;
+import com.github.polyrocketmatt.delegate.api.command.tree.ICommandNode;
 import com.github.polyrocketmatt.delegate.core.command.DelegateCommand;
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
 
@@ -13,7 +15,7 @@ import java.util.List;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
-public class CommandNode {
+public class CommandNode implements ICommandNode {
 
     private final CommandNode parent;
     private final DelegateCommand command;
@@ -103,13 +105,12 @@ public class CommandNode {
      * @return The {@link QueryResultNode} that contains the node that was found
      */
     public QueryResultNode findDeepest(String[] names) {
-        if (this.children.isEmpty())
+        if (this.children.isEmpty() || names.length == 0)
             return new QueryResultNode(this, names);
 
         String name = names[0];
         String[] remaining = new String[names.length - 1];
         System.arraycopy(names, 1, remaining, 0, remaining.length);
-
         CommandNode child = this.children.stream()
                 .filter(c -> c.getCommand().getNameDefinition().getValue().equalsIgnoreCase(name))
                 .findFirst()
@@ -117,4 +118,13 @@ public class CommandNode {
         return child == null ? new QueryResultNode(this, names) : child.findDeepest(remaining);
     }
 
+    @Override
+    public CommandDefinition<String> getNameDefinition() {
+        return command.getNameDefinition();
+    }
+
+    @Override
+    public CommandDefinition<String> getDescriptionDefinition() {
+        return command.getDescriptionDefinition();
+    }
 }

@@ -1,5 +1,6 @@
 package com.github.polyrocketmatt.delegate.api;
 
+import com.github.polyrocketmatt.delegate.api.command.tree.ICommandTree;
 import com.github.polyrocketmatt.delegate.api.configuration.DelegateConfiguration;
 
 /**
@@ -38,5 +39,12 @@ public interface DelegateAPI {
      * @return The command handler that is used by the Delegate API.
      */
     IHandler getCommandHandler();
+
+    /**
+     * Gets the command tree that stores all the commands that are registered.
+     *
+     * @return The command tree that stores all the commands that are registered.
+     */
+    ICommandTree getCommandTree();
 
 }

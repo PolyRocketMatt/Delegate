@@ -4,6 +4,7 @@ import com.github.polyrocketmatt.delegate.api.DelegateAPI;
 import com.github.polyrocketmatt.delegate.api.DelegateHook;
 import com.github.polyrocketmatt.delegate.api.IHandler;
 import com.github.polyrocketmatt.delegate.api.IPlatform;
+import com.github.polyrocketmatt.delegate.api.command.tree.ICommandTree;
 import com.github.polyrocketmatt.delegate.api.configuration.DelegateConfiguration;
 import com.github.polyrocketmatt.delegate.core.handlers.AnnotationHandler;
 import com.github.polyrocketmatt.delegate.core.handlers.AttributeHandler;
@@ -73,4 +74,8 @@ public class DelegateCore implements DelegateAPI {
         return this.commandHandler;
     }
 
+    @Override
+    public ICommandTree getCommandTree() {
+        return this.commandHandler.getCommandTree();
+    }
 }

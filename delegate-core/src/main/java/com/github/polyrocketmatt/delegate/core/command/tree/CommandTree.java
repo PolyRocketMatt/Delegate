@@ -1,5 +1,7 @@
 package com.github.polyrocketmatt.delegate.core.command.tree;
 
+import com.github.polyrocketmatt.delegate.api.command.tree.ICommandTree;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +11,7 @@ import java.util.List;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
-public class CommandTree {
+public class CommandTree implements ICommandTree {
 
     private final List<CommandNode> roots;
 
@@ -18,15 +20,6 @@ public class CommandTree {
      */
     public CommandTree() {
         this.roots = new ArrayList<>();
-    }
-
-    /**
-     * Gets the list of roots.
-     *
-     * @return The list of roots.
-     */
-    public List<CommandNode> getRoots() {
-        return roots;
     }
 
     /**
@@ -58,4 +51,9 @@ public class CommandTree {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<CommandNode> getRoots() {
+        return roots;
+    }
 }

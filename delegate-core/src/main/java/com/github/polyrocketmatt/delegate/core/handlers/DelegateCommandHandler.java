@@ -55,6 +55,10 @@ public class DelegateCommandHandler implements IHandler {
         this.maxStealCount = 8;
     }
 
+    public CommandTree getCommandTree() {
+        return commandTree;
+    }
+
     private boolean exceptOrThrow(CommandDispatchInformation information, VerifiedDelegateCommand cmd, FeedbackType type, Object... args)
             throws CommandExecutionException {
         if (cmd != null) {
