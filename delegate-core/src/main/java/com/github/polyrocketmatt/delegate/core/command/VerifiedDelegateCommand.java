@@ -5,6 +5,7 @@ import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.api.command.trigger.CommandTrigger;
 import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
+import com.github.polyrocketmatt.delegate.core.command.action.ExceptAction;
 import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
 import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
@@ -29,13 +30,15 @@ public class VerifiedDelegateCommand extends DelegateCommand {
     private final CommandBuffer<CommandAction> actionBuffer;
     private final CommandBuffer<CommandTrigger> triggerBuffer;
     private final CommandBuffer<PermissionTier> permissionBuffer;
+    private final CommandBuffer<ExceptAction> exceptBuffer;
 
     protected VerifiedDelegateCommand(NameDefinition nameDefinition, DescriptionDefinition descriptionDefinition,
                                       CommandBuffer<CommandArgument<?>> argumentBuffer,
                                       CommandBuffer<CommandProperty> propertyBuffer,
                                       CommandBuffer<CommandAction> actionBuffer,
                                       CommandBuffer<CommandTrigger> triggerBuffer,
-                                      CommandBuffer<PermissionTier> permissionBuffer) {
+                                      CommandBuffer<PermissionTier> permissionBuffer,
+                                      CommandBuffer<ExceptAction> exceptBuffer) {
         this.nameDefinition = nameDefinition;
         this.descriptionDefinition = descriptionDefinition;
         this.argumentBuffer = argumentBuffer;
@@ -43,6 +46,7 @@ public class VerifiedDelegateCommand extends DelegateCommand {
         this.actionBuffer = actionBuffer;
         this.triggerBuffer = triggerBuffer;
         this.permissionBuffer = permissionBuffer;
+        this.exceptBuffer = exceptBuffer;
     }
 
     @Override
@@ -101,6 +105,15 @@ public class VerifiedDelegateCommand extends DelegateCommand {
     }
 
     /**
+     * Gets the {@link CommandBuffer} that stores the {@link ExceptAction}s of the command.
+     *
+     * @return The {@link CommandBuffer} that stores the {@link ExceptAction}s of the command.
+     */
+    public CommandBuffer<ExceptAction> getExceptBuffer() {
+        return exceptBuffer;
+    }
+
+    /**
      * Creates a new {@link VerifiedCommandBuilder} that is used to create a new {@link VerifiedDelegateCommand}.
      *
      * @return A new {@link VerifiedCommandBuilder} that is used to create a new {@link VerifiedDelegateCommand}.
@@ -124,6 +137,7 @@ public class VerifiedDelegateCommand extends DelegateCommand {
         private CommandBuffer<CommandAction> actionBuffer;
         private CommandBuffer<CommandTrigger> triggerBuffer;
         private CommandBuffer<PermissionTier> permissionBuffer;
+        private CommandBuffer<ExceptAction> exceptBuffer;
 
         /**
          * Builds a new {@link NameDefinition} and stores it in the builder.
@@ -203,6 +217,17 @@ public class VerifiedDelegateCommand extends DelegateCommand {
         }
 
         /**
+         * Builds a new {@link CommandBuffer} that stores the {@link ExceptAction}s of the command.
+         *
+         * @param exceptBuffer The {@link CommandBuffer} that stores the {@link ExceptAction}s of the command.
+         * @return The builder.
+         */
+        public VerifiedCommandBuilder buildExceptBuffer(CommandBuffer<ExceptAction> exceptBuffer) {
+            this.exceptBuffer = exceptBuffer;
+            return this;
+        }
+
+        /**
          * Builds a new {@link VerifiedDelegateCommand} using the attributes that were stored in the builder.
          *
          * @return A new {@link VerifiedDelegateCommand} using the attributes that were stored in the builder.
@@ -215,7 +240,8 @@ public class VerifiedDelegateCommand extends DelegateCommand {
                     this.propertyBuffer,
                     this.actionBuffer,
                     this.triggerBuffer,
-                    this.permissionBuffer
+                    this.permissionBuffer,
+                    this.exceptBuffer
             );
         }
 

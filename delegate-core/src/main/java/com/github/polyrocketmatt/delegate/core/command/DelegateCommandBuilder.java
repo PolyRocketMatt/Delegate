@@ -8,6 +8,7 @@ import com.github.polyrocketmatt.delegate.api.command.definition.CommandDefiniti
 import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
 import com.github.polyrocketmatt.delegate.api.command.trigger.CommandTrigger;
 import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
+import com.github.polyrocketmatt.delegate.core.command.action.ExceptAction;
 import com.github.polyrocketmatt.delegate.core.handlers.AttributeHandler;
 
 import java.util.LinkedList;
@@ -135,6 +136,14 @@ public abstract class DelegateCommandBuilder implements ICommandBuilder {
             if (attribute instanceof PermissionTier)
                 tiers.add((PermissionTier) attribute);
         return tiers;
+    }
+
+    public List<ExceptAction> getExceptActions() {
+        List<ExceptAction> actions = new LinkedList<>();
+        for (CommandAttribute attribute : attributes)
+            if (attribute instanceof ExceptAction)
+                actions.add((ExceptAction) attribute);
+        return actions;
     }
 
     /**

@@ -14,6 +14,7 @@ import com.github.polyrocketmatt.delegate.api.exception.ArgumentParseException;
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
+import com.github.polyrocketmatt.delegate.core.command.action.ExceptAction;
 import com.github.polyrocketmatt.delegate.core.command.properties.AsyncProperty;
 import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNonPresentProperty;
@@ -24,6 +25,7 @@ import com.github.polyrocketmatt.delegate.core.command.tree.QueryResultNode;
 import com.github.polyrocketmatt.delegate.api.exception.CommandExecutionException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
@@ -53,7 +55,14 @@ public class DelegateCommandHandler implements IHandler {
         this.maxStealCount = 8;
     }
 
-    private CommandExecutionException createException(CommandDispatchInformation information, FeedbackType type, Object... args) {
+    private CommandExecutionException createException(CommandDispatchInformation information, VerifiedDelegateCommand cmd, FeedbackType type, Object... args) {
+        if (cmd != null) {
+            CommandBuffer<ExceptAction> actions = cmd.getExceptBuffer();
+
+            for (ExceptAction action : actions)
+                action.run(information.commander(), type, Arrays.asList(information.arguments()));
+        }
+
         return new CommandExecutionException(information, getDelegate().getConfiguration().get(type), type, args);
     }
 
@@ -84,27 +93,26 @@ public class DelegateCommandHandler implements IHandler {
         //  Parse information arguments until command in root node doesn't exist
         CommandNode root = this.commandTree.find(commandName);
         if (root == null)
-            throw createException(information, FeedbackType.COMMAND_NOT_FOUND, commandName);
+            throw createException(information, null, FeedbackType.COMMAND_NOT_FOUND, commandName);
 
         QueryResultNode queryResultNode = root.findDeepest(commandArguments);
         CommandNode executionNode = queryResultNode.node();
 
         //  Check if the command is verified & non-null
         if (executionNode == null)
-            throw createException(information, FeedbackType.COMMAND_NOT_FOUND, commandName);
+            throw createException(information, null, FeedbackType.COMMAND_NOT_FOUND, commandName);
         if (!executionNode.isVerified())
-            throw createException(information, FeedbackType.COMMAND_UNVERIFIED, commandName);
+            throw createException(information, null, FeedbackType.COMMAND_UNVERIFIED, commandName);
 
         //  We can then parse the remaining arguments, apply rules to them and parse them.
         VerifiedDelegateCommand command = (VerifiedDelegateCommand) executionNode.getCommand();
-
-        //  Check if the commander has permission to execute the command
-        if (!canExecute(information.commander(), command.getPermissionBuffer()))
-            throw createException(information, FeedbackType.UNAUTHORIZED, commandName);
-
         String[] remainingArguments = queryResultNode.remainingArgs();
         String[] verifiedArguments = this.verifyArguments(information, command, remainingArguments);
         List<Argument<?>> parsedArguments = this.parseArguments(information, command, verifiedArguments);
+
+        //  Check if the commander has permission to execute the command
+        if (!canExecute(information.commander(), command.getPermissionBuffer()))
+            throw createException(information, command, FeedbackType.UNAUTHORIZED, commandName);
 
         //  We can execute the command with the remaining arguments
         List<CommandCapture.Capture> captures = this.execute(commander, command, parsedArguments);
@@ -134,7 +142,7 @@ public class DelegateCommandHandler implements IHandler {
 
         //  Check argument counts
         if (commandArguments.size() > arguments.length && !ignoreNonPresent)
-            throw createException(information, FeedbackType.ARGS_INVALID_COUNT, commandArguments.size(), arguments.length);
+            throw createException(information, command, FeedbackType.ARGS_INVALID_COUNT, commandArguments.size(), arguments.length);
 
         //  Check argument types
         int isAssigmentOperator = 0;
@@ -146,12 +154,12 @@ public class DelegateCommandHandler implements IHandler {
                 //  Find the argument index in the argument buffer
                 int argumentIndex = commandArguments.indexWhere(arg -> arg.getIdentifier().equals(parts[0]));
                 if (argumentIndex == -1)
-                    throw createException(information, FeedbackType.ARGS_INVALID_IDENTIFIER, parts[0]);
+                    throw createException(information, command, FeedbackType.ARGS_INVALID_IDENTIFIER, parts[0]);
                 verifiedArguments[argumentIndex] = parts[1];
                 isAssigmentOperator++;
             } else {
                 if (isAssigmentOperator != 0)
-                    throw createException(information, FeedbackType.ARGS_INVALID_FORMAT, argument);
+                    throw createException(information, command, FeedbackType.ARGS_INVALID_FORMAT, argument);
                 else
                     verifiedArguments[i] = argument;
             }
@@ -161,7 +169,7 @@ public class DelegateCommandHandler implements IHandler {
         if (!ignoreNull)
             for (int i = 0; i < verifiedArguments.length; i++) {
                 if (verifiedArguments[i] == null)
-                    throw createException(information, FeedbackType.ARGS_INVALID_FORMAT, arguments[i]);
+                    throw createException(information, command, FeedbackType.ARGS_INVALID_FORMAT, arguments[i]);
             }
 
         //  Parse all argument rules, the index should be equal to the amount of command arguments
@@ -189,7 +197,7 @@ public class DelegateCommandHandler implements IHandler {
             try {
                 parsedArguments.add(commandArgument.parse(argument));
             } catch (ArgumentParseException ex) {
-                throw createException(information, FeedbackType.ARGS_INVALID_PARSE_RESULT, argument, ex.getParseType().getName());
+                throw createException(information, command, FeedbackType.ARGS_INVALID_PARSE_RESULT, argument, ex.getParseType().getName());
             }
         }
 
@@ -241,17 +249,6 @@ public class DelegateCommandHandler implements IHandler {
             if (trigger.shouldTrigger(results))
                 trigger.call(information, capture);
         });
-    }
-
-    /**
-     * Dispatches the given {@link VerifiedDelegateCommand} with the given {@link CommandDispatchInformation}.
-     *
-     * @param command The {@link VerifiedDelegateCommand} to dispatch.
-     * @param information The {@link CommandDispatchInformation} to dispatch with.
-     * @return True if the command was dispatched successfully, false otherwise.
-     */
-    public boolean dispatch(VerifiedDelegateCommand command, CommandDispatchInformation information) {
-        return true;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.github.polyrocketmatt.delegate.impl.command;
 
+import com.github.polyrocketmatt.delegate.api.TriConsumer;
 import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
 import com.github.polyrocketmatt.delegate.api.command.CommandDispatchInformation;
 import com.github.polyrocketmatt.delegate.api.command.ICommandAttribute;
@@ -9,12 +10,14 @@ import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.api.command.argument.Index;
 import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
 import com.github.polyrocketmatt.delegate.api.command.definition.CommandDefinition;
+import com.github.polyrocketmatt.delegate.api.command.feedback.FeedbackType;
 import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.exception.AttributeException;
 import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
 import com.github.polyrocketmatt.delegate.core.command.DelegateCommandBuilder;
 import com.github.polyrocketmatt.delegate.core.command.action.ConsumerAction;
+import com.github.polyrocketmatt.delegate.core.command.action.ExceptAction;
 import com.github.polyrocketmatt.delegate.core.command.action.FunctionAction;
 import com.github.polyrocketmatt.delegate.core.command.action.RunnableAction;
 import com.github.polyrocketmatt.delegate.core.command.action.SupplierAction;
@@ -34,6 +37,7 @@ import com.github.polyrocketmatt.delegate.impl.command.argument.WorldArgument;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
@@ -280,6 +284,10 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
 
     public <T> BukkitCommandBuilder withSupplierAction(String identifier, Supplier<T> action) {
         return this.with(new SupplierAction<>(identifier, action));
+    }
+
+    public BukkitCommandBuilder onExcept(TriConsumer<CommanderEntity, FeedbackType, List<String>> action) {
+        return this.with(new ExceptAction(action));
     }
 
     public BukkitCommandBuilder onSucces(BiConsumer<CommandDispatchInformation, CommandCapture> onSuccess) {

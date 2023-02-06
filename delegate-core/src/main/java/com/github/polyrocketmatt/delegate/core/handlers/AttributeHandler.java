@@ -8,6 +8,7 @@ import com.github.polyrocketmatt.delegate.api.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
 import com.github.polyrocketmatt.delegate.core.command.DelegateCommandBuilder;
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
+import com.github.polyrocketmatt.delegate.core.command.action.ExceptAction;
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandNode;
 import com.github.polyrocketmatt.delegate.core.command.DelegateCommand;
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
@@ -58,6 +59,7 @@ public class AttributeHandler implements IHandler {
         CommandBuffer<CommandAction> actionBuffer = new CommandBuffer<>(this.processActions(chain));
         CommandBuffer<CommandTrigger> triggerBuffer = new CommandBuffer<>(this.processTriggers(chain));
         CommandBuffer<PermissionTier> permissionBuffer = new CommandBuffer<>(this.processPermissionTiers(chain));
+        CommandBuffer<ExceptAction> exceptBuffer = new CommandBuffer<>(this.processExceptions(chain));
 
         VerifiedDelegateCommand verifiedCommand = VerifiedDelegateCommand.create()
                 .buildNameDefinition(header.getA())
@@ -139,6 +141,10 @@ public class AttributeHandler implements IHandler {
 
     private List<PermissionTier> processPermissionTiers(DelegateCommandBuilder chain) {
         return chain.getPermissionTiers();
+    }
+
+    private List<ExceptAction> processExceptions(DelegateCommandBuilder chain) {
+        return chain.getExceptActions();
     }
 
     private void processSubCommands(CommandNode parent, DelegateCommandBuilder chain) {
