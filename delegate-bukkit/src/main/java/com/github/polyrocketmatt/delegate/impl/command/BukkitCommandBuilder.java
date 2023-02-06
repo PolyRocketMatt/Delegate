@@ -235,22 +235,22 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public ICommandBuilder withIgnoreNonPresent() {
+    public BukkitCommandBuilder withIgnoreNonPresent() {
         return this.with(new IgnoreNonPresentProperty());
     }
 
     @Override
-    public ICommandBuilder withPermission(PermissionTier tier) {
+    public BukkitCommandBuilder withPermission(PermissionTier tier) {
         return this.with(tier);
     }
 
     @Override
-    public ICommandBuilder withPermission(String permission, PermissionTier parent) {
+    public BukkitCommandBuilder withPermission(String permission, PermissionTier parent) {
         return this.with(new StandardPermission(permission, parent));
     }
 
     @Override
-    public ICommandBuilder withPermission(String permission) {
+    public BukkitCommandBuilder withPermission(String permission) {
         return this.withPermission(new StandardPermission(permission));
     }
 
