@@ -46,6 +46,8 @@ public interface ICommandBuilder {
 
     ICommandBuilder withIgnoreNonPresent();
 
+    ICommandBuilder withExceptionCatching();
+
     ICommandBuilder withPermission(PermissionTier tier);
 
     ICommandBuilder withPermission(String permission, PermissionTier parent);
