@@ -92,5 +92,5 @@ without any performance degradation*.
 (*: This depends on the actions associated with commands!)
 
 ---
-<h5 align="center">Icons provided by [Flaticon](https://www.flaticon.com/)</h5>
+<h5 align="center">Icons provided by <a href="https://www.flaticon.com/">Flaticon</a></h5>
 ---
