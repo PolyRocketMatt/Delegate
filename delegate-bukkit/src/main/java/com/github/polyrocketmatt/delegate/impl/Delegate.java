@@ -168,6 +168,13 @@ public class Delegate implements IPlatform, CommandExecutor {
         CommanderEntity entity = (sender instanceof Player) ? new BukkitPlayerCommander((Player) sender) : new ConsoleCommander();
         CommandDispatchInformation information = new CommandDispatchInformation(entity, command.getName(), args);
 
-        return commandHandler.handle(information);
+        try {
+            return commandHandler.handle(information);
+        } catch (Exception ex) {
+            if (DelegateCore.getDelegate().verbose())
+                ex.printStackTrace();
+        }
+
+        return true;
     }
 }
