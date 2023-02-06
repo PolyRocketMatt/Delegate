@@ -3,7 +3,6 @@ package com.github.polyrocketmatt.delegate.core.handlers;
 import com.github.polyrocketmatt.delegate.api.IHandler;
 import com.github.polyrocketmatt.delegate.api.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
-import com.github.polyrocketmatt.delegate.api.command.argument.Index;
 import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
 import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
 import com.github.polyrocketmatt.delegate.api.command.feedback.FeedbackType;
@@ -61,7 +60,7 @@ public class DelegateCommandHandler implements IHandler {
         return commandTree;
     }
 
-    private boolean exceptOrThrow(CommandDispatchInformation information, VerifiedDelegateCommand cmd, FeedbackType type, Object... args)
+    private void exceptOrThrow(CommandDispatchInformation information, VerifiedDelegateCommand cmd, FeedbackType type, Object... args)
             throws CommandExecutionException {
         if (cmd != null) {
             CommandBuffer<ExceptAction> actions = cmd.getExceptBuffer();
@@ -69,14 +68,11 @@ public class DelegateCommandHandler implements IHandler {
             if (actions != null) {
                 for (ExceptAction action : actions)
                     action.run(information.commander(), type, Arrays.asList(information.arguments()));
-                return true;
             }
         }
 
         if (getDelegate().verbose())
             throw new CommandExecutionException(information, getDelegate().getConfiguration().get(type), type, args);
-        else
-            return true;
     }
 
     /**
@@ -107,14 +103,14 @@ public class DelegateCommandHandler implements IHandler {
         //  Parse information arguments until command in root node doesn't exist
         CommandNode root = this.commandTree.find(commandName);
         if (root == null)
-            exceptOrThrow(information, null, FeedbackType.COMMAND_NOT_FOUND, commandName);
+            return false;
 
         QueryResultNode queryResultNode = root.findDeepest(commandArguments);
         CommandNode executionNode = queryResultNode.node();
 
         //  Check if the command is verified & non-null
         if (executionNode == null)
-            exceptOrThrow(information, null, FeedbackType.COMMAND_NOT_FOUND, commandName);
+            return false;
         if (!executionNode.isVerified())
             exceptOrThrow(information, null, FeedbackType.COMMAND_UNVERIFIED, commandName);
 
@@ -130,9 +126,11 @@ public class DelegateCommandHandler implements IHandler {
             List<Argument<?>> parsedArguments = this.parseArguments(information, command, verifiedArguments);
 
             //  Check if the commander has permission to execute the command
-            if (!canExecute(information.commander(), command.getPermissionBuffer()))
-                if (exceptOrThrow(information, command, FeedbackType.UNAUTHORIZED, commandName))
-                    return true;
+            if (!canExecute(information.commander(), command.getPermissionBuffer())) {
+                exceptOrThrow(information, command, FeedbackType.UNAUTHORIZED, commandName);
+
+                return true;
+            }
 
             //  We can execute the command with the remaining arguments
             List<CommandCapture.Capture> captures = this.execute(commander, command, parsedArguments);
