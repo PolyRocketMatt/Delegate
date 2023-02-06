@@ -70,6 +70,8 @@ public class DelegateCommandHandler implements IHandler {
                     action.run(information.commander(), type, Arrays.asList(information.arguments()));
             }
         }
+
+        throw new CommandExecutionException(information, getDelegate().getConfiguration().get(type), type, args);
     }
 
     /**
