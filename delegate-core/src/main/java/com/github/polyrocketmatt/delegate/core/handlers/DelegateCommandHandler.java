@@ -63,7 +63,7 @@ public class DelegateCommandHandler implements IHandler {
             if (actions != null) {
                 for (ExceptAction action : actions)
                     action.run(information.commander(), type, Arrays.asList(information.arguments()));
-                return false;
+                return true;
             }
         }
 
