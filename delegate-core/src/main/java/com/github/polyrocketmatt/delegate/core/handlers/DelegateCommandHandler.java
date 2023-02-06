@@ -99,7 +99,7 @@ public class DelegateCommandHandler implements IHandler {
         VerifiedDelegateCommand command = (VerifiedDelegateCommand) executionNode.getCommand();
 
         //  Check if the commander has permission to execute the command
-        if (canExecute(information.commander(), command.getPermissionBuffer()))
+        if (!canExecute(information.commander(), command.getPermissionBuffer()))
             throw createException(information, FeedbackType.UNAUTHORIZED, commandName);
 
         String[] remainingArguments = queryResultNode.remainingArgs();
