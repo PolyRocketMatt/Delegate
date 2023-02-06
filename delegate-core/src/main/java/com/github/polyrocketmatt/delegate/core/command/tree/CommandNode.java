@@ -69,6 +69,8 @@ public class CommandNode implements ICommandNode {
      *
      * @return The list of child nodes.
      */
+    @SuppressWarnings("unchecked")
+    @Override
     public List<CommandNode> getChildren() {
         return children;
     }

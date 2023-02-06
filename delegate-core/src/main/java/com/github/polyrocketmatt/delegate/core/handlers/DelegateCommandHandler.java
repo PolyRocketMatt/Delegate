@@ -85,6 +85,7 @@ public class DelegateCommandHandler implements IHandler {
         getDelegate().getPlatform().register(root.getCommand());
     }
 
+    //  TODO: Add default execution routines on exception against argument parsing
     /**
      * Handles the given {@link CommandDispatchInformation} and tries to execute the
      * command associated with the information.
