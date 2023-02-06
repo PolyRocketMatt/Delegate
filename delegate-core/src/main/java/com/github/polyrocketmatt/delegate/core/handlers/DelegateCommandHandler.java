@@ -70,9 +70,6 @@ public class DelegateCommandHandler implements IHandler {
                     action.run(information.commander(), type, Arrays.asList(information.arguments()));
             }
         }
-
-        if (getDelegate().verbose())
-            throw new CommandExecutionException(information, getDelegate().getConfiguration().get(type), type, args);
     }
 
     /**
@@ -102,17 +99,25 @@ public class DelegateCommandHandler implements IHandler {
 
         //  Parse information arguments until command in root node doesn't exist
         CommandNode root = this.commandTree.find(commandName);
+
+        //  If the root is null, the command doesn't exist
         if (root == null)
             return false;
 
         QueryResultNode queryResultNode = root.findDeepest(commandArguments);
         CommandNode executionNode = queryResultNode.node();
 
-        //  Check if the command is verified & non-null
-        if (executionNode == null)
+        //  Check if this is
+        if (executionNode == null) {
+            exceptOrThrow(information, null, FeedbackType.COMMAND_NON_EXISTENT, commandName);
             return false;
-        if (!executionNode.isVerified())
+        }
+
+        //  Check if the command is verified
+        if (!executionNode.isVerified()) {
             exceptOrThrow(information, null, FeedbackType.COMMAND_UNVERIFIED, commandName);
+            return false;
+        }
 
         //  We can then parse the remaining arguments, apply rules to them and parse them.
         VerifiedDelegateCommand command = (VerifiedDelegateCommand) executionNode.getCommand();
@@ -120,6 +125,7 @@ public class DelegateCommandHandler implements IHandler {
         //  Check if the command is executed safely
         boolean safeExecute = command.getPropertyBuffer().stream()
                 .anyMatch(property -> property instanceof CatchExceptionProperty);
+
         try {
             String[] remainingArguments = queryResultNode.remainingArgs();
             String[] verifiedArguments = this.verifyArguments(information, command, remainingArguments);

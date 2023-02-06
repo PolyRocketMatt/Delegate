@@ -3,6 +3,7 @@ package com.github.polyrocketmatt.delegate.api.command.feedback;
 public enum FeedbackType {
 
     //  Command Related
+    COMMAND_NON_EXISTENT("Command %s does not exist."),
     COMMAND_UNVERIFIED("Command %s is not verified and therefor not allowed to be executed."),
 
     UNAUTHORIZED("You do not have permission to execute the command: %s"),
