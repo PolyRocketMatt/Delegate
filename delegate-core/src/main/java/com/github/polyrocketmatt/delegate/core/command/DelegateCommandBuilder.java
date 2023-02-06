@@ -37,7 +37,6 @@ public abstract class DelegateCommandBuilder implements ICommandBuilder {
      */
     @Override
     public DelegateCommand build() {
-        System.out.println("Should build");
         return ((AttributeHandler) getDelegate().getAttributeHandler()).process(null, new AttributedDelegateCommand(this));
     }
 
