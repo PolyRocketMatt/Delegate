@@ -69,6 +69,7 @@ public class AttributeHandler implements IHandler {
                 .buildActionBuffer(actionBuffer)
                 .buildTriggerBuffer(triggerBuffer)
                 .buildPermissionBuffer(permissionBuffer)
+                .buildExceptBuffer(exceptBuffer)
                 .build();
 
         //  If this is a super command, register the command and process the subcommands

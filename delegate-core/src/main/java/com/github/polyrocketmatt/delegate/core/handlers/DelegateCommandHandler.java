@@ -55,15 +55,19 @@ public class DelegateCommandHandler implements IHandler {
         this.maxStealCount = 8;
     }
 
-    private CommandExecutionException createException(CommandDispatchInformation information, VerifiedDelegateCommand cmd, FeedbackType type, Object... args) {
+    private void exceptOrThrow(CommandDispatchInformation information, VerifiedDelegateCommand cmd, FeedbackType type, Object... args)
+            throws CommandExecutionException {
         if (cmd != null) {
             CommandBuffer<ExceptAction> actions = cmd.getExceptBuffer();
 
-            for (ExceptAction action : actions)
-                action.run(information.commander(), type, Arrays.asList(information.arguments()));
+            if (actions != null) {
+                for (ExceptAction action : actions)
+                    action.run(information.commander(), type, Arrays.asList(information.arguments()));
+                return;
+            }
         }
 
-        return new CommandExecutionException(information, getDelegate().getConfiguration().get(type), type, args);
+        throw new CommandExecutionException(information, getDelegate().getConfiguration().get(type), type, args);
     }
 
     /**
@@ -93,16 +97,16 @@ public class DelegateCommandHandler implements IHandler {
         //  Parse information arguments until command in root node doesn't exist
         CommandNode root = this.commandTree.find(commandName);
         if (root == null)
-            throw createException(information, null, FeedbackType.COMMAND_NOT_FOUND, commandName);
+            exceptOrThrow(information, null, FeedbackType.COMMAND_NOT_FOUND, commandName);
 
         QueryResultNode queryResultNode = root.findDeepest(commandArguments);
         CommandNode executionNode = queryResultNode.node();
 
         //  Check if the command is verified & non-null
         if (executionNode == null)
-            throw createException(information, null, FeedbackType.COMMAND_NOT_FOUND, commandName);
+            exceptOrThrow(information, null, FeedbackType.COMMAND_NOT_FOUND, commandName);
         if (!executionNode.isVerified())
-            throw createException(information, null, FeedbackType.COMMAND_UNVERIFIED, commandName);
+            exceptOrThrow(information, null, FeedbackType.COMMAND_UNVERIFIED, commandName);
 
         //  We can then parse the remaining arguments, apply rules to them and parse them.
         VerifiedDelegateCommand command = (VerifiedDelegateCommand) executionNode.getCommand();
@@ -112,7 +116,7 @@ public class DelegateCommandHandler implements IHandler {
 
         //  Check if the commander has permission to execute the command
         if (!canExecute(information.commander(), command.getPermissionBuffer()))
-            throw createException(information, command, FeedbackType.UNAUTHORIZED, commandName);
+            exceptOrThrow(information, command, FeedbackType.UNAUTHORIZED, commandName);
 
         //  We can execute the command with the remaining arguments
         List<CommandCapture.Capture> captures = this.execute(commander, command, parsedArguments);
@@ -142,7 +146,7 @@ public class DelegateCommandHandler implements IHandler {
 
         //  Check argument counts
         if (commandArguments.size() > arguments.length && !ignoreNonPresent)
-            throw createException(information, command, FeedbackType.ARGS_INVALID_COUNT, commandArguments.size(), arguments.length);
+            exceptOrThrow(information, command, FeedbackType.ARGS_INVALID_COUNT, commandArguments.size(), arguments.length);
 
         //  Check argument types
         int isAssigmentOperator = 0;
@@ -154,12 +158,12 @@ public class DelegateCommandHandler implements IHandler {
                 //  Find the argument index in the argument buffer
                 int argumentIndex = commandArguments.indexWhere(arg -> arg.getIdentifier().equals(parts[0]));
                 if (argumentIndex == -1)
-                    throw createException(information, command, FeedbackType.ARGS_INVALID_IDENTIFIER, parts[0]);
+                    exceptOrThrow(information, command, FeedbackType.ARGS_INVALID_IDENTIFIER, parts[0]);
                 verifiedArguments[argumentIndex] = parts[1];
                 isAssigmentOperator++;
             } else {
                 if (isAssigmentOperator != 0)
-                    throw createException(information, command, FeedbackType.ARGS_INVALID_FORMAT, argument);
+                    exceptOrThrow(information, command, FeedbackType.ARGS_INVALID_FORMAT, argument);
                 else
                     verifiedArguments[i] = argument;
             }
@@ -169,7 +173,7 @@ public class DelegateCommandHandler implements IHandler {
         if (!ignoreNull)
             for (int i = 0; i < verifiedArguments.length; i++) {
                 if (verifiedArguments[i] == null)
-                    throw createException(information, command, FeedbackType.ARGS_INVALID_FORMAT, arguments[i]);
+                    exceptOrThrow(information, command, FeedbackType.ARGS_INVALID_FORMAT, arguments[i]);
             }
 
         //  Parse all argument rules, the index should be equal to the amount of command arguments
@@ -197,7 +201,7 @@ public class DelegateCommandHandler implements IHandler {
             try {
                 parsedArguments.add(commandArgument.parse(argument));
             } catch (ArgumentParseException ex) {
-                throw createException(information, command, FeedbackType.ARGS_INVALID_PARSE_RESULT, argument, ex.getParseType().getName());
+                exceptOrThrow(information, command, FeedbackType.ARGS_INVALID_PARSE_RESULT, argument, ex.getParseType().getName());
             }
         }
 
