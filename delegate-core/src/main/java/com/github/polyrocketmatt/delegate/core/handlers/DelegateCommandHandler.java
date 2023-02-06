@@ -55,7 +55,7 @@ public class DelegateCommandHandler implements IHandler {
         this.maxStealCount = 8;
     }
 
-    private void exceptOrThrow(CommandDispatchInformation information, VerifiedDelegateCommand cmd, FeedbackType type, Object... args)
+    private boolean exceptOrThrow(CommandDispatchInformation information, VerifiedDelegateCommand cmd, FeedbackType type, Object... args)
             throws CommandExecutionException {
         if (cmd != null) {
             CommandBuffer<ExceptAction> actions = cmd.getExceptBuffer();
@@ -63,7 +63,7 @@ public class DelegateCommandHandler implements IHandler {
             if (actions != null) {
                 for (ExceptAction action : actions)
                     action.run(information.commander(), type, Arrays.asList(information.arguments()));
-                return;
+                return false;
             }
         }
 
@@ -116,7 +116,8 @@ public class DelegateCommandHandler implements IHandler {
 
         //  Check if the commander has permission to execute the command
         if (!canExecute(information.commander(), command.getPermissionBuffer()))
-            exceptOrThrow(information, command, FeedbackType.UNAUTHORIZED, commandName);
+            if (exceptOrThrow(information, command, FeedbackType.UNAUTHORIZED, commandName))
+                return true;
 
         //  We can execute the command with the remaining arguments
         List<CommandCapture.Capture> captures = this.execute(commander, command, parsedArguments);
