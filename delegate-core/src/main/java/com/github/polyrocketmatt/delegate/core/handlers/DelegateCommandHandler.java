@@ -125,24 +125,26 @@ public class DelegateCommandHandler implements IHandler {
         if (root == null)
             return false;
 
-        QueryResultNode queryResultNode = root.findDeepest(commandArguments);
+        QueryResultNode queryResultNode = root.findDeepest(commandName, commandArguments);
         CommandNode executionNode = queryResultNode.node();
+        String matchedCommandPattern = queryResultNode.commandPattern();
 
         //  Check if this is
         if (executionNode == null)
             if (safeExecuteTopLevel) {
                 try {
-                    throw exceptOrThrow(information, null, FeedbackType.COMMAND_NON_EXISTENT, commandName);
-                } catch (Exception ex) { return generateEventFromException(information, ex); }
+                    throw exceptOrThrow(information, null, FeedbackType.COMMAND_NON_EXISTENT, matchedCommandPattern);
+                } catch (Exception ex) {
+                    return generateEventFromException(information, ex);
+                }
             } else
                 return false;
-
 
         //  Check if the command is verified
         if (!executionNode.isVerified())
             if (safeExecuteTopLevel) {
                 try {
-                    throw exceptOrThrow(information, null, FeedbackType.COMMAND_UNVERIFIED, commandName);
+                    throw exceptOrThrow(information, null, FeedbackType.COMMAND_UNVERIFIED, matchedCommandPattern);
                 } catch (Exception ex) { return generateEventFromException(information, ex); }
             } else
                 return false;
@@ -156,12 +158,18 @@ public class DelegateCommandHandler implements IHandler {
 
         try {
             String[] remainingArguments = queryResultNode.remainingArgs();
+
+            //  Check if the provided command has too many arguments
+            //  If this is the case, we tried executing a non-existent command
+            if (command.getArgumentBuffer().size() < remainingArguments.length)
+                throw exceptOrThrow(information, command, FeedbackType.COMMAND_NON_EXISTENT, matchedCommandPattern);
+
             String[] verifiedArguments = this.verifyArguments(information, command, remainingArguments);
             List<Argument<?>> parsedArguments = this.parseArguments(information, command, verifiedArguments);
 
             //  Check if the commander has permission to execute the command
             if (!canExecute(information.commander(), command.getPermissionBuffer()))
-                throw exceptOrThrow(information, command, FeedbackType.UNAUTHORIZED, commandName);
+                throw exceptOrThrow(information, command, FeedbackType.UNAUTHORIZED, matchedCommandPattern);
 
             //  We can execute the command with the remaining arguments
             List<CommandCapture.Capture> captures = this.execute(commander, command, parsedArguments);
@@ -172,7 +180,7 @@ public class DelegateCommandHandler implements IHandler {
 
             //  Call event for other plugins possibly?
             return getDelegate().getPlatform().dispatch(information, capture);
-        } catch (Exception ex) {
+        } catch (CommandExecutionException ex) {
             if (safeExecute) {
                 return generateEventFromException(information, ex);
             }

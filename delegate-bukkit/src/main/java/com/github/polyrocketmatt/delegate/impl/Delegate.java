@@ -153,7 +153,8 @@ public class Delegate implements IPlatform, CommandExecutor {
 
     @Override
     public boolean dispatch(CommandDispatchInformation information, CommandCapture capture) {
-        Bukkit.getServer().getPluginManager().callEvent(new DelegateCommandEvent(plugin, information, capture));
+        DelegateCommandEvent event = new DelegateCommandEvent(plugin, information, capture);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
         return true;
     }

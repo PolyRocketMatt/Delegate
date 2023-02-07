@@ -9,4 +9,4 @@ package com.github.polyrocketmatt.delegate.core.command.tree;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
-public record QueryResultNode(CommandNode node, String[] remainingArgs) {}
+public record QueryResultNode(CommandNode node, String commandPattern, String[] remainingArgs) {}

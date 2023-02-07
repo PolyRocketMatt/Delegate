@@ -103,12 +103,13 @@ public class CommandNode implements ICommandNode {
      * The result is a {@link QueryResultNode} that contains the node that was
      * found and an array of remaining names that are inferred to be arguments.
      *
+     * @param commandPattern The pattern of the currently matched command.
      * @param names The array of names to search for.
      * @return The {@link QueryResultNode} that contains the node that was found
      */
-    public QueryResultNode findDeepest(String[] names) {
+    public QueryResultNode findDeepest(String commandPattern, String[] names) {
         if (this.children.isEmpty() || names.length == 0)
-            return new QueryResultNode(this, names);
+            return new QueryResultNode(this, commandPattern, names);
 
         String name = names[0];
         String[] remaining = new String[names.length - 1];
@@ -117,7 +118,8 @@ public class CommandNode implements ICommandNode {
                 .filter(c -> c.getCommand().getNameDefinition().getValue().equalsIgnoreCase(name))
                 .findFirst()
                 .orElse(null);
-        return child == null ? new QueryResultNode(this, names) : child.findDeepest(remaining);
+        return child == null ? new QueryResultNode(this, commandPattern, names) :
+                child.findDeepest(commandPattern + " " + name, remaining);
     }
 
     @Override
