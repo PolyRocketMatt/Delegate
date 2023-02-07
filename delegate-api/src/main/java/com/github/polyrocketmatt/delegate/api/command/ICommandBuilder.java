@@ -44,8 +44,6 @@ public interface ICommandBuilder {
 
     ICommandBuilder withAsync();
 
-    ICommandBuilder withBrigadier();
-
     ICommandBuilder withIgnoreNull();
 
     ICommandBuilder withIgnoreNonPresent();

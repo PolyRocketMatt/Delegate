@@ -27,7 +27,6 @@ import com.github.polyrocketmatt.delegate.core.command.argument.StringArgument;
 import com.github.polyrocketmatt.delegate.core.command.definition.AliasDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.SubcommandDefinition;
 import com.github.polyrocketmatt.delegate.core.command.properties.AsyncProperty;
-import com.github.polyrocketmatt.delegate.core.command.properties.BrigadierProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.CatchExceptionProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNonPresentProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProperty;
@@ -234,16 +233,6 @@ public class PaperCommandBuilder extends DelegateCommandBuilder {
     @Override
     public PaperCommandBuilder withAsync() {
         return this.with(new AsyncProperty());
-    }
-
-    /**
-     * Append a new {@link BrigadierProperty} to the chain.
-     *
-     * @return The current chain.
-     */
-    @Override
-    public PaperCommandBuilder withBrigadier() {
-        return this.with(new BrigadierProperty());
     }
 
     /**
