@@ -162,7 +162,7 @@ public class DelegateCommandHandler implements IHandler {
             //  Check if the provided command has too many arguments
             //  If this is the case, we tried executing a non-existent command
             if (command.getArgumentBuffer().size() < remainingArguments.length)
-                throw exceptOrThrow(information, command, FeedbackType.COMMAND_NON_EXISTENT, matchedCommandPattern);
+                throw exceptOrThrow(information, command, FeedbackType.COMMAND_NON_EXISTENT, matchedCommandPattern + " " + String.join(" ", remainingArguments));
 
             String[] verifiedArguments = this.verifyArguments(information, command, remainingArguments);
             List<Argument<?>> parsedArguments = this.parseArguments(information, command, verifiedArguments);
