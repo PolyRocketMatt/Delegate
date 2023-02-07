@@ -1,7 +1,9 @@
 package com.github.polyrocketmatt.delegate.api;
 
+import com.github.polyrocketmatt.delegate.api.command.tree.ICommandNode;
 import com.github.polyrocketmatt.delegate.api.command.tree.ICommandTree;
 import com.github.polyrocketmatt.delegate.api.configuration.DelegateConfiguration;
+import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException;
 
 /**
  * The Delegate API which is the entry point for platform implementations
@@ -48,11 +50,12 @@ public interface DelegateAPI {
     IHandler getCommandHandler();
 
     /**
-     * Gets the command tree that stores all the commands that are registered.
+     * Register a command node to the Delegate API.
      *
-     * @return The command tree that stores all the commands that are registered.
+     * @param node The command node to register.
+     * @return Whether the command node was successfully registered.
      */
-    ICommandTree getCommandTree();
+    boolean registerCommand(ICommandNode node) throws CommandRegisterException;
 
     /**
      * Gets whether the Delegate API is in verbose mode and will throw exceptions.

@@ -2,8 +2,10 @@ package com.github.polyrocketmatt.delegate.core;
 
 import com.github.polyrocketmatt.delegate.api.DelegateAPI;
 import com.github.polyrocketmatt.delegate.api.IPlatform;
-import com.github.polyrocketmatt.delegate.api.command.tree.ICommandTree;
+import com.github.polyrocketmatt.delegate.api.command.tree.ICommandNode;
 import com.github.polyrocketmatt.delegate.api.configuration.DelegateConfiguration;
+import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException;
+import com.github.polyrocketmatt.delegate.core.command.tree.CommandNode;
 import com.github.polyrocketmatt.delegate.core.handlers.AttributeHandler;
 import com.github.polyrocketmatt.delegate.core.handlers.BrigadierCommandHandler;
 import com.github.polyrocketmatt.delegate.core.handlers.DelegateCommandHandler;
@@ -77,8 +79,10 @@ public class DelegateCore implements DelegateAPI {
     }
 
     @Override
-    public ICommandTree getCommandTree() {
-        return this.commandHandler.getCommandTree();
+    public boolean registerCommand(ICommandNode node) throws CommandRegisterException {
+        if (!(node instanceof CommandNode commandNode))
+            throw new CommandRegisterException("Node must be an instance of CommandNode");
+        return brigadier() ? brigadierCommandHandler.registerCommand(commandNode) : commandHandler.registerCommand(commandNode);
     }
 
     @Override

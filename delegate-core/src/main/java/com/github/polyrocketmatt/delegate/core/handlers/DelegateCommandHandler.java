@@ -102,11 +102,19 @@ public class DelegateCommandHandler implements IHandler {
      *
      * @param node The {@link CommandNode} to add.
      */
-    public void registerCommand(CommandNode node) {
+    public boolean registerCommand(CommandNode node) {
         for (CommandNode root : commandTree.getRoots()) {
-            try { registerCommand(node, root, null); }
-            catch (CommandExecutionException ex) { ex.printStackTrace(); }
+            try {
+                registerCommand(node, root, null);
+            } catch (CommandExecutionException ex) {
+                ex.printStackTrace();
+
+                //  If any exception occurred, we did not successfully register the command
+                return false;
+            }
         }
+
+        return true;
     }
 
     private void registerCommand(CommandNode node, CommandNode match, CommandNode parent) throws CommandRegisterException {
@@ -393,7 +401,6 @@ public class DelegateCommandHandler implements IHandler {
         List<ActionItem.Result> results = capture.getResults();
 
         //  TODO: Async triggers?
-
         triggers.forEach(trigger -> {
             if (trigger.shouldTrigger(results))
                 trigger.call(information, capture);
