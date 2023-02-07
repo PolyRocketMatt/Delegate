@@ -68,10 +68,14 @@ public class DelegateCommandHandler implements IHandler {
             throws CommandExecutionException {
         if (cmd != null) {
             CommandBuffer<ExceptAction> actions = cmd.getExceptBuffer();
+            List<String> arguments = new ArrayList<>();
+
+            arguments.add(information.command());
+            arguments.addAll(Arrays.asList(information.arguments()));
 
             if (actions != null) {
                 for (ExceptAction action : actions)
-                    action.run(information.commander(), type, Arrays.asList(information.arguments()));
+                    action.run(information.commander(), type, arguments);
             }
         }
 
