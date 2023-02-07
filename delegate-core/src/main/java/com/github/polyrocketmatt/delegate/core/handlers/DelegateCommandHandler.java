@@ -80,9 +80,9 @@ public class DelegateCommandHandler implements IHandler {
 
     private boolean generateEventFromException(CommandDispatchInformation information, Exception ex) {
         StackTraceElement[] stackTrace = ex.getStackTrace();
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder("\n");
         for (StackTraceElement element : stackTrace)
-            builder.append(element.toString()).append("\n");
+            builder.append(element.toString()).append("     \n");
 
         CommandCapture capture = new CommandCapture(List.of(
                 new CommandCapture.Capture("exception", new ActionItem<>(ActionItem.Result.FAILURE, ex.getMessage())),
