@@ -34,6 +34,13 @@ public interface DelegateAPI {
     IHandler getAttributeHandler();
 
     /**
+     * Gets the command handler that is used by the Brigadier command framework.
+     *
+     * @return The command handler that is used by the Brigadier command framework.
+     */
+    IHandler getBrigadierCommandHandler();
+
+    /**
      * Gets the command handler that is used by the Delegate API.
      *
      * @return The command handler that is used by the Delegate API.
@@ -53,5 +60,12 @@ public interface DelegateAPI {
      * @return Whether the Delegate API is in verbose mode and will throw exceptions.
      */
     boolean verbose();
+
+    /**
+     * Gets whether the Delegate API is using the Brigadier command framework.
+     *
+     * @return Whether the Delegate API is using the Brigadier command framework.
+     */
+    boolean brigadier();
 
 }

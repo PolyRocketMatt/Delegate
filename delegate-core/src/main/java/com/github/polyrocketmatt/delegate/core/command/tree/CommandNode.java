@@ -19,8 +19,8 @@ import java.util.List;
 public class CommandNode implements ICommandNode {
 
     private final CommandNode parent;
-    private final DelegateCommand command;
     private final List<CommandNode> children;
+    private DelegateCommand command;
 
     /**
      * Creates a new {@link CommandNode} with a command. It will have no parent
@@ -30,8 +30,8 @@ public class CommandNode implements ICommandNode {
      */
     public CommandNode(DelegateCommand command) {
         this.parent = null;
-        this.command = command;
         this.children = new ArrayList<>();
+        this.command = command;
     }
 
     /**
@@ -43,8 +43,8 @@ public class CommandNode implements ICommandNode {
      */
     public CommandNode(CommandNode parent, DelegateCommand command) {
         this.parent = parent;
-        this.command = command;
         this.children = new ArrayList<>();
+        this.command = command;
     }
 
     /**
@@ -63,6 +63,10 @@ public class CommandNode implements ICommandNode {
      */
     public DelegateCommand getCommand() {
         return command;
+    }
+
+    public void setCommand(DelegateCommand command) {
+        this.command = command;
     }
 
     /**

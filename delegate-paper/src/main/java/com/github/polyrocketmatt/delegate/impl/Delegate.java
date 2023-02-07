@@ -57,7 +57,7 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
             throw new DelegateRuntimeException("Unable to retrieve command map", ex);
         }
 
-        this.commandHandler = (DelegateCommandHandler) DelegateCore.getDelegate().getCommandHandler();
+        this.commandHandler = DelegateCore.getDelegate().getCommandHandler();
         this.metricsEnabled = metricsEnabled;
 
         if (metricsEnabled)

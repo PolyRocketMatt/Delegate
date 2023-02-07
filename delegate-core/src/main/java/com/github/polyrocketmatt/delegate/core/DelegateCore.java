@@ -1,11 +1,11 @@
 package com.github.polyrocketmatt.delegate.core;
 
 import com.github.polyrocketmatt.delegate.api.DelegateAPI;
-import com.github.polyrocketmatt.delegate.api.IHandler;
 import com.github.polyrocketmatt.delegate.api.IPlatform;
 import com.github.polyrocketmatt.delegate.api.command.tree.ICommandTree;
 import com.github.polyrocketmatt.delegate.api.configuration.DelegateConfiguration;
 import com.github.polyrocketmatt.delegate.core.handlers.AttributeHandler;
+import com.github.polyrocketmatt.delegate.core.handlers.BrigadierCommandHandler;
 import com.github.polyrocketmatt.delegate.core.handlers.DelegateCommandHandler;
 
 public class DelegateCore implements DelegateAPI {
@@ -15,24 +15,26 @@ public class DelegateCore implements DelegateAPI {
     private IPlatform platform;
     private final DelegateConfiguration configuration;
     private final AttributeHandler attributeHandler;
+    private final BrigadierCommandHandler brigadierCommandHandler;
     private final DelegateCommandHandler commandHandler;
-    private boolean verbose = false;
-    private boolean brigadier = false;
+    private boolean isVerbose = false;
+    private boolean isBrigadier = false;
 
     protected DelegateCore() {
         if (instance != null)
             throw new IllegalStateException("Delegate has already been initialized");
         this.configuration = new DelegateConfiguration();
         this.attributeHandler = new AttributeHandler();
+        this.brigadierCommandHandler = new BrigadierCommandHandler();
         this.commandHandler = new DelegateCommandHandler();
     }
 
     public void setVerbose(boolean verbose) {
-        this.verbose = verbose;
+        this.isVerbose = verbose;
     }
 
     public void setBrigadier(boolean brigadier) {
-        this.brigadier = brigadier;
+        this.isBrigadier = brigadier;
     }
 
     public static DelegateAPI getDelegateAPI() {
@@ -60,12 +62,17 @@ public class DelegateCore implements DelegateAPI {
     }
 
     @Override
-    public IHandler getAttributeHandler() {
+    public AttributeHandler getAttributeHandler() {
         return this.attributeHandler;
     }
 
     @Override
-    public IHandler getCommandHandler() {
+    public BrigadierCommandHandler getBrigadierCommandHandler() {
+        return brigadierCommandHandler;
+    }
+
+    @Override
+    public DelegateCommandHandler getCommandHandler() {
         return this.commandHandler;
     }
 
@@ -76,6 +83,11 @@ public class DelegateCore implements DelegateAPI {
 
     @Override
     public boolean verbose() {
-        return verbose;
+        return isVerbose;
+    }
+
+    @Override
+    public boolean brigadier() {
+        return isBrigadier;
     }
 }

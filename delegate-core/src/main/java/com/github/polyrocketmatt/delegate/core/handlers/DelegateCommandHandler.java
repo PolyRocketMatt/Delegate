@@ -11,6 +11,7 @@ import com.github.polyrocketmatt.delegate.api.command.trigger.CommandTrigger;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.command.CommandDispatchInformation;
 import com.github.polyrocketmatt.delegate.api.exception.ArgumentParseException;
+import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException;
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
@@ -97,14 +98,57 @@ public class DelegateCommandHandler implements IHandler {
     }
 
     /**
-     * Adds a {@link CommandNode} as root to the command tree.
+     * Adds a {@link CommandNode} to the command tree structure.
      *
-     * @param root The root {@link CommandNode} to add.
+     * @param node The {@link CommandNode} to add.
      */
-    public void registerTree(CommandNode root) {
-        this.commandTree.add(root);
+    public void registerCommand(CommandNode node) {
+        for (CommandNode root : commandTree.getRoots()) {
+            try { registerCommand(node, root, null); }
+            catch (CommandExecutionException ex) { ex.printStackTrace(); }
+        }
+    }
 
-        getDelegate().getPlatform().register(root.getCommand());
+    private void registerCommand(CommandNode node, CommandNode match, CommandNode parent) throws CommandRegisterException {
+        //  We perform a "match check", checking if the node and match have the same definitions
+        if (match(node, match)) {
+            //  If the match is not verified, we cannot safely replace it, and we must throw an exception
+            if (!match.isVerified())
+                throw new CommandRegisterException("Cannot replace unverified command node with verified command node");
+            VerifiedDelegateCommand rootCommand = (VerifiedDelegateCommand) match.getCommand();
+
+            //  If the match has a command with no actions, excepts or triggers, we can safely replace it
+            boolean hasActions = rootCommand.getActionBuffer() != null && !(rootCommand.getActionBuffer().size() == 0);
+            boolean hasExcepts = rootCommand.getExceptBuffer() != null && !(rootCommand.getExceptBuffer().size() == 0);
+            boolean hasTriggers = rootCommand.getTriggerBuffer() != null && !(rootCommand.getTriggerBuffer().size() == 0);
+
+            if (!hasActions && !hasExcepts && !hasTriggers)
+                match.setCommand(node.getCommand());
+            else
+                throw new CommandRegisterException("Cannot replace command node with verified command node that has actions, excepts or triggers");
+
+            //  For each child, we must now match check against the match's children
+            for (CommandNode childNode : node.getChildren())
+                for (CommandNode childMatch : match.getChildren())
+                    registerCommand(childNode, childMatch, match);
+        } else {
+            //  If the current parent is null, we're at the roots of the tree. This means we can just add the node as a root
+            if (parent == null) {
+                this.commandTree.add(node);
+
+                //  Since we're adding a root, we must register the command with the platform
+                //  We only need to do this for the root, as the children will be "registered" when they are added
+                getDelegate().getPlatform().register(node.getCommand());
+            }
+
+            //  Otherwise, we must add the node as a child of the parent
+            else
+                parent.addChild(node);
+        }
+    }
+
+    private boolean match(CommandNode left, CommandNode right) {
+        return left.getNameDefinition().getValue().equals(right.getNameDefinition().getValue());
     }
 
     //  TODO: Add default execution routines on exception against argument parsing

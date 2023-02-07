@@ -1,4 +1,6 @@
 package com.github.polyrocketmatt.delegate.core.handlers;
 
-public class BrigadierCommandHandler {
+import com.github.polyrocketmatt.delegate.api.IHandler;
+
+public class BrigadierCommandHandler implements IHandler {
 }

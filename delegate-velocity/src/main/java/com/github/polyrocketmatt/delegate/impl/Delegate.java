@@ -39,7 +39,7 @@ public class Delegate implements IPlatform {
 
         this.plugin = plugin;
         this.commandManager = proxy.getCommandManager();
-        this.commandHandler = (DelegateCommandHandler) DelegateCore.getDelegate().getCommandHandler();
+        this.commandHandler = DelegateCore.getDelegate().getCommandHandler();
         this.metricsEnabled = metricsEnabled;
         if (metricsEnabled)
             metricsFactory.make(plugin, VELOCITY_DELEGATE_ID);
