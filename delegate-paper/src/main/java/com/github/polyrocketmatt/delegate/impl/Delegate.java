@@ -1,20 +1,20 @@
 package com.github.polyrocketmatt.delegate.impl;
 
+import com.github.polyrocketmatt.delegate.api.DelegateAPI;
+import com.github.polyrocketmatt.delegate.api.IPlatform;
+import com.github.polyrocketmatt.delegate.api.PlatformType;
 import com.github.polyrocketmatt.delegate.api.command.CommandDispatchInformation;
 import com.github.polyrocketmatt.delegate.api.command.ICommandFactory;
 import com.github.polyrocketmatt.delegate.api.command.IDelegateCommand;
 import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
-import com.github.polyrocketmatt.delegate.api.DelegateAPI;
-import com.github.polyrocketmatt.delegate.api.IPlatform;
-import com.github.polyrocketmatt.delegate.api.PlatformType;
 import com.github.polyrocketmatt.delegate.api.entity.ConsoleCommander;
 import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException;
 import com.github.polyrocketmatt.delegate.api.exception.DelegateRuntimeException;
 import com.github.polyrocketmatt.delegate.core.DelegateCore;
 import com.github.polyrocketmatt.delegate.core.handlers.DelegateCommandHandler;
-import com.github.polyrocketmatt.delegate.impl.command.BukkitCommandFactory;
-import com.github.polyrocketmatt.delegate.impl.entity.BukkitPlayerCommander;
+import com.github.polyrocketmatt.delegate.impl.command.PaperCommandFactory;
+import com.github.polyrocketmatt.delegate.impl.entity.PaperPlayerCommander;
 import com.github.polyrocketmatt.delegate.impl.event.DelegateCommandEvent;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -38,7 +38,7 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
 
     private static final int BUKKIT_DELEGATE_ID = 17314;
 
-    private static final BukkitCommandFactory factory = new BukkitCommandFactory();
+    private static final PaperCommandFactory factory = new PaperCommandFactory();
 
     private final Plugin plugin;
     private final CommandMap commandMap;
@@ -84,7 +84,7 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
         return DelegateCore.getDelegateAPI();
     }
 
-    public static BukkitCommandFactory getFactory() {
+    public static PaperCommandFactory getFactory() {
         return factory;
     }
 
@@ -94,7 +94,7 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
 
     @Override
     public PlatformType getPlatformType() {
-        return PlatformType.BUKKIT;
+        return PlatformType.PAPER;
     }
 
     @Override
@@ -140,14 +140,14 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
 
     @Override
     public boolean hasPermission(CommanderEntity entity, String permission) throws UnsupportedOperationException {
-        if (!(entity instanceof BukkitPlayerCommander commander))
+        if (!(entity instanceof PaperPlayerCommander commander))
             throw new UnsupportedOperationException("Expected entity to be of type BukkitPlayerCommander, but got %s".formatted(entity.getClass().getName()));
         return commander.hasPermission(permission);
     }
 
     @Override
     public boolean isOperator(CommanderEntity entity) throws UnsupportedOperationException {
-        if (!(entity instanceof BukkitPlayerCommander commander))
+        if (!(entity instanceof PaperPlayerCommander commander))
             throw new UnsupportedOperationException("Expected entity to be of type BukkitPlayerCommander, but got %s".formatted(entity.getClass().getName()));
         return commander.isOperator();
     }
@@ -167,7 +167,7 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        CommanderEntity entity = (sender instanceof Player) ? new BukkitPlayerCommander((Player) sender) : new ConsoleCommander();
+        CommanderEntity entity = (sender instanceof Player) ? new PaperPlayerCommander((Player) sender) : new ConsoleCommander();
         CommandDispatchInformation information = new CommandDispatchInformation(entity, command.getName(), args);
 
         try {
@@ -188,4 +188,5 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
 
         return commandHandler.findCompletions(newArgs);
     }
+
 }

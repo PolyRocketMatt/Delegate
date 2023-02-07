@@ -18,6 +18,10 @@ delegate-assembly/dependency-reduced-pom.xml
 delegate-bukkit/target/**
 delegate-bukkit/dependency-reduced-pom.xml
 
+# Paper
+delegate-paper/target/**
+delegate-paper/dependency-reduced-pom.xml
+
 # Core
 delegate-core/target/**
 delegate-core/dependency-reduced-pom.xml
