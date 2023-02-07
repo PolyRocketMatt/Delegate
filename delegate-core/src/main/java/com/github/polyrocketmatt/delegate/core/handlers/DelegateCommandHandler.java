@@ -207,18 +207,28 @@ public class DelegateCommandHandler implements IHandler {
         QueryResultNode queryResultNode = root.findDeepest(commandName, commandArguments);
         CommandNode matchedNode = queryResultNode.node();
 
-        //  If there is an argument that isn't empty
-        if (Arrays.stream(queryResultNode.remainingArgs()).anyMatch(arg -> !arg.isEmpty()))
-            return List.of();
-
         //  If the matched node is null, we can't complete
         if (matchedNode == null)
             return List.of();
 
-        //  We can now return the names of the children
-        return matchedNode.getChildren().stream()
+        List<String> childCommandNames = matchedNode.getChildren().stream()
                 .map(node -> node.getNameDefinition().getValue())
-                .collect(Collectors.toList());
+                .toList();
+
+        //  If there is an argument that isn't empty
+        if (Arrays.stream(queryResultNode.remainingArgs()).anyMatch(arg -> !arg.isEmpty())) {
+            //  Try to match children as good as possible
+            List<String> childMatches = new ArrayList<>();
+
+            for (String childName : childCommandNames)
+                if (childName.startsWith(queryResultNode.remainingArgs()[0]))
+                    childMatches.add(childName);
+
+            return childMatches;
+        }
+
+        //  We can now return the names of the children
+        return childCommandNames;
     }
 
     private boolean canExecute(CommanderEntity commander, CommandBuffer<PermissionTier> permissionTiers) {
