@@ -203,13 +203,12 @@ public class DelegateCommandHandler implements IHandler {
         if (root == null)
             return List.of();
 
-        QueryResultNode queryResultNode = root.findDeepest(commandName, commandArguments);
-
         //  The matched node is the closest we got to the command
+        QueryResultNode queryResultNode = root.findDeepest(commandName, commandArguments);
         CommandNode matchedNode = queryResultNode.node();
 
-        //  We only want to complete if the remaining args are 0
-        if (queryResultNode.remainingArgs().length != 0)
+        //  If there is an argument that isn't empty
+        if (Arrays.stream(queryResultNode.remainingArgs()).anyMatch(arg -> !arg.isEmpty()))
             return List.of();
 
         //  If the matched node is null, we can't complete
