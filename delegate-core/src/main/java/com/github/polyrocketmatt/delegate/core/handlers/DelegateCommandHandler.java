@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
+import java.util.stream.Collectors;
 
 import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
 
@@ -191,6 +192,34 @@ public class DelegateCommandHandler implements IHandler {
         }
 
         return false;
+    }
+
+    public List<String> findCompletions(String[] matched) {
+        String commandName = matched[0];
+        String[] commandArguments = Arrays.copyOfRange(matched, 1, matched.length);
+        CommandNode root = this.commandTree.find(commandName);
+
+        //  If the root is null, the command doesn't exist
+        if (root == null)
+            return List.of();
+
+        QueryResultNode queryResultNode = root.findDeepest(commandName, commandArguments);
+
+        //  The matched node is the closest we got to the command
+        CommandNode matchedNode = queryResultNode.node();
+
+        //  We only want to complete if the remaining args are 0
+        if (queryResultNode.remainingArgs().length != 0)
+            return List.of();
+
+        //  If the matched node is null, we can't complete
+        if (matchedNode == null)
+            return List.of();
+
+        //  We can now return the names of the children
+        return matchedNode.getChildren().stream()
+                .map(node -> node.getNameDefinition().getValue())
+                .collect(Collectors.toList());
     }
 
     private boolean canExecute(CommanderEntity commander, CommandBuffer<PermissionTier> permissionTiers) {

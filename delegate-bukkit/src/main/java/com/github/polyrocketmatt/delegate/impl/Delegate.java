@@ -23,10 +23,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -34,7 +36,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Delegate implements IPlatform, CommandExecutor {
+public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
 
     private static final int BUKKIT_DELEGATE_ID = 17314;
 
@@ -123,8 +125,9 @@ public class Delegate implements IPlatform, CommandExecutor {
             //  Register command to the command map
             commandMap.register(command.getNameDefinition().getValue(), cmd);
 
-            //  Set the command executor
+            //  Set the command/tab executors
             cmd.setExecutor(this);
+            cmd.setTabCompleter(this);
 
             //  Setting description
             cmd.setDescription(command.getDescriptionDefinition().getValue());
@@ -177,5 +180,14 @@ public class Delegate implements IPlatform, CommandExecutor {
         }
 
         return true;
+    }
+
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        String[] newArgs = new String[args.length + 1];
+        newArgs[0] = command.getName();
+        System.arraycopy(args, 0, newArgs, 1, args.length);
+
+        return commandHandler.findCompletions(newArgs);
     }
 }
