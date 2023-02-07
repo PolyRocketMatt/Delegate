@@ -1,7 +1,6 @@
 package com.github.polyrocketmatt.delegate.impl.entity;
 
 import com.github.polyrocketmatt.delegate.api.entity.PlayerCommander;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -42,6 +41,6 @@ public class BukkitPlayerCommander extends PlayerCommander {
 
     @Override
     public void sendMessage(String message) {
-        this.player.sendMessage(Component.text(ChatColor.translateAlternateColorCodes('&', message)));
+        this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
     }
 }

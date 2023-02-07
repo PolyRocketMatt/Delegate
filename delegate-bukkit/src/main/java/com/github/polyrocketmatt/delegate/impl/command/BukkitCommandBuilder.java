@@ -4,7 +4,6 @@ import com.github.polyrocketmatt.delegate.api.TriConsumer;
 import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
 import com.github.polyrocketmatt.delegate.api.command.CommandDispatchInformation;
 import com.github.polyrocketmatt.delegate.api.command.ICommandAttribute;
-import com.github.polyrocketmatt.delegate.api.command.ICommandBuilder;
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.api.command.argument.Index;
@@ -32,6 +31,7 @@ import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNonPrese
 import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProperty;
 import com.github.polyrocketmatt.delegate.core.command.trigger.FailureTrigger;
 import com.github.polyrocketmatt.delegate.core.command.trigger.SuccessTrigger;
+import com.github.polyrocketmatt.delegate.core.permission.PermissionTiers;
 import com.github.polyrocketmatt.delegate.core.permission.StandardPermission;
 import com.github.polyrocketmatt.delegate.impl.command.argument.PlayerArgument;
 import com.github.polyrocketmatt.delegate.impl.command.argument.WorldArgument;
@@ -258,6 +258,16 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
     @Override
     public BukkitCommandBuilder withPermission(String permission) {
         return this.withPermission(new StandardPermission(permission));
+    }
+
+    @Override
+    public BukkitCommandBuilder withOperatorPermission() {
+        return this.withPermission(PermissionTiers.OPERATOR.getTier());
+    }
+
+    @Override
+    public BukkitCommandBuilder withGlobalPermission() {
+        return this.withPermission(PermissionTiers.GLOBAL.getTier());
     }
 
     public BukkitCommandBuilder withConsumerAction(BiConsumer<CommanderEntity, Index> action) {

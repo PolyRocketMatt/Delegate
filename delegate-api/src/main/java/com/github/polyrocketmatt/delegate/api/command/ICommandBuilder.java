@@ -54,4 +54,8 @@ public interface ICommandBuilder {
 
     ICommandBuilder withPermission(String permission);
 
+    ICommandBuilder withOperatorPermission();
+
+    ICommandBuilder withGlobalPermission();
+
 }

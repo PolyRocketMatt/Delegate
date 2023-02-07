@@ -30,7 +30,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
-import java.util.stream.Collectors;
 
 import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
 
