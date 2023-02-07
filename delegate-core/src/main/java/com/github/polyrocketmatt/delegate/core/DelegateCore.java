@@ -5,7 +5,6 @@ import com.github.polyrocketmatt.delegate.api.IHandler;
 import com.github.polyrocketmatt.delegate.api.IPlatform;
 import com.github.polyrocketmatt.delegate.api.command.tree.ICommandTree;
 import com.github.polyrocketmatt.delegate.api.configuration.DelegateConfiguration;
-import com.github.polyrocketmatt.delegate.core.handlers.AnnotationHandler;
 import com.github.polyrocketmatt.delegate.core.handlers.AttributeHandler;
 import com.github.polyrocketmatt.delegate.core.handlers.DelegateCommandHandler;
 
@@ -15,22 +14,25 @@ public class DelegateCore implements DelegateAPI {
 
     private IPlatform platform;
     private final DelegateConfiguration configuration;
-    private final AnnotationHandler annotationHandler;
     private final AttributeHandler attributeHandler;
     private final DelegateCommandHandler commandHandler;
     private boolean verbose = false;
+    private boolean brigadier = false;
 
     protected DelegateCore() {
         if (instance != null)
             throw new IllegalStateException("Delegate has already been initialized");
         this.configuration = new DelegateConfiguration();
-        this.annotationHandler = new AnnotationHandler();
         this.attributeHandler = new AttributeHandler();
         this.commandHandler = new DelegateCommandHandler();
     }
 
     public void setVerbose(boolean verbose) {
         this.verbose = verbose;
+    }
+
+    public void setBrigadier(boolean brigadier) {
+        this.brigadier = brigadier;
     }
 
     public static DelegateAPI getDelegateAPI() {
