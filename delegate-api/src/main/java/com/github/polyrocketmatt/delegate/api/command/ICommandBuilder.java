@@ -16,6 +16,10 @@ public interface ICommandBuilder {
 
     ICommandBuilder with(ICommandAttribute attribute);
 
+    ICommandBuilder withAlias(String alias);
+
+    ICommandBuilder withAliases(String... aliases);
+
     ICommandBuilder withAction(CommandAction action);
 
     ICommandBuilder withArgument(CommandArgument<?> argument);

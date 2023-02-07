@@ -4,6 +4,7 @@ import com.github.polyrocketmatt.delegate.api.TriConsumer;
 import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
 import com.github.polyrocketmatt.delegate.api.command.CommandDispatchInformation;
 import com.github.polyrocketmatt.delegate.api.command.ICommandAttribute;
+import com.github.polyrocketmatt.delegate.api.command.ICommandBuilder;
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.api.command.argument.Index;
@@ -23,6 +24,7 @@ import com.github.polyrocketmatt.delegate.core.command.action.SupplierAction;
 import com.github.polyrocketmatt.delegate.core.command.argument.FloatArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.IntArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.StringArgument;
+import com.github.polyrocketmatt.delegate.core.command.definition.AliasDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.SubcommandDefinition;
 import com.github.polyrocketmatt.delegate.core.command.properties.AsyncProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.BrigadierProperty;
@@ -61,6 +63,30 @@ public class PaperCommandBuilder extends DelegateCommandBuilder {
         if (attribute instanceof CommandAction && ((CommandAction) attribute).getPrecedence() < 0)
             throw new AttributeException("Action precedence must be greater than 0");
         this.attributes.add((CommandAttribute) attribute);
+        return this;
+    }
+
+    /**
+     * Append a new alias for the command.
+     *
+     * @param alias The alias to append.
+     * @return The current chain.
+     */
+    @Override
+    public ICommandBuilder withAlias(String alias) {
+        return this.with(new AliasDefinition(alias));
+    }
+
+    /**
+     * Append new aliases for the command.
+     *
+     * @param aliases The aliases to append.
+     * @return The current chain.
+     */
+    @Override
+    public ICommandBuilder withAliases(String... aliases) {
+        for (String alias : aliases)
+            this.withAlias(alias);
         return this;
     }
 

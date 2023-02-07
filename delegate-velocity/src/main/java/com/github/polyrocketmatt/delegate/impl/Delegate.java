@@ -14,6 +14,7 @@ import com.github.polyrocketmatt.delegate.core.handlers.DelegateCommandHandler;
 import com.github.polyrocketmatt.delegate.impl.command.VelocityCommandFactory;
 import com.github.polyrocketmatt.delegate.impl.entity.VelocityPlayerCommander;
 import com.github.polyrocketmatt.delegate.impl.event.DelegateCommandEvent;
+import com.velocitypowered.api.command.CommandManager;
 import com.velocitypowered.api.proxy.ProxyServer;
 import org.bstats.velocity.Metrics;
 
@@ -28,6 +29,7 @@ public class Delegate implements IPlatform {
     private static ProxyServer proxy;
 
     private final Class<?> plugin;
+    private final CommandManager commandManager;
     private final List<IDelegateCommand> commands = new ArrayList<>();
     private final DelegateCommandHandler commandHandler;
     private final boolean metricsEnabled;
@@ -36,6 +38,7 @@ public class Delegate implements IPlatform {
         proxy = server;
 
         this.plugin = plugin;
+        this.commandManager = proxy.getCommandManager();
         this.commandHandler = (DelegateCommandHandler) DelegateCore.getDelegate().getCommandHandler();
         this.metricsEnabled = metricsEnabled;
         if (metricsEnabled)
@@ -87,6 +90,7 @@ public class Delegate implements IPlatform {
     @Override
     public void register(IDelegateCommand command) throws CommandRegisterException {
         //  TODO: Implement Brigadier support
+
     }
 
     private void unregister() throws CommandRegisterException {

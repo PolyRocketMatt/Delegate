@@ -1,6 +1,7 @@
 package com.github.polyrocketmatt.delegate.core.command;
 
 import com.github.polyrocketmatt.delegate.api.command.IDelegateCommand;
+import com.github.polyrocketmatt.delegate.core.command.definition.AliasDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
 
@@ -25,5 +26,12 @@ public abstract class DelegateCommand implements IDelegateCommand {
      * @return The description definition of this command.
      */
     public abstract DescriptionDefinition getDescriptionDefinition();
+
+    /**
+     * Get the {@link AliasDefinition}s of this command.
+     *
+     * @return The alias definitions of this command.
+     */
+    public abstract AliasDefinition[] getAliases();
 
 }

@@ -6,6 +6,7 @@ import com.github.polyrocketmatt.delegate.core.command.DelegateCommand;
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -115,7 +116,8 @@ public class CommandNode implements ICommandNode {
         String[] remaining = new String[names.length - 1];
         System.arraycopy(names, 1, remaining, 0, remaining.length);
         CommandNode child = this.children.stream()
-                .filter(c -> c.getCommand().getNameDefinition().getValue().equalsIgnoreCase(name))
+                .filter(c -> c.getCommand().getNameDefinition().getValue().equalsIgnoreCase(name) ||
+                        Arrays.stream(c.getCommand().getAliases()).anyMatch(alias -> alias.getValue().equalsIgnoreCase(name)))
                 .findFirst()
                 .orElse(null);
         return child == null ? new QueryResultNode(this, commandPattern, names) :
