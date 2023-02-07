@@ -80,7 +80,7 @@ public class AttributeHandler implements IHandler {
             this.processSubCommands(rootNode, chain);
 
             //  Add tree to command handler
-            getDelegate().getCommandHandler().registerCommand(rootNode);
+            getDelegate().registerCommand(rootNode);
         } else {
             CommandNode childNode = new CommandNode(parent, verifiedCommand);
 
