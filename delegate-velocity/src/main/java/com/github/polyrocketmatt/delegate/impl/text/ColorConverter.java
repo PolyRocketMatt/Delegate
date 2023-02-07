@@ -85,54 +85,87 @@ public class ColorConverter {
     }
 
     public static TextComponent convert(String message) {
-        TextComponent.Builder componentBuilder = TextComponent.builder();
-        TextColor currentColorBuffer = TextColor.WHITE;
-        TextDecoration currentDecoratorBuffer = null;
+        TextComponent.Builder builder = TextComponent.builder();
 
-        int index = 0;
         int length = message.length();
+        int index = 0;
         while (index < length) {
+            // If the current character is a color/decorator character, we initialise a buffer
             if (message.charAt(index) == '&') {
                 String code = message.substring(index, index + 2);
-
-                //  Check if it's a color or a decorator
                 ColorConversion colorConversion = ColorConversion.fromCode(code);
                 DecoratorConversion decoratorConversion = DecoratorConversion.fromCode(code);
 
-                if (colorConversion == null && decoratorConversion == null) {
-                    //  Not a color or decorator, so just append the character
-                    componentBuilder.append(TextComponent.of(message.charAt(index)));
-                    index++;
-                    continue;
-                } else if (decoratorConversion == null) {
-                    //  It's a color, so we update the color buffer
-                    currentColorBuffer = colorConversion.getTextColor();
-                } else {
-                    //  It's a decorator, so we update the decorator buffer
-                    currentDecoratorBuffer = decoratorConversion.getDecoration();
+                //  If both are valid codes, we encountered an invalid code, so we skip the next character
+                if (colorConversion != null && decoratorConversion != null)
+                    throw new IllegalStateException("Invalid color code: " + code);
 
-                    //  If it's a rest, we set the decorator to null
-                    if (decoratorConversion == DecoratorConversion.RESET)
-                        currentDecoratorBuffer = null;
-                }
-
+                //  We want to walk until the next '&' character
                 index += 2;
-            } else {
-                StringBuilder builder = new StringBuilder();
+                int startWalk = index;
+                while (index < length) {
+                    //  Check for color/decorator combination
+                    if (message.charAt(index) == '&') {
+                        String doubleCode = message.substring(index, index + 2);
+                        ColorConversion doubleColorConversion = ColorConversion.fromCode(doubleCode);
+                        DecoratorConversion doubleDecoratorConversion = DecoratorConversion.fromCode(doubleCode);
 
-                while (index < length && message.charAt(index) != '&') {
-                    builder.append(message.charAt(index));
-                    index++;
+                        //  If both are valid codes, we encountered an invalid code, so we skip the next character
+                        if (doubleColorConversion != null && doubleDecoratorConversion != null)
+                            throw new IllegalStateException("Invalid color code: " + code);
+
+                        if (colorConversion != null && doubleColorConversion != null) {
+                            colorConversion = doubleColorConversion;
+                            index += 2;
+                        }
+
+                        else if (colorConversion != null && doubleDecoratorConversion != null) {
+                            decoratorConversion = doubleDecoratorConversion;
+                            index += 2;
+                        }
+
+                        else if (decoratorConversion != null && doubleColorConversion != null) {
+                            colorConversion = doubleColorConversion;
+                            index += 2;
+                        }
+
+                        else if (decoratorConversion != null && doubleDecoratorConversion != null) {
+                            decoratorConversion = doubleDecoratorConversion;
+                            index += 2;
+                        }
+
+                        //  Update walking index
+                        startWalk = index;
+                    } else
+                        index++;
                 }
 
-                if (currentDecoratorBuffer != null)
-                    componentBuilder.decoration(currentDecoratorBuffer, true);
-                componentBuilder.color(currentColorBuffer);
-                componentBuilder.append(TextComponent.of(builder.toString()));
+                String walkedString = message.substring(startWalk, index);
+
+                //  Append the walked string to the builder together with the color/decorator buffer
+                TextComponent component = TextComponent.of(walkedString);
+
+                // If the code is a color code, we set the color buffer
+                if (colorConversion != null)
+                    component.color(colorConversion.getTextColor());
+
+                // If the code is a decorator code, we set the decorator buffer
+                if (decoratorConversion != null)
+                    component.decoration(decoratorConversion.getDecoration(), true);
+
+                //  Append the component to the builder
+                builder.append(component);
+            } else {
+                int startWalk = index;
+                while (index < length && message.charAt(index) != '&')
+                    index++;
+
+                String walkedString = message.substring(startWalk, index);
+                builder.append(TextComponent.of(walkedString));
             }
         }
 
-        return componentBuilder.build();
+        return builder.build();
     }
 
 }

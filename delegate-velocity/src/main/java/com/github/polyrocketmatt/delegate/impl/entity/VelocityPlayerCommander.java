@@ -20,7 +20,7 @@ public class VelocityPlayerCommander extends PlayerCommander {
     @SuppressWarnings("")
     public VelocityPlayerCommander(UUID uuid) {
         super(uuid);
-        Optional<Player> optionalPlayer = Delegate.getProxyServer().getPlayer(uuid);
+        Optional<Player> optionalPlayer = Delegate.getProxy().getPlayer(uuid);
         if (optionalPlayer.isEmpty())
             throw new IllegalArgumentException("Player with UUID %s was not found, but is required for this constructor".formatted(uuid.toString()));
         this.player = optionalPlayer.get();
