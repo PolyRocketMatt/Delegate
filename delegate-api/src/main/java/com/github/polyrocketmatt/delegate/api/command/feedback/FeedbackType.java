@@ -5,8 +5,11 @@ public enum FeedbackType {
     //  Command Related
     COMMAND_NON_EXISTENT("Command %s does not exist."),
     COMMAND_UNVERIFIED("Command %s is not verified and therefor not allowed to be executed."),
+    BRIGADIER_SYNTAX("%s"),
 
     UNAUTHORIZED("You do not have permission to execute the command: %s"),
+
+    ACTIONS_NULL("The actions list is null for command %s."),
 
     ARGS_INVALID_COUNT("Wrong number of arguments. Expected %d, got %d."),
     ARGS_INVALID_IDENTIFIER("Invalid identifier %s."),

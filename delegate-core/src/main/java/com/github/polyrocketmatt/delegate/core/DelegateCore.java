@@ -8,7 +8,7 @@ import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandNode;
 import com.github.polyrocketmatt.delegate.core.handlers.AttributeHandler;
 import com.github.polyrocketmatt.delegate.core.handlers.BrigadierCommandHandler;
-import com.github.polyrocketmatt.delegate.core.handlers.DelegateCommandHandler;
+import com.github.polyrocketmatt.delegate.core.handlers.InternalCommandHandler;
 
 public class DelegateCore implements DelegateAPI {
 
@@ -18,7 +18,7 @@ public class DelegateCore implements DelegateAPI {
     private final DelegateConfiguration configuration;
     private final AttributeHandler attributeHandler;
     private final BrigadierCommandHandler brigadierCommandHandler;
-    private final DelegateCommandHandler commandHandler;
+    private final InternalCommandHandler commandHandler;
     private boolean isVerbose = false;
     private boolean isBrigadier = false;
 
@@ -28,7 +28,7 @@ public class DelegateCore implements DelegateAPI {
         this.configuration = new DelegateConfiguration();
         this.attributeHandler = new AttributeHandler();
         this.brigadierCommandHandler = new BrigadierCommandHandler();
-        this.commandHandler = new DelegateCommandHandler();
+        this.commandHandler = new InternalCommandHandler();
     }
 
     public void setVerbose(boolean verbose) {
@@ -74,7 +74,7 @@ public class DelegateCore implements DelegateAPI {
     }
 
     @Override
-    public DelegateCommandHandler getCommandHandler() {
+    public InternalCommandHandler getCommandHandler() {
         return this.commandHandler;
     }
 

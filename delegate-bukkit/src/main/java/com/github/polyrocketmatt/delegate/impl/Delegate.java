@@ -12,7 +12,7 @@ import com.github.polyrocketmatt.delegate.api.entity.ConsoleCommander;
 import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException;
 import com.github.polyrocketmatt.delegate.api.exception.DelegateRuntimeException;
 import com.github.polyrocketmatt.delegate.core.DelegateCore;
-import com.github.polyrocketmatt.delegate.core.handlers.DelegateCommandHandler;
+import com.github.polyrocketmatt.delegate.core.handlers.InternalCommandHandler;
 import com.github.polyrocketmatt.delegate.impl.command.BukkitCommandFactory;
 import com.github.polyrocketmatt.delegate.impl.entity.BukkitPlayerCommander;
 import com.github.polyrocketmatt.delegate.impl.event.DelegateCommandEvent;
@@ -43,7 +43,7 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
     private final Plugin plugin;
     private final CommandMap commandMap;
     private final List<IDelegateCommand> commands = new ArrayList<>();
-    private final DelegateCommandHandler commandHandler;
+    private final InternalCommandHandler commandHandler;
     private final boolean metricsEnabled;
 
     protected Delegate(JavaPlugin plugin, boolean metricsEnabled) {
@@ -104,7 +104,7 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void register(IDelegateCommand command) throws CommandRegisterException {
+    public void registerToPlatform(IDelegateCommand command) throws CommandRegisterException {
         if (this.getPlugin() == null)
             throw new CommandRegisterException("Plugin is not hooked into Delegate!");
         if (this.commandMap == null)

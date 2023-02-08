@@ -1,7 +1,6 @@
 package com.github.polyrocketmatt.delegate.api;
 
 import com.github.polyrocketmatt.delegate.api.command.tree.ICommandNode;
-import com.github.polyrocketmatt.delegate.api.command.tree.ICommandTree;
 import com.github.polyrocketmatt.delegate.api.configuration.DelegateConfiguration;
 import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException;
 
