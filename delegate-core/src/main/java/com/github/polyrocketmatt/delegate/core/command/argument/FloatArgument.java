@@ -7,6 +7,8 @@ import com.github.polyrocketmatt.delegate.api.exception.ArgumentParseException;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.DefaultRule;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.NonNullRule;
 import com.github.polyrocketmatt.delegate.core.utils.ArrayUtils;
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -74,6 +76,12 @@ public class FloatArgument extends CommandArgument<Float> {
         }
 
         return getDefault();
+    }
+
+    @Override
+    public Float parse(StringReader reader) throws CommandSyntaxException {
+        int start = reader.getCursor();
+        return reader.readFloat();
     }
 
     /**

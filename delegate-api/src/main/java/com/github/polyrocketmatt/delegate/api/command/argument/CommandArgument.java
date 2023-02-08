@@ -7,7 +7,9 @@ import com.github.polyrocketmatt.delegate.api.command.argument.rule.ArgumentRule
 import com.github.polyrocketmatt.delegate.api.command.argument.rule.ArgumentRuleResult;
 import com.github.polyrocketmatt.delegate.api.command.argument.rule.RuleData;
 import com.github.polyrocketmatt.delegate.api.exception.ArgumentParseException;
+import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.ArgumentType;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -258,6 +260,19 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      */
     @Override
     public abstract Argument<T> parse(String input, Consumer<Exception> consumer) throws ArgumentParseException;
+
+    /**
+     * Parses the argument value from the given string reader and returns
+     * the parsed value as an object of type {@link T} or throws an
+     * exception if the parsing fails.
+     *
+     * @param reader The string reader to parse.
+     * @return The parsed argument as an {@link Argument}.
+     * @throws CommandSyntaxException If the parsing fails.
+     */
+    //  TODO: Parse rules when parsing from string reader
+    @Override
+    public abstract T parse(StringReader reader) throws CommandSyntaxException;
 
     /**
      * Parses the given input string and applies the argument rules to the input.
