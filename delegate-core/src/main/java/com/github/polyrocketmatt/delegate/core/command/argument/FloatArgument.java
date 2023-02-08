@@ -6,13 +6,11 @@ package com.github.polyrocketmatt.delegate.core.command.argument;
 import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.api.command.argument.rule.ArgumentRule;
-import com.github.polyrocketmatt.delegate.api.exception.ArgumentParseException;
-import com.github.polyrocketmatt.delegate.core.command.argument.rule.DefaultRule;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.NonNullRule;
-import com.github.polyrocketmatt.delegate.core.utils.ArrayUtils;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -25,39 +23,6 @@ import java.util.function.Consumer;
 public class FloatArgument extends CommandArgument<Float> {
 
     /**
-     * Creates a new {@link FloatArgument} with an identifier and a description.
-     *
-     * @param identifier The identifier of the argument.
-     * @param argumentDescription The description of the argument.
-     */
-    private FloatArgument(String identifier, String argumentDescription) {
-        this(identifier, argumentDescription, 0.0f, new NonNullRule());
-    }
-
-    /**
-     * Creates a new {@link FloatArgument} with an identifier, a description and a
-     * default value.
-     *
-     * @param identifier The identifier of the argument.
-     * @param argumentDescription The description of the argument.
-     * @param defaultValue The default value of the argument.
-     */
-    private FloatArgument(String identifier, String argumentDescription, Float defaultValue) {
-        this(identifier, argumentDescription, defaultValue, new NonNullRule());
-    }
-
-    /**
-     * Creates a new {@link FloatArgument} with an identifier, a description and an {@link ArgumentRule}.
-     *
-     * @param identifier The identifier of the argument.
-     * @param argumentDescription The description of the argument.
-     * @param rule The rule of the argument.
-     */
-    private FloatArgument(String identifier, String argumentDescription, ArgumentRule<?> rule) {
-        this(identifier, argumentDescription, 0.0f, rule);
-    }
-
-    /**
      * Creates a new {@link FloatArgument} with an identifier, a description, a default value and a
      * list of {@link ArgumentRule}s.
      *
@@ -66,8 +31,8 @@ public class FloatArgument extends CommandArgument<Float> {
      * @param defaultValue The default value of the argument.
      * @param rules The rules of the argument.
      */
-    private FloatArgument(String identifier, String argumentDescription, Float defaultValue, ArgumentRule<?> rules) {
-        super(identifier, argumentDescription, Float.class, ArrayUtils.combine(List.of(new DefaultRule<>(defaultValue)), List.of(rules)));
+    private FloatArgument(String identifier, String argumentDescription, Float defaultValue, boolean isOptional, List<ArgumentRule<?>> rules) {
+        super(identifier, argumentDescription, Float.class, new Argument<>(identifier, defaultValue), isOptional, rules);
     }
 
     @Override
@@ -95,7 +60,7 @@ public class FloatArgument extends CommandArgument<Float> {
      * @return The created {@link FloatArgument}.
      */
     public static FloatArgument of(String identifier, String argumentDescription) {
-        return new FloatArgument(identifier, argumentDescription);
+        return new FloatArgument(identifier, argumentDescription, null, false, List.of());
     }
 
     /**
@@ -108,7 +73,7 @@ public class FloatArgument extends CommandArgument<Float> {
      * @return The created {@link FloatArgument}.
      */
     public static FloatArgument of(String identifier, String argumentDescription, float defaultValue) {
-        return new FloatArgument(identifier, argumentDescription, defaultValue);
+        return new FloatArgument(identifier, argumentDescription, defaultValue, false, List.of());
     }
 
     /**
@@ -116,11 +81,12 @@ public class FloatArgument extends CommandArgument<Float> {
      *
      * @param identifier The identifier of the argument.
      * @param argumentDescription The description of the argument.
-     * @param rule The rule of the argument.
+     * @param rules The rules of the argument.
      * @return The created {@link FloatArgument}.
      */
-    public static FloatArgument of(String identifier, String argumentDescription, ArgumentRule<?> rule) {
-        return new FloatArgument(identifier, argumentDescription, rule);
+    public static FloatArgument of(String identifier, String argumentDescription, ArgumentRule<?>... rules) {
+        boolean isOptional = Arrays.stream(rules).noneMatch(rule -> rule instanceof NonNullRule);
+        return new FloatArgument(identifier, argumentDescription, null, isOptional, List.of(rules));
     }
 
     /**
@@ -133,8 +99,9 @@ public class FloatArgument extends CommandArgument<Float> {
      * @param rules The rules of the argument.
      * @return The created {@link FloatArgument}.
      */
-    public static FloatArgument of(String identifier, String argumentDescription, float defaultValue, ArgumentRule<?> rules) {
-        return new FloatArgument(identifier, argumentDescription, defaultValue, rules);
+    public static FloatArgument of(String identifier, String argumentDescription, float defaultValue, ArgumentRule<?>... rules) {
+        boolean isOptional = Arrays.stream(rules).noneMatch(rule -> rule instanceof NonNullRule);
+        return new FloatArgument(identifier, argumentDescription, defaultValue, isOptional, List.of(rules));
     }
 
 }

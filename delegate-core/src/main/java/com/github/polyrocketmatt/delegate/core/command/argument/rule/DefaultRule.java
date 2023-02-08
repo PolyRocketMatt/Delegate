@@ -20,6 +20,7 @@ import java.lang.reflect.Field;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
+@Deprecated(since = "Use the new constructor for command arguments instead")
 public class DefaultRule<T> extends ArgumentRule<T> {
 
     /**

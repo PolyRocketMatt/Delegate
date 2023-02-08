@@ -1,5 +1,9 @@
+// Copyright (c) Matthias Kovacic. All rights reserved.
+// Licensed under the MIT license.
+
 package com.github.polyrocketmatt.delegate.core.command.definition;
 
+import com.github.polyrocketmatt.delegate.api.AttributeType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +23,7 @@ public class DescriptionDefinitionTest {
 
         assertEquals("commandDescription", definition.getIdentifier());
         assertEquals("This is a description", definition.getValue());
+        assertEquals(AttributeType.DEFINITION, definition.getType());
     }
 
     @Test

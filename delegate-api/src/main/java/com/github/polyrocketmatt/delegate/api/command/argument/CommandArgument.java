@@ -17,8 +17,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static com.github.polyrocketmatt.delegate.api.StringUtils.newId;
-
 /**
  * Represents a command argument of a specific type.
  *
@@ -37,172 +35,6 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
     private Argument<T> defaultValue;
 
     /**
-     * Creates a new command argument with an identifier and description.
-     *
-     * @param argumentDescription The description of the argument.
-     * @param argumentType The class type of the argument.
-     * @throws IllegalArgumentException If the argument description is null.
-     * @throws IllegalArgumentException If the argument type is null.
-     */
-    public CommandArgument(String argumentDescription, Class<T> argumentType) {
-        this(newId(), argumentDescription, argumentType, false);
-    }
-
-    /**
-     * Creates a new command argument with an identifier and description.
-     *
-     * @param identifier The identifier of the argument.
-     * @param argumentDescription The description of the argument.
-     * @param argumentType The class type of the argument.
-     * @throws IllegalArgumentException If the identifier is null, empty or blank.
-     * @throws IllegalArgumentException If the argument description is null.
-     * @throws IllegalArgumentException If the argument type is null.
-     */
-    public CommandArgument(String identifier, String argumentDescription, Class<T> argumentType) {
-        this(identifier, argumentDescription, argumentType, false);
-    }
-
-    /**
-     * Creates a new command argument with an identifier, description and
-     * argument rules that must be met for the argument to be valid.
-     *
-     * @param argumentDescription The description of the argument.
-     * @param argumentType The class type of the argument.
-     * @param argumentRule The argument rule that must be met for the argument to be valid.
-     * @throws IllegalArgumentException If the argument description is null.
-     * @throws IllegalArgumentException If the argument type is null.
-     * @throws IllegalArgumentException If the argument rule is null.
-     */
-    public CommandArgument(String argumentDescription, Class<T> argumentType, ArgumentRule<?> argumentRule) {
-        this(argumentDescription, argumentType, List.of(argumentRule));
-    }
-
-    /**
-     * Creates a new command argument with an identifier, description and
-     * argument rules that must be met for the argument to be valid.
-     *
-     * @param argumentDescription The description of the argument.
-     * @param argumentType The class type of the argument.
-     * @param argumentRules The argument rules that must be met for the argument to be valid.
-     * @throws IllegalArgumentException If the argument description is null.
-     * @throws IllegalArgumentException If the argument type is null.
-     * @throws IllegalArgumentException If the argument rules are null.
-     */
-    public CommandArgument(String argumentDescription, Class<T> argumentType, List<ArgumentRule<?>> argumentRules) {
-        this(argumentDescription, argumentType, false, argumentRules);
-    }
-
-    /**
-     * Creates a new command argument with an identifier, description and
-     * argument rules that must be met for the argument to be valid.
-     *
-     * @param identifier The identifier of the argument.
-     * @param argumentDescription The description of the argument.
-     * @param argumentType The class type of the argument.
-     * @param argumentRule The argument rule that must be met for the argument to be valid.
-     * @throws IllegalArgumentException If the identifier is null, empty or blank.
-     * @throws IllegalArgumentException If the argument description is null.
-     * @throws IllegalArgumentException If the argument type is null.
-     * @throws IllegalArgumentException If the argument rule is null.
-     */
-    public CommandArgument(String identifier, String argumentDescription, Class<T> argumentType, ArgumentRule<?> argumentRule) {
-        this(identifier, argumentDescription, argumentType, false, List.of(argumentRule));
-    }
-
-    /**
-     * Creates a new command argument with an identifier, description and
-     * argument rules that must be met for the argument to be valid.
-     *
-     * @param identifier The identifier of the argument.
-     * @param argumentDescription The description of the argument.
-     * @param argumentType The class type of the argument.
-     * @param argumentRules The argument rules that must be met for the argument to be valid.
-     * @throws IllegalArgumentException If the identifier is null, empty or blank.
-     * @throws IllegalArgumentException If the argument description is null.
-     * @throws IllegalArgumentException If the argument type is null.
-     * @throws IllegalArgumentException If the argument rules are null.
-     */
-    public CommandArgument(String identifier, String argumentDescription, Class<T> argumentType, List<ArgumentRule<?>> argumentRules) {
-        this(identifier, argumentDescription, argumentType, false, argumentRules);
-    }
-
-    /**
-     * Creates a new command argument with an identifier and description.
-     *
-     * @param argumentDescription The description of the argument.
-     * @param argumentType The class type of the argument.
-     * @param isOptional Whether the argument is optional or not.
-     * @throws IllegalArgumentException If the argument description is null.
-     * @throws IllegalArgumentException If the argument type is null.
-     */
-    public CommandArgument(String argumentDescription, Class<T> argumentType, boolean isOptional) {
-        this(newId(), argumentDescription, argumentType, isOptional, List.of());
-    }
-
-    /**
-     * Creates a new command argument with an identifier and description.
-     *
-     * @param identifier The identifier of the argument.
-     * @param argumentDescription The description of the argument.
-     * @param argumentType The class type of the argument.
-     * @param isOptional Whether the argument is optional or not.
-     * @throws IllegalArgumentException If the identifier is null, empty or blank.
-     * @throws IllegalArgumentException If the argument description is null.
-     * @throws IllegalArgumentException If the argument type is null.
-     */
-    public CommandArgument(String identifier, String argumentDescription, Class<T> argumentType, boolean isOptional) {
-        this(identifier, argumentDescription, argumentType, isOptional, List.of());
-    }
-
-    /**
-     * Creates a new command argument with an identifier and description.
-     *
-     * @param argumentDescription The description of the argument.
-     * @param argumentType The class type of the argument.
-     * @param isOptional Whether the argument is optional or not.
-     * @param argumentRule The argument rule that must be met for the argument to be valid.
-     * @throws IllegalArgumentException If the argument description is null.
-     * @throws IllegalArgumentException If the argument type is null.
-     * @throws IllegalArgumentException If the argument rule is null.
-     */
-    public CommandArgument(String argumentDescription, Class<T> argumentType, boolean isOptional, ArgumentRule<?> argumentRule) {
-        this(newId(), argumentDescription, argumentType, isOptional, argumentRule);
-    }
-
-    /**
-     * Creates a new command argument with an identifier and description.
-     *
-     * @param argumentDescription The description of the argument.
-     * @param argumentType The class type of the argument.
-     * @param isOptional Whether the argument is optional or not.
-     * @param argumentRules The argument rules that must be met for the argument to be valid.
-     * @throws IllegalArgumentException If the argument description is null.
-     * @throws IllegalArgumentException If the argument type is null.
-     * @throws IllegalArgumentException If the argument rules are null.
-     */
-    public CommandArgument(String argumentDescription, Class<T> argumentType, boolean isOptional, List<ArgumentRule<?>> argumentRules) {
-        this(newId(), argumentDescription, argumentType, isOptional, argumentRules);
-    }
-
-    /**
-     * Creates a new command argument with an identifier, description and
-     * argument rules that must be met for the argument to be valid.
-     *
-     * @param identifier The identifier of the argument.
-     * @param argumentDescription The description of the argument.
-     * @param argumentType The class type of the argument.
-     * @param isOptional Whether the argument is optional or not.
-     * @param argumentRule The argument rule that must be met for the argument to be valid.
-     * @throws IllegalArgumentException If the identifier is null, empty or blank.
-     * @throws IllegalArgumentException If the argument description is null.
-     * @throws IllegalArgumentException If the argument type is null.
-     * @throws IllegalArgumentException If the argument rule is null.
-     */
-    public CommandArgument(String identifier, String argumentDescription, Class<T> argumentType, boolean isOptional, ArgumentRule<?> argumentRule) {
-        this(identifier, argumentDescription, argumentType, isOptional, List.of(argumentRule));
-    }
-
-    /**
      * Creates a new command argument with an identifier, description and
      * argument rules that must be met for the argument to be valid.
      *
@@ -216,7 +48,7 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @throws IllegalArgumentException If the argument type is null.
      * @throws IllegalArgumentException If the argument rules are null.
      */
-    public CommandArgument(String identifier, String argumentDescription, Class<T> argumentType, boolean isOptional, List<ArgumentRule<?>> argumentRules) {
+    public CommandArgument(String identifier, String argumentDescription, Class<T> argumentType, Argument<T> defaultValue, boolean isOptional, List<ArgumentRule<?>> argumentRules) {
         super(identifier);
         if (argumentDescription == null)
             throw new IllegalArgumentException("Argument description cannot be null");
@@ -228,7 +60,7 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
         this.argumentRules = argumentRules;
         this.argumentType = argumentType;
         this.isOptional = isOptional;
-        this.defaultValue = null;
+        this.defaultValue = defaultValue;
     }
 
     /**
