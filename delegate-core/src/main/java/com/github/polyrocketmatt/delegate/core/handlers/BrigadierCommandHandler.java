@@ -76,6 +76,7 @@ public class BrigadierCommandHandler extends DelegateCommandHandler {
     }
 
     private LiteralArgumentBuilder<CommanderEntity> constructCommand(CommandNode node) throws CommandRegisterException {
+        //  For any given node, we receive a possible command. We thus create a literal argument builder
         LiteralArgumentBuilder<CommanderEntity> builder = LiteralArgumentBuilder.literal(node.getNameDefinition().getValue());
 
         //  For all arguments, we construct required arguments and add them to the current builder
@@ -90,29 +91,44 @@ public class BrigadierCommandHandler extends DelegateCommandHandler {
 
     private void constructArgumentScheme(CommandNode node, ArgumentBuilder<CommanderEntity, ?> builder) {
         //  Only if there is a verified command on the current level do we add the arguments
+        //  If the node is not verified, we do not need to add any arguments/logic
         if (node.isVerified()) {
             VerifiedDelegateCommand command = (VerifiedDelegateCommand) node.getCommand();
             CommandBuffer<CommandArgument<?>> arguments = command.getArgumentBuffer();
 
-            if (arguments.size() == 0)
+            if (arguments == null || arguments.size() == 0)
                 return;
 
             //  We need to construct a list of arguments that are required and optional
             List<CommandArgument<?>> requiredArguments = arguments.stream().filter(CommandArgument::isRequired).toList();
+            ArgumentBuilder<CommanderEntity, ?> currentBuilder = null;
 
+            if (requiredArguments.size() == 0)
+                return;
             for (int i = 0; i < requiredArguments.size(); i++) {
                 CommandArgument<?> argument = requiredArguments.get(i);
 
-                //  If this is the last argument, we need to construct the execution scheme here!
-                if (i == requiredArguments.size() - 1) {
+                //  If this is the first argument, we need to initialise the current builder and hook it to the main builder
+                if (i == 0) {
+                    currentBuilder = argument(argument.getIdentifier(), argument);
+                    builder.then(currentBuilder);
+                }
+
+                //  If this is the last argument, we need to construct the execution scheme here for the given command
+                else if (i == requiredArguments.size() - 1) {
                     ArgumentBuilder<CommanderEntity, ?> finalArgumentBuilder = argument(argument.getIdentifier(), argument);
                     constructExecutionScheme(node, finalArgumentBuilder);
-                    builder.then(finalArgumentBuilder);
-                } else
-                    builder.then(argument(argument.getIdentifier(), argument));
+                    currentBuilder.then(finalArgumentBuilder);
+                }
+
+                //  Otherwise, we create a new builder, append it to the current builder and make it the current builder
+                else {
+                    ArgumentBuilder<CommanderEntity, ?> newBuilder = argument(argument.getIdentifier(), argument);
+                    currentBuilder.then(newBuilder);
+                    currentBuilder = newBuilder;
+                }
             }
-        } else
-            throw new CommandRegisterException("Command node must be verified before an argument scheme can be constructed!");
+        }
     }
 
     private void constructExecutionScheme(CommandNode node, ArgumentBuilder<CommanderEntity, ?> builder) {
