@@ -288,6 +288,14 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
         return this.withPermission(PermissionTiers.GLOBAL.getTier());
     }
 
+    public BukkitCommandBuilder executes(BiConsumer<CommanderEntity, Context> action) {
+        return this.withConsumerAction(action);
+    }
+
+    public BukkitCommandBuilder executes(Runnable action) {
+        return this.withRunnableAction(action);
+    }
+
     public BukkitCommandBuilder withConsumerAction(BiConsumer<CommanderEntity, Context> action) {
         return this.with(new ConsumerAction(action));
     }

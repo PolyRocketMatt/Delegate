@@ -288,6 +288,14 @@ public class PaperCommandBuilder extends DelegateCommandBuilder {
         return this.withPermission(PermissionTiers.GLOBAL.getTier());
     }
 
+    public PaperCommandBuilder executes(BiConsumer<CommanderEntity, Context> action) {
+        return this.withConsumerAction(action);
+    }
+
+    public PaperCommandBuilder executes(Runnable action) {
+        return this.withRunnableAction(action);
+    }
+
     public PaperCommandBuilder withConsumerAction(BiConsumer<CommanderEntity, Context> action) {
         return this.with(new ConsumerAction(action));
     }

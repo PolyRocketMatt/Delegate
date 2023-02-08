@@ -286,6 +286,14 @@ public class VelocityCommandBuilder extends DelegateCommandBuilder {
         return this.withPermission(PermissionTiers.GLOBAL.getTier());
     }
 
+    public VelocityCommandBuilder executes(BiConsumer<CommanderEntity, Context> action) {
+        return this.withConsumerAction(action);
+    }
+
+    public VelocityCommandBuilder executes(Runnable action) {
+        return this.withRunnableAction(action);
+    }
+
     public VelocityCommandBuilder withConsumerAction(BiConsumer<CommanderEntity, Context> action) {
         return this.with(new ConsumerAction(action));
     }
