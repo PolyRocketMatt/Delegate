@@ -12,6 +12,7 @@ import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.exception.CommandExecutionException;
 import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException;
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
+import com.github.polyrocketmatt.delegate.core.command.action.ExceptAction;
 import com.github.polyrocketmatt.delegate.core.command.properties.AsyncProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.CatchExceptionProperty;
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandNode;
@@ -23,6 +24,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -111,9 +113,19 @@ public class BrigadierCommandHandler extends DelegateCommandHandler {
                         return getDelegate().getPlatform().dispatch(information, capture) ? 1 : 0;
                     } catch (Exception ex) {
                         //      4. Excepts
-                        if (safeExecute)
-                            generateEventFromException(information, ex);
-                        return 0;
+                        if (safeExecute) {
+                            CommandBuffer<ExceptAction> exceptActions = command.getExceptBuffer();
+                            List<String> exceptArguments = new ArrayList<>();
+
+                            exceptArguments.add(information.command());
+                            exceptArguments.addAll(Arrays.asList(information.arguments()));
+
+                            if (exceptActions != null) {
+                                for (ExceptAction action : exceptActions)
+                                    action.run(information.commander(), FeedbackType.BRIGADIER_EXCEPTION, exceptArguments);
+                            }
+                        }
+                        return generateEventFromException(information, ex) ? 1 : 0;
                     }
                 });
 
