@@ -3,6 +3,8 @@ package com.github.polyrocketmatt.delegate.api;
 import com.github.polyrocketmatt.delegate.api.command.tree.ICommandNode;
 import com.github.polyrocketmatt.delegate.api.configuration.DelegateConfiguration;
 import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException;
+import com.github.polyrocketmatt.delegate.api.handlers.CommandHandler;
+import com.github.polyrocketmatt.delegate.api.handlers.IHandler;
 
 /**
  * The Delegate API which is the entry point for platform implementations
@@ -35,18 +37,11 @@ public interface DelegateAPI {
     IHandler getAttributeHandler();
 
     /**
-     * Gets the command handler that is used by the Brigadier command framework.
-     *
-     * @return The command handler that is used by the Brigadier command framework.
-     */
-    IHandler getBrigadierCommandHandler();
-
-    /**
      * Gets the command handler that is used by the Delegate API.
      *
      * @return The command handler that is used by the Delegate API.
      */
-    IHandler getCommandHandler();
+    CommandHandler getCommandHandler();
 
     /**
      * Register a command node to the Delegate API.

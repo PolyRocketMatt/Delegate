@@ -8,9 +8,9 @@ import com.github.polyrocketmatt.delegate.api.command.ICommandFactory;
 import com.github.polyrocketmatt.delegate.api.command.IDelegateCommand;
 import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
+import com.github.polyrocketmatt.delegate.api.exception.CommandExecutionException;
 import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException;
 import com.github.polyrocketmatt.delegate.core.DelegateCore;
-import com.github.polyrocketmatt.delegate.core.handlers.InternalCommandHandler;
 import com.github.polyrocketmatt.delegate.impl.command.VelocityCommandFactory;
 import com.github.polyrocketmatt.delegate.impl.entity.VelocityPlayerCommander;
 import com.github.polyrocketmatt.delegate.impl.event.DelegateCommandEvent;
@@ -20,6 +20,8 @@ import org.bstats.velocity.Metrics;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
 
 public class Delegate implements IPlatform {
 
@@ -31,7 +33,7 @@ public class Delegate implements IPlatform {
     private final Class<?> plugin;
     private final CommandManager commandManager;
     private final List<IDelegateCommand> commands = new ArrayList<>();
-    private final InternalCommandHandler commandHandler;
+    //private final InternalCommandHandler commandHandler;
     private final boolean metricsEnabled;
 
     protected Delegate(Class<?> plugin, ProxyServer server, boolean metricsEnabled, Metrics.Factory metricsFactory) {
@@ -39,7 +41,7 @@ public class Delegate implements IPlatform {
 
         this.plugin = plugin;
         this.commandManager = proxy.getCommandManager();
-        this.commandHandler = DelegateCore.getDelegate().getCommandHandler();
+        //this.commandHandler = getDelegate().getCommandHandler();
         this.metricsEnabled = metricsEnabled;
         if (metricsEnabled)
             metricsFactory.make(plugin, VELOCITY_DELEGATE_ID);
@@ -54,15 +56,15 @@ public class Delegate implements IPlatform {
     }
 
     public static void hook(Class<?> plugin, ProxyServer proxy, boolean enableMetrics, Metrics.Factory factory, boolean verbose) {
-        DelegateCore.getDelegate().setPlatform(new Delegate(plugin, proxy, enableMetrics, factory));
-        DelegateCore.getDelegate().setVerbose(verbose);
+        getDelegate().setPlatform(new Delegate(plugin, proxy, enableMetrics, factory));
+        getDelegate().setVerbose(verbose);
     }
 
     public static void unhook(Class<?> plugin) {
-        Delegate delegate = (Delegate) DelegateCore.getDelegate().getPlatform();
+        Delegate delegate = (Delegate) getDelegate().getPlatform();
         delegate.unregister();
 
-        DelegateCore.getDelegate().setPlatform(null);
+        getDelegate().setPlatform(null);
     }
 
     public static DelegateAPI getDelegateAPI() {
@@ -91,6 +93,11 @@ public class Delegate implements IPlatform {
     public void registerToPlatform(IDelegateCommand command) throws CommandRegisterException {
         //  TODO: Implement Brigadier support
 
+    }
+
+    @Override
+    public boolean execute(CommandDispatchInformation information) throws CommandExecutionException {
+        return getDelegateAPI().getCommandHandler().handle(information);
     }
 
     private void unregister() throws CommandRegisterException {

@@ -8,6 +8,7 @@ import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandNode;
 import com.github.polyrocketmatt.delegate.core.handlers.AttributeHandler;
 import com.github.polyrocketmatt.delegate.core.handlers.BrigadierCommandHandler;
+import com.github.polyrocketmatt.delegate.core.handlers.DelegateCommandHandler;
 import com.github.polyrocketmatt.delegate.core.handlers.InternalCommandHandler;
 
 public class DelegateCore implements DelegateAPI {
@@ -17,8 +18,9 @@ public class DelegateCore implements DelegateAPI {
     private IPlatform platform;
     private final DelegateConfiguration configuration;
     private final AttributeHandler attributeHandler;
+    private DelegateCommandHandler delegateCommandHandler;
     private final BrigadierCommandHandler brigadierCommandHandler;
-    private final InternalCommandHandler commandHandler;
+    private final InternalCommandHandler internalCommandHandler;
     private boolean isVerbose = false;
     private boolean isBrigadier = false;
 
@@ -28,7 +30,8 @@ public class DelegateCore implements DelegateAPI {
         this.configuration = new DelegateConfiguration();
         this.attributeHandler = new AttributeHandler();
         this.brigadierCommandHandler = new BrigadierCommandHandler();
-        this.commandHandler = new InternalCommandHandler();
+        this.internalCommandHandler = new InternalCommandHandler();
+        this.delegateCommandHandler = internalCommandHandler;
     }
 
     public void setVerbose(boolean verbose) {
@@ -37,6 +40,8 @@ public class DelegateCore implements DelegateAPI {
 
     public void setBrigadier(boolean brigadier) {
         this.isBrigadier = brigadier;
+        if (isBrigadier)
+            this.delegateCommandHandler = brigadierCommandHandler;
     }
 
     public static DelegateAPI getDelegateAPI() {
@@ -69,20 +74,20 @@ public class DelegateCore implements DelegateAPI {
     }
 
     @Override
-    public BrigadierCommandHandler getBrigadierCommandHandler() {
-        return brigadierCommandHandler;
-    }
-
-    @Override
-    public InternalCommandHandler getCommandHandler() {
-        return this.commandHandler;
+    public DelegateCommandHandler getCommandHandler() {
+        return this.delegateCommandHandler;
     }
 
     @Override
     public boolean registerCommand(ICommandNode node) throws CommandRegisterException {
         if (!(node instanceof CommandNode commandNode))
             throw new CommandRegisterException("Node must be an instance of CommandNode");
-        return brigadier() ? brigadierCommandHandler.registerCommand(commandNode) : commandHandler.registerCommand(commandNode);
+        boolean success;
+
+        success = brigadierCommandHandler.registerCommand(commandNode);
+        success = internalCommandHandler.registerCommand(commandNode);
+
+        return success;
     }
 
     @Override
@@ -93,5 +98,13 @@ public class DelegateCore implements DelegateAPI {
     @Override
     public boolean brigadier() {
         return isBrigadier;
+    }
+
+    public InternalCommandHandler getInternalCommandHandler() {
+        return internalCommandHandler;
+    }
+
+    public BrigadierCommandHandler getBrigadierCommandHandler() {
+        return brigadierCommandHandler;
     }
 }

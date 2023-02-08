@@ -9,10 +9,10 @@ import com.github.polyrocketmatt.delegate.api.DelegateAPI;
 import com.github.polyrocketmatt.delegate.api.IPlatform;
 import com.github.polyrocketmatt.delegate.api.PlatformType;
 import com.github.polyrocketmatt.delegate.api.entity.ConsoleCommander;
+import com.github.polyrocketmatt.delegate.api.exception.CommandExecutionException;
 import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException;
 import com.github.polyrocketmatt.delegate.api.exception.DelegateRuntimeException;
 import com.github.polyrocketmatt.delegate.core.DelegateCore;
-import com.github.polyrocketmatt.delegate.core.handlers.InternalCommandHandler;
 import com.github.polyrocketmatt.delegate.impl.command.BukkitCommandFactory;
 import com.github.polyrocketmatt.delegate.impl.entity.BukkitPlayerCommander;
 import com.github.polyrocketmatt.delegate.impl.event.DelegateCommandEvent;
@@ -34,6 +34,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
+
 public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
 
     private static final int BUKKIT_DELEGATE_ID = 17314;
@@ -43,7 +45,6 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
     private final Plugin plugin;
     private final CommandMap commandMap;
     private final List<IDelegateCommand> commands = new ArrayList<>();
-    private final InternalCommandHandler commandHandler;
     private final boolean metricsEnabled;
 
     protected Delegate(JavaPlugin plugin, boolean metricsEnabled) {
@@ -57,9 +58,7 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
             throw new DelegateRuntimeException("Unable to retrieve command map", ex);
         }
 
-        this.commandHandler = DelegateCore.getDelegate().getCommandHandler();
         this.metricsEnabled = metricsEnabled;
-
         if (metricsEnabled)
             new Metrics(plugin, BUKKIT_DELEGATE_ID);
     }
@@ -69,15 +68,15 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
     }
 
     public static void hook(JavaPlugin plugin, boolean enableMetrics, boolean verbose) {
-        DelegateCore.getDelegate().setPlatform(new Delegate(plugin, enableMetrics));
-        DelegateCore.getDelegate().setVerbose(verbose);
+        getDelegate().setPlatform(new Delegate(plugin, enableMetrics));
+        getDelegate().setVerbose(verbose);
     }
 
     public static void unhook(JavaPlugin plugin) {
-        Delegate delegate = (Delegate) DelegateCore.getDelegate().getPlatform();
+        Delegate delegate = (Delegate) getDelegate().getPlatform();
         delegate.unregister();
 
-        DelegateCore.getDelegate().setPlatform(null);
+        getDelegate().setPlatform(null);
     }
 
     public static DelegateAPI getDelegateAPI() {
@@ -134,6 +133,11 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
         }
     }
 
+    @Override
+    public boolean execute(CommandDispatchInformation information) throws CommandExecutionException {
+        return getDelegateAPI().getCommandHandler().handle(information);
+    }
+
     private void unregister() throws CommandRegisterException {
         commands.clear();
     }
@@ -171,9 +175,9 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
         CommandDispatchInformation information = new CommandDispatchInformation(entity, command.getName(), args);
 
         try {
-            return commandHandler.handle(information);
+            return execute(information);
         } catch (Exception ex) {
-            if (DelegateCore.getDelegate().verbose())
+            if (getDelegate().verbose())
                 ex.printStackTrace();
         }
 
@@ -186,6 +190,6 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
         newArgs[0] = command.getName();
         System.arraycopy(args, 0, newArgs, 1, args.length);
 
-        return commandHandler.findCompletions(newArgs);
+        return getDelegate().getInternalCommandHandler().findCompletions(newArgs);
     }
 }

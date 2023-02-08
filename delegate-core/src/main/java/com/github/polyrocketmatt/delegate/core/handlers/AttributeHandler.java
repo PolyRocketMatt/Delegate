@@ -1,6 +1,6 @@
 package com.github.polyrocketmatt.delegate.core.handlers;
 
-import com.github.polyrocketmatt.delegate.api.IHandler;
+import com.github.polyrocketmatt.delegate.api.handlers.IHandler;
 import com.github.polyrocketmatt.delegate.api.command.trigger.CommandTrigger;
 import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
 import com.github.polyrocketmatt.delegate.core.command.AttributedDelegateCommand;

@@ -1,4 +1,4 @@
-package com.github.polyrocketmatt.delegate.api;
+package com.github.polyrocketmatt.delegate.api.handlers;
 
 /**
  * Defines a handler that is responsible for handling a single

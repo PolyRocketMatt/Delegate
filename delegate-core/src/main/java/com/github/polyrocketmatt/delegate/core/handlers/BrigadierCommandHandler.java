@@ -1,6 +1,5 @@
 package com.github.polyrocketmatt.delegate.core.handlers;
 
-import com.github.polyrocketmatt.delegate.api.IHandler;
 import com.github.polyrocketmatt.delegate.api.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.api.command.CommandDispatchInformation;
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
@@ -29,7 +28,7 @@ import java.util.Map;
 
 import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
 
-public class BrigadierCommandHandler extends DelegateCommandHandler implements IHandler {
+public class BrigadierCommandHandler extends DelegateCommandHandler {
 
     private final CommandDispatcher<CommanderEntity> dispatcher;
 
@@ -59,6 +58,7 @@ public class BrigadierCommandHandler extends DelegateCommandHandler implements I
      * @return True if the information was handled successfully, false otherwise.
      * @throws CommandExecutionException If an error occurred while parsing the information.
      */
+    @Override
     public boolean handle(CommandDispatchInformation information) throws CommandExecutionException {
         String command = information.command() + " " + String.join(" ", information.arguments());
         CommanderEntity commander = information.commander();

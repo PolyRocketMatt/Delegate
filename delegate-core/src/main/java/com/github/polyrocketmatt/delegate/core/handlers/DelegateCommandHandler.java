@@ -9,6 +9,8 @@ import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
 import com.github.polyrocketmatt.delegate.api.command.feedback.FeedbackType;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.exception.CommandExecutionException;
+import com.github.polyrocketmatt.delegate.api.handlers.CommandHandler;
+import com.github.polyrocketmatt.delegate.core.DelegateCore;
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
 import com.github.polyrocketmatt.delegate.core.command.action.ExceptAction;
 
@@ -18,9 +20,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
-import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
-
-public abstract class DelegateCommandHandler {
+public abstract class DelegateCommandHandler extends CommandHandler {
 
     private final int availableProcessors;
     private final int maxStealCount;
@@ -41,7 +41,7 @@ public abstract class DelegateCommandHandler {
                 new CommandCapture.Capture("stacktrace", new ActionItem<>(ActionItem.Result.FAILURE, builder.toString()))
         ));
 
-        return getDelegate().getPlatform().dispatch(information, capture);
+        return DelegateCore.getDelegate().getPlatform().dispatch(information, capture);
     }
 
     protected CommandExecutionException exceptOrThrow(
@@ -63,7 +63,7 @@ public abstract class DelegateCommandHandler {
             }
         }
 
-        return new CommandExecutionException(information, getDelegate().getConfiguration().get(type), type, args);
+        return new CommandExecutionException(information, DelegateCore.getDelegate().getConfiguration().get(type), type, args);
     }
 
     protected List<CommandCapture.Capture> execute(CommanderEntity commander, CommandBuffer<CommandAction> actions, List<Argument<?>> arguments, boolean async) {

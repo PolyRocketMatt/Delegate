@@ -135,9 +135,7 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
 
     @Override
     public boolean execute(CommandDispatchInformation information) throws CommandExecutionException {
-        return getDelegateAPI().brigadier() ?
-                getDelegate().getCommandHandler().handle(information) :
-                getDelegate().getBrigadierCommandHandler().handle(information);
+        return getDelegateAPI().getCommandHandler().handle(information);
     }
 
     private void unregister() throws CommandRegisterException {
@@ -196,7 +194,7 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
         newArgs[0] = command.getName();
         System.arraycopy(args, 0, newArgs, 1, args.length);
 
-        return getDelegate().getCommandHandler().findCompletions(newArgs);
+        return getDelegate().getInternalCommandHandler().findCompletions(newArgs);
     }
 
 }

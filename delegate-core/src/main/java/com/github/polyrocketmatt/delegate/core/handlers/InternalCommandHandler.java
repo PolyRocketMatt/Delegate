@@ -1,6 +1,5 @@
 package com.github.polyrocketmatt.delegate.core.handlers;
 
-import com.github.polyrocketmatt.delegate.api.IHandler;
 import com.github.polyrocketmatt.delegate.api.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
@@ -15,7 +14,6 @@ import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
-import com.github.polyrocketmatt.delegate.core.command.action.ExceptAction;
 import com.github.polyrocketmatt.delegate.core.command.properties.AsyncProperty;
 import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.CatchExceptionProperty;
@@ -38,7 +36,7 @@ import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
-public class InternalCommandHandler extends DelegateCommandHandler implements IHandler {
+public class InternalCommandHandler extends DelegateCommandHandler {
 
     private final CommandTree commandTree;
 
@@ -117,7 +115,6 @@ public class InternalCommandHandler extends DelegateCommandHandler implements IH
         return left.getNameDefinition().getValue().equals(right.getNameDefinition().getValue());
     }
 
-    //  TODO: Add default execution routines on exception against argument parsing
     /**
      * Handles the given {@link CommandDispatchInformation} and tries to execute the
      * command associated with the information.
@@ -126,6 +123,8 @@ public class InternalCommandHandler extends DelegateCommandHandler implements IH
      * @return True if the information was handled successfully, false otherwise.
      * @throws CommandExecutionException If an error occurred while parsing the information.
      */
+    //  TODO: Add default execution routines on exception against argument parsing
+    @Override
     public boolean handle(CommandDispatchInformation information) throws CommandExecutionException {
         CommanderEntity commander = information.commander();
         String commandName = information.command();
