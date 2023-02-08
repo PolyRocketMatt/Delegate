@@ -1,5 +1,6 @@
 package com.github.polyrocketmatt.delegate.core.command;
 
+import com.github.polyrocketmatt.delegate.core.command.definition.AliasDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
 
@@ -15,6 +16,7 @@ public class AttributedDelegateCommand extends DelegateCommand{
 
     private final NameDefinition nameDefinition;
     private final DescriptionDefinition descriptionDefinition;
+    private final AliasDefinition[] aliases;
     private final DelegateCommandBuilder attributeChain;
 
     /**
@@ -25,6 +27,10 @@ public class AttributedDelegateCommand extends DelegateCommand{
     public AttributedDelegateCommand(DelegateCommandBuilder attributeChain) {
         this.nameDefinition = (NameDefinition) attributeChain.find(NameDefinition.class);
         this.descriptionDefinition = (DescriptionDefinition) attributeChain.find(DescriptionDefinition.class);
+        this.aliases = attributeChain.filter(AliasDefinition.class)
+                .stream()
+                .map(AliasDefinition.class::cast)
+                .toArray(AliasDefinition[]::new);
         this.attributeChain = attributeChain;
     }
 
@@ -45,5 +51,10 @@ public class AttributedDelegateCommand extends DelegateCommand{
     @Override
     public DescriptionDefinition getDescriptionDefinition() {
         return descriptionDefinition;
+    }
+
+    @Override
+    public AliasDefinition[] getAliases() {
+        return aliases;
     }
 }
