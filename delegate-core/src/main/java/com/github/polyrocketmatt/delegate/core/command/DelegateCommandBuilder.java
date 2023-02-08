@@ -9,7 +9,6 @@ import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
 import com.github.polyrocketmatt.delegate.api.command.trigger.CommandTrigger;
 import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
 import com.github.polyrocketmatt.delegate.core.command.action.ExceptAction;
-import com.github.polyrocketmatt.delegate.core.handlers.AttributeHandler;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -37,7 +36,7 @@ public abstract class DelegateCommandBuilder implements ICommandBuilder {
      */
     @Override
     public DelegateCommand build() {
-        return ((AttributeHandler) getDelegate().getAttributeHandler()).process(null, new AttributedDelegateCommand(this));
+        return getDelegate().getAttributeHandler().process(null, new AttributedDelegateCommand(this));
     }
 
     /**
