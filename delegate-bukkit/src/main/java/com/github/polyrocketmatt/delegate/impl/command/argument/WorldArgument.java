@@ -6,6 +6,8 @@ import com.github.polyrocketmatt.delegate.api.command.argument.rule.ArgumentRule
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.DefaultRule;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.NonNullRule;
 import com.github.polyrocketmatt.delegate.core.utils.ArrayUtils;
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -65,6 +67,13 @@ public class WorldArgument extends CommandArgument<World> {
         World world = Bukkit.getWorld(input);
 
         return (world != null) ? new Argument<>(getIdentifier(), world) : getDefault();
+    }
+
+    @Override
+    public World parse(StringReader reader) throws CommandSyntaxException {
+        World world = Bukkit.getWorld(reader.readString());
+
+        return (world != null) ? world : getDefault().output();
     }
 
     /**

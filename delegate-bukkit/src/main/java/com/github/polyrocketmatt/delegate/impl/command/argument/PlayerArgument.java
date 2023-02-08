@@ -6,6 +6,8 @@ import com.github.polyrocketmatt.delegate.api.command.argument.rule.ArgumentRule
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.DefaultRule;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.NonNullRule;
 import com.github.polyrocketmatt.delegate.core.utils.ArrayUtils;
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -65,6 +67,13 @@ public class PlayerArgument extends CommandArgument<Player> {
         Player player = Bukkit.getPlayer(input);
 
         return (player != null) ? new Argument<>(getIdentifier(), player) : getDefault();
+    }
+
+    @Override
+    public Player parse(StringReader reader) throws CommandSyntaxException {
+        Player player = Bukkit.getPlayer(reader.readString());
+
+        return (player != null) ? player : getDefault().output();
     }
 
     /**
