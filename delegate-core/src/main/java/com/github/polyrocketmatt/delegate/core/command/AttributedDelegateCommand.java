@@ -3,6 +3,7 @@
 
 package com.github.polyrocketmatt.delegate.core.command;
 
+import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException;
 import com.github.polyrocketmatt.delegate.core.command.definition.AliasDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
@@ -28,6 +29,8 @@ public class AttributedDelegateCommand extends DelegateCommand{
      * @param attributeChain The attribute chain that is used to store the attributes of the command.
      */
     public AttributedDelegateCommand(DelegateCommandBuilder attributeChain) {
+        if (attributeChain == null)
+            throw new NullPointerException("The attribute chain cannot be null");
         this.nameDefinition = (NameDefinition) attributeChain.find(NameDefinition.class);
         this.descriptionDefinition = (DescriptionDefinition) attributeChain.find(DescriptionDefinition.class);
         this.aliases = attributeChain.filter(AliasDefinition.class)

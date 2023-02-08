@@ -28,6 +28,10 @@ public abstract class CommandAction extends CommandAttribute implements Bufferab
      */
     public CommandAction(String identifier, PermissionTier permissionTier, int precedence) {
         super(identifier);
+        if (permissionTier == null)
+            throw new IllegalArgumentException("Permission tier cannot be null");
+        if (precedence < 0)
+            throw new IllegalArgumentException("Precedence cannot be negative");
         this.permissionTier = permissionTier;
         this.precedence = precedence;
     }

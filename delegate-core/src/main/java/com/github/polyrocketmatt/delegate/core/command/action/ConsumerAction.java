@@ -34,9 +34,8 @@ public class ConsumerAction extends CommandAction {
      *
      * @param action The consumer that will be executed.
      */
-    public ConsumerAction(BiConsumer<CommanderEntity, Context> action) {
-        super(newId(), PermissionTiers.GLOBAL.getTier(), 0);
-        this.action = action;
+    public ConsumerAction(BiConsumer<CommanderEntity, Context> action) throws IllegalArgumentException {
+        this(newId(), PermissionTiers.GLOBAL.getTier(), 0, action);
     }
 
     /**
@@ -46,9 +45,8 @@ public class ConsumerAction extends CommandAction {
      * @param permissionTier The permission tier required to execute this action.
      * @param action The consumer that will be executed.
      */
-    public ConsumerAction(PermissionTier permissionTier, BiConsumer<CommanderEntity, Context> action) {
-        super(newId(), permissionTier, 0);
-        this.action = action;
+    public ConsumerAction(PermissionTier permissionTier, BiConsumer<CommanderEntity, Context> action) throws IllegalArgumentException {
+        this(newId(), permissionTier, 0, action);
     }
 
     /**
@@ -57,9 +55,8 @@ public class ConsumerAction extends CommandAction {
      * @param precedence The precedence of the command action.
      * @param action The consumer that will be executed.
      */
-    public ConsumerAction(int precedence, BiConsumer<CommanderEntity, Context> action) {
-        super(newId(), PermissionTiers.GLOBAL.getTier(), precedence);
-        this.action = action;
+    public ConsumerAction(int precedence, BiConsumer<CommanderEntity, Context> action) throws IllegalArgumentException {
+        this(newId(), PermissionTiers.GLOBAL.getTier(), precedence, action);
     }
 
     /**
@@ -69,9 +66,9 @@ public class ConsumerAction extends CommandAction {
      * @param precedence The precedence of the command action.
      * @param action The consumer that will be executed.
      */
-    public ConsumerAction(PermissionTier permissionTier, int precedence, BiConsumer<CommanderEntity, Context> action) {
-        super(newId(), permissionTier, precedence);
-        this.action = action;
+    public ConsumerAction(PermissionTier permissionTier, int precedence, BiConsumer<CommanderEntity, Context> action)
+            throws IllegalArgumentException {
+        this(newId(), permissionTier, precedence, action);
     }
 
     /**
@@ -80,9 +77,8 @@ public class ConsumerAction extends CommandAction {
      * @param identifier The identifier of the command action.
      * @param action The consumer that will be executed.
      */
-    public ConsumerAction(String identifier, BiConsumer<CommanderEntity, Context> action) {
-        super(identifier, PermissionTiers.GLOBAL.getTier(), 0);
-        this.action = action;
+    public ConsumerAction(String identifier, BiConsumer<CommanderEntity, Context> action) throws IllegalArgumentException {
+        this(identifier, PermissionTiers.GLOBAL.getTier(), 0, action);
     }
 
     /**
@@ -92,9 +88,9 @@ public class ConsumerAction extends CommandAction {
      * @param permissionTier The permission tier required to execute the command action.
      * @param action The consumer that will be executed.
      */
-    public ConsumerAction(String identifier, PermissionTier permissionTier, BiConsumer<CommanderEntity, Context> action) {
-        super(identifier, permissionTier, 0);
-        this.action = action;
+    public ConsumerAction(String identifier, PermissionTier permissionTier, BiConsumer<CommanderEntity, Context> action)
+            throws IllegalArgumentException {
+        this(identifier, permissionTier, 0, action);
     }
 
     /**
@@ -104,9 +100,9 @@ public class ConsumerAction extends CommandAction {
      * @param precedence The precedence of the command action.
      * @param action The consumer that will be executed.
      */
-    public ConsumerAction(String identifier, int precedence, BiConsumer<CommanderEntity, Context> action) {
-        super(identifier, PermissionTiers.GLOBAL.getTier(), precedence);
-        this.action = action;
+    public ConsumerAction(String identifier, int precedence, BiConsumer<CommanderEntity, Context> action)
+            throws IllegalArgumentException {
+        this(identifier, PermissionTiers.GLOBAL.getTier(), precedence, action);
     }
 
     /**
@@ -117,8 +113,11 @@ public class ConsumerAction extends CommandAction {
      * @param precedence The precedence of the command action.
      * @param action The consumer that will be executed.
      */
-    public ConsumerAction(String identifier, PermissionTier permissionTier, int precedence, BiConsumer<CommanderEntity, Context> action) {
+    public ConsumerAction(String identifier, PermissionTier permissionTier, int precedence, BiConsumer<CommanderEntity, Context> action)
+            throws IllegalArgumentException {
         super(identifier, permissionTier, precedence);
+        if (action == null)
+            throw new IllegalArgumentException("Action cannot be null");
         this.action = action;
     }
 
