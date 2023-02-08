@@ -4,10 +4,9 @@ import com.github.polyrocketmatt.delegate.api.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.api.command.CommandDispatchInformation;
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
-import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
+import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
 import com.github.polyrocketmatt.delegate.api.command.feedback.FeedbackType;
-import com.github.polyrocketmatt.delegate.api.command.trigger.CommandTrigger;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.exception.CommandExecutionException;
 import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException;
@@ -17,6 +16,7 @@ import com.github.polyrocketmatt.delegate.core.command.properties.AsyncProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.CatchExceptionProperty;
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandNode;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.context.ParsedArgument;
@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
+import static com.mojang.brigadier.builder.RequiredArgumentBuilder.argument;
 
 public class BrigadierCommandHandler extends DelegateCommandHandler {
 
@@ -75,9 +76,46 @@ public class BrigadierCommandHandler extends DelegateCommandHandler {
     }
 
     private LiteralArgumentBuilder<CommanderEntity> constructCommand(CommandNode node) throws CommandRegisterException {
-        LiteralArgumentBuilder<CommanderEntity> builder = LiteralArgumentBuilder
-                .literal(node.getNameDefinition().getValue());
+        LiteralArgumentBuilder<CommanderEntity> builder = LiteralArgumentBuilder.literal(node.getNameDefinition().getValue());
 
+        //  For all arguments, we construct required arguments and add them to the current builder
+        constructArgumentScheme(node, builder);
+
+        //  For all sub-commands, we construct execution schemes and add them to the current builder
+        for (CommandNode childNode : node.getChildren())
+            builder.then(constructCommand(childNode));
+
+        return builder;
+    }
+
+    private void constructArgumentScheme(CommandNode node, ArgumentBuilder<CommanderEntity, ?> builder) {
+        //  Only if there is a verified command on the current level do we add the arguments
+        if (node.isVerified()) {
+            VerifiedDelegateCommand command = (VerifiedDelegateCommand) node.getCommand();
+            CommandBuffer<CommandArgument<?>> arguments = command.getArgumentBuffer();
+
+            if (arguments.size() == 0)
+                return;
+
+            //  We need to construct a list of arguments that are required and optional
+            List<CommandArgument<?>> requiredArguments = arguments.stream().filter(CommandArgument::isRequired).toList();
+
+            for (int i = 0; i < requiredArguments.size(); i++) {
+                CommandArgument<?> argument = requiredArguments.get(i);
+
+                //  If this is the last argument, we need to construct the execution scheme here!
+                if (i == requiredArguments.size() - 1) {
+                    ArgumentBuilder<CommanderEntity, ?> finalArgumentBuilder = argument(argument.getIdentifier(), argument);
+                    constructExecutionScheme(node, finalArgumentBuilder);
+                    builder.then(finalArgumentBuilder);
+                } else
+                    builder.then(argument(argument.getIdentifier(), argument));
+            }
+        } else
+            throw new CommandRegisterException("Command node must be verified before an argument scheme can be constructed!");
+    }
+
+    private void constructExecutionScheme(CommandNode node, ArgumentBuilder<CommanderEntity, ?> builder) {
         //  Only if there is a verified command on the current level do we add the command actions/triggers/excepts
         if (node.isVerified()) {
             VerifiedDelegateCommand command = (VerifiedDelegateCommand) node.getCommand();
@@ -128,10 +166,8 @@ public class BrigadierCommandHandler extends DelegateCommandHandler {
                         return generateEventFromException(information, ex) ? 1 : 0;
                     }
                 });
-
-            return builder;
         } else
-            throw new CommandRegisterException("Command node is not verified!");
+            throw new CommandRegisterException("Command node must be verified before an execution scheme can be constructed!");
     }
 
     @SuppressWarnings("unchecked")
