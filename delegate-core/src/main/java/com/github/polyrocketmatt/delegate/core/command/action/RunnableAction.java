@@ -15,6 +15,7 @@ import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTier
 import java.util.List;
 
 import static com.github.polyrocketmatt.delegate.api.StringUtils.newId;
+import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
 
 /**
  * A {@link Runnable}-based command action that does not yield a result.
@@ -135,9 +136,16 @@ public class RunnableAction extends CommandAction {
 
     @Override
     public ActionItem<?> run(CommanderEntity commander, List<Argument<?>> arguments) {
+        if (commander == null)
+            throw new IllegalArgumentException("Commander cannot be null");
+        if (arguments == null)
+            throw new IllegalArgumentException("Arguments cannot be null");
+
         try {
             action.run();
         } catch (Exception ex) {
+            if (getDelegate().isVerbose())
+                ex.printStackTrace();
             return new FailureActionResult(ex);
         }
 

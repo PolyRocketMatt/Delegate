@@ -59,13 +59,13 @@ public interface DelegateAPI {
      *
      * @return Whether the Delegate API is in verbose mode and will throw exceptions.
      */
-    boolean verbose();
+    boolean isVerbose();
 
     /**
      * Gets whether the Delegate API is using the Brigadier command framework.
      *
      * @return Whether the Delegate API is using the Brigadier command framework.
      */
-    boolean brigadier();
+    boolean useBrigadier();
 
 }

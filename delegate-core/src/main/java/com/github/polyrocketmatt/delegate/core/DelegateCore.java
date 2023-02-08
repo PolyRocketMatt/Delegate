@@ -94,12 +94,12 @@ public class DelegateCore implements DelegateAPI {
     }
 
     @Override
-    public boolean verbose() {
+    public boolean isVerbose() {
         return isVerbose;
     }
 
     @Override
-    public boolean brigadier() {
+    public boolean useBrigadier() {
         return isBrigadier;
     }
 

@@ -11,6 +11,7 @@ import com.github.polyrocketmatt.delegate.api.command.data.FailureActionResult;
 import com.github.polyrocketmatt.delegate.api.command.data.SuccessActionResult;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
+import com.github.polyrocketmatt.delegate.core.DelegateCore;
 import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTiers;
 
 import java.util.List;
@@ -139,11 +140,16 @@ public class ConsumerAction extends CommandAction {
 
     @Override
     public ActionItem<?> run(CommanderEntity commander, List<Argument<?>> arguments) {
+        if (commander == null)
+            throw new IllegalArgumentException("Commander cannot be null");
+        if (arguments == null)
+            throw new IllegalArgumentException("Arguments cannot be null");
+
         try {
             action.accept(commander, new Context(arguments));
         } catch (Exception ex) {
-            ex.printStackTrace();
-
+            if (DelegateCore.getDelegateAPI().isVerbose())
+                ex.printStackTrace();
             return new FailureActionResult(ex);
         }
 

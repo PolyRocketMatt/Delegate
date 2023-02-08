@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 import static com.github.polyrocketmatt.delegate.api.StringUtils.newId;
+import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
 
 /**
  * A {@link TriConsumer}-based command action that is only executed when an
@@ -30,18 +31,35 @@ public class ExceptAction extends CommandAttribute implements Bufferable {
      * a default precedence of 0.
      *
      * @param action The consumer that will be executed.
+     * @throws IllegalArgumentException If the action is null.
      */
     public ExceptAction(TriConsumer<CommanderEntity, FeedbackType, List<String>> action) {
         super(newId());
+        if (action == null)
+            throw new IllegalArgumentException("Action cannot be null");
         this.action = action;
     }
 
-
+    /**
+     * Runs the action with the given commander, feedback type and arguments.
+     *
+     * @param commander The commander that executed the command.
+     * @param type The feedback type.
+     * @param arguments The arguments of the command.
+     */
     public void run(CommanderEntity commander,  FeedbackType type, List<String> arguments) {
+        if (commander == null)
+            throw new IllegalArgumentException("Commander cannot be null");
+        if (type == null)
+            throw new IllegalArgumentException("Feedback type cannot be null");
+        if (arguments == null)
+            throw new IllegalArgumentException("Arguments cannot be null");
+
         try {
             action.accept(commander, type, arguments);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            if (getDelegate().isVerbose())
+                ex.printStackTrace();
         }
     }
 

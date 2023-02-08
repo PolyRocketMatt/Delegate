@@ -180,7 +180,7 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
         try {
             return execute(information);
         } catch (Exception ex) {
-            if (getDelegate().verbose())
+            if (getDelegate().isVerbose())
                 ex.printStackTrace();
         }
 

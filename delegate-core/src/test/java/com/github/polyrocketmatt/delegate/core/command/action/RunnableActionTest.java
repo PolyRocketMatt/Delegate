@@ -1,12 +1,44 @@
 package com.github.polyrocketmatt.delegate.core.command.action;
 
+import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
+import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
+import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTiers;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class RunnableActionTest {
+
+    @BeforeEach
+    public void setup() {
+        getDelegate().setVerbose(true);
+    }
+
+    private static class RunnableCommanderEntity implements CommanderEntity {
+
+        @Override
+        public boolean hasPermission(String permission) {
+            return true;
+        }
+
+        @Override
+        public boolean isOperator() {
+            return true;
+        }
+
+        @Override
+        public void sendMessage(String message) {
+            System.out.println(message);
+        }
+
+    }
 
     @Test
     public void testPrimaryConstructor() {
@@ -108,6 +140,51 @@ public class RunnableActionTest {
     @Test
     public void testFullConstructorWithNullAction() {
         assertThrows(IllegalArgumentException.class, () -> new RunnableAction("test", PermissionTiers.OPERATOR.getTier(), 1, null));
+    }
+
+    @Test
+    public void testExecuteSuccess() {
+        RunnableCommanderEntity entity = new RunnableCommanderEntity();
+        List<Argument<?>> arguments = new ArrayList<>() {{
+            add(new Argument<>("primary", 1));
+            add(new Argument<>("secondary", 2));
+        }};
+        RunnableAction action = new RunnableAction(() -> System.out.println("Hello, World!"));
+        ActionItem<?> result = action.run(entity, arguments);
+
+        assertTrue(result.getResult().isSuccess());
+    }
+
+    @Test
+    public void testExecuteWithNullParams() {
+        RunnableCommanderEntity entity = new RunnableCommanderEntity();
+        List<Argument<?>> arguments = new ArrayList<>() {{
+            add(new Argument<>("primary", "not a string"));
+            add(new Argument<>("secondary", 2));
+        }};
+        RunnableAction action = new RunnableAction(() -> {
+            throw new IllegalStateException("This should not be thrown.");
+        });
+
+        assertThrows(IllegalArgumentException.class, () -> action.run(null, arguments));
+        assertThrows(IllegalArgumentException.class, () -> action.run(entity, null));
+    }
+
+    @Test
+    public void testExecuteFailure() {
+        RunnableCommanderEntity entity = new RunnableCommanderEntity();
+        List<Argument<?>> arguments = new ArrayList<>() {{
+            add(new Argument<>("primary", "not a string"));
+            add(new Argument<>("secondary", 2));
+        }};
+        RunnableAction action = new RunnableAction(() -> {
+            throw new IllegalStateException("This should not be thrown.");
+        });
+
+        ActionItem<?> result = action.run(entity, arguments);
+
+        assertTrue(result.getResult().isFailure());
+        assertEquals(IllegalStateException.class, result.getItem().getClass());
     }
 
 }

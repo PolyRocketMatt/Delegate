@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.function.BiFunction;
 
 import static com.github.polyrocketmatt.delegate.api.StringUtils.newId;
+import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
 
 /**
  * A {@link BiFunction}-based command action that takes arguments and yields a result.
@@ -134,9 +135,16 @@ public class FunctionAction extends CommandAction {
 
     @Override
     public ActionItem<?> run(CommanderEntity commander, List<Argument<?>> arguments) {
+        if (commander == null)
+            throw new IllegalArgumentException("Commander cannot be null");
+        if (arguments == null)
+            throw new IllegalArgumentException("Arguments cannot be null");
+
         try {
             return new ActionItem<>(ActionItem.Result.SUCCESS, action.apply(commander, new Context(arguments)));
         } catch (Exception ex) {
+            if (getDelegate().isVerbose())
+                ex.printStackTrace();
             return new FailureActionResult(ex);
         }
     }

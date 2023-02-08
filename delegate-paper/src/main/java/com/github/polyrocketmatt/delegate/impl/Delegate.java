@@ -180,7 +180,7 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
         try {
             return execute(information);
         } catch (Exception ex) {
-            if (getDelegate().verbose())
+            if (getDelegate().isVerbose())
                 ex.printStackTrace();
         }
 
@@ -190,7 +190,7 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String label, String[] args) {
         //  If we're using brigadier, we don't need to do anything here
-        if (getDelegateAPI().brigadier())
+        if (getDelegateAPI().useBrigadier())
             return null;
 
         String[] newArgs = new String[args.length + 1];

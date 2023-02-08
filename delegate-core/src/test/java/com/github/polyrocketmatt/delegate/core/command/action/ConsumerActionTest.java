@@ -3,12 +3,44 @@
 
 package com.github.polyrocketmatt.delegate.core.command.action;
 
+import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
+import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
+import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTiers;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ConsumerActionTest {
+
+    @BeforeEach
+    public void setup() {
+        getDelegate().setVerbose(true);
+    }
+
+    private static class ConsumerCommanderEntity implements CommanderEntity {
+
+        @Override
+        public boolean hasPermission(String permission) {
+            return true;
+        }
+
+        @Override
+        public boolean isOperator() {
+            return true;
+        }
+
+        @Override
+        public void sendMessage(String message) {
+            System.out.println(message);
+        }
+
+    }
 
     @Test
     public void testPrimaryConstructor() {
@@ -110,6 +142,63 @@ public class ConsumerActionTest {
     @Test
     public void testFullConstructorWithNullAction() {
         assertThrows(IllegalArgumentException.class, () -> new ConsumerAction("test", PermissionTiers.OPERATOR.getTier(), 1, null));
+    }
+
+    @Test
+    public void testExecuteSuccess() {
+        ConsumerCommanderEntity entity = new ConsumerCommanderEntity();
+        List<Argument<?>> arguments = new ArrayList<>() {{
+            add(new Argument<>("primary", 1));
+            add(new Argument<>("secondary", 2));
+        }};
+        ConsumerAction action = new ConsumerAction((sender, context) -> {
+            int a = context.find("primary");
+            int b = context.find("secondary");
+
+            sender.sendMessage("" + (a + b));
+        });
+
+        ActionItem<?> result = action.run(entity, arguments);
+
+        assertTrue(result.getResult().isSuccess());
+    }
+
+    @Test
+    public void testExecuteWithNullParams() {
+        ConsumerCommanderEntity entity = new ConsumerCommanderEntity();
+        List<Argument<?>> arguments = new ArrayList<>() {{
+            add(new Argument<>("primary", "not a string"));
+            add(new Argument<>("secondary", 2));
+        }};
+        ConsumerAction action = new ConsumerAction((sender, context) -> {
+            int a = context.find("primary");
+            int b = context.find("secondary");
+
+            sender.sendMessage("" + (a + b));
+        });
+
+        assertThrows(IllegalArgumentException.class, () -> action.run(null, arguments));
+        assertThrows(IllegalArgumentException.class, () -> action.run(entity, null));
+    }
+
+    @Test
+    public void testExecuteFailure() {
+        ConsumerCommanderEntity entity = new ConsumerCommanderEntity();
+        List<Argument<?>> arguments = new ArrayList<>() {{
+            add(new Argument<>("primary", "not a string"));
+            add(new Argument<>("secondary", 2));
+        }};
+        ConsumerAction action = new ConsumerAction((sender, context) -> {
+            int a = context.find("primary");
+            int b = context.find("secondary");
+
+            sender.sendMessage("" + (a + b));
+        });
+
+        ActionItem<?> result = action.run(entity, arguments);
+
+        assertTrue(result.getResult().isFailure());
+        assertEquals(ClassCastException.class, result.getItem().getClass());
     }
 
 }

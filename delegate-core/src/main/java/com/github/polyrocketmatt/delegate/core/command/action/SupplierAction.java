@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import static com.github.polyrocketmatt.delegate.api.StringUtils.newId;
+import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
 
 /**
  * A {@link Supplier}-based command action that does not take any arguments and only yields a result.
@@ -133,9 +134,16 @@ public class SupplierAction<T> extends CommandAction {
 
     @Override
     public ActionItem<?> run(CommanderEntity commander, List<Argument<?>> arguments) {
+        if (commander == null)
+            throw new IllegalArgumentException("Commander cannot be null");
+        if (arguments == null)
+            throw new IllegalArgumentException("Arguments cannot be null");
+
         try {
             return new ActionItem<>(ActionItem.Result.SUCCESS, action.get());
         } catch (Exception ex) {
+            if (getDelegate().isVerbose())
+                ex.printStackTrace();
             return new FailureActionResult(ex);
         }
     }

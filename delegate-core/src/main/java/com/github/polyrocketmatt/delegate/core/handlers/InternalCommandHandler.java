@@ -130,7 +130,7 @@ public class InternalCommandHandler extends DelegateCommandHandler {
         CommanderEntity commander = information.commander();
         String commandName = information.command();
         String[] commandArguments = information.arguments();
-        boolean safeExecuteTopLevel = getDelegate().verbose();
+        boolean safeExecuteTopLevel = getDelegate().isVerbose();
 
         //  Parse information arguments until command in root node doesn't exist
         CommandNode root = this.commandTree.find(commandName);
