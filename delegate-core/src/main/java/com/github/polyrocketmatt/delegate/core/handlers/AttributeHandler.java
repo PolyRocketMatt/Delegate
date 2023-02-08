@@ -1,3 +1,6 @@
+// Copyright (c) Matthias Kovacic. All rights reserved.
+// Licensed under the MIT license.
+
 package com.github.polyrocketmatt.delegate.core.handlers;
 
 import com.github.polyrocketmatt.delegate.api.handlers.IHandler;
@@ -53,7 +56,7 @@ public class AttributeHandler implements IHandler {
         Tuple<NameDefinition, DescriptionDefinition> header = processHeader(command.getAttributeChain());
         AliasDefinition[] aliases = processAliases(chain);
 
-        this.checkUniqueName(parent, header.getA().getValue());
+        this.checkUniqueName(parent, header.a().getValue());
         this.checkIdentifiers(chain);
 
         //  Check if all aliases are unique
@@ -68,8 +71,8 @@ public class AttributeHandler implements IHandler {
         CommandBuffer<ExceptAction> exceptBuffer = new CommandBuffer<>(this.processExceptions(chain));
 
         VerifiedDelegateCommand verifiedCommand = VerifiedDelegateCommand.create()
-                .buildNameDefinition(header.getA())
-                .buildDescriptionDefinition(header.getB())
+                .buildNameDefinition(header.a())
+                .buildDescriptionDefinition(header.b())
                 .buildAliasDefinitions(aliases)
                 .buildArgumentBuffer(argumentBuffer)
                 .buildPropertyBuffer(propertyBuffer)
