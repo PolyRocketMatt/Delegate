@@ -3,6 +3,7 @@
 
 package com.github.polyrocketmatt.delegate.core.command.action;
 
+import com.github.polyrocketmatt.delegate.api.AttributeType;
 import com.github.polyrocketmatt.delegate.api.command.feedback.FeedbackType;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,6 +45,7 @@ public class ExceptActionTest {
         ExceptAction action = new ExceptAction((commander, type, arguments) -> {});
 
         assertNotNull(action.getIdentifier());
+        assertEquals(AttributeType.ACTION, action.getType());
     }
 
     @Test

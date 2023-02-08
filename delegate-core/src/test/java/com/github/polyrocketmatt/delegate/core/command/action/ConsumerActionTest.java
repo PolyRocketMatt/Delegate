@@ -3,6 +3,7 @@
 
 package com.github.polyrocketmatt.delegate.core.command.action;
 
+import com.github.polyrocketmatt.delegate.api.AttributeType;
 import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
@@ -48,6 +49,7 @@ public class ConsumerActionTest {
 
         assertNotNull(action.getIdentifier());
         assertEquals(0, action.getPrecedence());
+        assertEquals(AttributeType.ACTION, action.getType());
         assertEquals(PermissionTiers.GLOBAL.getTier(), action.getPermissionTier());
     }
 
@@ -57,6 +59,7 @@ public class ConsumerActionTest {
 
         assertNotNull(action.getIdentifier());
         assertEquals(0, action.getPrecedence());
+        assertEquals(AttributeType.ACTION, action.getType());
         assertEquals(PermissionTiers.OPERATOR.getTier(), action.getPermissionTier());
     }
 
@@ -66,6 +69,7 @@ public class ConsumerActionTest {
 
         assertNotNull(action.getIdentifier());
         assertEquals(1, action.getPrecedence());
+        assertEquals(AttributeType.ACTION, action.getType());
         assertEquals(PermissionTiers.GLOBAL.getTier(), action.getPermissionTier());
     }
 
@@ -75,6 +79,7 @@ public class ConsumerActionTest {
 
         assertNotNull(action.getIdentifier());
         assertEquals(1, action.getPrecedence());
+        assertEquals(AttributeType.ACTION, action.getType());
         assertEquals(PermissionTiers.OPERATOR.getTier(), action.getPermissionTier());
     }
 
@@ -84,6 +89,7 @@ public class ConsumerActionTest {
 
         assertEquals("test", action.getIdentifier());
         assertEquals(0, action.getPrecedence());
+        assertEquals(AttributeType.ACTION, action.getType());
         assertEquals(PermissionTiers.GLOBAL.getTier(), action.getPermissionTier());
     }
 
@@ -93,6 +99,7 @@ public class ConsumerActionTest {
 
         assertEquals("test", action.getIdentifier());
         assertEquals(0, action.getPrecedence());
+        assertEquals(AttributeType.ACTION, action.getType());
         assertEquals(PermissionTiers.OPERATOR.getTier(), action.getPermissionTier());
     }
 
@@ -102,6 +109,7 @@ public class ConsumerActionTest {
 
         assertEquals("test", action.getIdentifier());
         assertEquals(1, action.getPrecedence());
+        assertEquals(AttributeType.ACTION, action.getType());
         assertEquals(PermissionTiers.GLOBAL.getTier(), action.getPermissionTier());
     }
 
@@ -111,6 +119,7 @@ public class ConsumerActionTest {
 
         assertEquals("test", action.getIdentifier());
         assertEquals(1, action.getPrecedence());
+        assertEquals(AttributeType.ACTION, action.getType());
         assertEquals(PermissionTiers.OPERATOR.getTier(), action.getPermissionTier());
     }
 

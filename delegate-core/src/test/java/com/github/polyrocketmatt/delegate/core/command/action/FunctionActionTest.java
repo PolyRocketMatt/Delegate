@@ -3,6 +3,7 @@
 
 package com.github.polyrocketmatt.delegate.core.command.action;
 
+import com.github.polyrocketmatt.delegate.api.AttributeType;
 import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
 import static org.junit.jupiter.api.Assertions.*;
+
 public class FunctionActionTest {
 
     @BeforeEach
@@ -47,6 +49,7 @@ public class FunctionActionTest {
 
         assertNotNull(action.getIdentifier());
         assertEquals(0, action.getPrecedence());
+        assertEquals(AttributeType.ACTION, action.getType());
         assertEquals(PermissionTiers.GLOBAL.getTier(), action.getPermissionTier());
     }
 
@@ -56,6 +59,7 @@ public class FunctionActionTest {
 
         assertNotNull(action.getIdentifier());
         assertEquals(0, action.getPrecedence());
+        assertEquals(AttributeType.ACTION, action.getType());
         assertEquals(PermissionTiers.OPERATOR.getTier(), action.getPermissionTier());
     }
 
@@ -65,6 +69,7 @@ public class FunctionActionTest {
 
         assertNotNull(action.getIdentifier());
         assertEquals(1, action.getPrecedence());
+        assertEquals(AttributeType.ACTION, action.getType());
         assertEquals(PermissionTiers.GLOBAL.getTier(), action.getPermissionTier());
     }
 
@@ -74,6 +79,7 @@ public class FunctionActionTest {
 
         assertNotNull(action.getIdentifier());
         assertEquals(1, action.getPrecedence());
+        assertEquals(AttributeType.ACTION, action.getType());
         assertEquals(PermissionTiers.OPERATOR.getTier(), action.getPermissionTier());
     }
 
@@ -83,6 +89,7 @@ public class FunctionActionTest {
 
         assertEquals("test", action.getIdentifier());
         assertEquals(0, action.getPrecedence());
+        assertEquals(AttributeType.ACTION, action.getType());
         assertEquals(PermissionTiers.GLOBAL.getTier(), action.getPermissionTier());
     }
 
@@ -92,6 +99,7 @@ public class FunctionActionTest {
 
         assertEquals("test", action.getIdentifier());
         assertEquals(0, action.getPrecedence());
+        assertEquals(AttributeType.ACTION, action.getType());
         assertEquals(PermissionTiers.OPERATOR.getTier(), action.getPermissionTier());
     }
 
@@ -101,6 +109,7 @@ public class FunctionActionTest {
 
         assertEquals("test", action.getIdentifier());
         assertEquals(1, action.getPrecedence());
+        assertEquals(AttributeType.ACTION, action.getType());
         assertEquals(PermissionTiers.GLOBAL.getTier(), action.getPermissionTier());
     }
 
@@ -110,6 +119,7 @@ public class FunctionActionTest {
 
         assertEquals("test", action.getIdentifier());
         assertEquals(1, action.getPrecedence());
+        assertEquals(AttributeType.ACTION, action.getType());
         assertEquals(PermissionTiers.OPERATOR.getTier(), action.getPermissionTier());
     }
 

@@ -24,10 +24,13 @@ public abstract class CommandDefinition<T> extends CommandAttribute {
      *
      * @param identifier The identifier of the definition.
      * @param value The value of the definition.
+     * @throws IllegalArgumentException If the identifier is null, empty or blank.
+     * @throws IllegalArgumentException If the value is null.
      */
     public CommandDefinition(String identifier, T value) {
         super(identifier);
-
+        if (value == null)
+            throw new IllegalArgumentException("Value cannot be null");
         this.value = value;
     }
 
