@@ -5,13 +5,12 @@ package com.github.polyrocketmatt.delegate.core.command.argument;
 
 import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
-import com.github.polyrocketmatt.delegate.core.command.argument.rule.DefaultRule;
 import com.github.polyrocketmatt.delegate.api.command.argument.rule.ArgumentRule;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.NonNullRule;
-import com.github.polyrocketmatt.delegate.core.utils.ArrayUtils;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -24,49 +23,17 @@ import java.util.function.Consumer;
 public class IntArgument extends CommandArgument<Integer> {
 
     /**
-     * Creates a new {@link IntArgument} with an identifier and a description.
-     *
-     * @param identifier The identifier of the argument.
-     * @param argumentDescription The description of the argument.
-     */
-    public IntArgument(String identifier, String argumentDescription) {
-        super(identifier, argumentDescription, Integer.class, new NonNullRule());
-    }
-
-    /**
-     * Creates a new {@link IntArgument} with an identifier, a description and a
-     * default value.
-     *
-     * @param identifier The identifier of the argument.
-     * @param argumentDescription The description of the argument.
-     * @param defaultValue The default value of the argument.
-     */
-    public IntArgument(String identifier, String argumentDescription, Integer defaultValue) {
-        super(identifier, argumentDescription, Integer.class, new DefaultRule<>(defaultValue));
-    }
-
-    /**
-     * Creates a new {@link IntArgument} with an identifier, a description and an {@link ArgumentRule}.
-     *
-     * @param identifier The identifier of the argument.
-     * @param argumentDescription The description of the argument.
-     * @param rule The rule of the argument.
-     */
-    public IntArgument(String identifier, String argumentDescription, ArgumentRule<?> rule) {
-        super(identifier, argumentDescription, Integer.class, rule);
-    }
-
-    /**
      * Creates a new {@link IntArgument} with an identifier, a description, a default value and a
      * list of {@link ArgumentRule}s.
      *
      * @param identifier The identifier of the argument.
      * @param argumentDescription The description of the argument.
      * @param defaultValue The default value of the argument.
+     * @param isOptional Whether the argument is optional.
      * @param rules The rules of the argument.
      */
-    public IntArgument(String identifier, String argumentDescription, Integer defaultValue, ArgumentRule<?> rules) {
-        super(identifier, argumentDescription, Integer.class, ArrayUtils.combine(List.of(new DefaultRule<>(defaultValue)), List.of(rules)));
+    public IntArgument(String identifier, String argumentDescription, Integer defaultValue, boolean isOptional, List<ArgumentRule<?>> rules) {
+        super(identifier, argumentDescription, Integer.class, new Argument<>(identifier, defaultValue), isOptional, rules);
     }
 
     @Override
@@ -94,7 +61,7 @@ public class IntArgument extends CommandArgument<Integer> {
      * @return The created {@link IntArgument}.
      */
     public static IntArgument of(String identifier, String argumentDescription) {
-        return new IntArgument(identifier, argumentDescription);
+        return new IntArgument(identifier, argumentDescription, null, false, List.of());
     }
 
     /**
@@ -107,7 +74,7 @@ public class IntArgument extends CommandArgument<Integer> {
      * @return The created {@link IntArgument}.
      */
     public static IntArgument of(String identifier, String argumentDescription, int defaultValue) {
-        return new IntArgument(identifier, argumentDescription, defaultValue);
+        return new IntArgument(identifier, argumentDescription, defaultValue, false, List.of());
     }
 
     /**
@@ -115,11 +82,12 @@ public class IntArgument extends CommandArgument<Integer> {
      *
      * @param identifier The identifier of the argument.
      * @param argumentDescription The description of the argument.
-     * @param rule The rule of the argument.
+     * @param rules The rules of the argument.
      * @return The created {@link IntArgument}.
      */
-    public static IntArgument of(String identifier, String argumentDescription, ArgumentRule<?> rule) {
-        return new IntArgument(identifier, argumentDescription, rule);
+    public static IntArgument of(String identifier, String argumentDescription, ArgumentRule<?>... rules) {
+        boolean isOptional = Arrays.stream(rules).noneMatch(rule -> rule instanceof NonNullRule);
+        return new IntArgument(identifier, argumentDescription, null, isOptional, List.of(rules));
     }
 
     /**
@@ -132,7 +100,8 @@ public class IntArgument extends CommandArgument<Integer> {
      * @param rules The rules of the argument.
      * @return The created {@link IntArgument}.
      */
-    public static IntArgument of(String identifier, String argumentDescription, int defaultValue, ArgumentRule<?> rules) {
-        return new IntArgument(identifier, argumentDescription, defaultValue, rules);
+    public static IntArgument of(String identifier, String argumentDescription, int defaultValue, ArgumentRule<?>... rules) {
+        boolean isOptional = Arrays.stream(rules).noneMatch(rule -> rule instanceof NonNullRule);
+        return new IntArgument(identifier, argumentDescription, defaultValue, isOptional, List.of(rules));
     }
 }

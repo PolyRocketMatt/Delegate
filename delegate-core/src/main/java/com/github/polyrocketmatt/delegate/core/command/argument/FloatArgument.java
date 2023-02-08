@@ -29,6 +29,7 @@ public class FloatArgument extends CommandArgument<Float> {
      * @param identifier The identifier of the argument.
      * @param argumentDescription The description of the argument.
      * @param defaultValue The default value of the argument.
+     * @param isOptional Whether the argument is optional.
      * @param rules The rules of the argument.
      */
     private FloatArgument(String identifier, String argumentDescription, Float defaultValue, boolean isOptional, List<ArgumentRule<?>> rules) {
