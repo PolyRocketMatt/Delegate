@@ -31,7 +31,7 @@ public class FloatArgument extends CommandArgument<Float> {
      * @param argumentDescription The description of the argument.
      */
     private FloatArgument(String identifier, String argumentDescription) {
-        super(identifier, argumentDescription, Float.class, new NonNullRule());
+        this(identifier, argumentDescription, 0.0f, new NonNullRule());
     }
 
     /**
@@ -43,7 +43,7 @@ public class FloatArgument extends CommandArgument<Float> {
      * @param defaultValue The default value of the argument.
      */
     private FloatArgument(String identifier, String argumentDescription, Float defaultValue) {
-        super(identifier, argumentDescription, Float.class, new DefaultRule<>(defaultValue));
+        this(identifier, argumentDescription, defaultValue, new NonNullRule());
     }
 
     /**
@@ -54,7 +54,7 @@ public class FloatArgument extends CommandArgument<Float> {
      * @param rule The rule of the argument.
      */
     private FloatArgument(String identifier, String argumentDescription, ArgumentRule<?> rule) {
-        super(identifier, argumentDescription, Float.class, rule);
+        this(identifier, argumentDescription, 0.0f, rule);
     }
 
     /**

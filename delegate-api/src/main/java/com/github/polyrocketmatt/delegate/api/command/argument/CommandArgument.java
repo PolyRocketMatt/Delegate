@@ -14,7 +14,6 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -42,14 +41,11 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      *
      * @param argumentDescription The description of the argument.
      * @param argumentType The class type of the argument.
+     * @throws IllegalArgumentException If the argument description is null.
+     * @throws IllegalArgumentException If the argument type is null.
      */
     public CommandArgument(String argumentDescription, Class<T> argumentType) {
-        super(newId());
-        this.argumentDescription = argumentDescription;
-        this.argumentRules = List.of();
-        this.argumentType = argumentType;
-        this.isOptional = false;
-        this.defaultValue = null;
+        this(newId(), argumentDescription, argumentType, false);
     }
 
     /**
@@ -58,14 +54,12 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @param identifier The identifier of the argument.
      * @param argumentDescription The description of the argument.
      * @param argumentType The class type of the argument.
+     * @throws IllegalArgumentException If the identifier is null, empty or blank.
+     * @throws IllegalArgumentException If the argument description is null.
+     * @throws IllegalArgumentException If the argument type is null.
      */
     public CommandArgument(String identifier, String argumentDescription, Class<T> argumentType) {
-        super(identifier);
-        this.argumentDescription = argumentDescription;
-        this.argumentRules = List.of();
-        this.argumentType = argumentType;
-        this.isOptional = false;
-        this.defaultValue = null;
+        this(identifier, argumentDescription, argumentType, false);
     }
 
     /**
@@ -75,14 +69,12 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @param argumentDescription The description of the argument.
      * @param argumentType The class type of the argument.
      * @param argumentRule The argument rule that must be met for the argument to be valid.
+     * @throws IllegalArgumentException If the argument description is null.
+     * @throws IllegalArgumentException If the argument type is null.
+     * @throws IllegalArgumentException If the argument rule is null.
      */
     public CommandArgument(String argumentDescription, Class<T> argumentType, ArgumentRule<?> argumentRule) {
-        super(newId());
-        this.argumentDescription = argumentDescription;
-        this.argumentRules = List.of(argumentRule);
-        this.argumentType = argumentType;
-        this.isOptional = false;
-        this.defaultValue = null;
+        this(argumentDescription, argumentType, List.of(argumentRule));
     }
 
     /**
@@ -92,14 +84,12 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @param argumentDescription The description of the argument.
      * @param argumentType The class type of the argument.
      * @param argumentRules The argument rules that must be met for the argument to be valid.
+     * @throws IllegalArgumentException If the argument description is null.
+     * @throws IllegalArgumentException If the argument type is null.
+     * @throws IllegalArgumentException If the argument rules are null.
      */
     public CommandArgument(String argumentDescription, Class<T> argumentType, List<ArgumentRule<?>> argumentRules) {
-        super(newId());
-        this.argumentDescription = argumentDescription;
-        this.argumentRules = argumentRules;
-        this.argumentType = argumentType;
-        this.isOptional = false;
-        this.defaultValue = null;
+        this(argumentDescription, argumentType, false, argumentRules);
     }
 
     /**
@@ -110,14 +100,13 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @param argumentDescription The description of the argument.
      * @param argumentType The class type of the argument.
      * @param argumentRule The argument rule that must be met for the argument to be valid.
+     * @throws IllegalArgumentException If the identifier is null, empty or blank.
+     * @throws IllegalArgumentException If the argument description is null.
+     * @throws IllegalArgumentException If the argument type is null.
+     * @throws IllegalArgumentException If the argument rule is null.
      */
     public CommandArgument(String identifier, String argumentDescription, Class<T> argumentType, ArgumentRule<?> argumentRule) {
-        super(identifier);
-        this.argumentDescription = argumentDescription;
-        this.argumentRules = List.of(argumentRule);
-        this.argumentType = argumentType;
-        this.isOptional = false;
-        this.defaultValue = null;
+        this(identifier, argumentDescription, argumentType, false, List.of(argumentRule));
     }
 
     /**
@@ -128,14 +117,13 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @param argumentDescription The description of the argument.
      * @param argumentType The class type of the argument.
      * @param argumentRules The argument rules that must be met for the argument to be valid.
+     * @throws IllegalArgumentException If the identifier is null, empty or blank.
+     * @throws IllegalArgumentException If the argument description is null.
+     * @throws IllegalArgumentException If the argument type is null.
+     * @throws IllegalArgumentException If the argument rules are null.
      */
     public CommandArgument(String identifier, String argumentDescription, Class<T> argumentType, List<ArgumentRule<?>> argumentRules) {
-        super(identifier);
-        this.argumentDescription = argumentDescription;
-        this.argumentRules = argumentRules;
-        this.argumentType = argumentType;
-        this.isOptional = false;
-        this.defaultValue = null;
+        this(identifier, argumentDescription, argumentType, false, argumentRules);
     }
 
     /**
@@ -144,14 +132,11 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @param argumentDescription The description of the argument.
      * @param argumentType The class type of the argument.
      * @param isOptional Whether the argument is optional or not.
+     * @throws IllegalArgumentException If the argument description is null.
+     * @throws IllegalArgumentException If the argument type is null.
      */
     public CommandArgument(String argumentDescription, Class<T> argumentType, boolean isOptional) {
-        super(newId());
-        this.argumentDescription = argumentDescription;
-        this.argumentRules = List.of();
-        this.argumentType = argumentType;
-        this.isOptional = isOptional;
-        this.defaultValue = null;
+        this(newId(), argumentDescription, argumentType, isOptional, List.of());
     }
 
     /**
@@ -161,14 +146,12 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @param argumentDescription The description of the argument.
      * @param argumentType The class type of the argument.
      * @param isOptional Whether the argument is optional or not.
+     * @throws IllegalArgumentException If the identifier is null, empty or blank.
+     * @throws IllegalArgumentException If the argument description is null.
+     * @throws IllegalArgumentException If the argument type is null.
      */
     public CommandArgument(String identifier, String argumentDescription, Class<T> argumentType, boolean isOptional) {
-        super(identifier);
-        this.argumentDescription = argumentDescription;
-        this.argumentRules = List.of();
-        this.argumentType = argumentType;
-        this.isOptional = isOptional;
-        this.defaultValue = null;
+        this(identifier, argumentDescription, argumentType, isOptional, List.of());
     }
 
     /**
@@ -178,14 +161,12 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @param argumentType The class type of the argument.
      * @param isOptional Whether the argument is optional or not.
      * @param argumentRule The argument rule that must be met for the argument to be valid.
+     * @throws IllegalArgumentException If the argument description is null.
+     * @throws IllegalArgumentException If the argument type is null.
+     * @throws IllegalArgumentException If the argument rule is null.
      */
     public CommandArgument(String argumentDescription, Class<T> argumentType, boolean isOptional, ArgumentRule<?> argumentRule) {
-        super(newId());
-        this.argumentDescription = argumentDescription;
-        this.argumentRules = List.of(argumentRule);
-        this.argumentType = argumentType;
-        this.isOptional = isOptional;
-        this.defaultValue = null;
+        this(newId(), argumentDescription, argumentType, isOptional, argumentRule);
     }
 
     /**
@@ -195,14 +176,12 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @param argumentType The class type of the argument.
      * @param isOptional Whether the argument is optional or not.
      * @param argumentRules The argument rules that must be met for the argument to be valid.
+     * @throws IllegalArgumentException If the argument description is null.
+     * @throws IllegalArgumentException If the argument type is null.
+     * @throws IllegalArgumentException If the argument rules are null.
      */
     public CommandArgument(String argumentDescription, Class<T> argumentType, boolean isOptional, List<ArgumentRule<?>> argumentRules) {
-        super(newId());
-        this.argumentDescription = argumentDescription;
-        this.argumentRules = argumentRules;
-        this.argumentType = argumentType;
-        this.isOptional = isOptional;
-        this.defaultValue = null;
+        this(newId(), argumentDescription, argumentType, isOptional, argumentRules);
     }
 
     /**
@@ -214,14 +193,13 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @param argumentType The class type of the argument.
      * @param isOptional Whether the argument is optional or not.
      * @param argumentRule The argument rule that must be met for the argument to be valid.
+     * @throws IllegalArgumentException If the identifier is null, empty or blank.
+     * @throws IllegalArgumentException If the argument description is null.
+     * @throws IllegalArgumentException If the argument type is null.
+     * @throws IllegalArgumentException If the argument rule is null.
      */
     public CommandArgument(String identifier, String argumentDescription, Class<T> argumentType, boolean isOptional, ArgumentRule<?> argumentRule) {
-        super(identifier);
-        this.argumentDescription = argumentDescription;
-        this.argumentRules = List.of(argumentRule);
-        this.argumentType = argumentType;
-        this.isOptional = isOptional;
-        this.defaultValue = null;
+        this(identifier, argumentDescription, argumentType, isOptional, List.of(argumentRule));
     }
 
     /**
@@ -233,9 +211,19 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @param argumentType The class type of the argument.
      * @param isOptional Whether the argument is optional or not.
      * @param argumentRules The argument rules that must be met for the argument to be valid.
+     * @throws IllegalArgumentException If the identifier is null, empty or blank.
+     * @throws IllegalArgumentException If the argument description is null.
+     * @throws IllegalArgumentException If the argument type is null.
+     * @throws IllegalArgumentException If the argument rules are null.
      */
     public CommandArgument(String identifier, String argumentDescription, Class<T> argumentType, boolean isOptional, List<ArgumentRule<?>> argumentRules) {
         super(identifier);
+        if (argumentDescription == null)
+            throw new IllegalArgumentException("Argument description cannot be null");
+        if (argumentType == null)
+            throw new IllegalArgumentException("Argument type cannot be null");
+        if (argumentRules == null)
+            throw new IllegalArgumentException("Argument rules cannot be null");
         this.argumentDescription = argumentDescription;
         this.argumentRules = argumentRules;
         this.argumentType = argumentType;
