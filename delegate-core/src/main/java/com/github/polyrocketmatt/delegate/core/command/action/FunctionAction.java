@@ -32,10 +32,10 @@ public class FunctionAction extends CommandAction {
      * a default precedence of 0.
      *
      * @param action The function that will be executed.
+     * @throws IllegalArgumentException If the action is null.
      */
     public FunctionAction(BiFunction<CommanderEntity, Context, ?> action) {
-        super(newId(), PermissionTiers.GLOBAL.getTier(), 0);
-        this.action = action;
+        this(newId(), PermissionTiers.GLOBAL.getTier(), 0, action);
     }
 
     /**
@@ -44,10 +44,11 @@ public class FunctionAction extends CommandAction {
      *
      * @param permissionTier The permission tier required to execute this action.
      * @param action The function that will be executed.
+     * @throws IllegalArgumentException If the permission tier is null.
+     * @throws IllegalArgumentException If the action is null.
      */
     public FunctionAction(PermissionTier permissionTier, BiFunction<CommanderEntity, Context, ?> action) {
-        super(newId(), permissionTier, 0);
-        this.action = action;
+        this(newId(), permissionTier, 0, action);
     }
 
     /**
@@ -55,10 +56,10 @@ public class FunctionAction extends CommandAction {
      *
      * @param precedence The precedence of the command action.
      * @param action The function that will be executed.
+     * @throws IllegalArgumentException If the action is null.
      */
     public FunctionAction(int precedence, BiFunction<CommanderEntity, Context, ?> action) {
-        super(newId(), PermissionTiers.GLOBAL.getTier(), precedence);
-        this.action = action;
+        this(newId(), PermissionTiers.GLOBAL.getTier(), precedence, action);
     }
 
     /**
@@ -67,10 +68,11 @@ public class FunctionAction extends CommandAction {
      * @param permissionTier The permission tier required to execute this action.
      * @param precedence The precedence of the command action.
      * @param action The function that will be executed.
+     * @throws IllegalArgumentException If the permission tier is null.
+     * @throws IllegalArgumentException If the action is null.
      */
     public FunctionAction(PermissionTier permissionTier, int precedence, BiFunction<CommanderEntity, Context, ?> action) {
-        super(newId(), permissionTier, precedence);
-        this.action = action;
+        this(newId(), permissionTier, precedence, action);
     }
 
     /**
@@ -78,10 +80,11 @@ public class FunctionAction extends CommandAction {
      *
      * @param identifier The identifier of the command action.
      * @param action The function that will be executed.
+     * @throws IllegalArgumentException If the identifier is null.
+     * @throws IllegalArgumentException If the action is null.
      */
     public FunctionAction(String identifier, BiFunction<CommanderEntity, Context, ?> action) {
-        super(identifier, PermissionTiers.GLOBAL.getTier(), 0);
-        this.action = action;
+        this(identifier, PermissionTiers.GLOBAL.getTier(), 0, action);
     }
 
     /**
@@ -90,10 +93,12 @@ public class FunctionAction extends CommandAction {
      * @param identifier The identifier of the command action.
      * @param permissionTier The permission tier required to execute this action.
      * @param action The function that will be executed.
+     * @throws IllegalArgumentException If the identifier is null.
+     * @throws IllegalArgumentException If the permission tier is null.
+     * @throws IllegalArgumentException If the action is null.
      */
     public FunctionAction(String identifier, PermissionTier permissionTier, BiFunction<CommanderEntity, Context, ?> action) {
-        super(identifier, permissionTier, 0);
-        this.action = action;
+        this(identifier, permissionTier, 0, action);
     }
 
     /**
@@ -102,10 +107,11 @@ public class FunctionAction extends CommandAction {
      * @param identifier The identifier of the command action.
      * @param precedence The precedence of the command action.
      * @param action The function that will be executed.
+     * @throws IllegalArgumentException If the identifier is null.
+     * @throws IllegalArgumentException If the action is null.
      */
     public FunctionAction(String identifier, int precedence, BiFunction<CommanderEntity, Context, ?> action) {
-        super(identifier, PermissionTiers.GLOBAL.getTier(), precedence);
-        this.action = action;
+        this(identifier, PermissionTiers.GLOBAL.getTier(), precedence, action);
     }
 
     /**
@@ -115,9 +121,14 @@ public class FunctionAction extends CommandAction {
      * @param permissionTier The permission tier required to execute this action.
      * @param precedence The precedence of the command action.
      * @param action The function that will be executed.
+     * @throws IllegalArgumentException If the identifier is null.
+     * @throws IllegalArgumentException If the permission tier is null.
+     * @throws IllegalArgumentException If the action is null.
      */
     public FunctionAction(String identifier, PermissionTier permissionTier, int precedence, BiFunction<CommanderEntity, Context, ?> action) {
         super(identifier, permissionTier, precedence);
+        if (action == null)
+            throw new IllegalArgumentException("Action cannot be null");
         this.action = action;
     }
 
