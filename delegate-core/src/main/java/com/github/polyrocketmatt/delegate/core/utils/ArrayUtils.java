@@ -9,14 +9,13 @@ import java.util.Objects;
 
 public class ArrayUtils {
 
-    @SuppressWarnings("unchecked")
-    public static <S, T extends S, K extends S> S[] combine(List<T> pTypeList, List<K> sTypeList) {
+    public static <S, T extends S, K extends S> List<S> combine(List<T> pTypeList, List<K> sTypeList) {
         ArrayList<S> combinedList = new ArrayList<>();
 
         combinedList.addAll(pTypeList);
         combinedList.addAll(sTypeList);
 
-        return (S[]) combinedList.toArray(Object[]::new);
+        return combinedList;
     }
 
 }

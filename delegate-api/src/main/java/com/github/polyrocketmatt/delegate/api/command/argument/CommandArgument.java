@@ -74,12 +74,47 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      *
      * @param argumentDescription The description of the argument.
      * @param argumentType The class type of the argument.
-     * @param argumentRules The argument rules that must be met for the argument to be valid.
+     * @param argumentRule The argument rule that must be met for the argument to be valid.
      */
-    public CommandArgument(String argumentDescription, Class<T> argumentType, ArgumentRule<?>... argumentRules) {
+    public CommandArgument(String argumentDescription, Class<T> argumentType, ArgumentRule<?> argumentRule) {
         super(newId());
         this.argumentDescription = argumentDescription;
-        this.argumentRules = Arrays.asList(argumentRules);
+        this.argumentRules = List.of(argumentRule);
+        this.argumentType = argumentType;
+        this.isOptional = false;
+        this.defaultValue = null;
+    }
+
+    /**
+     * Creates a new command argument with an identifier, description and
+     * argument rules that must be met for the argument to be valid.
+     *
+     * @param argumentDescription The description of the argument.
+     * @param argumentType The class type of the argument.
+     * @param argumentRules The argument rules that must be met for the argument to be valid.
+     */
+    public CommandArgument(String argumentDescription, Class<T> argumentType, List<ArgumentRule<?>> argumentRules) {
+        super(newId());
+        this.argumentDescription = argumentDescription;
+        this.argumentRules = argumentRules;
+        this.argumentType = argumentType;
+        this.isOptional = false;
+        this.defaultValue = null;
+    }
+
+    /**
+     * Creates a new command argument with an identifier, description and
+     * argument rules that must be met for the argument to be valid.
+     *
+     * @param identifier The identifier of the argument.
+     * @param argumentDescription The description of the argument.
+     * @param argumentType The class type of the argument.
+     * @param argumentRule The argument rule that must be met for the argument to be valid.
+     */
+    public CommandArgument(String identifier, String argumentDescription, Class<T> argumentType, ArgumentRule<?> argumentRule) {
+        super(identifier);
+        this.argumentDescription = argumentDescription;
+        this.argumentRules = List.of(argumentRule);
         this.argumentType = argumentType;
         this.isOptional = false;
         this.defaultValue = null;
@@ -94,10 +129,10 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @param argumentType The class type of the argument.
      * @param argumentRules The argument rules that must be met for the argument to be valid.
      */
-    public CommandArgument(String identifier, String argumentDescription, Class<T> argumentType, ArgumentRule<?>... argumentRules) {
+    public CommandArgument(String identifier, String argumentDescription, Class<T> argumentType, List<ArgumentRule<?>> argumentRules) {
         super(identifier);
         this.argumentDescription = argumentDescription;
-        this.argumentRules = Arrays.asList(argumentRules);
+        this.argumentRules = argumentRules;
         this.argumentType = argumentType;
         this.isOptional = false;
         this.defaultValue = null;
@@ -142,12 +177,48 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @param argumentDescription The description of the argument.
      * @param argumentType The class type of the argument.
      * @param isOptional Whether the argument is optional or not.
-     * @param argumentRules The argument rules that must be met for the argument to be valid.
+     * @param argumentRule The argument rule that must be met for the argument to be valid.
      */
-    public CommandArgument(String argumentDescription, Class<T> argumentType, boolean isOptional, ArgumentRule<?>... argumentRules) {
+    public CommandArgument(String argumentDescription, Class<T> argumentType, boolean isOptional, ArgumentRule<?> argumentRule) {
         super(newId());
         this.argumentDescription = argumentDescription;
-        this.argumentRules = Arrays.asList(argumentRules);
+        this.argumentRules = List.of(argumentRule);
+        this.argumentType = argumentType;
+        this.isOptional = isOptional;
+        this.defaultValue = null;
+    }
+
+    /**
+     * Creates a new command argument with an identifier and description.
+     *
+     * @param argumentDescription The description of the argument.
+     * @param argumentType The class type of the argument.
+     * @param isOptional Whether the argument is optional or not.
+     * @param argumentRules The argument rules that must be met for the argument to be valid.
+     */
+    public CommandArgument(String argumentDescription, Class<T> argumentType, boolean isOptional, List<ArgumentRule<?>> argumentRules) {
+        super(newId());
+        this.argumentDescription = argumentDescription;
+        this.argumentRules = argumentRules;
+        this.argumentType = argumentType;
+        this.isOptional = isOptional;
+        this.defaultValue = null;
+    }
+
+    /**
+     * Creates a new command argument with an identifier, description and
+     * argument rules that must be met for the argument to be valid.
+     *
+     * @param identifier The identifier of the argument.
+     * @param argumentDescription The description of the argument.
+     * @param argumentType The class type of the argument.
+     * @param isOptional Whether the argument is optional or not.
+     * @param argumentRule The argument rule that must be met for the argument to be valid.
+     */
+    public CommandArgument(String identifier, String argumentDescription, Class<T> argumentType, boolean isOptional, ArgumentRule<?> argumentRule) {
+        super(identifier);
+        this.argumentDescription = argumentDescription;
+        this.argumentRules = List.of(argumentRule);
         this.argumentType = argumentType;
         this.isOptional = isOptional;
         this.defaultValue = null;
@@ -163,10 +234,10 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @param isOptional Whether the argument is optional or not.
      * @param argumentRules The argument rules that must be met for the argument to be valid.
      */
-    public CommandArgument(String identifier, String argumentDescription, Class<T> argumentType, boolean isOptional, ArgumentRule<?>... argumentRules) {
+    public CommandArgument(String identifier, String argumentDescription, Class<T> argumentType, boolean isOptional, List<ArgumentRule<?>> argumentRules) {
         super(identifier);
         this.argumentDescription = argumentDescription;
-        this.argumentRules = Arrays.asList(argumentRules);
+        this.argumentRules = argumentRules;
         this.argumentType = argumentType;
         this.isOptional = isOptional;
         this.defaultValue = null;
