@@ -1,3 +1,8 @@
+![State](https://img.shields.io/badge/State-ALPHA-red?style=for-the-badge)
+![Build Status](https://img.shields.io/badge/Build-Passing-%2368AD63?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-%2368AD63?style=for-the-badge)
+![Kotlin](https://img.shields.io/badge/Java-17-%233e7fa8?logo=java&style=for-the-badge)
+
 <p align="center">
     <img width="128" height="128" src="img/delegate.png" />
 </p>
