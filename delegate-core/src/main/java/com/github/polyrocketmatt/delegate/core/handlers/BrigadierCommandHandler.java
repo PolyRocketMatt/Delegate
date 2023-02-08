@@ -122,17 +122,6 @@ public class BrigadierCommandHandler extends DelegateCommandHandler {
             throw new CommandRegisterException("Command node is not verified!");
     }
 
-    private void executeTriggers(CommandDispatchInformation information, VerifiedDelegateCommand command, CommandCapture capture) {
-        CommandBuffer<CommandTrigger> triggers = command.getTriggerBuffer();
-        List<ActionItem.Result> results = capture.getResults();
-
-        //  TODO: Async triggers?
-        triggers.forEach(trigger -> {
-            if (trigger.shouldTrigger(results))
-                trigger.call(information, capture);
-        });
-    }
-
     @SuppressWarnings("unchecked")
     private List<Argument<?>> resolveContext(CommandContext<CommanderEntity> context) throws CommandRegisterException {
         //  Hacky reflection way to get the arguments from the context

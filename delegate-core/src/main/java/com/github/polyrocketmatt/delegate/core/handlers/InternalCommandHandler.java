@@ -2,11 +2,9 @@ package com.github.polyrocketmatt.delegate.core.handlers;
 
 import com.github.polyrocketmatt.delegate.api.command.CommandBuffer;
 import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
-import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
 import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
 import com.github.polyrocketmatt.delegate.api.command.feedback.FeedbackType;
 import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
-import com.github.polyrocketmatt.delegate.api.command.trigger.CommandTrigger;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.command.CommandDispatchInformation;
 import com.github.polyrocketmatt.delegate.api.exception.ArgumentParseException;
@@ -319,17 +317,6 @@ public class InternalCommandHandler extends DelegateCommandHandler {
         }
 
         return parsedArguments;
-    }
-
-    private void executeTriggers(CommandDispatchInformation information, VerifiedDelegateCommand command, CommandCapture capture) {
-        CommandBuffer<CommandTrigger> triggers = command.getTriggerBuffer();
-        List<ActionItem.Result> results = capture.getResults();
-
-        //  TODO: Add async triggers
-        triggers.forEach(trigger -> {
-            if (trigger.shouldTrigger(results))
-                trigger.call(information, capture);
-        });
     }
 
 }

@@ -7,6 +7,7 @@ import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
 import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
 import com.github.polyrocketmatt.delegate.api.command.feedback.FeedbackType;
+import com.github.polyrocketmatt.delegate.api.command.trigger.CommandTrigger;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.exception.CommandExecutionException;
 import com.github.polyrocketmatt.delegate.api.handlers.CommandHandler;
@@ -96,6 +97,17 @@ public abstract class DelegateCommandHandler extends CommandHandler {
         }
 
         return captures;
+    }
+
+    protected void executeTriggers(CommandDispatchInformation information, VerifiedDelegateCommand command, CommandCapture capture) {
+        CommandBuffer<CommandTrigger> triggers = command.getTriggerBuffer();
+        List<ActionItem.Result> results = capture.getResults();
+
+        //  TODO: Async triggers?
+        triggers.forEach(trigger -> {
+            if (trigger.shouldTrigger(results))
+                trigger.call(information, capture);
+        });
     }
 
 }
