@@ -47,9 +47,6 @@ Currently, Delegate supports the following platforms:
 
 ## Examples
 
-Delegate is designed with [fluent interfaces](https://en.wikipedia.org/wiki/Fluent_interface) in mind.
-This means that you can easily chain methods together to create a command. For example:
-
 ```java
 public class ExamplePlugin extends JavaPlugin {
     
