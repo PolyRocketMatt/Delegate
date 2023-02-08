@@ -6,6 +6,7 @@ import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.api.command.trigger.CommandTrigger;
 import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
 import com.github.polyrocketmatt.delegate.core.command.action.ExceptAction;
+import com.github.polyrocketmatt.delegate.core.command.definition.AliasDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
 import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
@@ -25,6 +26,7 @@ public class VerifiedDelegateCommand extends DelegateCommand {
 
     private final NameDefinition nameDefinition;
     private final DescriptionDefinition descriptionDefinition;
+    private final AliasDefinition[] aliasDefinitions;
     private final CommandBuffer<CommandArgument<?>> argumentBuffer;
     private final CommandBuffer<CommandProperty> propertyBuffer;
     private final CommandBuffer<CommandAction> actionBuffer;
@@ -32,7 +34,9 @@ public class VerifiedDelegateCommand extends DelegateCommand {
     private final CommandBuffer<PermissionTier> permissionBuffer;
     private final CommandBuffer<ExceptAction> exceptBuffer;
 
-    protected VerifiedDelegateCommand(NameDefinition nameDefinition, DescriptionDefinition descriptionDefinition,
+    protected VerifiedDelegateCommand(NameDefinition nameDefinition,
+                                      DescriptionDefinition descriptionDefinition,
+                                      AliasDefinition[] aliasDefinitions,
                                       CommandBuffer<CommandArgument<?>> argumentBuffer,
                                       CommandBuffer<CommandProperty> propertyBuffer,
                                       CommandBuffer<CommandAction> actionBuffer,
@@ -41,6 +45,7 @@ public class VerifiedDelegateCommand extends DelegateCommand {
                                       CommandBuffer<ExceptAction> exceptBuffer) {
         this.nameDefinition = nameDefinition;
         this.descriptionDefinition = descriptionDefinition;
+        this.aliasDefinitions = aliasDefinitions;
         this.argumentBuffer = argumentBuffer;
         this.propertyBuffer = propertyBuffer;
         this.actionBuffer = actionBuffer;
@@ -51,13 +56,16 @@ public class VerifiedDelegateCommand extends DelegateCommand {
 
     @Override
     public NameDefinition getNameDefinition() {
-        return nameDefinition;
+        return this.nameDefinition;
     }
 
     @Override
     public DescriptionDefinition getDescriptionDefinition() {
-        return descriptionDefinition;
+        return this.descriptionDefinition;
     }
+
+    @Override
+    public AliasDefinition[] getAliases() { return this.aliasDefinitions; }
 
     /**
      * Gets the {@link CommandBuffer} that stores the {@link CommandArgument}s of the command.
@@ -132,6 +140,7 @@ public class VerifiedDelegateCommand extends DelegateCommand {
 
         private NameDefinition nameDefinition;
         private DescriptionDefinition descriptionDefinition;
+        private AliasDefinition[] aliasDefinitions;
         private CommandBuffer<CommandArgument<?>> argumentBuffer;
         private CommandBuffer<CommandProperty> propertyBuffer;
         private CommandBuffer<CommandAction> actionBuffer;
@@ -158,6 +167,11 @@ public class VerifiedDelegateCommand extends DelegateCommand {
          */
         public VerifiedCommandBuilder buildDescriptionDefinition(DescriptionDefinition descriptionDefinition) {
             this.descriptionDefinition = descriptionDefinition;
+            return this;
+        }
+
+        public VerifiedCommandBuilder buildAliasDefinitions(AliasDefinition[] aliasDefinitions) {
+            this.aliasDefinitions = aliasDefinitions;
             return this;
         }
 
@@ -236,6 +250,7 @@ public class VerifiedDelegateCommand extends DelegateCommand {
             return new VerifiedDelegateCommand(
                     this.nameDefinition,
                     this.descriptionDefinition,
+                    this.aliasDefinitions,
                     this.argumentBuffer,
                     this.propertyBuffer,
                     this.actionBuffer,

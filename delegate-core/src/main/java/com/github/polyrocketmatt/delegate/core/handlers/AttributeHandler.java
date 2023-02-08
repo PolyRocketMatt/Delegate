@@ -9,6 +9,7 @@ import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
 import com.github.polyrocketmatt.delegate.core.command.DelegateCommandBuilder;
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.core.command.action.ExceptAction;
+import com.github.polyrocketmatt.delegate.core.command.definition.AliasDefinition;
 import com.github.polyrocketmatt.delegate.core.command.tree.CommandNode;
 import com.github.polyrocketmatt.delegate.core.command.DelegateCommand;
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
@@ -50,9 +51,14 @@ public class AttributeHandler implements IHandler {
     public VerifiedDelegateCommand process(CommandNode parent, AttributedDelegateCommand command) {
         DelegateCommandBuilder chain = command.getAttributeChain();
         Tuple<NameDefinition, DescriptionDefinition> header = processHeader(command.getAttributeChain());
+        AliasDefinition[] aliases = processAliases(chain);
 
-        this.checkUniqueName(parent, header.getA());
+        this.checkUniqueName(parent, header.getA().getValue());
         this.checkIdentifiers(chain);
+
+        //  Check if all aliases are unique
+        for (AliasDefinition alias : aliases)
+            this.checkUniqueName(parent, alias.getValue());
 
         CommandBuffer<CommandArgument<?>> argumentBuffer = new CommandBuffer<>(this.processArguments(chain));
         CommandBuffer<CommandProperty> propertyBuffer = new CommandBuffer<>(this.processProperties(chain));
@@ -64,6 +70,7 @@ public class AttributeHandler implements IHandler {
         VerifiedDelegateCommand verifiedCommand = VerifiedDelegateCommand.create()
                 .buildNameDefinition(header.getA())
                 .buildDescriptionDefinition(header.getB())
+                .buildAliasDefinitions(aliases)
                 .buildArgumentBuffer(argumentBuffer)
                 .buildPropertyBuffer(propertyBuffer)
                 .buildActionBuffer(actionBuffer)
@@ -103,6 +110,12 @@ public class AttributeHandler implements IHandler {
         return new Tuple<>(nameAttribute, descriptionAttribute);
     }
 
+    private AliasDefinition[] processAliases(DelegateCommandBuilder chain) {
+        return chain.filter(AliasDefinition.class).stream()
+                .map(AliasDefinition.class::cast)
+                .toArray(AliasDefinition[]::new);
+    }
+
     private void checkIdentifiers(DelegateCommandBuilder chain) throws AttributeException {
         List<CommandAttribute> filteredAttributes = chain.filter(attribute -> !(attribute instanceof SubcommandDefinition));
         List<String> identifiers = filteredAttributes.stream().map(CommandAttribute::getIdentifier).toList();
@@ -115,12 +128,12 @@ public class AttributeHandler implements IHandler {
         }
     }
 
-    private void checkUniqueName(CommandNode parent, NameDefinition definition) throws AttributeException {
+    private void checkUniqueName(CommandNode parent, String name) throws AttributeException {
         if (parent != null) {
             List<CommandNode> parentChildren = parent.getChildren();
 
-            if (parentChildren.stream().anyMatch(node -> node.getCommand().getNameDefinition().getValue().equals(definition.getValue())))
-                throw new AttributeException("Command name must be unique: %s".formatted(definition.getValue()));
+            if (parentChildren.stream().anyMatch(node -> node.getCommand().getNameDefinition().getValue().equals(name)))
+                throw new AttributeException("Command name must be unique: %s".formatted(name));
         }
     }
 
