@@ -32,8 +32,8 @@ import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNonPrese
 import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProperty;
 import com.github.polyrocketmatt.delegate.core.command.trigger.FailureTrigger;
 import com.github.polyrocketmatt.delegate.core.command.trigger.SuccessTrigger;
-import com.github.polyrocketmatt.delegate.core.permission.PermissionTiers;
-import com.github.polyrocketmatt.delegate.core.permission.StandardPermission;
+import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTiers;
+import com.github.polyrocketmatt.delegate.core.command.permission.StandardPermission;
 import com.github.polyrocketmatt.delegate.impl.command.argument.PlayerArgument;
 import com.github.polyrocketmatt.delegate.impl.command.argument.WorldArgument;
 import org.bukkit.World;

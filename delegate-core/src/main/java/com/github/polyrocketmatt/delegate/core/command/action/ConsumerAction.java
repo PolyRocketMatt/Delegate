@@ -8,7 +8,7 @@ import com.github.polyrocketmatt.delegate.api.command.data.FailureActionResult;
 import com.github.polyrocketmatt.delegate.api.command.data.SuccessActionResult;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
-import com.github.polyrocketmatt.delegate.core.permission.PermissionTiers;
+import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTiers;
 
 import java.util.List;
 import java.util.function.BiConsumer;

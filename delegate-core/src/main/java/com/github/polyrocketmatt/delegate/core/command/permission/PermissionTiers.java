@@ -1,4 +1,4 @@
-package com.github.polyrocketmatt.delegate.core.permission;
+package com.github.polyrocketmatt.delegate.core.command.permission;
 
 import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
 
