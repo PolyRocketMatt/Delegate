@@ -7,6 +7,8 @@ import com.github.polyrocketmatt.delegate.core.command.argument.rule.DefaultRule
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.NonNullRule;
 import com.github.polyrocketmatt.delegate.core.utils.ArrayUtils;
 import com.github.polyrocketmatt.delegate.impl.Delegate;
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.velocitypowered.api.proxy.Player;
 
 import java.util.List;
@@ -66,6 +68,13 @@ public class PlayerArgument extends CommandArgument<Player> {
         Optional<Player> player = Delegate.getProxy().getPlayer(input);
 
         return player.map(value -> new Argument<>(getIdentifier(), value)).orElseGet(this::getDefault);
+    }
+
+    @Override
+    public Player parse(StringReader reader) throws CommandSyntaxException {
+        Optional<Player> player = Delegate.getProxy().getPlayer(reader.readString());
+
+        return player.orElseGet(() -> getDefault().output());
     }
 
     /**
