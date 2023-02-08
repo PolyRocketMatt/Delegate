@@ -31,10 +31,10 @@ public class RunnableAction extends CommandAction {
      *
      * @param precedence The precedence of the command action.
      * @param action The runnable that will be executed.
+     * @throws IllegalArgumentException If the action is null.
      */
     public RunnableAction(int precedence, Runnable action) {
-        super(newId(), PermissionTiers.GLOBAL.getTier(), precedence);
-        this.action = action;
+        this(newId(), PermissionTiers.GLOBAL.getTier(), precedence, action);
     }
 
     /**
@@ -43,10 +43,11 @@ public class RunnableAction extends CommandAction {
      * @param permissionTier The permission tier required to execute this action.
      * @param precedence The precedence of the command action.
      * @param action The runnable that will be executed.
+     * @throws IllegalArgumentException If the permission tier is null.
+     * @throws IllegalArgumentException If the action is null.
      */
     public RunnableAction(PermissionTier permissionTier, int precedence, Runnable action) {
-        super(newId(), permissionTier, precedence);
-        this.action = action;
+        this(newId(), permissionTier, precedence, action);
     }
 
     /**
@@ -54,10 +55,10 @@ public class RunnableAction extends CommandAction {
      * a default precedence of 0.
      *
      * @param action The runnable that will be executed.
+     * @throws IllegalArgumentException If the action is null.
      */
     public RunnableAction(Runnable action) {
-        super(newId(), PermissionTiers.GLOBAL.getTier(), 0);
-        this.action = action;
+        this(newId(), PermissionTiers.GLOBAL.getTier(), 0, action);
     }
 
     /**
@@ -66,10 +67,11 @@ public class RunnableAction extends CommandAction {
      *
      * @param permissionTier The permission tier required to execute this action.
      * @param action The runnable that will be executed.
+     * @throws IllegalArgumentException If the permission tier is null.
+     * @throws IllegalArgumentException If the action is null.
      */
     public RunnableAction(PermissionTier permissionTier, Runnable action) {
-        super(newId(), permissionTier, 0);
-        this.action = action;
+        this(permissionTier, 0, action);
     }
 
     /**
@@ -78,10 +80,11 @@ public class RunnableAction extends CommandAction {
      *
      * @param identifier The identifier of the command action.
      * @param action The runnable that will be executed.
+     * @throws IllegalArgumentException If the identifier is null, empty or blank.
+     * @throws IllegalArgumentException If the action is null.
      */
     public RunnableAction(String identifier, Runnable action) {
-        super(identifier, PermissionTiers.GLOBAL.getTier(), 0);
-        this.action = action;
+        this(identifier, PermissionTiers.GLOBAL.getTier(), 0, action);
     }
 
     /**
@@ -91,10 +94,12 @@ public class RunnableAction extends CommandAction {
      * @param identifier The identifier of the command action.
      * @param permissionTier The permission tier required to execute this action.
      * @param action The runnable that will be executed.
+     * @throws IllegalArgumentException If the identifier is null, empty or blank.
+     * @throws IllegalArgumentException If the permission tier is null.
+     * @throws IllegalArgumentException If the action is null.
      */
     public RunnableAction(String identifier, PermissionTier permissionTier, Runnable action) {
-        super(identifier, permissionTier, 0);
-        this.action = action;
+        this(identifier, permissionTier, 0, action);
     }
 
     /**
@@ -103,10 +108,11 @@ public class RunnableAction extends CommandAction {
      * @param identifier The identifier of the command action.
      * @param precedence The precedence of the command action.
      * @param action The runnable that will be executed.
+     * @throws IllegalArgumentException If the identifier is null, empty or blank.
+     * @throws IllegalArgumentException If the action is null.
      */
     public RunnableAction(String identifier, int precedence, Runnable action) {
-        super(identifier, PermissionTiers.GLOBAL.getTier(), precedence);
-        this.action = action;
+        this(identifier, PermissionTiers.GLOBAL.getTier(), precedence, action);
     }
 
     /**
@@ -116,9 +122,14 @@ public class RunnableAction extends CommandAction {
      * @param permissionTier The permission tier required to execute this action.
      * @param precedence The precedence of the command action.
      * @param action The runnable that will be executed.
+     * @throws IllegalArgumentException If the identifier is null, empty or blank.
+     * @throws IllegalArgumentException If the permission tier is null.
+     * @throws IllegalArgumentException If the action is null.
      */
     public RunnableAction(String identifier, PermissionTier permissionTier, int precedence, Runnable action) {
         super(identifier, permissionTier, precedence);
+        if (action == null)
+            throw new IllegalArgumentException("Action cannot be null");
         this.action = action;
     }
 

@@ -82,7 +82,7 @@ public class ConsumerAction extends CommandAction {
      *
      * @param identifier The identifier of the command action.
      * @param action The consumer that will be executed.
-     * @throws IllegalArgumentException If the identifier is null.
+     * @throws IllegalArgumentException If the identifier is null, empty or blank.
      * @throws IllegalArgumentException If the action is null.
      */
     public ConsumerAction(String identifier, BiConsumer<CommanderEntity, Context> action) throws IllegalArgumentException {
@@ -95,7 +95,7 @@ public class ConsumerAction extends CommandAction {
      * @param identifier The identifier of the command action.
      * @param permissionTier The permission tier required to execute the command action.
      * @param action The consumer that will be executed.
-     * @throws IllegalArgumentException If the identifier is null.
+     * @throws IllegalArgumentException If the identifier is null, empty or blank.
      * @throws IllegalArgumentException If the permission tier is null.
      * @throws IllegalArgumentException If the action is null.
      */
@@ -110,7 +110,7 @@ public class ConsumerAction extends CommandAction {
      * @param identifier The identifier of the command action.
      * @param precedence The precedence of the command action.
      * @param action The consumer that will be executed.
-     * @throws IllegalArgumentException If the identifier is null.
+     * @throws IllegalArgumentException If the identifier is null, empty or blank.
      * @throws IllegalArgumentException If the action is null.
      */
     public ConsumerAction(String identifier, int precedence, BiConsumer<CommanderEntity, Context> action)
@@ -125,7 +125,7 @@ public class ConsumerAction extends CommandAction {
      * @param permissionTier The permission tier required to execute the command action.
      * @param precedence The precedence of the command action.
      * @param action The consumer that will be executed.
-     * @throws IllegalArgumentException If the identifier is null.
+     * @throws IllegalArgumentException If the identifier is null, empty or blank.
      * @throws IllegalArgumentException If the permission tier is null.
      * @throws IllegalArgumentException If the action is null.
      */
