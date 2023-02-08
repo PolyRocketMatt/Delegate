@@ -1,7 +1,10 @@
+// Copyright (c) Matthias Kovacic. All rights reserved.
+// Licensed under the MIT license.
+
 package com.github.polyrocketmatt.delegate.api.exception;
 
 /**
- * Exception thrown when some illegal state concerning an {@link com.github.polyrocketmatt.delegate.core.command.CommandAttribute}
+ * Exception thrown when some illegal state concerning an {@link com.github.polyrocketmatt.delegate.api.command.CommandAttribute}
  * is encountered.
  *
  * @since 0.0.1

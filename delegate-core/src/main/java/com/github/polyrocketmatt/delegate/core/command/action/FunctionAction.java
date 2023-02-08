@@ -1,7 +1,7 @@
 package com.github.polyrocketmatt.delegate.core.command.action;
 
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
-import com.github.polyrocketmatt.delegate.api.command.argument.Index;
+import com.github.polyrocketmatt.delegate.api.command.argument.Context;
 import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
 import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.data.FailureActionResult;
@@ -22,7 +22,7 @@ import static com.github.polyrocketmatt.delegate.api.StringUtils.newId;
  */
 public class FunctionAction extends CommandAction {
 
-    private final BiFunction<CommanderEntity, Index, ?> action;
+    private final BiFunction<CommanderEntity, Context, ?> action;
 
     /**
      * Creates a new {@link FunctionAction} with an identifier and {@link BiFunction} and
@@ -30,7 +30,7 @@ public class FunctionAction extends CommandAction {
      *
      * @param action The function that will be executed.
      */
-    public FunctionAction(BiFunction<CommanderEntity, Index, ?> action) {
+    public FunctionAction(BiFunction<CommanderEntity, Context, ?> action) {
         super(newId(), PermissionTiers.GLOBAL.getTier(), 0);
         this.action = action;
     }
@@ -42,7 +42,7 @@ public class FunctionAction extends CommandAction {
      * @param permissionTier The permission tier required to execute this action.
      * @param action The function that will be executed.
      */
-    public FunctionAction(PermissionTier permissionTier, BiFunction<CommanderEntity, Index, ?> action) {
+    public FunctionAction(PermissionTier permissionTier, BiFunction<CommanderEntity, Context, ?> action) {
         super(newId(), permissionTier, 0);
         this.action = action;
     }
@@ -53,7 +53,7 @@ public class FunctionAction extends CommandAction {
      * @param precedence The precedence of the command action.
      * @param action The function that will be executed.
      */
-    public FunctionAction(int precedence, BiFunction<CommanderEntity, Index, ?> action) {
+    public FunctionAction(int precedence, BiFunction<CommanderEntity, Context, ?> action) {
         super(newId(), PermissionTiers.GLOBAL.getTier(), precedence);
         this.action = action;
     }
@@ -65,7 +65,7 @@ public class FunctionAction extends CommandAction {
      * @param precedence The precedence of the command action.
      * @param action The function that will be executed.
      */
-    public FunctionAction(PermissionTier permissionTier, int precedence, BiFunction<CommanderEntity, Index, ?> action) {
+    public FunctionAction(PermissionTier permissionTier, int precedence, BiFunction<CommanderEntity, Context, ?> action) {
         super(newId(), permissionTier, precedence);
         this.action = action;
     }
@@ -76,7 +76,7 @@ public class FunctionAction extends CommandAction {
      * @param identifier The identifier of the command action.
      * @param action The function that will be executed.
      */
-    public FunctionAction(String identifier, BiFunction<CommanderEntity, Index, ?> action) {
+    public FunctionAction(String identifier, BiFunction<CommanderEntity, Context, ?> action) {
         super(identifier, PermissionTiers.GLOBAL.getTier(), 0);
         this.action = action;
     }
@@ -88,7 +88,7 @@ public class FunctionAction extends CommandAction {
      * @param permissionTier The permission tier required to execute this action.
      * @param action The function that will be executed.
      */
-    public FunctionAction(String identifier, PermissionTier permissionTier, BiFunction<CommanderEntity, Index, ?> action) {
+    public FunctionAction(String identifier, PermissionTier permissionTier, BiFunction<CommanderEntity, Context, ?> action) {
         super(identifier, permissionTier, 0);
         this.action = action;
     }
@@ -100,7 +100,7 @@ public class FunctionAction extends CommandAction {
      * @param precedence The precedence of the command action.
      * @param action The function that will be executed.
      */
-    public FunctionAction(String identifier, int precedence, BiFunction<CommanderEntity, Index, ?> action) {
+    public FunctionAction(String identifier, int precedence, BiFunction<CommanderEntity, Context, ?> action) {
         super(identifier, PermissionTiers.GLOBAL.getTier(), precedence);
         this.action = action;
     }
@@ -113,7 +113,7 @@ public class FunctionAction extends CommandAction {
      * @param precedence The precedence of the command action.
      * @param action The function that will be executed.
      */
-    public FunctionAction(String identifier, PermissionTier permissionTier, int precedence, BiFunction<CommanderEntity, Index, ?> action) {
+    public FunctionAction(String identifier, PermissionTier permissionTier, int precedence, BiFunction<CommanderEntity, Context, ?> action) {
         super(identifier, permissionTier, precedence);
         this.action = action;
     }
@@ -121,7 +121,7 @@ public class FunctionAction extends CommandAction {
     @Override
     public ActionItem<?> run(CommanderEntity commander, List<Argument<?>> arguments) {
         try {
-            return new ActionItem<>(ActionItem.Result.SUCCESS, action.apply(commander, new Index(arguments)));
+            return new ActionItem<>(ActionItem.Result.SUCCESS, action.apply(commander, new Context(arguments)));
         } catch (Exception ex) {
             return new FailureActionResult(ex);
         }

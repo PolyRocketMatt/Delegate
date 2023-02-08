@@ -2,7 +2,7 @@ package com.github.polyrocketmatt.delegate.core.command.action;
 
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
-import com.github.polyrocketmatt.delegate.api.command.argument.Index;
+import com.github.polyrocketmatt.delegate.api.command.argument.Context;
 import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
 import com.github.polyrocketmatt.delegate.api.command.data.FailureActionResult;
 import com.github.polyrocketmatt.delegate.api.command.data.SuccessActionResult;
@@ -23,7 +23,7 @@ import static com.github.polyrocketmatt.delegate.api.StringUtils.newId;
  */
 public class ConsumerAction extends CommandAction {
 
-    private final BiConsumer<CommanderEntity, Index> action;
+    private final BiConsumer<CommanderEntity, Context> action;
 
     /**
      * Creates a new {@link ConsumerAction} with an identifier and {@link BiConsumer} and
@@ -31,7 +31,7 @@ public class ConsumerAction extends CommandAction {
      *
      * @param action The consumer that will be executed.
      */
-    public ConsumerAction(BiConsumer<CommanderEntity, Index> action) {
+    public ConsumerAction(BiConsumer<CommanderEntity, Context> action) {
         super(newId(), PermissionTiers.GLOBAL.getTier(), 0);
         this.action = action;
     }
@@ -43,7 +43,7 @@ public class ConsumerAction extends CommandAction {
      * @param permissionTier The permission tier required to execute this action.
      * @param action The consumer that will be executed.
      */
-    public ConsumerAction(PermissionTier permissionTier, BiConsumer<CommanderEntity, Index> action) {
+    public ConsumerAction(PermissionTier permissionTier, BiConsumer<CommanderEntity, Context> action) {
         super(newId(), permissionTier, 0);
         this.action = action;
     }
@@ -54,7 +54,7 @@ public class ConsumerAction extends CommandAction {
      * @param precedence The precedence of the command action.
      * @param action The consumer that will be executed.
      */
-    public ConsumerAction(int precedence, BiConsumer<CommanderEntity, Index> action) {
+    public ConsumerAction(int precedence, BiConsumer<CommanderEntity, Context> action) {
         super(newId(), PermissionTiers.GLOBAL.getTier(), precedence);
         this.action = action;
     }
@@ -66,7 +66,7 @@ public class ConsumerAction extends CommandAction {
      * @param precedence The precedence of the command action.
      * @param action The consumer that will be executed.
      */
-    public ConsumerAction(PermissionTier permissionTier, int precedence, BiConsumer<CommanderEntity, Index> action) {
+    public ConsumerAction(PermissionTier permissionTier, int precedence, BiConsumer<CommanderEntity, Context> action) {
         super(newId(), permissionTier, precedence);
         this.action = action;
     }
@@ -77,7 +77,7 @@ public class ConsumerAction extends CommandAction {
      * @param identifier The identifier of the command action.
      * @param action The consumer that will be executed.
      */
-    public ConsumerAction(String identifier, BiConsumer<CommanderEntity, Index> action) {
+    public ConsumerAction(String identifier, BiConsumer<CommanderEntity, Context> action) {
         super(identifier, PermissionTiers.GLOBAL.getTier(), 0);
         this.action = action;
     }
@@ -89,7 +89,7 @@ public class ConsumerAction extends CommandAction {
      * @param permissionTier The permission tier required to execute the command action.
      * @param action The consumer that will be executed.
      */
-    public ConsumerAction(String identifier, PermissionTier permissionTier, BiConsumer<CommanderEntity, Index> action) {
+    public ConsumerAction(String identifier, PermissionTier permissionTier, BiConsumer<CommanderEntity, Context> action) {
         super(identifier, permissionTier, 0);
         this.action = action;
     }
@@ -101,7 +101,7 @@ public class ConsumerAction extends CommandAction {
      * @param precedence The precedence of the command action.
      * @param action The consumer that will be executed.
      */
-    public ConsumerAction(String identifier, int precedence, BiConsumer<CommanderEntity, Index> action) {
+    public ConsumerAction(String identifier, int precedence, BiConsumer<CommanderEntity, Context> action) {
         super(identifier, PermissionTiers.GLOBAL.getTier(), precedence);
         this.action = action;
     }
@@ -114,7 +114,7 @@ public class ConsumerAction extends CommandAction {
      * @param precedence The precedence of the command action.
      * @param action The consumer that will be executed.
      */
-    public ConsumerAction(String identifier, PermissionTier permissionTier, int precedence, BiConsumer<CommanderEntity, Index> action) {
+    public ConsumerAction(String identifier, PermissionTier permissionTier, int precedence, BiConsumer<CommanderEntity, Context> action) {
         super(identifier, permissionTier, precedence);
         this.action = action;
     }
@@ -122,7 +122,7 @@ public class ConsumerAction extends CommandAction {
     @Override
     public ActionItem<?> run(CommanderEntity commander, List<Argument<?>> arguments) {
         try {
-            action.accept(commander, new Index(arguments));
+            action.accept(commander, new Context(arguments));
         } catch (Exception ex) {
             ex.printStackTrace();
 

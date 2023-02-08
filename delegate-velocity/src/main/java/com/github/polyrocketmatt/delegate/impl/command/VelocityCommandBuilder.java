@@ -7,7 +7,7 @@ import com.github.polyrocketmatt.delegate.api.command.ICommandAttribute;
 import com.github.polyrocketmatt.delegate.api.command.ICommandBuilder;
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
-import com.github.polyrocketmatt.delegate.api.command.argument.Index;
+import com.github.polyrocketmatt.delegate.api.command.argument.Context;
 import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
 import com.github.polyrocketmatt.delegate.api.command.definition.CommandDefinition;
 import com.github.polyrocketmatt.delegate.api.command.feedback.FeedbackType;
@@ -283,19 +283,19 @@ public class VelocityCommandBuilder extends DelegateCommandBuilder {
         return this.withPermission(PermissionTiers.GLOBAL.getTier());
     }
 
-    public VelocityCommandBuilder withConsumerAction(BiConsumer<CommanderEntity, Index> action) {
+    public VelocityCommandBuilder withConsumerAction(BiConsumer<CommanderEntity, Context> action) {
         return this.with(new ConsumerAction(action));
     }
 
-    public VelocityCommandBuilder withConsumerAction(String identifier, BiConsumer<CommanderEntity, Index> action) {
+    public VelocityCommandBuilder withConsumerAction(String identifier, BiConsumer<CommanderEntity, Context> action) {
         return this.with(new ConsumerAction(identifier, action));
     }
 
-    public VelocityCommandBuilder withFunctionAction(BiFunction<CommanderEntity, Index, ?> action) {
+    public VelocityCommandBuilder withFunctionAction(BiFunction<CommanderEntity, Context, ?> action) {
         return this.with(new FunctionAction(action));
     }
 
-    public VelocityCommandBuilder withFunctionAction(String identifier, BiFunction<CommanderEntity, Index, ?> action) {
+    public VelocityCommandBuilder withFunctionAction(String identifier, BiFunction<CommanderEntity, Context, ?> action) {
         return this.with(new FunctionAction(identifier, action));
     }
 

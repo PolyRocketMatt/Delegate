@@ -1,13 +1,16 @@
+// Copyright (c) Matthias Kovacic. All rights reserved.
+// Licensed under the MIT license.
+
 package com.github.polyrocketmatt.delegate.api.command.argument;
 
 import java.util.List;
 import java.util.Optional;
 
-public class Index {
+public class Context {
 
     private final List<Argument<?>> arguments;
 
-    public Index(List<Argument<?>> arguments) {
+    public Context(List<Argument<?>> arguments) {
         this.arguments = arguments;
     }
 

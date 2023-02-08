@@ -7,7 +7,7 @@ import com.github.polyrocketmatt.delegate.api.command.ICommandAttribute;
 import com.github.polyrocketmatt.delegate.api.command.ICommandBuilder;
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
-import com.github.polyrocketmatt.delegate.api.command.argument.Index;
+import com.github.polyrocketmatt.delegate.api.command.argument.Context;
 import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
 import com.github.polyrocketmatt.delegate.api.command.definition.CommandDefinition;
 import com.github.polyrocketmatt.delegate.api.command.feedback.FeedbackType;
@@ -285,19 +285,19 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
         return this.withPermission(PermissionTiers.GLOBAL.getTier());
     }
 
-    public BukkitCommandBuilder withConsumerAction(BiConsumer<CommanderEntity, Index> action) {
+    public BukkitCommandBuilder withConsumerAction(BiConsumer<CommanderEntity, Context> action) {
         return this.with(new ConsumerAction(action));
     }
 
-    public BukkitCommandBuilder withConsumerAction(String identifier, BiConsumer<CommanderEntity, Index> action) {
+    public BukkitCommandBuilder withConsumerAction(String identifier, BiConsumer<CommanderEntity, Context> action) {
         return this.with(new ConsumerAction(identifier, action));
     }
 
-    public BukkitCommandBuilder withFunctionAction(BiFunction<CommanderEntity, Index, ?> action) {
+    public BukkitCommandBuilder withFunctionAction(BiFunction<CommanderEntity, Context, ?> action) {
         return this.with(new FunctionAction(action));
     }
 
-    public BukkitCommandBuilder withFunctionAction(String identifier, BiFunction<CommanderEntity, Index, ?> action) {
+    public BukkitCommandBuilder withFunctionAction(String identifier, BiFunction<CommanderEntity, Context, ?> action) {
         return this.with(new FunctionAction(identifier, action));
     }
 
