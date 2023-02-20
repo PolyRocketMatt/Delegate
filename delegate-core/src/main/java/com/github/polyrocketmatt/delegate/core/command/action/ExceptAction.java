@@ -3,6 +3,7 @@
 
 package com.github.polyrocketmatt.delegate.core.command.action;
 
+import com.github.polyrocketmatt.delegate.api.AttributeType;
 import com.github.polyrocketmatt.delegate.api.Bufferable;
 import com.github.polyrocketmatt.delegate.api.TriConsumer;
 import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
@@ -63,4 +64,8 @@ public class ExceptAction extends CommandAttribute implements Bufferable {
         }
     }
 
+    @Override
+    public AttributeType getType() {
+        return AttributeType.EXCEPT_ACTION;
+    }
 }

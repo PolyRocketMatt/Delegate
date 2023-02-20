@@ -6,13 +6,13 @@ package com.github.polyrocketmatt.delegate.core.command.argument;
 import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.api.command.argument.rule.ArgumentRule;
+import com.github.polyrocketmatt.delegate.api.exception.ArgumentParseException;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.NonNullRule;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * Represents a {@link CommandArgument} that parses a float from the input.
@@ -37,20 +37,28 @@ public class FloatArgument extends CommandArgument<Float> {
     }
 
     @Override
-    public Argument<Float> parse(String input, Consumer<Exception> consumer) {
+    public Argument<Float> parse(String input) {
         try {
             return new Argument<>(getIdentifier(), Float.parseFloat(input));
         } catch (NumberFormatException ex) {
-            consumer.accept(ex);
+            if (getDefault().output() == null)
+                throw new ArgumentParseException("The argument '" + getIdentifier() + "' must be a float", Float.class);
+            return getDefault();
         }
-
-        return getDefault();
     }
 
     @Override
-    public Float parse(StringReader reader) throws CommandSyntaxException {
+    public Float parse(StringReader reader) {
         int start = reader.getCursor();
-        return reader.readFloat();
+        try {
+            return reader.readFloat();
+        } catch (CommandSyntaxException ex) {
+            reader.setCursor(start);
+
+            if (getDefault().output() == null)
+                throw new ArgumentParseException("The argument '" + getIdentifier() + "' must be a float", Float.class);
+            return getDefault().output();
+        }
     }
 
     /**

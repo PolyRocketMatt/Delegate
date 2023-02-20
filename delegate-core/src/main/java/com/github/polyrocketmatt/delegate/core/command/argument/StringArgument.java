@@ -6,13 +6,15 @@ package com.github.polyrocketmatt.delegate.core.command.argument;
 import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.api.command.argument.rule.ArgumentRule;
+import com.github.polyrocketmatt.delegate.api.exception.ArgumentParseException;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.NonNullRule;
 import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.exceptions.CommandExceptionType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.Objects;
 
 /**
  * Represents a {@link CommandArgument} that parses a string from the input.
@@ -37,13 +39,46 @@ public class StringArgument extends CommandArgument<String> {
     }
 
     @Override
-    public Argument<String> parse(String input, Consumer<Exception> onFail) {
-        return (input == null) ? getDefault() : new Argument<>(getIdentifier(), input);
+    public Argument<String> parse(String input) {
+        if (input != null) {
+            //  Check if string starts and ends with a double quote
+            if (input.startsWith("\"") && input.endsWith("\"")) {
+                //  Remove the double quotes and return all the characters in between
+                return new Argument<>(getIdentifier(), input.substring(1, input.length() - 1));
+            } else
+                //  Otherwise, we return the first part only
+                return new Argument<>(getIdentifier(), input.split(" ")[0]);
+        } else
+            if (getDefault().output() == null)
+                throw new ArgumentParseException("The argument '" + getIdentifier() + "' must be a string", String.class);
+            return getDefault();
     }
 
     @Override
-    public String parse(StringReader reader) throws CommandSyntaxException {
-        return reader.readString();
+    public String parse(StringReader reader) throws ArgumentParseException {
+        try {
+            //  Check if the string in the reader starts and ends with a double quote
+            if (reader.canRead() && reader.peek() == '"') {
+                //  Skip the double quote
+                reader.skip();
+
+                //  Read the string until the next double quote
+                String string = reader.readStringUntil('"');
+
+                //  Skip the double quote
+                reader.skip();
+
+                //  Return the string
+                return string;
+            } else
+                //  Otherwise, we return the first part only
+                return reader.readString();
+        } catch (Exception ex) {
+            if (getDefault().output() == null)
+                throw new ArgumentParseException("The argument '" + getIdentifier() + "' must be a string", String.class);
+            else
+                return getDefault().output();
+        }
     }
 
     /**

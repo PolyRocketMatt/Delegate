@@ -66,7 +66,7 @@ public class PlayerArgument extends CommandArgument<Player> {
     }
 
     @Override
-    public Argument<Player> parse(String input, Consumer<Exception> consumer) {
+    public Argument<Player> parse(String input) {
         Player player = Bukkit.getPlayer(input);
 
         return (player != null) ? new Argument<>(getIdentifier(), player) : getDefault();

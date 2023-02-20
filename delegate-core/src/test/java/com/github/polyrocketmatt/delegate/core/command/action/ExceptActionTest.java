@@ -45,7 +45,7 @@ public class ExceptActionTest {
         ExceptAction action = new ExceptAction((commander, type, arguments) -> {});
 
         assertNotNull(action.getIdentifier());
-        assertEquals(AttributeType.ACTION, action.getType());
+        assertEquals(AttributeType.EXCEPT_ACTION, action.getType());
     }
 
     @Test

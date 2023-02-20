@@ -11,6 +11,7 @@ import com.github.polyrocketmatt.delegate.api.command.ICommandAttribute;
 public enum AttributeType {
 
     ACTION,
+    EXCEPT_ACTION,
     ARGUMENT,
     DEFINITION,
     PROPERTY,

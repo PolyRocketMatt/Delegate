@@ -24,7 +24,7 @@ public interface ArgumentParser<T> {
      * @param onFail The consumer to call if the parsing fails.
      * @return The parsed argument.
      */
-    default Argument<T> parse(String input, Consumer<Exception> onFail) {
+    default Argument<T> parse(String input) {
         return null;
     }
 

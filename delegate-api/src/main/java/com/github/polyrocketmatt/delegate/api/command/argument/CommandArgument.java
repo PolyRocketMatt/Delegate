@@ -133,27 +133,15 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
         this.defaultValue = defaultValue;
     }
 
-    /**
-     * Parses the argument value from the given input string and returns
-     * the parsed value as an {@link Argument}.
-     *
-     * @param input The input to parse.
-     * @return The parsed argument as an {@link Argument}.
-     */
-    public Argument<T> parse(String input) throws ArgumentParseException {
-        return this.parse(input, ex -> { throw onFail(input, ex, argumentType); });
-    }
 
     /**
      * Parses the argument value from the given input and calls the given {@link Consumer}
      * if the parsing fails.
      *
      * @param input The string to parse.
-     * @param consumer The consumer to call if the parsing fails.
      * @return The parsed argument as an {@link Argument}.
      */
-    @Override
-    public abstract Argument<T> parse(String input, Consumer<Exception> consumer) throws ArgumentParseException;
+    public abstract Argument<T> parse(String input) throws ArgumentParseException;
 
     /**
      * Parses the argument value from the given string reader and returns
@@ -166,7 +154,7 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      */
     //  TODO: Parse rules when parsing from string reader
     @Override
-    public abstract T parse(StringReader reader) throws CommandSyntaxException;
+    public abstract T parse(StringReader reader) throws ArgumentParseException;
 
     /**
      * Parses the given input string and applies the argument rules to the input.
