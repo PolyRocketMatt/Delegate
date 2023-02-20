@@ -22,6 +22,7 @@ import com.github.polyrocketmatt.delegate.core.command.properties.AsyncProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.CatchExceptionProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNonPresentProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProperty;
+import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullPropertyTest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
