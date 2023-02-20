@@ -10,7 +10,7 @@ import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.data.FailureActionResult;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
-import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTiers;
+import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTierType;
 
 import java.util.List;
 import java.util.function.BiFunction;
@@ -36,7 +36,7 @@ public class FunctionAction extends CommandAction {
      * @throws IllegalArgumentException If the action is null.
      */
     public FunctionAction(BiFunction<CommanderEntity, Context, ?> action) {
-        this(newId(), PermissionTiers.GLOBAL.getTier(), 0, action);
+        this(newId(), PermissionTierType.GLOBAL.getTier(), 0, action);
     }
 
     /**
@@ -60,7 +60,7 @@ public class FunctionAction extends CommandAction {
      * @throws IllegalArgumentException If the action is null.
      */
     public FunctionAction(int precedence, BiFunction<CommanderEntity, Context, ?> action) {
-        this(newId(), PermissionTiers.GLOBAL.getTier(), precedence, action);
+        this(newId(), PermissionTierType.GLOBAL.getTier(), precedence, action);
     }
 
     /**
@@ -85,7 +85,7 @@ public class FunctionAction extends CommandAction {
      * @throws IllegalArgumentException If the action is null.
      */
     public FunctionAction(String identifier, BiFunction<CommanderEntity, Context, ?> action) {
-        this(identifier, PermissionTiers.GLOBAL.getTier(), 0, action);
+        this(identifier, PermissionTierType.GLOBAL.getTier(), 0, action);
     }
 
     /**
@@ -112,7 +112,7 @@ public class FunctionAction extends CommandAction {
      * @throws IllegalArgumentException If the action is null.
      */
     public FunctionAction(String identifier, int precedence, BiFunction<CommanderEntity, Context, ?> action) {
-        this(identifier, PermissionTiers.GLOBAL.getTier(), precedence, action);
+        this(identifier, PermissionTierType.GLOBAL.getTier(), precedence, action);
     }
 
     /**

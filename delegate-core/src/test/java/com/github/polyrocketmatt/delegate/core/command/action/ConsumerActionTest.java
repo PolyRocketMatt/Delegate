@@ -7,7 +7,7 @@ import com.github.polyrocketmatt.delegate.api.AttributeType;
 import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
-import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTiers;
+import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTierType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -50,17 +50,17 @@ public class ConsumerActionTest {
         assertNotNull(action.getIdentifier());
         assertEquals(0, action.getPrecedence());
         assertEquals(AttributeType.ACTION, action.getType());
-        assertEquals(PermissionTiers.GLOBAL.getTier(), action.getPermissionTier());
+        assertEquals(PermissionTierType.GLOBAL.getTier(), action.getPermissionTier());
     }
 
     @Test
     public void testSecondaryConstructor() {
-        ConsumerAction action = new ConsumerAction(PermissionTiers.OPERATOR.getTier(), (sender, context) -> {});
+        ConsumerAction action = new ConsumerAction(PermissionTierType.OPERATOR.getTier(), (sender, context) -> {});
 
         assertNotNull(action.getIdentifier());
         assertEquals(0, action.getPrecedence());
         assertEquals(AttributeType.ACTION, action.getType());
-        assertEquals(PermissionTiers.OPERATOR.getTier(), action.getPermissionTier());
+        assertEquals(PermissionTierType.OPERATOR.getTier(), action.getPermissionTier());
     }
 
     @Test
@@ -70,17 +70,17 @@ public class ConsumerActionTest {
         assertNotNull(action.getIdentifier());
         assertEquals(1, action.getPrecedence());
         assertEquals(AttributeType.ACTION, action.getType());
-        assertEquals(PermissionTiers.GLOBAL.getTier(), action.getPermissionTier());
+        assertEquals(PermissionTierType.GLOBAL.getTier(), action.getPermissionTier());
     }
 
     @Test
     public void testQuaternaryConstructor() {
-        ConsumerAction action = new ConsumerAction(PermissionTiers.OPERATOR.getTier(), 1, (sender, context) -> {});
+        ConsumerAction action = new ConsumerAction(PermissionTierType.OPERATOR.getTier(), 1, (sender, context) -> {});
 
         assertNotNull(action.getIdentifier());
         assertEquals(1, action.getPrecedence());
         assertEquals(AttributeType.ACTION, action.getType());
-        assertEquals(PermissionTiers.OPERATOR.getTier(), action.getPermissionTier());
+        assertEquals(PermissionTierType.OPERATOR.getTier(), action.getPermissionTier());
     }
 
     @Test
@@ -90,17 +90,17 @@ public class ConsumerActionTest {
         assertEquals("test", action.getIdentifier());
         assertEquals(0, action.getPrecedence());
         assertEquals(AttributeType.ACTION, action.getType());
-        assertEquals(PermissionTiers.GLOBAL.getTier(), action.getPermissionTier());
+        assertEquals(PermissionTierType.GLOBAL.getTier(), action.getPermissionTier());
     }
 
     @Test
     public void testSenaryConstructor() {
-        ConsumerAction action = new ConsumerAction("test", PermissionTiers.OPERATOR.getTier(), (sender, context) -> {});
+        ConsumerAction action = new ConsumerAction("test", PermissionTierType.OPERATOR.getTier(), (sender, context) -> {});
 
         assertEquals("test", action.getIdentifier());
         assertEquals(0, action.getPrecedence());
         assertEquals(AttributeType.ACTION, action.getType());
-        assertEquals(PermissionTiers.OPERATOR.getTier(), action.getPermissionTier());
+        assertEquals(PermissionTierType.OPERATOR.getTier(), action.getPermissionTier());
     }
 
     @Test
@@ -110,37 +110,37 @@ public class ConsumerActionTest {
         assertEquals("test", action.getIdentifier());
         assertEquals(1, action.getPrecedence());
         assertEquals(AttributeType.ACTION, action.getType());
-        assertEquals(PermissionTiers.GLOBAL.getTier(), action.getPermissionTier());
+        assertEquals(PermissionTierType.GLOBAL.getTier(), action.getPermissionTier());
     }
 
     @Test
     public void testFullConstructor() {
-        ConsumerAction action = new ConsumerAction("test", PermissionTiers.OPERATOR.getTier(), 1, (sender, context) -> {});
+        ConsumerAction action = new ConsumerAction("test", PermissionTierType.OPERATOR.getTier(), 1, (sender, context) -> {});
 
         assertEquals("test", action.getIdentifier());
         assertEquals(1, action.getPrecedence());
         assertEquals(AttributeType.ACTION, action.getType());
-        assertEquals(PermissionTiers.OPERATOR.getTier(), action.getPermissionTier());
+        assertEquals(PermissionTierType.OPERATOR.getTier(), action.getPermissionTier());
     }
 
     @Test
     public void testFullConstructorWithNullIdentifier() {
-        assertThrows(IllegalArgumentException.class, () -> new ConsumerAction(null, PermissionTiers.OPERATOR.getTier(), 1, (sender, context) -> {}));
+        assertThrows(IllegalArgumentException.class, () -> new ConsumerAction(null, PermissionTierType.OPERATOR.getTier(), 1, (sender, context) -> {}));
     }
 
     @Test
     public void testFullConstructorWithEmptyIdentifier() {
-        assertThrows(IllegalArgumentException.class, () -> new ConsumerAction("", PermissionTiers.OPERATOR.getTier(), 1, (sender, context) -> {}));
+        assertThrows(IllegalArgumentException.class, () -> new ConsumerAction("", PermissionTierType.OPERATOR.getTier(), 1, (sender, context) -> {}));
     }
 
     @Test
     public void testFullConstructorWithBlankIdentifier() {
-        assertThrows(IllegalArgumentException.class, () -> new ConsumerAction(" ", PermissionTiers.OPERATOR.getTier(), 1, (sender, context) -> {}));
+        assertThrows(IllegalArgumentException.class, () -> new ConsumerAction(" ", PermissionTierType.OPERATOR.getTier(), 1, (sender, context) -> {}));
     }
 
     @Test
     public void testFullConstructorWithNegativePrecedence() {
-        assertThrows(IllegalArgumentException.class, () -> new ConsumerAction("test", PermissionTiers.OPERATOR.getTier(), -1, (sender, context) -> {}));
+        assertThrows(IllegalArgumentException.class, () -> new ConsumerAction("test", PermissionTierType.OPERATOR.getTier(), -1, (sender, context) -> {}));
     }
 
     @Test
@@ -150,7 +150,7 @@ public class ConsumerActionTest {
 
     @Test
     public void testFullConstructorWithNullAction() {
-        assertThrows(IllegalArgumentException.class, () -> new ConsumerAction("test", PermissionTiers.OPERATOR.getTier(), 1, null));
+        assertThrows(IllegalArgumentException.class, () -> new ConsumerAction("test", PermissionTierType.OPERATOR.getTier(), 1, null));
     }
 
     @Test

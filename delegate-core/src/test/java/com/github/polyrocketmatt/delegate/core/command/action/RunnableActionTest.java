@@ -4,7 +4,7 @@ import com.github.polyrocketmatt.delegate.api.AttributeType;
 import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
-import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTiers;
+import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTierType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -47,17 +47,17 @@ public class RunnableActionTest {
         assertNotNull(action.getIdentifier());
         assertEquals(0, action.getPrecedence());
         assertEquals(AttributeType.ACTION, action.getType());
-        assertEquals(PermissionTiers.GLOBAL.getTier(), action.getPermissionTier());
+        assertEquals(PermissionTierType.GLOBAL.getTier(), action.getPermissionTier());
     }
 
     @Test
     public void testSecondaryConstructor() {
-        RunnableAction action = new RunnableAction(PermissionTiers.OPERATOR.getTier(), () -> {});
+        RunnableAction action = new RunnableAction(PermissionTierType.OPERATOR.getTier(), () -> {});
 
         assertNotNull(action.getIdentifier());
         assertEquals(0, action.getPrecedence());
         assertEquals(AttributeType.ACTION, action.getType());
-        assertEquals(PermissionTiers.OPERATOR.getTier(), action.getPermissionTier());
+        assertEquals(PermissionTierType.OPERATOR.getTier(), action.getPermissionTier());
     }
 
     @Test
@@ -67,17 +67,17 @@ public class RunnableActionTest {
         assertNotNull(action.getIdentifier());
         assertEquals(1, action.getPrecedence());
         assertEquals(AttributeType.ACTION, action.getType());
-        assertEquals(PermissionTiers.GLOBAL.getTier(), action.getPermissionTier());
+        assertEquals(PermissionTierType.GLOBAL.getTier(), action.getPermissionTier());
     }
 
     @Test
     public void testQuaternaryConstructor() {
-        RunnableAction action = new RunnableAction(PermissionTiers.OPERATOR.getTier(), 1, () -> {});
+        RunnableAction action = new RunnableAction(PermissionTierType.OPERATOR.getTier(), 1, () -> {});
 
         assertNotNull(action.getIdentifier());
         assertEquals(1, action.getPrecedence());
         assertEquals(AttributeType.ACTION, action.getType());
-        assertEquals(PermissionTiers.OPERATOR.getTier(), action.getPermissionTier());
+        assertEquals(PermissionTierType.OPERATOR.getTier(), action.getPermissionTier());
     }
 
     @Test
@@ -87,17 +87,17 @@ public class RunnableActionTest {
         assertEquals("test", action.getIdentifier());
         assertEquals(0, action.getPrecedence());
         assertEquals(AttributeType.ACTION, action.getType());
-        assertEquals(PermissionTiers.GLOBAL.getTier(), action.getPermissionTier());
+        assertEquals(PermissionTierType.GLOBAL.getTier(), action.getPermissionTier());
     }
 
     @Test
     public void testSenaryConstructor() {
-        RunnableAction action = new RunnableAction("test", PermissionTiers.OPERATOR.getTier(), () -> {});
+        RunnableAction action = new RunnableAction("test", PermissionTierType.OPERATOR.getTier(), () -> {});
 
         assertEquals("test", action.getIdentifier());
         assertEquals(0, action.getPrecedence());
         assertEquals(AttributeType.ACTION, action.getType());
-        assertEquals(PermissionTiers.OPERATOR.getTier(), action.getPermissionTier());
+        assertEquals(PermissionTierType.OPERATOR.getTier(), action.getPermissionTier());
     }
 
     @Test
@@ -107,37 +107,37 @@ public class RunnableActionTest {
         assertEquals("test", action.getIdentifier());
         assertEquals(1, action.getPrecedence());
         assertEquals(AttributeType.ACTION, action.getType());
-        assertEquals(PermissionTiers.GLOBAL.getTier(), action.getPermissionTier());
+        assertEquals(PermissionTierType.GLOBAL.getTier(), action.getPermissionTier());
     }
 
     @Test
     public void testFullConstructor() {
-        RunnableAction action = new RunnableAction("test", PermissionTiers.OPERATOR.getTier(), 1, () -> {});
+        RunnableAction action = new RunnableAction("test", PermissionTierType.OPERATOR.getTier(), 1, () -> {});
 
         assertEquals("test", action.getIdentifier());
         assertEquals(1, action.getPrecedence());
         assertEquals(AttributeType.ACTION, action.getType());
-        assertEquals(PermissionTiers.OPERATOR.getTier(), action.getPermissionTier());
+        assertEquals(PermissionTierType.OPERATOR.getTier(), action.getPermissionTier());
     }
 
     @Test
     public void testFullConstructorWithNullIdentifier() {
-        assertThrows(IllegalArgumentException.class, () -> new RunnableAction(null, PermissionTiers.OPERATOR.getTier(), 1, () -> {}));
+        assertThrows(IllegalArgumentException.class, () -> new RunnableAction(null, PermissionTierType.OPERATOR.getTier(), 1, () -> {}));
     }
 
     @Test
     public void testFullConstructorWithEmptyIdentifier() {
-        assertThrows(IllegalArgumentException.class, () -> new RunnableAction("", PermissionTiers.OPERATOR.getTier(), 1, () -> {}));
+        assertThrows(IllegalArgumentException.class, () -> new RunnableAction("", PermissionTierType.OPERATOR.getTier(), 1, () -> {}));
     }
 
     @Test
     public void testFullConstructorWithBlankIdentifier() {
-        assertThrows(IllegalArgumentException.class, () -> new RunnableAction(" ", PermissionTiers.OPERATOR.getTier(), 1, () -> {}));
+        assertThrows(IllegalArgumentException.class, () -> new RunnableAction(" ", PermissionTierType.OPERATOR.getTier(), 1, () -> {}));
     }
 
     @Test
     public void testFullConstructorWithNegativePrecedence() {
-        assertThrows(IllegalArgumentException.class, () -> new RunnableAction("test", PermissionTiers.OPERATOR.getTier(), -1, () -> {}));
+        assertThrows(IllegalArgumentException.class, () -> new RunnableAction("test", PermissionTierType.OPERATOR.getTier(), -1, () -> {}));
     }
 
     @Test
@@ -147,7 +147,7 @@ public class RunnableActionTest {
 
     @Test
     public void testFullConstructorWithNullAction() {
-        assertThrows(IllegalArgumentException.class, () -> new RunnableAction("test", PermissionTiers.OPERATOR.getTier(), 1, null));
+        assertThrows(IllegalArgumentException.class, () -> new RunnableAction("test", PermissionTierType.OPERATOR.getTier(), 1, null));
     }
 
     @Test

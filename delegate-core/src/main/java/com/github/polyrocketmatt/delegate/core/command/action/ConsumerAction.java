@@ -12,7 +12,7 @@ import com.github.polyrocketmatt.delegate.api.command.data.SuccessActionResult;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
 import com.github.polyrocketmatt.delegate.core.DelegateCore;
-import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTiers;
+import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTierType;
 
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -37,7 +37,7 @@ public class ConsumerAction extends CommandAction {
      * @throws IllegalArgumentException If the action is null.
      */
     public ConsumerAction(BiConsumer<CommanderEntity, Context> action) throws IllegalArgumentException {
-        this(newId(), PermissionTiers.GLOBAL.getTier(), 0, action);
+        this(newId(), PermissionTierType.GLOBAL.getTier(), 0, action);
     }
 
     /**
@@ -61,7 +61,7 @@ public class ConsumerAction extends CommandAction {
      * @throws IllegalArgumentException If the action is null.
      */
     public ConsumerAction(int precedence, BiConsumer<CommanderEntity, Context> action) throws IllegalArgumentException {
-        this(newId(), PermissionTiers.GLOBAL.getTier(), precedence, action);
+        this(newId(), PermissionTierType.GLOBAL.getTier(), precedence, action);
     }
 
     /**
@@ -87,7 +87,7 @@ public class ConsumerAction extends CommandAction {
      * @throws IllegalArgumentException If the action is null.
      */
     public ConsumerAction(String identifier, BiConsumer<CommanderEntity, Context> action) throws IllegalArgumentException {
-        this(identifier, PermissionTiers.GLOBAL.getTier(), 0, action);
+        this(identifier, PermissionTierType.GLOBAL.getTier(), 0, action);
     }
 
     /**
@@ -116,7 +116,7 @@ public class ConsumerAction extends CommandAction {
      */
     public ConsumerAction(String identifier, int precedence, BiConsumer<CommanderEntity, Context> action)
             throws IllegalArgumentException {
-        this(identifier, PermissionTiers.GLOBAL.getTier(), precedence, action);
+        this(identifier, PermissionTierType.GLOBAL.getTier(), precedence, action);
     }
 
     /**

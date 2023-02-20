@@ -5,14 +5,14 @@ package com.github.polyrocketmatt.delegate.core.command.permission;
 
 import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
 
-public enum PermissionTiers {
+public enum PermissionTierType {
 
     OPERATOR(new OperatorPermission()),
     GLOBAL(new GlobalPermission());
 
     private final PermissionTier tier;
 
-    PermissionTiers(PermissionTier tier) {
+    PermissionTierType(PermissionTier tier) {
         this.tier = tier;
     }
 

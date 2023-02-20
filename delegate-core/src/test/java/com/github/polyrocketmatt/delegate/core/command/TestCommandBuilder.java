@@ -16,7 +16,7 @@ import com.github.polyrocketmatt.delegate.core.command.argument.IntArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.StringArgument;
 import com.github.polyrocketmatt.delegate.core.command.definition.AliasDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.SubcommandDefinition;
-import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTiers;
+import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTierType;
 import com.github.polyrocketmatt.delegate.core.command.permission.StandardPermission;
 import com.github.polyrocketmatt.delegate.core.command.properties.AsyncProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.CatchExceptionProperty;
@@ -142,11 +142,11 @@ public class TestCommandBuilder extends DelegateCommandBuilder {
 
     @Override
     public TestCommandBuilder withOperatorPermission() {
-        return this.withPermission(PermissionTiers.OPERATOR.getTier());
+        return this.withPermission(PermissionTierType.OPERATOR.getTier());
     }
 
     @Override
     public TestCommandBuilder withGlobalPermission() {
-        return this.withPermission(PermissionTiers.GLOBAL.getTier());
+        return this.withPermission(PermissionTierType.GLOBAL.getTier());
     }
 }

@@ -9,7 +9,7 @@ import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
 import com.github.polyrocketmatt.delegate.api.command.data.FailureActionResult;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
-import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTiers;
+import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTierType;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -35,7 +35,7 @@ public class SupplierAction<T> extends CommandAction {
      * @throws IllegalArgumentException If the action is null.
      */
     public SupplierAction(Supplier<T> action) {
-        this(newId(), PermissionTiers.GLOBAL.getTier(), 0, action);
+        this(newId(), PermissionTierType.GLOBAL.getTier(), 0, action);
     }
 
     /**
@@ -59,7 +59,7 @@ public class SupplierAction<T> extends CommandAction {
      * @throws IllegalArgumentException If the action is null.
      */
     public SupplierAction(int precedence, Supplier<T> action) {
-        this(newId(), PermissionTiers.GLOBAL.getTier(), precedence, action);
+        this(newId(), PermissionTierType.GLOBAL.getTier(), precedence, action);
     }
 
     /**
@@ -84,7 +84,7 @@ public class SupplierAction<T> extends CommandAction {
      * @throws IllegalArgumentException If the action is null.
      */
     public SupplierAction(String identifier, Supplier<T> action) {
-        this(identifier, PermissionTiers.GLOBAL.getTier(), 0, action);
+        this(identifier, PermissionTierType.GLOBAL.getTier(), 0, action);
     }
 
     /**
@@ -111,7 +111,7 @@ public class SupplierAction<T> extends CommandAction {
      * @throws IllegalArgumentException If the action is null.
      */
     public SupplierAction(String identifier, int precedence, Supplier<T> action) {
-        this(identifier, PermissionTiers.GLOBAL.getTier(), precedence, action);
+        this(identifier, PermissionTierType.GLOBAL.getTier(), precedence, action);
     }
 
     /**

@@ -35,7 +35,7 @@ import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNonPrese
 import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProperty;
 import com.github.polyrocketmatt.delegate.core.command.trigger.FailureTrigger;
 import com.github.polyrocketmatt.delegate.core.command.trigger.SuccessTrigger;
-import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTiers;
+import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTierType;
 import com.github.polyrocketmatt.delegate.core.command.permission.StandardPermission;
 import com.github.polyrocketmatt.delegate.impl.command.argument.PlayerArgument;
 import com.velocitypowered.api.proxy.Player;
@@ -278,12 +278,12 @@ public class VelocityCommandBuilder extends DelegateCommandBuilder {
 
     @Override
     public VelocityCommandBuilder withOperatorPermission() {
-        return this.withPermission(PermissionTiers.OPERATOR.getTier());
+        return this.withPermission(PermissionTierType.OPERATOR.getTier());
     }
 
     @Override
     public VelocityCommandBuilder withGlobalPermission() {
-        return this.withPermission(PermissionTiers.GLOBAL.getTier());
+        return this.withPermission(PermissionTierType.GLOBAL.getTier());
     }
 
     public VelocityCommandBuilder executes(BiConsumer<CommanderEntity, Context> action) {

@@ -7,7 +7,7 @@ import com.github.polyrocketmatt.delegate.api.AttributeType;
 import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
-import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTiers;
+import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTierType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -50,17 +50,17 @@ public class FunctionActionTest {
         assertNotNull(action.getIdentifier());
         assertEquals(0, action.getPrecedence());
         assertEquals(AttributeType.ACTION, action.getType());
-        assertEquals(PermissionTiers.GLOBAL.getTier(), action.getPermissionTier());
+        assertEquals(PermissionTierType.GLOBAL.getTier(), action.getPermissionTier());
     }
 
     @Test
     public void testSecondaryConstructor() {
-        FunctionAction action = new FunctionAction(PermissionTiers.OPERATOR.getTier(), (sender, context) -> null);
+        FunctionAction action = new FunctionAction(PermissionTierType.OPERATOR.getTier(), (sender, context) -> null);
 
         assertNotNull(action.getIdentifier());
         assertEquals(0, action.getPrecedence());
         assertEquals(AttributeType.ACTION, action.getType());
-        assertEquals(PermissionTiers.OPERATOR.getTier(), action.getPermissionTier());
+        assertEquals(PermissionTierType.OPERATOR.getTier(), action.getPermissionTier());
     }
 
     @Test
@@ -70,17 +70,17 @@ public class FunctionActionTest {
         assertNotNull(action.getIdentifier());
         assertEquals(1, action.getPrecedence());
         assertEquals(AttributeType.ACTION, action.getType());
-        assertEquals(PermissionTiers.GLOBAL.getTier(), action.getPermissionTier());
+        assertEquals(PermissionTierType.GLOBAL.getTier(), action.getPermissionTier());
     }
 
     @Test
     public void testQuaternaryConstructor() {
-        FunctionAction action = new FunctionAction(PermissionTiers.OPERATOR.getTier(), 1, (sender, context) -> null);
+        FunctionAction action = new FunctionAction(PermissionTierType.OPERATOR.getTier(), 1, (sender, context) -> null);
 
         assertNotNull(action.getIdentifier());
         assertEquals(1, action.getPrecedence());
         assertEquals(AttributeType.ACTION, action.getType());
-        assertEquals(PermissionTiers.OPERATOR.getTier(), action.getPermissionTier());
+        assertEquals(PermissionTierType.OPERATOR.getTier(), action.getPermissionTier());
     }
 
     @Test
@@ -90,17 +90,17 @@ public class FunctionActionTest {
         assertEquals("test", action.getIdentifier());
         assertEquals(0, action.getPrecedence());
         assertEquals(AttributeType.ACTION, action.getType());
-        assertEquals(PermissionTiers.GLOBAL.getTier(), action.getPermissionTier());
+        assertEquals(PermissionTierType.GLOBAL.getTier(), action.getPermissionTier());
     }
 
     @Test
     public void testSenaryConstructor() {
-        FunctionAction action = new FunctionAction("test", PermissionTiers.OPERATOR.getTier(), (sender, context) -> null);
+        FunctionAction action = new FunctionAction("test", PermissionTierType.OPERATOR.getTier(), (sender, context) -> null);
 
         assertEquals("test", action.getIdentifier());
         assertEquals(0, action.getPrecedence());
         assertEquals(AttributeType.ACTION, action.getType());
-        assertEquals(PermissionTiers.OPERATOR.getTier(), action.getPermissionTier());
+        assertEquals(PermissionTierType.OPERATOR.getTier(), action.getPermissionTier());
     }
 
     @Test
@@ -110,37 +110,37 @@ public class FunctionActionTest {
         assertEquals("test", action.getIdentifier());
         assertEquals(1, action.getPrecedence());
         assertEquals(AttributeType.ACTION, action.getType());
-        assertEquals(PermissionTiers.GLOBAL.getTier(), action.getPermissionTier());
+        assertEquals(PermissionTierType.GLOBAL.getTier(), action.getPermissionTier());
     }
 
     @Test
     public void testFullConstructor() {
-        FunctionAction action = new FunctionAction("test", PermissionTiers.OPERATOR.getTier(), 1, (sender, context) -> null);
+        FunctionAction action = new FunctionAction("test", PermissionTierType.OPERATOR.getTier(), 1, (sender, context) -> null);
 
         assertEquals("test", action.getIdentifier());
         assertEquals(1, action.getPrecedence());
         assertEquals(AttributeType.ACTION, action.getType());
-        assertEquals(PermissionTiers.OPERATOR.getTier(), action.getPermissionTier());
+        assertEquals(PermissionTierType.OPERATOR.getTier(), action.getPermissionTier());
     }
 
     @Test
     public void testFullConstructorWithNullIdentifier() {
-        assertThrows(IllegalArgumentException.class, () -> new FunctionAction(null, PermissionTiers.OPERATOR.getTier(), 1, (sender, context) -> null));
+        assertThrows(IllegalArgumentException.class, () -> new FunctionAction(null, PermissionTierType.OPERATOR.getTier(), 1, (sender, context) -> null));
     }
 
     @Test
     public void testFullConstructorWithEmptyIdentifier() {
-        assertThrows(IllegalArgumentException.class, () -> new FunctionAction("", PermissionTiers.OPERATOR.getTier(), 1, (sender, context) -> null));
+        assertThrows(IllegalArgumentException.class, () -> new FunctionAction("", PermissionTierType.OPERATOR.getTier(), 1, (sender, context) -> null));
     }
 
     @Test
     public void testFullConstructorWithBlankIdentifier() {
-        assertThrows(IllegalArgumentException.class, () -> new FunctionAction(" ", PermissionTiers.OPERATOR.getTier(), 1, (sender, context) -> null));
+        assertThrows(IllegalArgumentException.class, () -> new FunctionAction(" ", PermissionTierType.OPERATOR.getTier(), 1, (sender, context) -> null));
     }
 
     @Test
     public void testFullConstructorWithNegativePrecedence() {
-        assertThrows(IllegalArgumentException.class, () -> new FunctionAction("test", PermissionTiers.OPERATOR.getTier(), -1, (sender, context) -> null));
+        assertThrows(IllegalArgumentException.class, () -> new FunctionAction("test", PermissionTierType.OPERATOR.getTier(), -1, (sender, context) -> null));
     }
 
     @Test
@@ -150,7 +150,7 @@ public class FunctionActionTest {
 
     @Test
     public void testFullConstructorWithNullAction() {
-        assertThrows(IllegalArgumentException.class, () -> new FunctionAction("test", PermissionTiers.OPERATOR.getTier(), 1, null));
+        assertThrows(IllegalArgumentException.class, () -> new FunctionAction("test", PermissionTierType.OPERATOR.getTier(), 1, null));
     }
 
     @Test

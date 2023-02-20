@@ -10,7 +10,7 @@ import com.github.polyrocketmatt.delegate.api.command.data.FailureActionResult;
 import com.github.polyrocketmatt.delegate.api.command.data.SuccessActionResult;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
-import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTiers;
+import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTierType;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class RunnableAction extends CommandAction {
      * @throws IllegalArgumentException If the action is null.
      */
     public RunnableAction(int precedence, Runnable action) {
-        this(newId(), PermissionTiers.GLOBAL.getTier(), precedence, action);
+        this(newId(), PermissionTierType.GLOBAL.getTier(), precedence, action);
     }
 
     /**
@@ -59,7 +59,7 @@ public class RunnableAction extends CommandAction {
      * @throws IllegalArgumentException If the action is null.
      */
     public RunnableAction(Runnable action) {
-        this(newId(), PermissionTiers.GLOBAL.getTier(), 0, action);
+        this(newId(), PermissionTierType.GLOBAL.getTier(), 0, action);
     }
 
     /**
@@ -85,7 +85,7 @@ public class RunnableAction extends CommandAction {
      * @throws IllegalArgumentException If the action is null.
      */
     public RunnableAction(String identifier, Runnable action) {
-        this(identifier, PermissionTiers.GLOBAL.getTier(), 0, action);
+        this(identifier, PermissionTierType.GLOBAL.getTier(), 0, action);
     }
 
     /**
@@ -113,7 +113,7 @@ public class RunnableAction extends CommandAction {
      * @throws IllegalArgumentException If the action is null.
      */
     public RunnableAction(String identifier, int precedence, Runnable action) {
-        this(identifier, PermissionTiers.GLOBAL.getTier(), precedence, action);
+        this(identifier, PermissionTierType.GLOBAL.getTier(), precedence, action);
     }
 
     /**

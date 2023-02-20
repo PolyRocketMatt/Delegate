@@ -10,6 +10,8 @@ public class OperatorPermission extends PermissionTier {
 
     @Override
     public boolean hasPermission(CommanderEntity entity) {
+        if (entity == null)
+            throw new IllegalArgumentException("CommanderEntity cannot be null");
         return entity.isOperator();
     }
 }

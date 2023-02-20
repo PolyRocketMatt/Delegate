@@ -35,7 +35,7 @@ import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNonPrese
 import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProperty;
 import com.github.polyrocketmatt.delegate.core.command.trigger.FailureTrigger;
 import com.github.polyrocketmatt.delegate.core.command.trigger.SuccessTrigger;
-import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTiers;
+import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTierType;
 import com.github.polyrocketmatt.delegate.core.command.permission.StandardPermission;
 import com.github.polyrocketmatt.delegate.impl.command.argument.PlayerArgument;
 import com.github.polyrocketmatt.delegate.impl.command.argument.WorldArgument;
@@ -280,12 +280,12 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
 
     @Override
     public BukkitCommandBuilder withOperatorPermission() {
-        return this.withPermission(PermissionTiers.OPERATOR.getTier());
+        return this.withPermission(PermissionTierType.OPERATOR.getTier());
     }
 
     @Override
     public BukkitCommandBuilder withGlobalPermission() {
-        return this.withPermission(PermissionTiers.GLOBAL.getTier());
+        return this.withPermission(PermissionTierType.GLOBAL.getTier());
     }
 
     public BukkitCommandBuilder executes(BiConsumer<CommanderEntity, Context> action) {
