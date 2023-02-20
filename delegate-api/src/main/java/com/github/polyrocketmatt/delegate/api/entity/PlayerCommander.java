@@ -3,7 +3,12 @@
 
 package com.github.polyrocketmatt.delegate.api.entity;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 import java.util.UUID;
+
+import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 
 /**
  * Represents a command issuer as a player.
@@ -21,7 +26,9 @@ public abstract class PlayerCommander implements CommanderEntity {
      *
      * @param uuid The unique id of the player that issued a command.
      */
-    public PlayerCommander(UUID uuid) {
+    public PlayerCommander(@NotNull UUID uuid) {
+        validate(uuid);
+
         this.uuid = uuid;
     }
 
@@ -30,8 +37,19 @@ public abstract class PlayerCommander implements CommanderEntity {
      *
      * @return The unique id of the player
      */
-    public UUID getUniqueId() {
+    public @NotNull UUID getUniqueId() {
         return uuid;
     }
 
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (!(object instanceof PlayerCommander that)) return false;
+        return Objects.equals(uuid, that.uuid);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uuid);
+    }
 }

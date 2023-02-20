@@ -5,6 +5,7 @@ package com.github.polyrocketmatt.delegate.core.command.permission;
 
 import com.github.polyrocketmatt.delegate.api.entity.ConsoleCommander;
 import com.github.polyrocketmatt.delegate.api.entity.PlayerCommander;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -21,7 +22,7 @@ public class OperatorPermissionTest {
         assertTrue(permission.hasPermission(new ConsoleCommander()));
         assertTrue(permission.hasPermission(new PlayerCommander(UUID.randomUUID()) {
             @Override
-            public boolean hasPermission(String permission) {
+            public boolean hasPermission(@NotNull String permission) {
                 return true;
             }
 
@@ -31,14 +32,14 @@ public class OperatorPermissionTest {
             }
 
             @Override
-            public void sendMessage(String message) {
+            public void sendMessage(@NotNull String message) {
 
             }
         }));
 
         assertFalse(permission.hasPermission(new PlayerCommander(UUID.randomUUID()) {
             @Override
-            public boolean hasPermission(String permission) {
+            public boolean hasPermission(@NotNull String permission) {
                 return false;
             }
 
@@ -48,7 +49,7 @@ public class OperatorPermissionTest {
             }
 
             @Override
-            public void sendMessage(String message) {
+            public void sendMessage(@NotNull String message) {
 
             }
         }));

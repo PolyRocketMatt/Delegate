@@ -5,6 +5,7 @@ import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTierType;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +25,7 @@ public class SupplierActionTest {
     private static class SupplierCommanderEntity implements CommanderEntity {
 
         @Override
-        public boolean hasPermission(String permission) {
+        public boolean hasPermission(@NotNull String permission) {
             return true;
         }
 
@@ -34,7 +35,7 @@ public class SupplierActionTest {
         }
 
         @Override
-        public void sendMessage(String message) {
+        public void sendMessage(@NotNull String message) {
             System.out.println(message);
         }
 
@@ -138,16 +139,6 @@ public class SupplierActionTest {
     @Test
     public void testFullConstructorWithNegativePrecedence() {
         assertThrows(IllegalArgumentException.class, () -> new SupplierAction<>("test", PermissionTierType.OPERATOR.getTier(), -1, () -> true));
-    }
-
-    @Test
-    public void testFullConstructorWithNullPermissionTier() {
-        assertThrows(IllegalArgumentException.class, () -> new SupplierAction<>("test", null, 1, () -> true));
-    }
-
-    @Test
-    public void testFullConstructorWithNullAction() {
-        assertThrows(IllegalArgumentException.class, () -> new SupplierAction<>("test", PermissionTierType.OPERATOR.getTier(), 1, null));
     }
 
     @Test

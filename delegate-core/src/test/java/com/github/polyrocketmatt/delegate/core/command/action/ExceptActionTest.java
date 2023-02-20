@@ -6,6 +6,7 @@ package com.github.polyrocketmatt.delegate.core.command.action;
 import com.github.polyrocketmatt.delegate.api.AttributeType;
 import com.github.polyrocketmatt.delegate.api.command.feedback.FeedbackType;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +25,7 @@ public class ExceptActionTest {
     private static class ExceptCommanderEntity implements CommanderEntity {
 
         @Override
-        public boolean hasPermission(String permission) {
+        public boolean hasPermission(@NotNull String permission) {
             return true;
         }
 
@@ -34,7 +35,7 @@ public class ExceptActionTest {
         }
 
         @Override
-        public void sendMessage(String message) {
+        public void sendMessage(@NotNull String message) {
             System.out.println(message);
         }
 
@@ -46,11 +47,6 @@ public class ExceptActionTest {
 
         assertNotNull(action.getIdentifier());
         assertEquals(AttributeType.EXCEPT_ACTION, action.getType());
-    }
-
-    @Test
-    public void testConstructorWithNulLAction() {
-        assertThrows(IllegalArgumentException.class, () -> new ExceptAction(null));
     }
 
     @Test

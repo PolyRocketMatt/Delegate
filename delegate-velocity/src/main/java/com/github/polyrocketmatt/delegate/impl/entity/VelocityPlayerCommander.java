@@ -7,6 +7,7 @@ import com.github.polyrocketmatt.delegate.api.entity.PlayerCommander;
 import com.github.polyrocketmatt.delegate.impl.Delegate;
 import com.github.polyrocketmatt.delegate.impl.text.ColorConverter;
 import com.velocitypowered.api.proxy.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -30,7 +31,7 @@ public class VelocityPlayerCommander extends PlayerCommander {
     }
 
     @Override
-    public boolean hasPermission(String permission) {
+    public boolean hasPermission(@NotNull String permission) {
         return this.player.hasPermission(permission);
     }
 
@@ -40,7 +41,7 @@ public class VelocityPlayerCommander extends PlayerCommander {
     }
 
     @Override
-    public void sendMessage(String message) {
+    public void sendMessage(@NotNull String message) {
         this.player.sendMessage(ColorConverter.convert(message));
     }
 

@@ -13,6 +13,7 @@ import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
 import com.github.polyrocketmatt.delegate.core.DelegateCore;
 import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTierType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -130,11 +131,9 @@ public class ConsumerAction extends CommandAction {
      * @throws IllegalArgumentException If the permission tier is null.
      * @throws IllegalArgumentException If the action is null.
      */
-    public ConsumerAction(String identifier, PermissionTier permissionTier, int precedence, BiConsumer<CommanderEntity, Context> action)
+    public ConsumerAction(@NotNull String identifier, @NotNull PermissionTier permissionTier, int precedence, @NotNull BiConsumer<CommanderEntity, @NotNull Context> action)
             throws IllegalArgumentException {
         super(identifier, permissionTier, precedence);
-        if (action == null)
-            throw new IllegalArgumentException("Action cannot be null");
         this.action = action;
     }
 

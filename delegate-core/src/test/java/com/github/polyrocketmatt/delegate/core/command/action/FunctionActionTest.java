@@ -8,6 +8,7 @@ import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTierType;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +28,7 @@ public class FunctionActionTest {
     private static class FunctionCommanderEntity implements CommanderEntity {
 
         @Override
-        public boolean hasPermission(String permission) {
+        public boolean hasPermission(@NotNull String permission) {
             return true;
         }
 
@@ -37,7 +38,7 @@ public class FunctionActionTest {
         }
 
         @Override
-        public void sendMessage(String message) {
+        public void sendMessage(@NotNull String message) {
             System.out.println(message);
         }
 
@@ -141,16 +142,6 @@ public class FunctionActionTest {
     @Test
     public void testFullConstructorWithNegativePrecedence() {
         assertThrows(IllegalArgumentException.class, () -> new FunctionAction("test", PermissionTierType.OPERATOR.getTier(), -1, (sender, context) -> null));
-    }
-
-    @Test
-    public void testFullConstructorWithNullPermissionTier() {
-        assertThrows(IllegalArgumentException.class, () -> new FunctionAction("test", null, 1, (sender, context) -> null));
-    }
-
-    @Test
-    public void testFullConstructorWithNullAction() {
-        assertThrows(IllegalArgumentException.class, () -> new FunctionAction("test", PermissionTierType.OPERATOR.getTier(), 1, null));
     }
 
     @Test

@@ -11,6 +11,7 @@ import com.github.polyrocketmatt.delegate.api.exception.CommandEventException;
 import com.github.polyrocketmatt.delegate.impl.Delegate;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -43,12 +44,12 @@ public class DelegateCommandEvent implements CommandEvent {
     }
 
     @Override
-    public CommandDispatchInformation getDispatchInformation() {
+    public @NotNull CommandDispatchInformation getDispatchInformation() {
         return dispatchInformation;
     }
 
     @Override
-    public CommandCapture getCapture() {
+    public @NotNull CommandCapture getCapture() {
         return capture;
     }
 

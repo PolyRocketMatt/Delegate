@@ -4,6 +4,9 @@
 package com.github.polyrocketmatt.delegate.api.command;
 
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
+import org.jetbrains.annotations.NotNull;
+
+import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 
 /**
  * Record that contains information about a command that has been dispatched
@@ -16,4 +19,11 @@ import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
  * @since 0.0.1
  * @author Matthias Kovacic 
  */
-public record CommandDispatchInformation(CommanderEntity commander, String command, String[] arguments) { }
+public record CommandDispatchInformation(@NotNull CommanderEntity commander, @NotNull String command,
+                                         @NotNull String[] arguments) {
+
+    public CommandDispatchInformation {
+        validate(commander, command, arguments);
+    }
+
+}

@@ -11,6 +11,7 @@ import com.github.polyrocketmatt.delegate.api.command.data.SuccessActionResult;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
 import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTierType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -127,10 +128,9 @@ public class RunnableAction extends CommandAction {
      * @throws IllegalArgumentException If the permission tier is null.
      * @throws IllegalArgumentException If the action is null.
      */
-    public RunnableAction(String identifier, PermissionTier permissionTier, int precedence, Runnable action) {
+    public RunnableAction(@NotNull String identifier, @NotNull PermissionTier permissionTier, int precedence,
+                          @NotNull Runnable action) {
         super(identifier, permissionTier, precedence);
-        if (action == null)
-            throw new IllegalArgumentException("Action cannot be null");
         this.action = action;
     }
 

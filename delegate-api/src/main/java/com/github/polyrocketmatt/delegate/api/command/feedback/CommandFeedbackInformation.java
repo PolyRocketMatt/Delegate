@@ -10,7 +10,7 @@ public record CommandFeedbackInformation(
 ) {
 
     public String getFormattedFeedback() {
-        return this.feedback.formatted(args);
+        return this.type.getDefaultMessage().formatted(args);
     }
 
 }

@@ -3,6 +3,10 @@
 
 package com.github.polyrocketmatt.delegate.api.entity;
 
+import org.jetbrains.annotations.NotNull;
+
+import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
+
 /**
  * Represents a command issuer from the console.
  *
@@ -12,7 +16,9 @@ package com.github.polyrocketmatt.delegate.api.entity;
 public class ConsoleCommander implements CommanderEntity {
 
     @Override
-    public boolean hasPermission(String permission) {
+    public boolean hasPermission(@NotNull String permission) {
+        validate(permission);
+
         return true;
     }
 
@@ -22,7 +28,15 @@ public class ConsoleCommander implements CommanderEntity {
     }
 
     @Override
-    public void sendMessage(String message) {
+    public void sendMessage(@NotNull String message) {
+        validate(message);
+
         System.out.println(message);
     }
+
+    @Override
+    public boolean equals(Object object) {
+        return object instanceof ConsoleCommander;
+    }
+
 }

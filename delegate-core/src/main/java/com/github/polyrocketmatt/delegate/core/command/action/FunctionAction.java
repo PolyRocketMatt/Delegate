@@ -11,6 +11,7 @@ import com.github.polyrocketmatt.delegate.api.command.data.FailureActionResult;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
 import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTierType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.function.BiFunction;
@@ -126,10 +127,9 @@ public class FunctionAction extends CommandAction {
      * @throws IllegalArgumentException If the permission tier is null.
      * @throws IllegalArgumentException If the action is null.
      */
-    public FunctionAction(String identifier, PermissionTier permissionTier, int precedence, BiFunction<CommanderEntity, Context, ?> action) {
+    public FunctionAction(@NotNull String identifier, @NotNull PermissionTier permissionTier, int precedence,
+                          @NotNull BiFunction<CommanderEntity, @NotNull Context, ?> action) {
         super(identifier, permissionTier, precedence);
-        if (action == null)
-            throw new IllegalArgumentException("Action cannot be null");
         this.action = action;
     }
 

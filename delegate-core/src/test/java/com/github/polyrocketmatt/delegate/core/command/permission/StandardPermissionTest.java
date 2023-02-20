@@ -5,6 +5,7 @@ package com.github.polyrocketmatt.delegate.core.command.permission;
 
 import com.github.polyrocketmatt.delegate.api.entity.ConsoleCommander;
 import com.github.polyrocketmatt.delegate.api.entity.PlayerCommander;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -15,7 +16,7 @@ public class StandardPermissionTest {
 
     private final PlayerCommander commanderMock = new PlayerCommander(UUID.randomUUID()) {
         @Override
-        public boolean hasPermission(String permission) {
+        public boolean hasPermission(@NotNull String permission) {
             return "test.permission".equals(permission) || "test.parent".equals(permission);
         }
 
@@ -25,7 +26,7 @@ public class StandardPermissionTest {
         }
 
         @Override
-        public void sendMessage(String message) {
+        public void sendMessage(@NotNull String message) {
 
         }
     };
