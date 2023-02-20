@@ -48,6 +48,11 @@ public class StandardPermissionTest {
     }
 
     @Test
+    public void testPrimaryConstructorNull() {
+        assertThrows(IllegalArgumentException.class, () -> new StandardPermission(null));
+    }
+
+    @Test
     public void testHasPermissionNull() {
         StandardPermission permission = new StandardPermission("test.permission");
 
@@ -102,7 +107,7 @@ public class StandardPermissionTest {
 
     @Test
     public void testHasPermissionEntityCommanderParentGlobal() {
-        StandardPermission parent = new StandardPermission("test.parent");
+        GlobalPermission parent = new GlobalPermission();
         StandardPermission permission = new StandardPermission("test.permission", parent);
 
         assertTrue(permission.hasPermission(commanderMock));
@@ -120,6 +125,14 @@ public class StandardPermissionTest {
     public void testHasPermissionEntityCommanderParentStandardInvalid() {
         StandardPermission parent = new StandardPermission("test.invalid_parent");
         StandardPermission permission = new StandardPermission("test.permission", parent);
+
+        assertFalse(permission.hasPermission(commanderMock));
+    }
+
+    @Test
+    public void testHasPermissionEntityCommanderParentStandardDoubleInvalid() {
+        StandardPermission parent = new StandardPermission("test.invalid_parent");
+        StandardPermission permission = new StandardPermission("test.invalid_permission", parent);
 
         assertFalse(permission.hasPermission(commanderMock));
     }

@@ -9,8 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class OperatorPermissionTest {
 
@@ -18,6 +17,7 @@ public class OperatorPermissionTest {
     public void testHasPermission() {
         OperatorPermission permission = new OperatorPermission();
 
+        assertThrows(IllegalArgumentException.class, () -> permission.hasPermission(null));
         assertTrue(permission.hasPermission(new ConsoleCommander()));
         assertTrue(permission.hasPermission(new PlayerCommander(UUID.randomUUID()) {
             @Override

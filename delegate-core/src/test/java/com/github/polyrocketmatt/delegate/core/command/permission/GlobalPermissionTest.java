@@ -18,7 +18,6 @@ public class GlobalPermissionTest {
     public void testHasPermission() {
         GlobalPermission permission = new GlobalPermission();
 
-        assertThrows(IllegalArgumentException.class, () -> permission.hasPermission(null));
         assertTrue(permission.hasPermission(new ConsoleCommander()));
         assertTrue(permission.hasPermission(new PlayerCommander(UUID.randomUUID()) {
             @Override

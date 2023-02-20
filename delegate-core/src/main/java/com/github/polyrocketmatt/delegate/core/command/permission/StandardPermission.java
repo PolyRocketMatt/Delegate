@@ -42,10 +42,8 @@ public class StandardPermission extends PermissionTier {
                 return entity.isOperator();
             else if (parent instanceof GlobalPermission)
                 return true;
-            else if (parent instanceof StandardPermission)
-                return entity.hasPermission(((StandardPermission) parent).getPermission()) && entity.hasPermission(permission);
             else
-                return false;
+                return entity.hasPermission(((StandardPermission) parent).getPermission()) && entity.hasPermission(permission);
         } else
             return entity.hasPermission(permission);
     }
