@@ -88,6 +88,11 @@ Documentation on how to get started is available on the [Delegate Gitbook](https
 
 Since Delegate is still in development, the documentation is still a work in progress. A JavaDoc will be available soon.
 
+## Latest Changes
+
+### Version 0.0.1
+- First version of Delegate. Currently, in the process of writing unit tests to ensure compatibility with all platforms.
+
 ---
 <h5 align="center">Icons provided by <a href="https://www.flaticon.com/">Flaticon</a></h5>
 
