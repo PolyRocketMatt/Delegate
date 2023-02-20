@@ -10,6 +10,9 @@ import com.github.polyrocketmatt.delegate.api.command.argument.rule.RuleData;
 
 public class IntRangeRule extends ArgumentRule<Boolean> {
 
+    private final int min, max;
+    private final boolean leftInclusive, rightInclusive;
+
     /**
      * Creates a new rule that checks if an input is a number and is within the specified range.
      *
@@ -26,6 +29,11 @@ public class IntRangeRule extends ArgumentRule<Boolean> {
                         && (rightInclusive ? value <= max : value < max));
             } catch (NumberFormatException ex) { return new RuleData<>(false); }
         });
+
+        this.min = min;
+        this.max = max;
+        this.leftInclusive = leftInclusive;
+        this.rightInclusive = rightInclusive;
     }
 
     /**
@@ -38,12 +46,28 @@ public class IntRangeRule extends ArgumentRule<Boolean> {
         this(min, max, true, true);
     }
 
+    public int getMin() {
+        return min;
+    }
+
+    public int getMax() {
+        return max;
+    }
+
+    public boolean isLeftInclusive() {
+        return leftInclusive;
+    }
+
+    public boolean isRightInclusive() {
+        return rightInclusive;
+    }
+
     @Override
     public ArgumentRuleResult interpretResult(CommandArgument<?> argument, String input, RuleData<?> output) {
         if (!(output.value() instanceof Boolean result))
             return new ArgumentRuleResult(ArgumentRuleResult.Result.FAILURE, "Expected result of rule did not match");
         if (!result)
-            return new ArgumentRuleResult(ArgumentRuleResult.Result.FAILURE, "Value was null or not a number inside the valid range");
+            return new ArgumentRuleResult(ArgumentRuleResult.Result.FAILURE, "Value was null or not a number inside the valid range: %s (min: %s, max: %s)".formatted(input, min, max));
         return new ArgumentRuleResult(ArgumentRuleResult.Result.SUCCESS, "Successfully passed %s".formatted(getClass().getSimpleName()));
     }
 
