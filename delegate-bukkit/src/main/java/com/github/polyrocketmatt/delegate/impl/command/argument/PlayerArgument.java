@@ -6,7 +6,7 @@ package com.github.polyrocketmatt.delegate.impl.command.argument;
 import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.api.command.argument.rule.ArgumentRule;
-import com.github.polyrocketmatt.delegate.core.command.argument.rule.DefaultRule;
+import com.github.polyrocketmatt.delegate.api.exception.ArgumentParseException;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.NonNullRule;
 import com.github.polyrocketmatt.delegate.core.utils.ArrayUtils;
 import com.mojang.brigadier.StringReader;
@@ -14,43 +14,10 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class PlayerArgument extends CommandArgument<Player> {
-
-    /**
-     * Creates a new {@link PlayerArgument} with an identifier and a description.
-     *
-     * @param identifier The identifier of the argument.
-     * @param argumentDescription The description of the argument.
-     */
-    private PlayerArgument(String identifier, String argumentDescription) {
-        super(identifier, argumentDescription, Player.class, new NonNullRule());
-    }
-
-    /**
-     * Creates a new {@link PlayerArgument} with an identifier, a description and a
-     * default value.
-     *
-     * @param identifier The identifier of the argument.
-     * @param argumentDescription The description of the argument.
-     * @param defaultValue The default value of the argument.
-     */
-    private PlayerArgument(String identifier, String argumentDescription, Player defaultValue) {
-        super(identifier, argumentDescription, Player.class, new DefaultRule<>(defaultValue));
-    }
-
-    /**
-     * Creates a new {@link PlayerArgument} with an identifier, a description and an {@link ArgumentRule}.
-     *
-     * @param identifier The identifier of the argument.
-     * @param argumentDescription The description of the argument.
-     * @param rule The rule of the argument.
-     */
-    private PlayerArgument(String identifier, String argumentDescription, ArgumentRule<?> rule) {
-        super(identifier, argumentDescription, Player.class, rule);
-    }
 
     /**
      * Creates a new {@link PlayerArgument} with an identifier, a description, a default value and a
@@ -59,10 +26,11 @@ public class PlayerArgument extends CommandArgument<Player> {
      * @param identifier The identifier of the argument.
      * @param argumentDescription The description of the argument.
      * @param defaultValue The default value of the argument.
+     * @param isOptional Whether the argument is optional or not.
      * @param rules The rules of the argument.
      */
-    private PlayerArgument(String identifier, String argumentDescription, Player defaultValue, ArgumentRule<?> rules) {
-        super(identifier, argumentDescription, Player.class, ArrayUtils.combine(List.of(new DefaultRule<>(defaultValue)), List.of(rules)));
+    private PlayerArgument(String identifier, String argumentDescription, Player defaultValue, boolean isOptional, List<ArgumentRule<?>> rules) {
+        super(identifier, argumentDescription, Player.class, new Argument<>(identifier, defaultValue), isOptional, rules);
     }
 
     @Override
@@ -73,10 +41,19 @@ public class PlayerArgument extends CommandArgument<Player> {
     }
 
     @Override
-    public Player parse(StringReader reader) throws CommandSyntaxException {
-        Player player = Bukkit.getPlayer(reader.readString());
+    public Player parse(StringReader reader) {
+        int start = reader.getCursor();
+        try {
+            Player player = Bukkit.getPlayer(reader.readString());
 
-        return (player != null) ? player : getDefault().output();
+            return (player != null) ? player : getDefault().output();
+        } catch (CommandSyntaxException ex) {
+            reader.setCursor(start);
+
+            if (getDefault().output() == null)
+                throw new ArgumentParseException("The argument '" + getIdentifier() + "' must be a player", Player.class);
+            return getDefault().output();
+        }
     }
 
     /**
@@ -87,7 +64,7 @@ public class PlayerArgument extends CommandArgument<Player> {
      * @return The created {@link PlayerArgument}.
      */
     public static PlayerArgument of(String identifier, String argumentDescription) {
-        return new PlayerArgument(identifier, argumentDescription);
+        return new PlayerArgument(identifier, argumentDescription, null, false, List.of());
     }
 
     /**
@@ -100,7 +77,7 @@ public class PlayerArgument extends CommandArgument<Player> {
      * @return The created {@link PlayerArgument}.
      */
     public static PlayerArgument of(String identifier, String argumentDescription, Player defaultValue) {
-        return new PlayerArgument(identifier, argumentDescription, defaultValue);
+        return new PlayerArgument(identifier, argumentDescription, defaultValue, false, List.of());
     }
 
     /**
@@ -108,11 +85,12 @@ public class PlayerArgument extends CommandArgument<Player> {
      *
      * @param identifier The identifier of the argument.
      * @param argumentDescription The description of the argument.
-     * @param rule The rule of the argument.
+     * @param rules The rules of the argument.
      * @return The created {@link PlayerArgument}.
      */
-    public static PlayerArgument of(String identifier, String argumentDescription, ArgumentRule<?> rule) {
-        return new PlayerArgument(identifier, argumentDescription, rule);
+    public static PlayerArgument of(String identifier, String argumentDescription, ArgumentRule<?>... rules) {
+        boolean isOptional = Arrays.stream(rules).noneMatch(rule -> rule instanceof NonNullRule);
+        return new PlayerArgument(identifier, argumentDescription, null, isOptional, List.of(rules));
     }
 
     /**
@@ -125,8 +103,9 @@ public class PlayerArgument extends CommandArgument<Player> {
      * @param rules The rules of the argument.
      * @return The created {@link PlayerArgument}.
      */
-    public static PlayerArgument of(String identifier, String argumentDescription, Player defaultValue, ArgumentRule<?> rules) {
-        return new PlayerArgument(identifier, argumentDescription, defaultValue, rules);
+    public static PlayerArgument of(String identifier, String argumentDescription, Player defaultValue, ArgumentRule<?>... rules) {
+        boolean isOptional = Arrays.stream(rules).noneMatch(rule -> rule instanceof NonNullRule);
+        return new PlayerArgument(identifier, argumentDescription, defaultValue, isOptional, List.of(rules));
     }
 
 }
