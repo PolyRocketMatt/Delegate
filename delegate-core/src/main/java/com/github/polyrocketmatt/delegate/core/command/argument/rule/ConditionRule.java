@@ -32,7 +32,7 @@ public class ConditionRule extends ArgumentRule<Boolean> {
         if (!(output.value() instanceof Boolean result))
             return new ArgumentRuleResult(ArgumentRuleResult.Result.FAILURE, "Expected result of rule did not match");
         if (!result)
-            return new ArgumentRuleResult(ArgumentRuleResult.Result.FAILURE, "Condition was not met");
+            return new ArgumentRuleResult(ArgumentRuleResult.Result.FAILURE, "Condition was not met for input: %s".formatted(input));
         return new ArgumentRuleResult(ArgumentRuleResult.Result.SUCCESS, "Successfully passed %s".formatted(getClass().getSimpleName()));
     }
 

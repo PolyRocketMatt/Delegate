@@ -27,6 +27,8 @@ public abstract class ArgumentRule<O> {
      * @param rule The {@link Function} which represents the rule to apply.
      */
     public ArgumentRule(Function<String, RuleData<O>> rule) {
+        if (rule == null)
+            throw new IllegalArgumentException("Rule cannot be null");
         this.rule = rule;
     }
 
