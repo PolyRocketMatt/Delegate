@@ -3,6 +3,10 @@
 
 package com.github.polyrocketmatt.delegate.api.command;
 
+import org.jetbrains.annotations.NotNull;
+
+import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
+
 /**
  * Represents a command attribute that can be used to describe or modify
  * a command.
@@ -19,9 +23,9 @@ public abstract class CommandAttribute implements ICommandAttribute {
      *
      * @param identifier The identifier of the attribute.
      */
-    public CommandAttribute(String identifier) {
-        if (identifier == null)
-            throw new IllegalArgumentException("Identifier cannot be null");
+    public CommandAttribute(@NotNull String identifier) {
+        validate(identifier);
+
         if (identifier.isEmpty() || identifier.isBlank())
             throw new IllegalArgumentException("Identifier cannot be empty or blank");
         this.identifier = identifier;
@@ -32,7 +36,7 @@ public abstract class CommandAttribute implements ICommandAttribute {
      *
      * @return The identifier of the attribute.
      */
-    public String getIdentifier() {
+    public @NotNull String getIdentifier() {
         return identifier;
     }
 }
