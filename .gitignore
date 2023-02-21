@@ -33,7 +33,6 @@ delegate-velocity/dependency-reduced-pom.xml
 
 # Test
 delegate-test.iml
-delegate-test/**
 
 # Debug
 eula.txt
