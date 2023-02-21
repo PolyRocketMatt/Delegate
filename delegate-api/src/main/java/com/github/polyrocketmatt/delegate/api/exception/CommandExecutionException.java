@@ -8,6 +8,8 @@ import com.github.polyrocketmatt.delegate.api.command.feedback.CommandFeedbackIn
 import com.github.polyrocketmatt.delegate.api.command.feedback.FeedbackType;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 
+import java.util.Arrays;
+
 import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 
 /**
@@ -32,7 +34,11 @@ public class CommandExecutionException extends RuntimeException {
     public CommandExecutionException(CommandDispatchInformation dispatch, String feedback, FeedbackType type, Object[] args) {
         super(feedback.formatted(args));
 
-        validate(dispatch, feedback, type, args);
+        validate("dispatch", CommandDispatchInformation.class, dispatch);
+        validate("feedback", String.class, feedback);
+        validate("type", FeedbackType.class, type);
+        validate("args", Object[].class, args);
+        Arrays.stream(args).forEach(arg -> validate("argument", Object.class, arg));
 
         this.dispatchInformation = dispatch;
         this.feedbackInformation = new CommandFeedbackInformation(feedback, type, args);

@@ -25,14 +25,15 @@ public class DelegateConfiguration {
     }
 
     public DelegateConfiguration setFeedback(@NotNull FeedbackType type, @NotNull String message) {
-        validate(type, message);
+        validate("type", FeedbackType.class, type);
+        validate("message", String.class, message);
 
         this.feedbackMessages.put(type, message);
         return this;
     }
 
     public String get(@NotNull FeedbackType type) {
-        validate(type);
+        validate("type", FeedbackType.class, type);
 
         return this.feedbackMessages.get(type);
     }

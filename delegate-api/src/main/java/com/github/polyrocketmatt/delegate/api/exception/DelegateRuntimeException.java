@@ -23,7 +23,8 @@ public class DelegateRuntimeException extends RuntimeException {
     public DelegateRuntimeException(String message, Throwable cause) {
         super(message, cause);
 
-        validate(message, cause);
+        validate("message", String.class, message);
+        validate("cause", Throwable.class, cause);
     }
 
 }

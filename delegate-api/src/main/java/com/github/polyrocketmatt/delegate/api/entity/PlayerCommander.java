@@ -27,7 +27,7 @@ public abstract class PlayerCommander implements CommanderEntity {
      * @param uuid The unique id of the player that issued a command.
      */
     public PlayerCommander(@NotNull UUID uuid) {
-        validate(uuid);
+        validate("uuid", UUID.class, uuid);
 
         this.uuid = uuid;
     }

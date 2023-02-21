@@ -22,7 +22,7 @@ public class AttributeException extends RuntimeException {
     public AttributeException(String message) {
         super(message);
 
-        validate(message);
+        validate("message", String.class, message);
     }
 
 }

@@ -10,7 +10,7 @@ public class CommandEventException extends RuntimeException {
     public CommandEventException(String message) {
         super(message);
 
-        validate(message);
+        validate("message", String.class, message);
     }
 
 }

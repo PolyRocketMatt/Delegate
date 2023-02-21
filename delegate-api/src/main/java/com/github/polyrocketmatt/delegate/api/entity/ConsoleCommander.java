@@ -17,7 +17,7 @@ public class ConsoleCommander implements CommanderEntity {
 
     @Override
     public boolean hasPermission(@NotNull String permission) {
-        validate(permission);
+        validate("permission", String.class, permission);
 
         return true;
     }
@@ -29,7 +29,7 @@ public class ConsoleCommander implements CommanderEntity {
 
     @Override
     public void sendMessage(@NotNull String message) {
-        validate(message);
+        validate("message", String.class, message);
 
         System.out.println(message);
     }

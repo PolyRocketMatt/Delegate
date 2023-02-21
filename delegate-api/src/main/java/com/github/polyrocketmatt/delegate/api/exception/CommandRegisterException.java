@@ -21,7 +21,7 @@ public class CommandRegisterException extends RuntimeException {
     public CommandRegisterException(String message) {
         super(message);
 
-        validate(message);
+        validate("message", String.class, message);
     }
 
     /**
@@ -33,7 +33,8 @@ public class CommandRegisterException extends RuntimeException {
     public CommandRegisterException(String message, Throwable cause) {
         super(message, cause);
 
-        validate(message, cause);
+        validate("message", String.class, message);
+        validate("cause", Throwable.class, cause);
     }
 
 }
