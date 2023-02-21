@@ -13,6 +13,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,14 +35,14 @@ public class WorldArgument extends CommandArgument<World> {
     }
 
     @Override
-    public Argument<World> parse(String input) {
+    public @NotNull Argument<World> parse(@NotNull String input) {
         World world = Bukkit.getWorld(input);
 
         return (world != null) ? new Argument<>(getIdentifier(), world) : getDefault();
     }
 
     @Override
-    public World parse(StringReader reader) {
+    public @NotNull World parse(@NotNull StringReader reader) {
         int start = reader.getCursor();
         try {
             World world = Bukkit.getWorld(reader.readString());

@@ -10,6 +10,7 @@ import com.github.polyrocketmatt.delegate.api.exception.ArgumentParseException;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.NonNullRule;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -37,7 +38,7 @@ public class IntArgument extends CommandArgument<Integer> {
     }
 
     @Override
-    public Argument<Integer> parse(String input) {
+    public @NotNull Argument<Integer> parse(@NotNull String input) {
         try {
             return new Argument<>(getIdentifier(), Integer.parseInt(input));
         } catch (NumberFormatException ex) {
@@ -48,7 +49,7 @@ public class IntArgument extends CommandArgument<Integer> {
     }
 
     @Override
-    public Integer parse(StringReader reader) throws ArgumentParseException {
+    public @NotNull Integer parse(@NotNull StringReader reader) throws ArgumentParseException {
         int start = reader.getCursor();
         try {
             return reader.readInt();

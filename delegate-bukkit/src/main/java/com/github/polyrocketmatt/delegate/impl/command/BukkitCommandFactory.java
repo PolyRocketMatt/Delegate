@@ -7,6 +7,7 @@ import com.github.polyrocketmatt.delegate.api.command.ICommandFactory;
 import com.github.polyrocketmatt.delegate.core.command.DelegateCommandBuilder;
 import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
+import org.jetbrains.annotations.NotNull;
 
 public class BukkitCommandFactory implements ICommandFactory {
 
@@ -18,7 +19,7 @@ public class BukkitCommandFactory implements ICommandFactory {
      * @return The new {@link DelegateCommandBuilder}.
      */
     @Override
-    public BukkitCommandBuilder create(String name, String description) {
+    public @NotNull BukkitCommandBuilder create(@NotNull String name, @NotNull String description) {
         BukkitCommandBuilder builder = new BukkitCommandBuilder();
 
         builder.withDefinition(new NameDefinition(name));

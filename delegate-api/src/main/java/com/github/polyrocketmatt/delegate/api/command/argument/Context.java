@@ -4,6 +4,7 @@
 package com.github.polyrocketmatt.delegate.api.command.argument;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,14 +16,15 @@ public class Context {
     private final List<Argument<?>> arguments;
 
     public Context(@NotNull List<Argument<?>> arguments) {
-        validate(arguments);
+        validate("arguments", List.class, arguments);
+        arguments.forEach(argument -> validate("element", Argument.class, argument));
 
         this.arguments = arguments;
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T find(@NotNull String identifier) {
-        validate(identifier);
+    public <T> @Nullable T find(@NotNull String identifier) {
+        validate("identifier", String.class, identifier);
 
         Optional<Argument<?>> element = arguments.stream()
                 .filter(argument -> argument.identifier().equals(identifier))

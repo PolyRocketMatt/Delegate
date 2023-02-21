@@ -31,8 +31,7 @@ public abstract class CommandAction extends CommandAttribute implements Bufferab
      */
     public CommandAction(@NotNull String identifier, @NotNull PermissionTier permissionTier, int precedence) {
         super(identifier);
-
-        validate(permissionTier);
+        validate("permissionTier", PermissionTier.class, permissionTier);
 
         if (precedence < 0)
             throw new IllegalArgumentException("Precedence cannot be negative");

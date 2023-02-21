@@ -32,6 +32,6 @@ public interface RunnableCommandAction {
      * @param inputs The actual inputs provided by the user.
      * @return The result of the command.
      */
-    @NotNull ActionItem<?> run(CommanderEntity commander, List<Argument<?>> arguments);
+    @NotNull ActionItem<?> run(@NotNull CommanderEntity commander, @NotNull List<Argument<?>> arguments);
 
 }

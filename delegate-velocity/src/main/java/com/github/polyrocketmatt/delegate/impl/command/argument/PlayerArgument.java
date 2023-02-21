@@ -12,6 +12,7 @@ import com.github.polyrocketmatt.delegate.impl.Delegate;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.velocitypowered.api.proxy.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,14 +35,14 @@ public class PlayerArgument extends CommandArgument<Player> {
     }
 
     @Override
-    public Argument<Player> parse(String input) {
+    public @NotNull Argument<Player> parse(@NotNull String input) {
         Optional<Player> player = Delegate.getProxy().getPlayer(input);
 
         return player.map(value -> new Argument<>(getIdentifier(), value)).orElseGet(this::getDefault);
     }
 
     @Override
-    public Player parse(StringReader reader) {
+    public @NotNull Player parse(@NotNull StringReader reader) {
         int start = reader.getCursor();
         try {
             Optional<Player> player = Delegate.getProxy().getPlayer(reader.readString());

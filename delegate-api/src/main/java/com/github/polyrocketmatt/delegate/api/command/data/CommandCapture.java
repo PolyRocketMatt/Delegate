@@ -3,19 +3,27 @@
 
 package com.github.polyrocketmatt.delegate.api.command.data;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 
 public class CommandCapture implements Iterable<CommandCapture.Capture> {
 
     private final List<Capture> captures;
 
-    public CommandCapture(List<Capture> captures) {
+    public CommandCapture(@NotNull List<Capture> captures) {
+        validate("captures", List.class, captures);
+        captures.forEach(capture -> validate("element", Capture.class, capture));
+
         this.captures = captures;
     }
 
-    public ActionItem<?> getResultOf(String name) {
+    public @Nullable ActionItem<?> getResultOf(String name) {
         return captures.stream()
                 .filter(capture -> capture.action().equals(name))
                 .findFirst()
@@ -23,14 +31,14 @@ public class CommandCapture implements Iterable<CommandCapture.Capture> {
                 .orElse(null);
     }
 
-    public Capture getCaptureOf(String name) {
+    public @Nullable Capture getCaptureOf(String name) {
         return captures.stream()
                 .filter(capture -> capture.action().equals(name))
                 .findFirst()
                 .orElse(null);
     }
 
-    public List<ActionItem.Result> getResults() {
+    public @NotNull List<ActionItem.Result> getResults() {
         return captures.stream()
                 .map(Capture::result)
                 .map(ActionItem::getResult)
@@ -42,10 +50,17 @@ public class CommandCapture implements Iterable<CommandCapture.Capture> {
     }
 
     @Override
-    public Iterator<Capture> iterator() {
+    public @NotNull Iterator<Capture> iterator() {
         return captures.iterator();
     }
 
-    public record Capture(String action, ActionItem<?> result) { }
+    public record Capture(@NotNull String action, @NotNull ActionItem<?> result) {
+
+        public Capture {
+            validate("action", String.class, action);
+            validate("result", ActionItem.class, result);
+        }
+
+    }
 
 }

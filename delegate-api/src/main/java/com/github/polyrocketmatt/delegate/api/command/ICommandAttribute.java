@@ -4,6 +4,7 @@
 package com.github.polyrocketmatt.delegate.api.command;
 
 import com.github.polyrocketmatt.delegate.api.AttributeType;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a command attribute with a certain type.
@@ -18,7 +19,7 @@ public interface ICommandAttribute {
      *
      * @return The type of the attribute.
      */
-    default AttributeType getType() {
+    default @NotNull AttributeType getType() {
         return AttributeType.UNKNOWN;
     }
 

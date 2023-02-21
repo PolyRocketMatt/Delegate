@@ -3,6 +3,8 @@
 
 package com.github.polyrocketmatt.delegate.api.command.feedback;
 
+import org.jetbrains.annotations.NotNull;
+
 public enum FeedbackType {
 
     //  Command Related
@@ -27,7 +29,7 @@ public enum FeedbackType {
         this.defaultMessage = defaultMessage;
     }
 
-    public String getDefaultMessage() {
+    public @NotNull String getDefaultMessage() {
         return defaultMessage;
     }
 

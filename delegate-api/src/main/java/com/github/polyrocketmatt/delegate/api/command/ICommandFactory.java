@@ -3,6 +3,8 @@
 
 package com.github.polyrocketmatt.delegate.api.command;
 
+import org.jetbrains.annotations.NotNull;
+
 public interface ICommandFactory {
 
     /**
@@ -12,8 +14,6 @@ public interface ICommandFactory {
      * @param description The description of the command.
      * @return The new {@link ICommandFactory}.
      */
-    ICommandBuilder create(String name, String description);
-
-    //ICommandBuilder create(String name, String description);
+    @NotNull ICommandBuilder create(@NotNull String name, @NotNull String description);
 
 }

@@ -24,7 +24,7 @@ public abstract class CommandAttribute implements ICommandAttribute {
      * @param identifier The identifier of the attribute.
      */
     public CommandAttribute(@NotNull String identifier) {
-        validate(identifier);
+        validate("identifier", String.class, identifier);
 
         if (identifier.isEmpty() || identifier.isBlank())
             throw new IllegalArgumentException("Identifier cannot be empty or blank");

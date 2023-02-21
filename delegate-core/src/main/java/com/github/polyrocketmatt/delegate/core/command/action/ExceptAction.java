@@ -64,7 +64,7 @@ public class ExceptAction extends CommandAttribute implements Bufferable {
     }
 
     @Override
-    public AttributeType getType() {
+    public @NotNull AttributeType getType() {
         return AttributeType.EXCEPT_ACTION;
     }
 }

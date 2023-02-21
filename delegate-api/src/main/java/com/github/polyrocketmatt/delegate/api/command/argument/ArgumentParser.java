@@ -4,8 +4,13 @@
 package com.github.polyrocketmatt.delegate.api.command.argument;
 
 import com.github.polyrocketmatt.delegate.api.exception.ArgumentParseException;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
+
+import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
+import static com.github.polyrocketmatt.delegate.api.StringUtils.newId;
 
 /**
  * Defines a parser that has the ability to parse a string into a specific type.
@@ -21,11 +26,12 @@ public interface ArgumentParser<T> {
      * Parses the given string into the type that this parser is defined to parse into.
      *
      * @param input The string to parse.
-     * @param onFail The consumer to call if the parsing fails.
      * @return The parsed argument.
      */
-    default Argument<T> parse(String input) {
-        return null;
+    default @NotNull Argument<T> parse(@NotNull String input) {
+        validate("input", String.class, input);
+
+        return new Argument<>(newId(), null);
     }
 
     /**
@@ -36,7 +42,10 @@ public interface ArgumentParser<T> {
      * @param parseType The type that the string was supposed to be parsed into.
      * @return The wrapped exception.
      */
-    default ArgumentParseException onFail(String input, Exception wrappedException, Class<T> parseType) {
+    default ArgumentParseException onFail(@NotNull String input, @Nullable Exception wrappedException, @NotNull Class<T> parseType) {
+        validate("input", String.class, input);
+        validate("parseType", Class.class, parseType);
+
         return (wrappedException == null) ?
                 new ArgumentParseException("Failed to parse argument \"%s\"".formatted(input), parseType)
             :

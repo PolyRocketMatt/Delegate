@@ -10,6 +10,7 @@ import com.github.polyrocketmatt.delegate.api.exception.ArgumentParseException;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.NonNullRule;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -37,7 +38,7 @@ public class FloatArgument extends CommandArgument<Float> {
     }
 
     @Override
-    public Argument<Float> parse(String input) {
+    public @NotNull Argument<Float> parse(@NotNull String input) {
         try {
             return new Argument<>(getIdentifier(), Float.parseFloat(input));
         } catch (NumberFormatException ex) {
@@ -48,7 +49,7 @@ public class FloatArgument extends CommandArgument<Float> {
     }
 
     @Override
-    public Float parse(StringReader reader) {
+    public @NotNull Float parse(@NotNull StringReader reader) {
         int start = reader.getCursor();
         try {
             return reader.readFloat();

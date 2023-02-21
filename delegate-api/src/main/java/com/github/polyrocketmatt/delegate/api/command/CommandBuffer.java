@@ -24,7 +24,8 @@ import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 public record CommandBuffer<T extends Bufferable>(List<T> bufferElements) implements Iterable<T> {
 
     public CommandBuffer {
-        validate(bufferElements);
+        validate("bufferElements", List.class, bufferElements);
+        bufferElements.forEach(element -> validate("element", Bufferable.class, element));
     }
 
     /**

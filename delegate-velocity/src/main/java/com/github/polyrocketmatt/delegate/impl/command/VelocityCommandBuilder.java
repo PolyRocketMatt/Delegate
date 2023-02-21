@@ -39,6 +39,7 @@ import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTier
 import com.github.polyrocketmatt.delegate.core.command.permission.StandardPermission;
 import com.github.polyrocketmatt.delegate.impl.command.argument.PlayerArgument;
 import com.velocitypowered.api.proxy.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -59,7 +60,7 @@ public class VelocityCommandBuilder extends DelegateCommandBuilder {
      * @throws AttributeException If the attribute is a {@link CommandAction} whose precedence is less than 0.
      */
     @Override
-    public VelocityCommandBuilder with(ICommandAttribute attribute) {
+    public @NotNull VelocityCommandBuilder with(ICommandAttribute attribute) {
         if (attribute instanceof CommandAction && ((CommandAction) attribute).getPrecedence() < 0)
             throw new AttributeException("Action precedence must be greater than 0");
         this.attributes.add((CommandAttribute) attribute);
@@ -73,7 +74,7 @@ public class VelocityCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public ICommandBuilder withAlias(String alias) {
+    public @NotNull ICommandBuilder withAlias(String alias) {
         return this.with(new AliasDefinition(alias));
     }
 
@@ -84,7 +85,7 @@ public class VelocityCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public ICommandBuilder withAliases(String... aliases) {
+    public @NotNull ICommandBuilder withAliases(String... aliases) {
         for (String alias : aliases)
             this.withAlias(alias);
         return this;
@@ -98,7 +99,7 @@ public class VelocityCommandBuilder extends DelegateCommandBuilder {
      * @throws AttributeException If the action's precedence is less than 0.
      */
     @Override
-    public VelocityCommandBuilder withAction(CommandAction action) {
+    public @NotNull VelocityCommandBuilder withAction(CommandAction action) {
         //  Check that action precedence is greater than or equal to 0
         if (action.getPrecedence() <= 0)
             throw new AttributeException("Action precedence must be greater than 0");
@@ -112,7 +113,7 @@ public class VelocityCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public VelocityCommandBuilder withArgument(CommandArgument<?> argument) {
+    public @NotNull VelocityCommandBuilder withArgument(CommandArgument<?> argument) {
         return this.with(argument);
     }
 
@@ -124,7 +125,7 @@ public class VelocityCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public VelocityCommandBuilder withFloat(String name, String description) {
+    public @NotNull VelocityCommandBuilder withFloat(String name, String description) {
         return this.with(FloatArgument.of(name, description));
     }
 
@@ -137,7 +138,7 @@ public class VelocityCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public VelocityCommandBuilder withFloat(String name, String description, float defaultValue) {
+    public @NotNull VelocityCommandBuilder withFloat(String name, String description, float defaultValue) {
         return this.with(FloatArgument.of(name, description, defaultValue));
     }
 
@@ -149,7 +150,7 @@ public class VelocityCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public VelocityCommandBuilder withInt(String name, String description) {
+    public @NotNull VelocityCommandBuilder withInt(String name, String description) {
         return this.with(IntArgument.of(name, description));
     }
 
@@ -162,7 +163,7 @@ public class VelocityCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public VelocityCommandBuilder withInt(String name, String description, int defaultValue) {
+    public @NotNull VelocityCommandBuilder withInt(String name, String description, int defaultValue) {
         return this.with(IntArgument.of(name, description, defaultValue));
     }
 
@@ -174,7 +175,7 @@ public class VelocityCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public VelocityCommandBuilder withString(String name, String description) {
+    public @NotNull VelocityCommandBuilder withString(String name, String description) {
         return this.with(StringArgument.of(name, description));
     }
 
@@ -187,7 +188,7 @@ public class VelocityCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public VelocityCommandBuilder withString(String name, String description, String defaultValue) {
+    public @NotNull VelocityCommandBuilder withString(String name, String description, String defaultValue) {
         return this.with(StringArgument.of(name, description, defaultValue));
     }
 
@@ -198,7 +199,7 @@ public class VelocityCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public VelocityCommandBuilder withDefinition(CommandDefinition<?> definition) {
+    public @NotNull VelocityCommandBuilder withDefinition(CommandDefinition<?> definition) {
         return this.with(definition);
     }
 
@@ -209,7 +210,7 @@ public class VelocityCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public VelocityCommandBuilder withSubcommand(CommandDefinition<?> subcommand) {
+    public @NotNull VelocityCommandBuilder withSubcommand(CommandDefinition<?> subcommand) {
         if (!(subcommand instanceof SubcommandDefinition))
             throw new AttributeException("Subcommand must be a SubcommandDefinition");
         return this.with(subcommand);
@@ -222,7 +223,7 @@ public class VelocityCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public VelocityCommandBuilder withProperty(CommandProperty property) {
+    public @NotNull VelocityCommandBuilder withProperty(CommandProperty property) {
         return this.with(property);
     }
 
@@ -232,7 +233,7 @@ public class VelocityCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public VelocityCommandBuilder withAsync() {
+    public @NotNull VelocityCommandBuilder withAsync() {
         return this.with(new AsyncProperty());
     }
 
@@ -242,7 +243,7 @@ public class VelocityCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public VelocityCommandBuilder withIgnoreNull() {
+    public @NotNull VelocityCommandBuilder withIgnoreNull() {
         return this.with(new IgnoreNullProperty());
     }
 
@@ -252,37 +253,37 @@ public class VelocityCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public VelocityCommandBuilder withIgnoreNonPresent() {
+    public @NotNull VelocityCommandBuilder withIgnoreNonPresent() {
         return this.with(new IgnoreNonPresentProperty());
     }
 
     @Override
-    public VelocityCommandBuilder withExceptionCatching() {
+    public @NotNull VelocityCommandBuilder withExceptionCatching() {
         return this.with(new CatchExceptionProperty());
     }
 
     @Override
-    public VelocityCommandBuilder withPermission(PermissionTier tier) {
+    public @NotNull VelocityCommandBuilder withPermission(PermissionTier tier) {
         return this.with(tier);
     }
 
     @Override
-    public VelocityCommandBuilder withPermission(String permission, PermissionTier parent) {
+    public @NotNull VelocityCommandBuilder withPermission(String permission, PermissionTier parent) {
         return this.with(new StandardPermission(permission, parent));
     }
 
     @Override
-    public VelocityCommandBuilder withPermission(String permission) {
+    public @NotNull VelocityCommandBuilder withPermission(String permission) {
         return this.withPermission(new StandardPermission(permission));
     }
 
     @Override
-    public VelocityCommandBuilder withOperatorPermission() {
+    public @NotNull VelocityCommandBuilder withOperatorPermission() {
         return this.withPermission(PermissionTierType.OPERATOR.getTier());
     }
 
     @Override
-    public VelocityCommandBuilder withGlobalPermission() {
+    public @NotNull VelocityCommandBuilder withGlobalPermission() {
         return this.withPermission(PermissionTierType.GLOBAL.getTier());
     }
 

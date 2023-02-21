@@ -133,7 +133,7 @@ public class SupplierAction<T> extends CommandAction {
     }
 
     @Override
-    public @NotNull ActionItem<?> run(CommanderEntity commander, List<Argument<?>> arguments) {
+    public @NotNull ActionItem<?> run(@NotNull CommanderEntity commander, @NotNull List<Argument<?>> arguments) {
         if (commander == null)
             throw new IllegalArgumentException("Commander cannot be null");
         if (arguments == null)

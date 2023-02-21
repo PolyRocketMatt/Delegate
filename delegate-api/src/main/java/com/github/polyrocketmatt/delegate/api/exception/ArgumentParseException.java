@@ -26,7 +26,8 @@ public class ArgumentParseException extends RuntimeException {
      */
     public ArgumentParseException(@NotNull String message, @NotNull Class<?> parseType) {
         super(message);
-        validate(message, parseType);
+        validate(String.class, message);
+        validate(Class.class, parseType);
 
         this.parseType = parseType;
     }
@@ -40,7 +41,8 @@ public class ArgumentParseException extends RuntimeException {
      */
     public ArgumentParseException(@NotNull String message, @NotNull Throwable cause, @NotNull Class<?> parseType) {
         super(message, cause);
-        validate(message, cause, parseType);
+        validate(String.class, message);
+        validate(Throwable.class, cause);
 
         this.parseType = parseType;
     }
