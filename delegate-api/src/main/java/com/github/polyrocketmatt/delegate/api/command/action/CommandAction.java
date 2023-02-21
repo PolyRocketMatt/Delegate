@@ -9,6 +9,8 @@ import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
 import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
 import org.jetbrains.annotations.NotNull;
 
+import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
+
 /**
  * Defines a command action with a precedence.
  *
@@ -29,6 +31,9 @@ public abstract class CommandAction extends CommandAttribute implements Bufferab
      */
     public CommandAction(@NotNull String identifier, @NotNull PermissionTier permissionTier, int precedence) {
         super(identifier);
+
+        validate(permissionTier);
+
         if (precedence < 0)
             throw new IllegalArgumentException("Precedence cannot be negative");
         this.permissionTier = permissionTier;
@@ -40,7 +45,7 @@ public abstract class CommandAction extends CommandAttribute implements Bufferab
      *
      * @return The permission tier of the command action.
      */
-    public PermissionTier getPermissionTier() {
+    public @NotNull PermissionTier getPermissionTier() {
         return permissionTier;
     }
 
@@ -54,7 +59,7 @@ public abstract class CommandAction extends CommandAttribute implements Bufferab
     }
 
     @Override
-    public AttributeType getType() {
+    public @NotNull AttributeType getType() {
         return AttributeType.ACTION;
     }
 }

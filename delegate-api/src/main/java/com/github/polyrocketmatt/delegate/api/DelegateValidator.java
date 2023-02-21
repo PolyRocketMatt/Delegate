@@ -3,6 +3,7 @@ package com.github.polyrocketmatt.delegate.api;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import java.util.List;
 
 public class DelegateValidator {
 
@@ -15,6 +16,11 @@ public class DelegateValidator {
 
     public static void validate(Object... objects) {
         for (Object object : objects)
+            validate(object);
+    }
+
+    public static <T> void validate(List<T> objects) {
+        for (T object : objects)
             validate(object);
     }
 

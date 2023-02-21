@@ -134,7 +134,7 @@ public class FunctionAction extends CommandAction {
     }
 
     @Override
-    public ActionItem<?> run(CommanderEntity commander, List<Argument<?>> arguments) {
+    public @NotNull ActionItem<?> run(CommanderEntity commander, List<Argument<?>> arguments) {
         if (commander == null)
             throw new IllegalArgumentException("Commander cannot be null");
         if (arguments == null)

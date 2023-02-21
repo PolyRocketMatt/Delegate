@@ -50,6 +50,7 @@
         <module>delegate-sponge</module>
         <module>delegate-api</module>
         <module>delegate-paper</module>
+        <module>delegate-test</module>
     </modules>
 
 </project>

@@ -22,4 +22,9 @@ public abstract class PermissionTier extends CommandAttribute implements Buffera
     public AttributeType getType() {
         return AttributeType.PERMISSION;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof PermissionTier;
+    }
 }

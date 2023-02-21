@@ -7,6 +7,7 @@ import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -31,6 +32,6 @@ public interface RunnableCommandAction {
      * @param inputs The actual inputs provided by the user.
      * @return The result of the command.
      */
-    ActionItem<?> run(CommanderEntity commander, List<Argument<?>> arguments);
+    @NotNull ActionItem<?> run(CommanderEntity commander, List<Argument<?>> arguments);
 
 }
