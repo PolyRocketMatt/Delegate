@@ -151,7 +151,7 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @param input The string to parse.
      * @return The parsed argument as an {@link Argument}.
      */
-    public abstract @NotNull Argument<T> parse(@NotNull String input) throws ArgumentParseException;
+    public abstract @NotNull Argument<T> parse(@Nullable String input) throws ArgumentParseException;
 
     /**
      * Parses the argument value from the given string reader and returns

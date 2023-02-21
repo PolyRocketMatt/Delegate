@@ -33,7 +33,7 @@ public class ContextTest {
 
     @Test
     public void testConstructorIllegal() {
-        assertThrows(NullPointerException.class, () -> new Context(null));
+        assertThrows(IllegalArgumentException.class, () -> new Context(null));
         assertThrows(IllegalArgumentException.class, () -> new Context(argumentsInvalid));
     }
 

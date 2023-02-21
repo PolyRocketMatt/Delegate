@@ -34,7 +34,7 @@ public class CommandBufferTest {
 
     @Test
     public void testConstructorNullItems() {
-        assertThrows(NullPointerException.class, () -> new CommandBuffer<>(null));
+        assertThrows(IllegalArgumentException.class, () -> new CommandBuffer<>(null));
     }
 
     @Test

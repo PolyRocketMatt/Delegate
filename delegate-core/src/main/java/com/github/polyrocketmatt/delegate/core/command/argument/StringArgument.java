@@ -12,10 +12,13 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandExceptionType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
+import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 
 /**
  * Represents a {@link CommandArgument} that parses a string from the input.
@@ -40,7 +43,7 @@ public class StringArgument extends CommandArgument<String> {
     }
 
     @Override
-    public @NotNull Argument<String> parse(@NotNull String input) {
+    public @NotNull Argument<String> parse(@Nullable String input) {
         if (input != null) {
             //  Check if string starts and ends with a double quote
             if (input.startsWith("\"") && input.endsWith("\"")) {
