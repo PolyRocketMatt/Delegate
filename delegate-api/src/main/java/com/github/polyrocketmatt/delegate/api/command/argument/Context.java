@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
@@ -28,6 +29,19 @@ public class Context {
 
         Optional<Argument<?>> element = arguments.stream()
                 .filter(argument -> argument.identifier().equals(identifier))
+                .findFirst();
+        return element.map(argument -> (T) argument.output()).orElse(null);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> @Nullable T find(@NotNull String identifier, @NotNull Class<T> type) {
+        validate("identifier", String.class, identifier);
+
+        Optional<Argument<?>> element = arguments.stream()
+                .filter(Objects::nonNull)
+                .filter(argument -> argument.identifier().equals(identifier))
+                .filter(argument -> argument.output() != null)
+                .filter(argument -> argument.output().getClass().equals(type))
                 .findFirst();
         return element.map(argument -> (T) argument.output()).orElse(null);
     }

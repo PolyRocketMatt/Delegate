@@ -1,8 +1,6 @@
 package com.github.polyrocketmatt.delegate.api.command.argument;// Copyright (c) Matthias Kovacic. All rights reserved.
 // Licensed under the MIT license.
 
-import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
-import com.github.polyrocketmatt.delegate.api.command.argument.Context;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -16,6 +14,7 @@ public class ContextTest {
         add(new Argument<>("arg1", "test"));
         add(new Argument<>("arg2", 1));
         add(new Argument<>("arg3", true));
+        add(new Argument<>("arg4", null));
     }};
 
     private final List<Argument<?>> argumentsInvalid = new ArrayList<>() {{
@@ -28,7 +27,7 @@ public class ContextTest {
     public void testConstructor() {
         Context context = new Context(argumentsValid);
 
-        assertEquals(3, context.size());
+        assertEquals(4, context.size());
     }
 
     @Test
@@ -42,10 +41,22 @@ public class ContextTest {
         Context context = new Context(argumentsValid);
 
         assertEquals("test", context.find("arg1"));
-        assertEquals(1, (int) context.find("arg2"));
+        assertEquals(1, (Integer) context.find("arg2"));
         assertEquals(true, context.find("arg3"));
-
         assertNull(context.find("arg4"));
+        assertNull(context.find("arg5"));
+    }
+
+    @Test
+    public void testFindSecure() {
+        Context context = new Context(argumentsValid);
+
+        assertEquals("test", context.find("arg1", String.class));
+        assertEquals(1, context.find("arg2", Integer.class));
+        assertEquals(true, context.find("arg3", Boolean.class));
+        assertNull(context.find("arg4"));
+        assertNull(context.find("arg5"));
+        assertNull(context.find("arg1", Integer.class));
     }
 
     @Test
@@ -69,7 +80,7 @@ public class ContextTest {
         Context context = new Context(argumentsValid);
 
         assertThrows(IndexOutOfBoundsException.class, () -> context.get(-1));
-        assertThrows(IndexOutOfBoundsException.class, () -> context.get(3));
+        assertThrows(IndexOutOfBoundsException.class, () -> context.get(4));
     }
 
 }
