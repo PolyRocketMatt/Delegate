@@ -98,18 +98,18 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
     }
 
     @Override
-    public PlatformType getPlatformType() {
+    public @NotNull PlatformType getPlatformType() {
         return PlatformType.BUKKIT;
     }
 
     @Override
-    public ICommandFactory getFactoryImplementation() {
+    public @NotNull ICommandFactory getFactoryImplementation() {
         return factory;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public void registerToPlatform(IDelegateCommand command) throws CommandRegisterException {
+    public void registerToPlatform(@NotNull IDelegateCommand command) throws CommandRegisterException {
         if (this.getPlugin() == null)
             throw new CommandRegisterException("Plugin is not hooked into Delegate!");
         if (this.commandMap == null)
@@ -140,7 +140,7 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
     }
 
     @Override
-    public boolean execute(CommandDispatchInformation information) throws CommandExecutionException {
+    public boolean execute(@NotNull CommandDispatchInformation information) throws CommandExecutionException {
         return getDelegateAPI().getCommandHandler().handle(information);
     }
 
@@ -149,21 +149,21 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
     }
 
     @Override
-    public boolean hasPermission(CommanderEntity entity, String permission) throws UnsupportedOperationException {
+    public boolean hasPermission(@NotNull CommanderEntity entity, @NotNull String permission) throws UnsupportedOperationException {
         if (!(entity instanceof BukkitPlayerCommander commander))
             throw new UnsupportedOperationException("Expected entity to be of type BukkitPlayerCommander, but got %s".formatted(entity.getClass().getName()));
         return commander.hasPermission(permission);
     }
 
     @Override
-    public boolean isOperator(CommanderEntity entity) throws UnsupportedOperationException {
+    public boolean isOperator(@NotNull CommanderEntity entity) throws UnsupportedOperationException {
         if (!(entity instanceof BukkitPlayerCommander commander))
             throw new UnsupportedOperationException("Expected entity to be of type BukkitPlayerCommander, but got %s".formatted(entity.getClass().getName()));
         return commander.isOperator();
     }
 
     @Override
-    public boolean dispatch(CommandDispatchInformation information, CommandCapture capture) {
+    public boolean dispatch(@NotNull CommandDispatchInformation information, @NotNull CommandCapture capture) {
         DelegateCommandEvent event = new DelegateCommandEvent(plugin, information, capture);
         Bukkit.getServer().getPluginManager().callEvent(event);
 

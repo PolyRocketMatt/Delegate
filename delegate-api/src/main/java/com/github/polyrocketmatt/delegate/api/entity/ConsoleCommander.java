@@ -40,4 +40,8 @@ public class ConsoleCommander implements CommanderEntity {
         return object instanceof ConsoleCommander;
     }
 
+    @Override
+    public boolean isPlayer() {
+        return false;
+    }
 }

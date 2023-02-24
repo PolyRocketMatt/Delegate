@@ -33,6 +33,10 @@ public class BukkitPlayerCommander extends PlayerCommander {
         this.permissionAttachmentInfos = this.player.getEffectivePermissions();
     }
 
+    public Player getPlayer() {
+        return player;
+    }
+
     @Override
     public boolean hasPermission(@NotNull String permission) {
         return this.player.hasPermission(permission);
@@ -46,5 +50,10 @@ public class BukkitPlayerCommander extends PlayerCommander {
     @Override
     public void sendMessage(@NotNull String message) {
         this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+    }
+
+    @Override
+    public boolean isPlayer() {
+        return true;
     }
 }

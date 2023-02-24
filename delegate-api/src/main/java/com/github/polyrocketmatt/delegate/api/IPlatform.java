@@ -10,22 +10,23 @@ import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.exception.CommandExecutionException;
 import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException;
+import org.jetbrains.annotations.NotNull;
 
 public interface IPlatform {
 
-    PlatformType getPlatformType();
+    @NotNull PlatformType getPlatformType();
 
-    ICommandFactory getFactoryImplementation();
+    @NotNull ICommandFactory getFactoryImplementation();
 
-    void registerToPlatform(IDelegateCommand name) throws CommandRegisterException;
+    void registerToPlatform(@NotNull IDelegateCommand name) throws CommandRegisterException;
 
-    boolean execute(CommandDispatchInformation information) throws CommandExecutionException;
+    boolean execute(@NotNull CommandDispatchInformation information) throws CommandExecutionException;
 
-    boolean hasPermission(CommanderEntity entity, String permission) throws UnsupportedOperationException;
+    boolean hasPermission(@NotNull CommanderEntity entity, @NotNull String permission) throws UnsupportedOperationException;
 
-    boolean isOperator(CommanderEntity entity) throws UnsupportedOperationException;
+    boolean isOperator(@NotNull CommanderEntity entity) throws UnsupportedOperationException;
 
-    boolean dispatch(CommandDispatchInformation information, CommandCapture capture);
+    boolean dispatch(@NotNull CommandDispatchInformation information, @NotNull CommandCapture capture);
 
     boolean metricsEnabled();
 

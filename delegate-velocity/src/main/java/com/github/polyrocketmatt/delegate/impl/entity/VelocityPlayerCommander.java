@@ -30,6 +30,10 @@ public class VelocityPlayerCommander extends PlayerCommander {
         this.player = optionalPlayer.get();
     }
 
+    public Player getPlayer() {
+        return player;
+    }
+
     @Override
     public boolean hasPermission(@NotNull String permission) {
         return this.player.hasPermission(permission);
@@ -45,4 +49,8 @@ public class VelocityPlayerCommander extends PlayerCommander {
         this.player.sendMessage(ColorConverter.convert(message));
     }
 
+    @Override
+    public boolean isPlayer() {
+        return true;
+    }
 }

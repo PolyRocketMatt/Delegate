@@ -16,9 +16,11 @@ public enum FeedbackType {
     ACTIONS_NULL("The actions list is null for command %s."),
 
     ARGS_INVALID_COUNT("Wrong number of arguments. Expected %d, got %d."),
-    ARGS_INVALID_IDENTIFIER("Invalid identifier %s."),
-    ARGS_INVALID_FORMAT("Wrong argument format. Expected %s, got %s."),
+    ARGS_INVALID_IDENTIFIER("Invalid argument identifier: %s."),
+    ARGS_INVALID_FORMAT("Wrong argument format for argument %s. Expected %s, got %s."),
     ARGS_INVALID_PARSE_RESULT("Argument %s could not successfully be parsed to %s."),
+    ARGS_DUPLICATE_IDENTIFIER("Duplicate argument identifier: %s."),
+    ARGS_INVALID_TYPE("Invalid argument type for argument %s: %s."),
 
     BRIGADIER_SYNTAX("%s"),
     BRIGADIER_EXCEPTION("An exception occurred while executing the command using Brigadier: %s");

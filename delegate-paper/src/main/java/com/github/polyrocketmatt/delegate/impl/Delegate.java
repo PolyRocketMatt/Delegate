@@ -39,6 +39,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
 
 public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
@@ -97,24 +98,26 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
     }
 
     @Override
-    public PlatformType getPlatformType() {
+    public @NotNull PlatformType getPlatformType() {
         return PlatformType.PAPER;
     }
 
     @Override
-    public ICommandFactory getFactoryImplementation() {
+    public @NotNull ICommandFactory getFactoryImplementation() {
         return factory;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public void registerToPlatform(IDelegateCommand command) throws CommandRegisterException {
+    public void registerToPlatform(@NotNull IDelegateCommand command) throws CommandRegisterException {
+        validate("command", IDelegateCommand.class, command);
+
+        System.out.println("Registering command -> " + command.getNameDefinition().getValue());
+
         if (this.getPlugin() == null)
             throw new CommandRegisterException("Plugin is not hooked into Delegate!");
         if (this.commandMap == null)
             throw new CommandRegisterException("Unable to retrieve command map!");
-        if (command == null)
-            throw new CommandRegisterException("Command is null!");
         if (commands.stream().anyMatch(cmd -> cmd.getNameDefinition().getValue().equalsIgnoreCase(command.getNameDefinition().getValue())))
             throw new CommandRegisterException("Command already registered: %s".formatted(command.getNameDefinition().getValue()));
         commands.add(command);
@@ -139,7 +142,7 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
     }
 
     @Override
-    public boolean execute(CommandDispatchInformation information) throws CommandExecutionException {
+    public boolean execute(@NotNull CommandDispatchInformation information) throws CommandExecutionException {
         return getDelegateAPI().getCommandHandler().handle(information);
     }
 
@@ -148,21 +151,21 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
     }
 
     @Override
-    public boolean hasPermission(CommanderEntity entity, String permission) throws UnsupportedOperationException {
+    public boolean hasPermission(@NotNull CommanderEntity entity, @NotNull String permission) throws UnsupportedOperationException {
         if (!(entity instanceof PaperPlayerCommander commander))
             throw new UnsupportedOperationException("Expected entity to be of type BukkitPlayerCommander, but got %s".formatted(entity.getClass().getName()));
         return commander.hasPermission(permission);
     }
 
     @Override
-    public boolean isOperator(CommanderEntity entity) throws UnsupportedOperationException {
+    public boolean isOperator(@NotNull CommanderEntity entity) throws UnsupportedOperationException {
         if (!(entity instanceof PaperPlayerCommander commander))
             throw new UnsupportedOperationException("Expected entity to be of type BukkitPlayerCommander, but got %s".formatted(entity.getClass().getName()));
         return commander.isOperator();
     }
 
     @Override
-    public boolean dispatch(CommandDispatchInformation information, CommandCapture capture) {
+    public boolean dispatch(@NotNull CommandDispatchInformation information, @NotNull CommandCapture capture) {
         DelegateCommandEvent event = new DelegateCommandEvent(plugin, information, capture);
         Bukkit.getServer().getPluginManager().callEvent(event);
 
@@ -175,7 +178,7 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, Command command, @NotNull String label, String[] args) {
         CommanderEntity entity = (sender instanceof Player) ? new PaperPlayerCommander((Player) sender) : new ConsoleCommander();
         CommandDispatchInformation information = new CommandDispatchInformation(entity, command.getName(), args);
 
@@ -190,7 +193,7 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender commandSender, Command command, String label, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, String[] args) {
         //  If we're using brigadier, we don't need to do anything here
         if (getDelegateAPI().useBrigadier())
             return null;

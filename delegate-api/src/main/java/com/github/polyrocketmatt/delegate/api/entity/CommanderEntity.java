@@ -19,4 +19,6 @@ public interface CommanderEntity {
 
     void sendMessage(@NotNull String message);
 
+    boolean isPlayer();
+
 }

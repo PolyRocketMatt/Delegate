@@ -28,6 +28,7 @@ import com.github.polyrocketmatt.delegate.api.exception.CommandExecutionExceptio
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
 
@@ -60,23 +61,28 @@ public class InternalCommandHandler extends DelegateCommandHandler {
      * @param node The {@link CommandNode} to add.
      */
     public boolean registerCommand(CommandNode node) {
-        for (CommandNode root : commandTree.getRoots()) {
-            try {
-                registerCommand(node, root, null);
-            } catch (CommandExecutionException ex) {
-                ex.printStackTrace();
+        if (commandTree.getRoots().size() == 0) {
+            registerCommand(node, null, null);
+        }else
+            for (CommandNode root : commandTree.getRoots()) {
+                System.out.println("    " + root.getCommand().getNameDefinition().getValue());
 
-                //  If any exception occurred, we did not successfully register the command
-                return false;
+                try {
+                    registerCommand(node, root, null);
+                } catch (CommandExecutionException ex) {
+                    ex.printStackTrace();
+
+                    //  If any exception occurred, we did not successfully register the command
+                    return false;
+                }
             }
-        }
 
         return true;
     }
 
     private void registerCommand(CommandNode node, CommandNode match, CommandNode parent) throws CommandRegisterException {
         //  We perform a "match check", checking if the node and match have the same definitions
-        if (match(node, match)) {
+        if (match != null && match(node, match)) {
             //  If the match is not verified, we cannot safely replace it, and we must throw an exception
             if (!match.isVerified())
                 throw new CommandRegisterException("Cannot replace unverified command node with verified command node");
@@ -201,6 +207,9 @@ public class InternalCommandHandler extends DelegateCommandHandler {
         } catch (CommandExecutionException ex) {
             if (safeExecute)
                 return generateEventFromException(information, ex);
+
+            //  Inform the commander of the error
+            commander.sendMessage(ex.getFeedback());
         }
 
         return false;
@@ -259,7 +268,7 @@ public class InternalCommandHandler extends DelegateCommandHandler {
         boolean ignoreNonPresent = commandProperties.stream().anyMatch(property -> property instanceof IgnoreNonPresentProperty);
 
         //  Check argument counts
-        if (commandArguments.size() > arguments.length && !ignoreNonPresent)
+        if (commandArguments.size() > arguments.length && !ignoreNonPresent && !ignoreNull)
             throw exceptOrThrow(information, command, FeedbackType.ARGS_INVALID_COUNT, commandArguments.size(), arguments.length);
 
         //  Check argument types
@@ -273,11 +282,17 @@ public class InternalCommandHandler extends DelegateCommandHandler {
                 int argumentIndex = commandArguments.indexWhere(arg -> arg.getIdentifier().equals(parts[0]));
                 if (argumentIndex == -1)
                     throw exceptOrThrow(information, command, FeedbackType.ARGS_INVALID_IDENTIFIER, parts[0]);
+
+                //  Check if the argument was already parsed
+                if (verifiedArguments[argumentIndex] != null)
+                    throw exceptOrThrow(information, command, FeedbackType.ARGS_DUPLICATE_IDENTIFIER, parts[0]);
+
                 verifiedArguments[argumentIndex] = parts[1];
                 isAssigmentOperator++;
             } else {
                 if (isAssigmentOperator != 0)
-                    throw exceptOrThrow(information, command, FeedbackType.ARGS_INVALID_FORMAT, argument);
+                    throw exceptOrThrow(information, command, FeedbackType.ARGS_INVALID_FORMAT,
+                            Objects.requireNonNullElse(commandArguments.get(i).getIdentifier(), "unknown"), "=", " ");
                 else
                     verifiedArguments[i] = argument;
             }
@@ -285,10 +300,9 @@ public class InternalCommandHandler extends DelegateCommandHandler {
 
         //  Check that all arguments have been successfully parsed
         if (!ignoreNull)
-            for (int i = 0; i < verifiedArguments.length; i++) {
+            for (int i = 0; i < verifiedArguments.length; i++)
                 if (verifiedArguments[i] == null)
-                    throw exceptOrThrow(information, command, FeedbackType.ARGS_INVALID_FORMAT, arguments[i]);
-            }
+                    throw exceptOrThrow(information, command, FeedbackType.ARGS_INVALID_TYPE, commandArguments.get(i).getIdentifier(), arguments[i]);
 
         //  Parse all argument rules, the index should be equal to the amount of command arguments
         //  except if the ignore non-present property is set.
@@ -315,7 +329,7 @@ public class InternalCommandHandler extends DelegateCommandHandler {
             try {
                 parsedArguments.add(commandArgument.parse(argument));
             } catch (ArgumentParseException ex) {
-                throw exceptOrThrow(information, command, FeedbackType.ARGS_INVALID_PARSE_RESULT, argument, ex.getParseType().getName());
+                throw exceptOrThrow(information, command, FeedbackType.ARGS_INVALID_PARSE_RESULT, Objects.requireNonNullElse(argument, "null"), ex.getParseType().getName());
             }
         }
 
