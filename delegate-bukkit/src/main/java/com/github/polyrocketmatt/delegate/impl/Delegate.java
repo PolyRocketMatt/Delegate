@@ -16,6 +16,7 @@ import com.github.polyrocketmatt.delegate.api.exception.CommandExecutionExceptio
 import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException;
 import com.github.polyrocketmatt.delegate.api.exception.DelegateRuntimeException;
 import com.github.polyrocketmatt.delegate.core.DelegateCore;
+import com.github.polyrocketmatt.delegate.impl.command.BukkitCommandBuilder;
 import com.github.polyrocketmatt.delegate.impl.command.BukkitCommandFactory;
 import com.github.polyrocketmatt.delegate.impl.entity.BukkitPlayerCommander;
 import com.github.polyrocketmatt.delegate.impl.event.DelegateCommandEvent;
@@ -30,6 +31,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -37,6 +39,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
 
 public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
@@ -86,8 +89,8 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
         return DelegateCore.getDelegateAPI();
     }
 
-    public static BukkitCommandFactory getFactory() {
-        return factory;
+    public static BukkitCommandBuilder create(@NotNull String name, @NotNull String description) {
+        return factory.create(name, description);
     }
 
     private Plugin getPlugin() {

@@ -14,6 +14,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,7 +36,9 @@ public class PlayerArgument extends CommandArgument<Player> {
     }
 
     @Override
-    public @NotNull Argument<Player> parse(@NotNull String input) {
+    public @NotNull Argument<Player> parse(@Nullable String input) {
+        if (input == null)
+           return getDefault();
         Player player = Bukkit.getPlayer(input);
 
         return (player != null) ? new Argument<>(getIdentifier(), player) : getDefault();

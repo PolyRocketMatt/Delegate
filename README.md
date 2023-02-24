@@ -60,7 +60,7 @@ public class ExamplePlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         //  Create / Register a new Delegate command
-        Delegate.getFactory().create("hello", "Broadcasts a message to the server")
+        Delegate.create("hello", "Broadcasts a message to the server")
                 .withString("name", "The name of the person you want to say hello to")
                 .withConsumerAction((commander, args) -> Bukkit.getServer().broadcastMessage("Hello, %s".formatted(args.get("name"))))
                 .build();

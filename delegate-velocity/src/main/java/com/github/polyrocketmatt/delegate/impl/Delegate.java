@@ -14,12 +14,14 @@ import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.exception.CommandExecutionException;
 import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException;
 import com.github.polyrocketmatt.delegate.core.DelegateCore;
+import com.github.polyrocketmatt.delegate.impl.command.VelocityCommandBuilder;
 import com.github.polyrocketmatt.delegate.impl.command.VelocityCommandFactory;
 import com.github.polyrocketmatt.delegate.impl.entity.VelocityPlayerCommander;
 import com.github.polyrocketmatt.delegate.impl.event.DelegateCommandEvent;
 import com.velocitypowered.api.command.CommandManager;
 import com.velocitypowered.api.proxy.ProxyServer;
 import org.bstats.velocity.Metrics;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,8 +76,8 @@ public class Delegate implements IPlatform {
         return DelegateCore.getDelegateAPI();
     }
 
-    public static VelocityCommandFactory getFactory() {
-        return factory;
+    public static VelocityCommandBuilder create(@NotNull String name, @NotNull String description) {
+        return factory.create(name, description);
     }
 
     private Class<?> getPlugin() {
