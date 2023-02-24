@@ -23,7 +23,9 @@ public class CommandCapture implements Iterable<CommandCapture.Capture> {
         this.captures = captures;
     }
 
-    public @Nullable ActionItem<?> getResultOf(String name) {
+    public @Nullable ActionItem<?> getResultOf(@NotNull String name) {
+        validate("name", String.class, name);
+
         return captures.stream()
                 .filter(capture -> capture.action().equals(name))
                 .findFirst()
@@ -31,7 +33,9 @@ public class CommandCapture implements Iterable<CommandCapture.Capture> {
                 .orElse(null);
     }
 
-    public @Nullable Capture getCaptureOf(String name) {
+    public @Nullable Capture getCaptureOf(@NotNull String name) {
+        validate("name", String.class, name);
+
         return captures.stream()
                 .filter(capture -> capture.action().equals(name))
                 .findFirst()
