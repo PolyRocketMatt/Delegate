@@ -4,6 +4,7 @@
 package com.github.polyrocketmatt.delegate.api.command.argument;
 
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
+import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,6 +21,7 @@ import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
+@API(status = API.Status.STABLE, since = "0.0.1")
 public record Argument<T>(@NotNull String identifier, @Nullable T output) {
 
     public Argument {

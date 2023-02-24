@@ -7,6 +7,7 @@ import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
+import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.List;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
+@API(status = API.Status.STABLE, since = "0.0.1")
 public interface RunnableCommandAction {
 
     /**

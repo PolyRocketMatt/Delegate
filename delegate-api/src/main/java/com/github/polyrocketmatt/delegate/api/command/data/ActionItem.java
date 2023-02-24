@@ -4,6 +4,7 @@
 package com.github.polyrocketmatt.delegate.api.command.data;
 
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
+import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,6 +16,7 @@ import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
+@API(status = API.Status.STABLE, since = "0.0.1")
 public class ActionItem<T> implements ActionResult {
 
     private final Result result;

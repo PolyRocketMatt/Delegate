@@ -4,6 +4,7 @@
 package com.github.polyrocketmatt.delegate.api.command;
 
 import com.github.polyrocketmatt.delegate.api.AttributeType;
+import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -12,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
+@API(status = API.Status.STABLE, since = "0.0.1")
 public interface ICommandAttribute {
 
     /**

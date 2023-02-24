@@ -6,6 +6,7 @@ package com.github.polyrocketmatt.delegate.api.command.property;
 import com.github.polyrocketmatt.delegate.api.AttributeType;
 import com.github.polyrocketmatt.delegate.api.Bufferable;
 import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
+import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 
 import static com.github.polyrocketmatt.delegate.api.StringUtils.newId;
@@ -17,6 +18,7 @@ import static com.github.polyrocketmatt.delegate.api.StringUtils.newId;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
+@API(status = API.Status.STABLE, since = "0.0.1")
 public abstract class CommandProperty extends CommandAttribute implements Bufferable {
 
     /**

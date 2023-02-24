@@ -9,6 +9,7 @@ import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
 import com.github.polyrocketmatt.delegate.api.command.CommandDispatchInformation;
 import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
 import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
+import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.function.BiConsumer;
 import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 import static com.github.polyrocketmatt.delegate.api.StringUtils.newId;
 
+@API(status = API.Status.STABLE, since = "0.0.1")
 public abstract class CommandTrigger extends CommandAttribute implements Bufferable {
 
     protected final BiConsumer<CommandDispatchInformation, CommandCapture> trigger;

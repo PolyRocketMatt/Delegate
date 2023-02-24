@@ -13,6 +13,7 @@ import com.github.polyrocketmatt.delegate.api.exception.ArgumentParseException;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,6 +30,7 @@ import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
+@API(status = API.Status.STABLE, since = "0.0.1")
 public abstract class CommandArgument<T> extends CommandAttribute implements Bufferable, ArgumentParser<T>, ArgumentType<T> {
 
     private final String argumentDescription;

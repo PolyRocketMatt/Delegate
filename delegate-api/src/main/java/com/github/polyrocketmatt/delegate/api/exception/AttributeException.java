@@ -3,6 +3,8 @@
 
 package com.github.polyrocketmatt.delegate.api.exception;
 
+import org.apiguardian.api.API;
+
 import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 
 /**
@@ -12,6 +14,7 @@ import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
+@API(status = API.Status.STABLE, since = "0.0.1")
 public class AttributeException extends RuntimeException {
 
     /**

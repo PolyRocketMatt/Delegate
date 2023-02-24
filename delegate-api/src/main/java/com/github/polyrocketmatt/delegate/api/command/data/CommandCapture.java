@@ -3,6 +3,7 @@
 
 package com.github.polyrocketmatt.delegate.api.command.data;
 
+import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 
 import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 
+@API(status = API.Status.STABLE, since = "0.0.1")
 public class CommandCapture implements Iterable<CommandCapture.Capture> {
 
     private final List<Capture> captures;

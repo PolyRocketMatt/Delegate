@@ -3,6 +3,8 @@
 
 package com.github.polyrocketmatt.delegate.api;
 
+import org.apiguardian.api.API;
+
 import java.util.function.Consumer;
 
 /**
@@ -14,6 +16,7 @@ import java.util.function.Consumer;
  * @since 1.8
  */
 @FunctionalInterface
+@API(status = API.Status.STABLE, since = "0.0.1")
 public interface TriConsumer<S, T, U> {
 
     /**

@@ -3,6 +3,7 @@
 
 package com.github.polyrocketmatt.delegate.api.command;
 
+import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 
 import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
@@ -14,6 +15,7 @@ import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
+@API(status = API.Status.STABLE, since = "0.0.1")
 public abstract class CommandAttribute implements ICommandAttribute {
 
     private final String identifier;

@@ -36,6 +36,11 @@
             <artifactId>annotations</artifactId>
             <version>${jetbrains.annotations.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apiguardian</groupId>
+            <artifactId>apiguardian-api</artifactId>
+            <version>${apiguardian.api.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

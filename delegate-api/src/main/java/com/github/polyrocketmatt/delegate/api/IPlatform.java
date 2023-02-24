@@ -10,8 +10,10 @@ import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.exception.CommandExecutionException;
 import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException;
+import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 
+@API(status = API.Status.STABLE, since = "0.0.1")
 public interface IPlatform {
 
     @NotNull PlatformType getPlatformType();

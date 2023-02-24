@@ -7,6 +7,7 @@ import com.github.polyrocketmatt.delegate.api.command.CommandDispatchInformation
 import com.github.polyrocketmatt.delegate.api.command.feedback.CommandFeedbackInformation;
 import com.github.polyrocketmatt.delegate.api.command.feedback.FeedbackType;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
+import org.apiguardian.api.API;
 
 import java.util.Arrays;
 
@@ -18,6 +19,7 @@ import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
+@API(status = API.Status.STABLE, since = "0.0.1")
 public class CommandExecutionException extends RuntimeException {
 
     private final CommandDispatchInformation dispatchInformation;

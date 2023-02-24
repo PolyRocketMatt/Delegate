@@ -8,6 +8,7 @@ import com.github.polyrocketmatt.delegate.api.configuration.DelegateConfiguratio
 import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException;
 import com.github.polyrocketmatt.delegate.api.handlers.CommandHandler;
 import com.github.polyrocketmatt.delegate.api.handlers.IHandler;
+import org.apiguardian.api.API;
 
 /**
  * The Delegate API which is the entry point for platform implementations
@@ -16,6 +17,7 @@ import com.github.polyrocketmatt.delegate.api.handlers.IHandler;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
+@API(status = API.Status.STABLE, since = "0.0.1")
 public interface DelegateAPI {
 
     /**

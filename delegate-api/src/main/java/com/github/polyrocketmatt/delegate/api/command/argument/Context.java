@@ -3,6 +3,7 @@
 
 package com.github.polyrocketmatt.delegate.api.command.argument;
 
+import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Optional;
 
 import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 
+@API(status = API.Status.STABLE, since = "0.0.1")
 public class Context {
 
     private final List<Argument<?>> arguments;

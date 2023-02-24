@@ -8,12 +8,14 @@ import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.api.command.definition.CommandDefinition;
 import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
 import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
+import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Builder that allows to build a command.
  *
  */
+@API(status = API.Status.STABLE, since = "0.0.1")
 public interface ICommandBuilder {
 
     @NotNull IDelegateCommand build();

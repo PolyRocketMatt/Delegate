@@ -3,12 +3,14 @@
 
 package com.github.polyrocketmatt.delegate.api.command.feedback;
 
+import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
 import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 
+@API(status = API.Status.STABLE, since = "0.0.1")
 public record CommandFeedbackInformation(@NotNull String feedback, @NotNull FeedbackType type, @NotNull Object[] args) {
 
     public CommandFeedbackInformation {

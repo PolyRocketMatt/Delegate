@@ -4,6 +4,7 @@
 package com.github.polyrocketmatt.delegate.api.configuration;
 
 import com.github.polyrocketmatt.delegate.api.command.feedback.FeedbackType;
+import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 
 import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 
+@API(status = API.Status.STABLE, since = "0.0.1")
 public class DelegateConfiguration {
     private final Map<FeedbackType, String> feedbackMessages;
 

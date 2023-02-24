@@ -5,6 +5,7 @@ package com.github.polyrocketmatt.delegate.api.command.definition;
 
 import com.github.polyrocketmatt.delegate.api.AttributeType;
 import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
+import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 
 import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
@@ -18,6 +19,7 @@ import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
+@API(status = API.Status.STABLE, since = "0.0.1")
 public abstract class CommandDefinition<T> extends CommandAttribute {
 
     private final T value;

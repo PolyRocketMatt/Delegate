@@ -4,6 +4,7 @@
 package com.github.polyrocketmatt.delegate.api.command.data;
 
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
+import org.apiguardian.api.API;
 
 /**
  * Represents an {@link ActionItem} from a {@link CommandAction}
@@ -12,6 +13,7 @@ import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
+@API(status = API.Status.STABLE, since = "0.0.1")
 public class SuccessActionResult extends ActionItem<Object> {
 
     /**
