@@ -65,8 +65,6 @@ public class InternalCommandHandler extends DelegateCommandHandler {
             registerCommand(node, null, null);
         }else
             for (CommandNode root : commandTree.getRoots()) {
-                System.out.println("    " + root.getCommand().getNameDefinition().getValue());
-
                 try {
                     registerCommand(node, root, null);
                 } catch (CommandExecutionException ex) {
@@ -132,7 +130,8 @@ public class InternalCommandHandler extends DelegateCommandHandler {
      */
     //  TODO: Add default execution routines on exception against argument parsing
     @Override
-    public boolean handle(CommandDispatchInformation information) throws CommandExecutionException {
+    public boolean handle(CommandDispatchInformation commandDispatchInformation) throws CommandExecutionException {
+        CommandDispatchInformation information = commandDispatchInformation;
         CommanderEntity commander = information.commander();
         String commandName = information.command();
         String[] commandArguments = information.arguments();
@@ -184,6 +183,10 @@ public class InternalCommandHandler extends DelegateCommandHandler {
             if (command.getArgumentBuffer().size() < remainingArguments.length)
                 throw exceptOrThrow(information, command, FeedbackType.COMMAND_NON_EXISTENT, matchedCommandPattern + " " + String.join(" ", remainingArguments));
 
+            //  Before argument verification, we combine string arguments
+            information = this.combineStringArguments(information);
+
+            //  Verify arguments
             String[] verifiedArguments = this.verifyArguments(information, command, remainingArguments);
             List<Argument<?>> parsedArguments = this.parseArguments(information, command, verifiedArguments);
 
@@ -256,6 +259,37 @@ public class InternalCommandHandler extends DelegateCommandHandler {
         if (permissionTiers.size() == 0)
             return true;
         return permissionTiers.stream().anyMatch(tier -> tier.hasPermission(commander));
+    }
+
+    private CommandDispatchInformation combineStringArguments(CommandDispatchInformation information) {
+        List<String> combinedStringArguments = new ArrayList<>();
+        StringBuilder buffer = new StringBuilder();
+
+        for (String argument : information.arguments()) {
+            if (argument.startsWith("\"") && !argument.endsWith("\"")) {
+                buffer.append(argument.substring(1)).append(" ");
+
+                continue;
+            }
+
+            if (argument.endsWith("\"") && !argument.startsWith("\"")) {
+                buffer.append(argument, 0, argument.length() - 1);
+                combinedStringArguments.add(buffer.toString());
+                buffer = new StringBuilder();
+
+                continue;
+            }
+
+            if (argument.startsWith("\"") && argument.endsWith("\"")) {
+                combinedStringArguments.add(argument.substring(1, argument.length() - 1));
+
+                continue;
+            }
+
+            combinedStringArguments.add(argument);
+        }
+
+        return new CommandDispatchInformation(information.commander(), information.command(), combinedStringArguments.toArray(String[]::new));
     }
 
     private String[] verifyArguments(CommandDispatchInformation information, VerifiedDelegateCommand command, String[] arguments) {
