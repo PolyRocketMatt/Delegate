@@ -9,26 +9,28 @@
 
 <h1 align="center">Delegate</h1>
 
-Delegate is a simple yet powerful command delegation framework for Bukkit/Spigot/Paper plugins.
-It allows for the creation, management and execution of commands.
+Delegate is a general-purpose command framework specifically designed for different Minecraft server platforms.
+Developers can use this framework, designed with fluent interfaces in mind to automatically parse commands, resolve
+contexts and execute actions.
 
 ## Why choose Delegate?
 
 In the past, many command frameworks have been created for various Minecraft server
 implementations. Personally, I felt like most of these weren't exactly what I
-was personally looking for. These command frameworks where either lacking features
-or becoming convoluted very quickly, or simply didn't support enough platforms.
+was looking for. These command frameworks where either lacking features, 
+became convoluted very quickly, or simply didn't support enough platforms.
 
 Delegate mitigates these problems by allowing the creation of simple commands, but 
 also allows for the creation of complex commands with subcommands, tab completion,
 brigadier support and more. Unlike most command frameworks, at it's core Delegate
 does not use annotation based command creation (it is however possible to use 
-annotations). Furthermore, Delegate is available for pretty much every major
-Minecraft server implementation.
+annotations). Furthermore, Delegate is available for every major
+Minecraft server implementation. If your implementation is not supported, it is possible
+to implement the framework for your platform in minimal time.
 
 ## Features
 
-- Simple yet powerful command creation
+- Simple and powerful command creation/execution
 - Autonomous command handling
 - Platform-agnostic ([Supported Platforms](#supported-platforms))
 - Brigadier integration
