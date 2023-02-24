@@ -1,10 +1,8 @@
 package com.github.polyrocketmatt.delegate.api.entity;
 
-import com.github.polyrocketmatt.delegate.api.entity.ConsoleCommander;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ConsoleCommanderTest {
 
@@ -13,6 +11,7 @@ public class ConsoleCommanderTest {
     @Test
     public void testHasPermission() {
         assertTrue(consoleCommander.hasPermission("any.permission"));
+        assertThrows(IllegalArgumentException.class, () -> consoleCommander.hasPermission(null));
     }
 
     @Test
@@ -23,6 +22,7 @@ public class ConsoleCommanderTest {
     @Test
     public void testSendMessage() {
         assertDoesNotThrow(() -> consoleCommander.sendMessage("Hello, World!"));
+        assertThrows(IllegalArgumentException.class, () -> consoleCommander.sendMessage(null));
     }
 
 }

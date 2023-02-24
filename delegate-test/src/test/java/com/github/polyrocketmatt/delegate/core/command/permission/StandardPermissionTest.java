@@ -3,6 +3,7 @@
 
 package com.github.polyrocketmatt.delegate.core.command.permission;
 
+import com.github.polyrocketmatt.delegate.api.AttributeType;
 import com.github.polyrocketmatt.delegate.api.entity.ConsoleCommander;
 import com.github.polyrocketmatt.delegate.api.entity.PlayerCommander;
 import org.jetbrains.annotations.NotNull;
@@ -35,6 +36,7 @@ public class StandardPermissionTest {
     public void testPrimaryConstructor() {
         StandardPermission permission = new StandardPermission("test.permission");
 
+        assertEquals(AttributeType.PERMISSION, permission.getType());
         assertEquals("test.permission", permission.getPermission());
         assertNull(permission.getParent());
     }
@@ -44,6 +46,7 @@ public class StandardPermissionTest {
         StandardPermission parent = new StandardPermission("test.parent");
         StandardPermission permission = new StandardPermission("test.permission", parent);
 
+        assertEquals(AttributeType.PERMISSION, permission.getType());
         assertEquals("test.permission", permission.getPermission());
         assertEquals(parent, permission.getParent());
     }

@@ -77,7 +77,7 @@ public class CommandArgumentTest {
     };
 
     @Test
-    public void testConstructorValid() {
+    public void testConstructor() {
         CommandArgumentImpl argument = new CommandArgumentImpl(identifier, argumentDescription, argumentType,
                 defaultValue, false, argumentRules);
 

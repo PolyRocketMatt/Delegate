@@ -43,6 +43,7 @@ public abstract class PlayerCommander implements CommanderEntity {
 
     @Override
     public boolean equals(Object object) {
+        if (object == null) return false;
         if (this == object) return true;
         if (!(object instanceof PlayerCommander that)) return false;
         return Objects.equals(uuid, that.uuid);

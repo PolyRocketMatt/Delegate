@@ -3,6 +3,7 @@
 
 package com.github.polyrocketmatt.delegate.core.command.permission;
 
+import com.github.polyrocketmatt.delegate.api.AttributeType;
 import com.github.polyrocketmatt.delegate.api.entity.ConsoleCommander;
 import com.github.polyrocketmatt.delegate.api.entity.PlayerCommander;
 import org.jetbrains.annotations.NotNull;
@@ -18,6 +19,7 @@ public class OperatorPermissionTest {
     public void testHasPermission() {
         OperatorPermission permission = new OperatorPermission();
 
+        assertEquals(AttributeType.PERMISSION, permission.getType());
         assertThrows(IllegalArgumentException.class, () -> permission.hasPermission(null));
         assertTrue(permission.hasPermission(new ConsoleCommander()));
         assertTrue(permission.hasPermission(new PlayerCommander(UUID.randomUUID()) {

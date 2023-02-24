@@ -49,6 +49,18 @@ public class CommandCaptureTest {
     }
 
     @Test
+    public void testCaptureConstructorIllegal() {
+        assertThrows(IllegalArgumentException.class, () -> new CommandCapture.Capture(null, new ActionItem<>(ActionItem.Result.SUCCESS, true)));
+        assertThrows(IllegalArgumentException.class, () -> new CommandCapture.Capture("a1", null));
+
+        CommandCapture.Capture capture = new CommandCapture.Capture("a1", new ActionItem<>(ActionItem.Result.SUCCESS, null));
+
+        assertEquals("a1", capture.action());
+        assertEquals(ActionItem.Result.SUCCESS, capture.result().getResult());
+        assertNull(capture.result().getItem());
+    }
+
+    @Test
     public void testIterator() {
         CommandCapture capture = new CommandCapture(validCaptures);
 

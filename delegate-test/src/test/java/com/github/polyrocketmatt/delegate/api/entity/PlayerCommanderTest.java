@@ -1,6 +1,5 @@
 package com.github.polyrocketmatt.delegate.api.entity;
 
-import com.github.polyrocketmatt.delegate.api.entity.PlayerCommander;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
@@ -31,6 +30,26 @@ public class PlayerCommanderTest {
     @Test
     public void testConstructor() {
         assertEquals(uuid, playerCommander.getUniqueId());
+    }
+
+    @Test
+    public void testConstructorIllegal() {
+        assertThrows(IllegalArgumentException.class, () -> new PlayerCommander(null) {
+            @Override
+            public boolean hasPermission(@NotNull String permission) {
+                return permission.equals("any.permission");
+            }
+
+            @Override
+            public boolean isOperator() {
+                return false;
+            }
+
+            @Override
+            public void sendMessage(@NotNull String message) {
+                System.out.println(message);
+            }
+        });
     }
 
     @Test

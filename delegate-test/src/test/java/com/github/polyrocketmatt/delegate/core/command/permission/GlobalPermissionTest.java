@@ -3,6 +3,7 @@
 
 package com.github.polyrocketmatt.delegate.core.command.permission;
 
+import com.github.polyrocketmatt.delegate.api.AttributeType;
 import com.github.polyrocketmatt.delegate.api.entity.ConsoleCommander;
 import com.github.polyrocketmatt.delegate.api.entity.PlayerCommander;
 import org.jetbrains.annotations.NotNull;
@@ -10,8 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GlobalPermissionTest {
 
@@ -19,6 +19,7 @@ public class GlobalPermissionTest {
     public void testHasPermission() {
         GlobalPermission permission = new GlobalPermission();
 
+        assertEquals(AttributeType.PERMISSION, permission.getType());
         assertTrue(permission.hasPermission(new ConsoleCommander()));
         assertTrue(permission.hasPermission(new PlayerCommander(UUID.randomUUID()) {
             @Override
