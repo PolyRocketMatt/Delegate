@@ -4,7 +4,7 @@
 ![Kotlin](https://img.shields.io/badge/Java-17-%233e7fa8?logo=java&style=for-the-badge)
 
 <p align="center">
-    <img width="128" height="128" src="img/fast-forward.gif" />
+    <img width="128" height="128" src="img/delegate.png" />
 </p>
 
 <h1 align="center">Delegate</h1>
