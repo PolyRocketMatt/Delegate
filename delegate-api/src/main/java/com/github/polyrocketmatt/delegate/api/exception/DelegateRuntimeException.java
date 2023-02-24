@@ -3,6 +3,8 @@
 
 package com.github.polyrocketmatt.delegate.api.exception;
 
+import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
+
 /**
  * Exception thrown whenever an exception occurs during the use
  * of the Delegate API.
@@ -13,15 +15,6 @@ package com.github.polyrocketmatt.delegate.api.exception;
 public class DelegateRuntimeException extends RuntimeException {
 
     /**
-     * Constructs a new exception with the specified detail message.
-     *
-     * @param message The detail message.
-     */
-    public DelegateRuntimeException(String message) {
-        super(message);
-    }
-
-    /**
      * Constructs a new exception with the specified detail message and cause.
      *
      * @param message The detail message.
@@ -29,26 +22,9 @@ public class DelegateRuntimeException extends RuntimeException {
      */
     public DelegateRuntimeException(String message, Throwable cause) {
         super(message, cause);
+
+        validate("message", String.class, message);
+        validate("cause", Throwable.class, cause);
     }
 
-    /**
-     * Constructs a new exception with the specified cause.
-     *
-     * @param cause The cause.
-     */
-    public DelegateRuntimeException(Throwable cause) {
-        super(cause);
-    }
-
-    /**
-     * Constructs a new exception with the specified detail message, cause, suppression enabled or disabled,
-     *
-     * @param message The detail message.
-     * @param cause The cause.
-     * @param enableSuppression Whether suppression is enabled or disabled.
-     * @param writableStackTrace Whether the stack trace should be writable.
-     */
-    public DelegateRuntimeException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
 }

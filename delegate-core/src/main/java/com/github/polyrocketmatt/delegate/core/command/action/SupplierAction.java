@@ -10,6 +10,7 @@ import com.github.polyrocketmatt.delegate.api.command.data.FailureActionResult;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
 import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTierType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -125,15 +126,14 @@ public class SupplierAction<T> extends CommandAction {
      * @throws IllegalArgumentException If the permission tier is null.
      * @throws IllegalArgumentException If the action is null.
      */
-    public SupplierAction(String identifier, PermissionTier permissionTier, int precedence, Supplier<T> action) {
+    public SupplierAction(@NotNull String identifier, @NotNull PermissionTier permissionTier, int precedence,
+                          @NotNull Supplier<T> action) {
         super(identifier, permissionTier, precedence);
-        if (action == null)
-            throw new IllegalArgumentException("Action cannot be null");
         this.action = action;
     }
 
     @Override
-    public ActionItem<?> run(CommanderEntity commander, List<Argument<?>> arguments) {
+    public @NotNull ActionItem<?> run(@NotNull CommanderEntity commander, @NotNull List<Argument<?>> arguments) {
         if (commander == null)
             throw new IllegalArgumentException("Commander cannot be null");
         if (arguments == null)

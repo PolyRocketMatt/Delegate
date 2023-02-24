@@ -9,6 +9,7 @@ import com.github.polyrocketmatt.delegate.api.TriConsumer;
 import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
 import com.github.polyrocketmatt.delegate.api.command.feedback.FeedbackType;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -34,10 +35,8 @@ public class ExceptAction extends CommandAttribute implements Bufferable {
      * @param action The consumer that will be executed.
      * @throws IllegalArgumentException If the action is null.
      */
-    public ExceptAction(TriConsumer<CommanderEntity, FeedbackType, List<String>> action) {
+    public ExceptAction(@NotNull TriConsumer<CommanderEntity, FeedbackType, List<String>> action) {
         super(newId());
-        if (action == null)
-            throw new IllegalArgumentException("Action cannot be null");
         this.action = action;
     }
 
@@ -65,7 +64,7 @@ public class ExceptAction extends CommandAttribute implements Bufferable {
     }
 
     @Override
-    public AttributeType getType() {
+    public @NotNull AttributeType getType() {
         return AttributeType.EXCEPT_ACTION;
     }
 }

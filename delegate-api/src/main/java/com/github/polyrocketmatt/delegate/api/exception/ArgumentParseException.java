@@ -4,6 +4,9 @@
 package com.github.polyrocketmatt.delegate.api.exception;
 
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
+import org.jetbrains.annotations.NotNull;
+
+import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 
 /**
  * Exception thrown when a {@link CommandArgument} is parsed incorrectly.
@@ -13,7 +16,7 @@ import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
  */
 public class ArgumentParseException extends RuntimeException {
 
-    private final Class<?> parseType;
+    private final @NotNull Class<?> parseType;
 
     /**
      * Constructs a new exception with the specified detail message.
@@ -21,8 +24,11 @@ public class ArgumentParseException extends RuntimeException {
      * @param message The detail message.
      * @param parseType The type of the argument that failed to parse.
      */
-    public ArgumentParseException(String message, Class<?> parseType) {
+    public ArgumentParseException(@NotNull String message, @NotNull Class<?> parseType) {
         super(message);
+        validate("message", String.class, message);
+        validate("parseType", Class.class, parseType);
+
         this.parseType = parseType;
     }
 
@@ -33,12 +39,16 @@ public class ArgumentParseException extends RuntimeException {
      * @param cause The cause.
      * @param parseType The type of the argument that failed to parse.
      */
-    public ArgumentParseException(String message, Throwable cause, Class<?> parseType) {
+    public ArgumentParseException(@NotNull String message, @NotNull Throwable cause, @NotNull Class<?> parseType) {
         super(message, cause);
+        validate("message", String.class, message);
+        validate("cause", Throwable.class, cause);
+        validate("parseType", Class.class, parseType);
+
         this.parseType = parseType;
     }
 
-    public Class<?> getParseType() {
+    public @NotNull Class<?> getParseType() {
         return parseType;
     }
 }

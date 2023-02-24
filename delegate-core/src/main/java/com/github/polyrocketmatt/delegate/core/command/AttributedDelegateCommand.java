@@ -7,6 +7,7 @@ import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException
 import com.github.polyrocketmatt.delegate.core.command.definition.AliasDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Implements the {@link DelegateCommand} interface and provides a class that
@@ -50,12 +51,12 @@ public class AttributedDelegateCommand extends DelegateCommand{
     }
 
     @Override
-    public NameDefinition getNameDefinition() {
+    public @NotNull NameDefinition getNameDefinition() {
         return nameDefinition;
     }
 
     @Override
-    public DescriptionDefinition getDescriptionDefinition() {
+    public @NotNull DescriptionDefinition getDescriptionDefinition() {
         return descriptionDefinition;
     }
 

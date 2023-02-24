@@ -4,6 +4,10 @@
 package com.github.polyrocketmatt.delegate.api.command.data;
 
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 
 /**
  * Represents an {@link ActionItem} from a {@link CommandAction}
@@ -19,8 +23,15 @@ public class FailureActionResult extends ActionItem<Exception> {
      *
      * @param ex The exception that was thrown by the {@link CommandAction}.
      */
-    public FailureActionResult(Exception ex) {
+    public FailureActionResult(@Nullable Exception ex) {
         super(Result.FAILURE, ex);
+    }
+
+    /**
+     * Creates a new {@link FailureActionResult}.
+     */
+    public FailureActionResult() {
+        this(null);
     }
 
 }

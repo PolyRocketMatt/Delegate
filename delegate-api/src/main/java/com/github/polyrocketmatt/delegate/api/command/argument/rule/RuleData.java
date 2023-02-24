@@ -3,6 +3,10 @@
 
 package com.github.polyrocketmatt.delegate.api.command.argument.rule;
 
+import org.jetbrains.annotations.NotNull;
+
+import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
+
 /**
  * Represents data that can be passed from and to an {@link ArgumentRule}.
  *
@@ -12,4 +16,10 @@ package com.github.polyrocketmatt.delegate.api.command.argument.rule;
  * @since 0.0.1
  * @author Matthias Kovacic
  */
-public record RuleData<T>(T value) { }
+public record RuleData<T>(@NotNull T value) {
+
+    public RuleData {
+        validate("value", Object.class, value);
+    }
+
+}

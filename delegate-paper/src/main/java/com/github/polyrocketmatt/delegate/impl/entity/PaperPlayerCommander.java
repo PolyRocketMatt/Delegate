@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachmentInfo;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 import java.util.UUID;
@@ -34,7 +35,7 @@ public class PaperPlayerCommander extends PlayerCommander {
     }
 
     @Override
-    public boolean hasPermission(String permission) {
+    public boolean hasPermission(@NotNull String permission) {
         return this.player.hasPermission(permission);
     }
 
@@ -44,7 +45,7 @@ public class PaperPlayerCommander extends PlayerCommander {
     }
 
     @Override
-    public void sendMessage(String message) {
+    public void sendMessage(@NotNull String message) {
         this.player.sendMessage(Component.text(ChatColor.translateAlternateColorCodes('&', message)));
     }
 }

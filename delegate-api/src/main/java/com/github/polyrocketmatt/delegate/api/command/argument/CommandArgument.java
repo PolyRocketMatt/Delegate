@@ -13,9 +13,13 @@ import com.github.polyrocketmatt.delegate.api.exception.ArgumentParseException;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.Consumer;
+
+import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 
 /**
  * Represents a command argument of a specific type.
@@ -46,16 +50,18 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @throws IllegalArgumentException If the identifier is null, empty or blank.
      * @throws IllegalArgumentException If the argument description is null.
      * @throws IllegalArgumentException If the argument type is null.
+     * @throws IllegalArgumentException If the default value is null.
      * @throws IllegalArgumentException If the argument rules are null.
      */
-    public CommandArgument(String identifier, String argumentDescription, Class<T> argumentType, Argument<T> defaultValue, boolean isOptional, List<ArgumentRule<?>> argumentRules) {
+    public CommandArgument(@NotNull String identifier, @NotNull String argumentDescription, @NotNull Class<T> argumentType,
+                           @NotNull Argument<T> defaultValue, boolean isOptional, @NotNull List<ArgumentRule<?>> argumentRules) {
         super(identifier);
-        if (argumentDescription == null)
-            throw new IllegalArgumentException("Argument description cannot be null");
-        if (argumentType == null)
-            throw new IllegalArgumentException("Argument type cannot be null");
-        if (argumentRules == null)
-            throw new IllegalArgumentException("Argument rules cannot be null");
+        validate("argumentDescription", String.class, argumentDescription);
+        validate("argumentType", Class.class, argumentType);
+        validate("defaultValue", Argument.class, defaultValue);
+        validate("argumentRules", List.class, argumentRules);
+        argumentRules.forEach(rule -> validate("element", ArgumentRule.class, rule));
+
         this.argumentDescription = argumentDescription;
         this.argumentRules = argumentRules;
         this.argumentType = argumentType;
@@ -68,7 +74,7 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      *
      * @return The description of the argument.
      */
-    public String getArgumentDescription() {
+    public @NotNull String getArgumentDescription() {
         return argumentDescription;
     }
 
@@ -77,7 +83,7 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      *
      * @return The argument rules that must be met for the argument to be valid.
      */
-    public List<ArgumentRule<?>> getArgumentRules() {
+    public @NotNull List<ArgumentRule<?>> getArgumentRules() {
         return argumentRules;
     }
 
@@ -86,7 +92,9 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      *
      * @param rule The argument rule to add.
      */
-    private void addRule(ArgumentRule<?> rule) {
+    private void addRule(@NotNull ArgumentRule<?> rule) {
+        validate("rule", ArgumentRule.class, rule);
+
         this.argumentRules.add(rule);
     }
 
@@ -95,7 +103,7 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      *
      * @return The class type of the argument.
      */
-    public Class<T> getArgumentType() {
+    public @NotNull Class<T> getArgumentType() {
         return argumentType;
     }
 
@@ -120,7 +128,7 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      *
      * @return The default value of the argument.
      */
-    public Argument<T> getDefault() {
+    public @NotNull Argument<T> getDefault() {
         return defaultValue;
     }
 
@@ -129,7 +137,9 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      *
      * @param defaultValue The default value of the argument.
      */
-    private void setDefaultValue(Argument<T> defaultValue) {
+    private void setDefaultValue(@NotNull Argument<T> defaultValue) {
+        validate("defaultValue", Argument.class, defaultValue);
+
         this.defaultValue = defaultValue;
     }
 
@@ -141,7 +151,7 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @param input The string to parse.
      * @return The parsed argument as an {@link Argument}.
      */
-    public abstract Argument<T> parse(String input) throws ArgumentParseException;
+    public abstract @NotNull Argument<T> parse(@Nullable String input) throws ArgumentParseException;
 
     /**
      * Parses the argument value from the given string reader and returns
@@ -150,11 +160,11 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      *
      * @param reader The string reader to parse.
      * @return The parsed argument as an {@link Argument}.
-     * @throws CommandSyntaxException If the parsing fails.
+     * @throws ArgumentParseException If the parsing fails.
      */
     //  TODO: Parse rules when parsing from string reader
     @Override
-    public abstract T parse(StringReader reader) throws ArgumentParseException;
+    public abstract @NotNull T parse(@NotNull StringReader reader) throws ArgumentParseException;
 
     /**
      * Parses the given input string and applies the argument rules to the input.
@@ -162,7 +172,9 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @param input The input to parse.
      * @throws ArgumentParseException If the result of applying any argument rule to the input is not valid.
      */
-    public void parseRules(String input) {
+    public void parseRules(@NotNull String input) {
+        validate("input", String.class, input);
+
         for (ArgumentRule<?> rule : getArgumentRules()) {
             RuleData<?> result = rule.getRule().apply(input);
             ArgumentRuleResult ruleResult = rule.interpretResult(this, input, result);
@@ -178,7 +190,9 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @param rule The argument rule to add.
      * @return The argument.
      */
-    public CommandArgument<T> withRule(ArgumentRule<?> rule) {
+    public @NotNull CommandArgument<T> withRule(@NotNull ArgumentRule<?> rule) {
+        validate("rule", ArgumentRule.class, rule);
+
         this.addRule(rule);
         return this;
     }
@@ -189,9 +203,11 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @param rules The argument rules to add.
      * @return The argument.
      */
-    public final CommandArgument<?> withRules(ArgumentRule<?>... rules) {
-        for (ArgumentRule<?> rule : rules)
+    public final @NotNull CommandArgument<?> withRules(@NotNull ArgumentRule<?>... rules) {
+        for (ArgumentRule<?> rule : rules) {
+            validate("rule", ArgumentRule.class, rule);
             this.addRule(rule);
+        }
         return this;
     }
 
@@ -202,13 +218,15 @@ public abstract class CommandArgument<T> extends CommandAttribute implements Buf
      * @param defaultValue The default value of the argument.
      * @return The argument.
      */
-    public CommandArgument<T> withDefault(Argument<T> defaultValue) {
+    public @NotNull CommandArgument<T> withDefault(@NotNull Argument<T> defaultValue) {
+        validate("defaultValue", Argument.class, defaultValue);
+
         this.setDefaultValue(defaultValue);
         return this;
     }
 
     @Override
-    public AttributeType getType() {
+    public @NotNull AttributeType getType() {
         return AttributeType.ARGUMENT;
     }
 }

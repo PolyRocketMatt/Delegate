@@ -7,6 +7,7 @@ import com.github.polyrocketmatt.delegate.api.command.IDelegateCommand;
 import com.github.polyrocketmatt.delegate.core.command.definition.AliasDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Defines a command that has a name and description.
@@ -21,14 +22,14 @@ public abstract class DelegateCommand implements IDelegateCommand {
      *
      * @return The name definition of this command.
      */
-    public abstract NameDefinition getNameDefinition();
+    public abstract @NotNull NameDefinition getNameDefinition();
 
     /**
      * Gets the {@link DescriptionDefinition} of this command.
      *
      * @return The description definition of this command.
      */
-    public abstract DescriptionDefinition getDescriptionDefinition();
+    public abstract @NotNull DescriptionDefinition getDescriptionDefinition();
 
     /**
      * Get the {@link AliasDefinition}s of this command.

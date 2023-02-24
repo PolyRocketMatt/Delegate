@@ -4,15 +4,16 @@
 package com.github.polyrocketmatt.delegate.api.command.tree;
 
 import com.github.polyrocketmatt.delegate.api.command.definition.CommandDefinition;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public interface ICommandNode {
 
-    <T extends ICommandNode> List<T> getChildren();
+    <T extends ICommandNode> @NotNull List<T> getChildren();
 
-    CommandDefinition<String> getNameDefinition();
+    @NotNull CommandDefinition<String> getNameDefinition();
 
-    CommandDefinition<String> getDescriptionDefinition();
+    @NotNull CommandDefinition<String> getDescriptionDefinition();
 
 }

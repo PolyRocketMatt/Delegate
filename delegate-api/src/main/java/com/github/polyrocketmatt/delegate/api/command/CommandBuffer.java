@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
+
 /**
  * Represents a buffer that can be used to store {@link Bufferable} objects.
  *
@@ -20,6 +22,11 @@ import java.util.stream.Stream;
  * @author Matthias Kovacic
  */
 public record CommandBuffer<T extends Bufferable>(List<T> bufferElements) implements Iterable<T> {
+
+    public CommandBuffer {
+        validate("bufferElements", List.class, bufferElements);
+        bufferElements.forEach(element -> validate("element", Bufferable.class, element));
+    }
 
     /**
      * Gets the size of the buffer.
@@ -69,7 +76,9 @@ public record CommandBuffer<T extends Bufferable>(List<T> bufferElements) implem
     public int indexWhere(Function<T, Boolean> rule) {
         for (int i = 0; i < bufferElements.size(); i++) {
             T element = bufferElements.get(i);
-            if (rule.apply(element) != null)
+            Boolean result = rule.apply(element);
+
+            if (result != null && result)
                 return i;
         }
 

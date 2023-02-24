@@ -5,11 +5,12 @@ package com.github.polyrocketmatt.delegate.api.event;
 
 import com.github.polyrocketmatt.delegate.api.command.CommandDispatchInformation;
 import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
+import org.jetbrains.annotations.NotNull;
 
 public interface CommandEvent {
 
-    CommandDispatchInformation getDispatchInformation();
+    @NotNull CommandDispatchInformation getDispatchInformation();
 
-    CommandCapture getCapture();
+    @NotNull CommandCapture getCapture();
 
 }

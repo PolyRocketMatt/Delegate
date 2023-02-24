@@ -4,8 +4,12 @@
 package com.github.polyrocketmatt.delegate.api.command.argument.rule;
 
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
+
+import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 
 /**
  * Represents a rule that must apply to a command argument.
@@ -26,9 +30,9 @@ public abstract class ArgumentRule<O> {
      *
      * @param rule The {@link Function} which represents the rule to apply.
      */
-    public ArgumentRule(Function<String, RuleData<O>> rule) {
-        if (rule == null)
-            throw new IllegalArgumentException("Rule cannot be null");
+    public ArgumentRule(@NotNull Function<String, RuleData<O>> rule) {
+        validate("rule", Function.class, rule);
+
         this.rule = rule;
     }
 
@@ -37,7 +41,7 @@ public abstract class ArgumentRule<O> {
      *
      * @return The {@link Function} which represents the rule to apply.
      */
-    public Function<String, RuleData<O>> getRule() {
+    public @NotNull Function<String, RuleData<O>> getRule() {
         return rule;
     }
 
@@ -50,6 +54,7 @@ public abstract class ArgumentRule<O> {
      * @param output The output object of the rule.
      * @return The interpretation of the application of the rule in an {@link ArgumentRuleResult}.
      */
-    public abstract ArgumentRuleResult interpretResult(CommandArgument<?> argument, String input, RuleData<?> output);
+    public abstract @NotNull ArgumentRuleResult interpretResult(
+            @Nullable CommandArgument<?> argument, @Nullable String input, @NotNull RuleData<?> output);
 
 }

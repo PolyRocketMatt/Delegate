@@ -29,20 +29,17 @@
         <dependency>
             <groupId>com.github.polyrocketmatt</groupId>
             <artifactId>delegate-api</artifactId>
-            <version>0.0.1</version>
+            <version>${delegate.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.mojang</groupId>
             <artifactId>brigadier</artifactId>
-            <version>1.0.18</version>
+            <version>${brigadier.version}</version>
         </dependency>
-
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.9.0</version>
-            <scope>test</scope>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>${jetbrains.annotations.version}</version>
         </dependency>
     </dependencies>
 

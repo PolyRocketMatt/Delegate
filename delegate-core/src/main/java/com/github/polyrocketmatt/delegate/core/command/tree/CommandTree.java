@@ -4,6 +4,7 @@
 package com.github.polyrocketmatt.delegate.core.command.tree;
 
 import com.github.polyrocketmatt.delegate.api.command.tree.ICommandTree;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +57,7 @@ public class CommandTree implements ICommandTree {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<CommandNode> getRoots() {
+    public @NotNull List<CommandNode> getRoots() {
         return roots;
     }
 }

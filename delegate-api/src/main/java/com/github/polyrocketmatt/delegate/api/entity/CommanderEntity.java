@@ -3,6 +3,8 @@
 
 package com.github.polyrocketmatt.delegate.api.entity;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Defines an entity that can issue commands.
  *
@@ -11,10 +13,10 @@ package com.github.polyrocketmatt.delegate.api.entity;
  */
 public interface CommanderEntity {
 
-    boolean hasPermission(String permission);
+    boolean hasPermission(@NotNull String permission);
 
     boolean isOperator();
 
-    void sendMessage(String message);
+    void sendMessage(@NotNull String message);
 
 }

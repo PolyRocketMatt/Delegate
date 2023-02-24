@@ -11,10 +11,14 @@ import com.github.polyrocketmatt.delegate.core.command.argument.rule.NonNullRule
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandExceptionType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
+import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 
 /**
  * Represents a {@link CommandArgument} that parses a string from the input.
@@ -39,7 +43,7 @@ public class StringArgument extends CommandArgument<String> {
     }
 
     @Override
-    public Argument<String> parse(String input) {
+    public @NotNull Argument<String> parse(@Nullable String input) {
         if (input != null) {
             //  Check if string starts and ends with a double quote
             if (input.startsWith("\"") && input.endsWith("\"")) {
@@ -55,7 +59,7 @@ public class StringArgument extends CommandArgument<String> {
     }
 
     @Override
-    public String parse(StringReader reader) throws ArgumentParseException {
+    public @NotNull String parse(@NotNull StringReader reader) throws ArgumentParseException {
         try {
             //  Check if the string in the reader starts and ends with a double quote
             if (reader.canRead() && reader.peek() == '"') {

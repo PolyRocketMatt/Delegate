@@ -7,6 +7,7 @@ import com.github.polyrocketmatt.delegate.api.command.definition.CommandDefiniti
 import com.github.polyrocketmatt.delegate.api.command.tree.ICommandNode;
 import com.github.polyrocketmatt.delegate.core.command.DelegateCommand;
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,7 +80,7 @@ public class CommandNode implements ICommandNode {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public List<CommandNode> getChildren() {
+    public @NotNull List<CommandNode> getChildren() {
         return children;
     }
 
@@ -132,12 +133,12 @@ public class CommandNode implements ICommandNode {
     }
 
     @Override
-    public CommandDefinition<String> getNameDefinition() {
+    public @NotNull CommandDefinition<String> getNameDefinition() {
         return command.getNameDefinition();
     }
 
     @Override
-    public CommandDefinition<String> getDescriptionDefinition() {
+    public @NotNull CommandDefinition<String> getDescriptionDefinition() {
         return command.getDescriptionDefinition();
     }
 }

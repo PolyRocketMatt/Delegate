@@ -4,6 +4,10 @@
 package com.github.polyrocketmatt.delegate.api.command.data;
 
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 
 /**
  * Represents a result produced by a {@link CommandAction}.
@@ -22,7 +26,9 @@ public class ActionItem<T> implements ActionResult {
      * @param result The {@link Result} of the {@link CommandAction}.
      * @param item The item that was produced by the {@link CommandAction}.
      */
-    public ActionItem(Result result, T item) {
+    public ActionItem(@NotNull Result result, @Nullable T item) {
+        validate("result", Result.class, result);
+
         this.result = result;
         this.item = item;
     }
@@ -32,7 +38,7 @@ public class ActionItem<T> implements ActionResult {
      *
      * @return The result produced by the {@link CommandAction}.
      */
-    public Result getResult() {
+    public @NotNull Result getResult() {
         return result;
     }
 
@@ -41,7 +47,7 @@ public class ActionItem<T> implements ActionResult {
      *
      * @return The item produced by the {@link CommandAction}.
      */
-    public T getItem() {
+    public @Nullable T getItem() {
         return item;
     }
 

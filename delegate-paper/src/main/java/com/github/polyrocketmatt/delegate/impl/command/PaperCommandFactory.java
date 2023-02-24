@@ -7,6 +7,7 @@ import com.github.polyrocketmatt.delegate.api.command.ICommandFactory;
 import com.github.polyrocketmatt.delegate.core.command.DelegateCommandBuilder;
 import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
+import org.jetbrains.annotations.NotNull;
 
 public class PaperCommandFactory implements ICommandFactory {
 
@@ -18,7 +19,7 @@ public class PaperCommandFactory implements ICommandFactory {
      * @return The new {@link DelegateCommandBuilder}.
      */
     @Override
-    public PaperCommandBuilder create(String name, String description) {
+    public @NotNull PaperCommandBuilder create(@NotNull String name, @NotNull String description) {
         PaperCommandBuilder builder = new PaperCommandBuilder();
 
         builder.withDefinition(new NameDefinition(name));

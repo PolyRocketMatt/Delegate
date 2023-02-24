@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 public class DelegateCommandEvent extends Event implements CommandEvent {
 
@@ -39,12 +40,12 @@ public class DelegateCommandEvent extends Event implements CommandEvent {
     }
 
     @Override
-    public CommandDispatchInformation getDispatchInformation() {
+    public @NotNull CommandDispatchInformation getDispatchInformation() {
         return dispatchInformation;
     }
 
     @Override
-    public CommandCapture getCapture() {
+    public @NotNull CommandCapture getCapture() {
         return capture;
     }
 

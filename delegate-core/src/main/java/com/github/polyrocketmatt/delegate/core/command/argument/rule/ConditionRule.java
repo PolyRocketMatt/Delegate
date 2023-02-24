@@ -7,8 +7,12 @@ import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.api.command.argument.rule.ArgumentRule;
 import com.github.polyrocketmatt.delegate.api.command.argument.rule.ArgumentRuleResult;
 import com.github.polyrocketmatt.delegate.api.command.argument.rule.RuleData;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
+
+import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 
 /**
  * A rule that checks if a condition on an input string is met.
@@ -28,7 +32,9 @@ public class ConditionRule extends ArgumentRule<Boolean> {
     }
 
     @Override
-    public ArgumentRuleResult interpretResult(CommandArgument<?> argument, String input, RuleData<?> output) {
+    public @NotNull ArgumentRuleResult interpretResult(@Nullable CommandArgument<?> argument, @Nullable String input, @NotNull RuleData<?> output) {
+        validate("output", RuleData.class, output);
+
         if (!(output.value() instanceof Boolean result))
             return new ArgumentRuleResult(ArgumentRuleResult.Result.FAILURE, "Expected result of rule did not match");
         if (!result)

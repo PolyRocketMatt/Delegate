@@ -5,6 +5,9 @@ package com.github.polyrocketmatt.delegate.api.command.definition;
 
 import com.github.polyrocketmatt.delegate.api.AttributeType;
 import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
+import org.jetbrains.annotations.NotNull;
+
+import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 
 /**
  * Represents a command definition that describes the command
@@ -27,10 +30,10 @@ public abstract class CommandDefinition<T> extends CommandAttribute {
      * @throws IllegalArgumentException If the identifier is null, empty or blank.
      * @throws IllegalArgumentException If the value is null.
      */
-    public CommandDefinition(String identifier, T value) {
+    public CommandDefinition(@NotNull String identifier, @NotNull T value) {
         super(identifier);
-        if (value == null)
-            throw new IllegalArgumentException("Value cannot be null");
+        validate("value", Object.class, value);
+
         this.value = value;
     }
 
@@ -39,12 +42,12 @@ public abstract class CommandDefinition<T> extends CommandAttribute {
      *
      * @return The value of the definition.
      */
-    public T getValue() {
+    public @NotNull T getValue() {
         return value;
     }
 
     @Override
-    public AttributeType getType() {
+    public @NotNull AttributeType getType() {
         return AttributeType.DEFINITION;
     }
 }

@@ -22,6 +22,7 @@
         <sponge.version>9.0.0</sponge.version>
         <velocity.version>1.0.0-SNAPSHOT</velocity.version>
         <brigadier.version>1.0.18</brigadier.version>
+        <jetbrains.annotations.version>23.1.0</jetbrains.annotations.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -50,6 +51,7 @@
         <module>delegate-sponge</module>
         <module>delegate-api</module>
         <module>delegate-paper</module>
+        <module>delegate-test</module>
     </modules>
 
 </project>

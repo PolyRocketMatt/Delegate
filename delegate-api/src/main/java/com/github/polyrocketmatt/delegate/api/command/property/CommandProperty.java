@@ -6,6 +6,7 @@ package com.github.polyrocketmatt.delegate.api.command.property;
 import com.github.polyrocketmatt.delegate.api.AttributeType;
 import com.github.polyrocketmatt.delegate.api.Bufferable;
 import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
+import org.jetbrains.annotations.NotNull;
 
 import static com.github.polyrocketmatt.delegate.api.StringUtils.newId;
 
@@ -23,7 +24,7 @@ public abstract class CommandProperty extends CommandAttribute implements Buffer
      *
      * @param identifier The identifier of the property.
      */
-    public CommandProperty(String identifier) {
+    public CommandProperty(@NotNull String identifier) {
         super(identifier);
     }
 
@@ -32,7 +33,7 @@ public abstract class CommandProperty extends CommandAttribute implements Buffer
     }
 
     @Override
-    public AttributeType getType() {
+    public @NotNull AttributeType getType() {
         return AttributeType.PROPERTY;
     }
 }

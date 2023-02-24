@@ -41,6 +41,7 @@ import com.github.polyrocketmatt.delegate.impl.command.argument.PlayerArgument;
 import com.github.polyrocketmatt.delegate.impl.command.argument.WorldArgument;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -61,7 +62,7 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
      * @throws AttributeException If the attribute is a {@link CommandAction} whose precedence is less than 0.
      */
     @Override
-    public BukkitCommandBuilder with(ICommandAttribute attribute) {
+    public @NotNull BukkitCommandBuilder with(ICommandAttribute attribute) {
         if (attribute instanceof CommandAction && ((CommandAction) attribute).getPrecedence() < 0)
             throw new AttributeException("Action precedence must be greater than 0");
         this.attributes.add((CommandAttribute) attribute);
@@ -75,7 +76,7 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public ICommandBuilder withAlias(String alias) {
+    public @NotNull ICommandBuilder withAlias(String alias) {
         return this.with(new AliasDefinition(alias));
     }
 
@@ -86,7 +87,7 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public ICommandBuilder withAliases(String... aliases) {
+    public @NotNull ICommandBuilder withAliases(String... aliases) {
         for (String alias : aliases)
             this.withAlias(alias);
         return this;
@@ -100,7 +101,7 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
      * @throws AttributeException If the action's precedence is less than 0.
      */
     @Override
-    public BukkitCommandBuilder withAction(CommandAction action) {
+    public @NotNull BukkitCommandBuilder withAction(CommandAction action) {
         //  Check that action precedence is greater than or equal to 0
         if (action.getPrecedence() <= 0)
             throw new AttributeException("Action precedence must be greater than 0");
@@ -114,7 +115,7 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public BukkitCommandBuilder withArgument(CommandArgument<?> argument) {
+    public @NotNull BukkitCommandBuilder withArgument(CommandArgument<?> argument) {
         return this.with(argument);
     }
 
@@ -126,7 +127,7 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public BukkitCommandBuilder withFloat(String name, String description) {
+    public @NotNull BukkitCommandBuilder withFloat(String name, String description) {
         return this.with(FloatArgument.of(name, description));
     }
 
@@ -139,7 +140,7 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public BukkitCommandBuilder withFloat(String name, String description, float defaultValue) {
+    public @NotNull BukkitCommandBuilder withFloat(String name, String description, float defaultValue) {
         return this.with(FloatArgument.of(name, description, defaultValue));
     }
 
@@ -151,7 +152,7 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public BukkitCommandBuilder withInt(String name, String description) {
+    public @NotNull BukkitCommandBuilder withInt(String name, String description) {
         return this.with(IntArgument.of(name, description));
     }
 
@@ -164,7 +165,7 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public BukkitCommandBuilder withInt(String name, String description, int defaultValue) {
+    public @NotNull BukkitCommandBuilder withInt(String name, String description, int defaultValue) {
         return this.with(IntArgument.of(name, description, defaultValue));
     }
 
@@ -176,7 +177,7 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public BukkitCommandBuilder withString(String name, String description) {
+    public @NotNull BukkitCommandBuilder withString(String name, String description) {
         return this.with(StringArgument.of(name, description));
     }
 
@@ -189,7 +190,7 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public BukkitCommandBuilder withString(String name, String description, String defaultValue) {
+    public @NotNull BukkitCommandBuilder withString(String name, String description, String defaultValue) {
         return this.with(StringArgument.of(name, description, defaultValue));
     }
 
@@ -200,7 +201,7 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public BukkitCommandBuilder withDefinition(CommandDefinition<?> definition) {
+    public @NotNull BukkitCommandBuilder withDefinition(CommandDefinition<?> definition) {
         return this.with(definition);
     }
 
@@ -211,7 +212,7 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public BukkitCommandBuilder withSubcommand(CommandDefinition<?> subcommand) {
+    public @NotNull BukkitCommandBuilder withSubcommand(CommandDefinition<?> subcommand) {
         if (!(subcommand instanceof SubcommandDefinition))
             throw new AttributeException("Subcommand must be a SubcommandDefinition");
         return this.with(subcommand);
@@ -224,7 +225,7 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public BukkitCommandBuilder withProperty(CommandProperty property) {
+    public @NotNull BukkitCommandBuilder withProperty(CommandProperty property) {
         return this.with(property);
     }
 
@@ -234,7 +235,7 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public BukkitCommandBuilder withAsync() {
+    public @NotNull BukkitCommandBuilder withAsync() {
         return this.with(new AsyncProperty());
     }
 
@@ -244,7 +245,7 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public BukkitCommandBuilder withIgnoreNull() {
+    public @NotNull BukkitCommandBuilder withIgnoreNull() {
         return this.with(new IgnoreNullProperty());
     }
 
@@ -254,37 +255,37 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
      * @return The current chain.
      */
     @Override
-    public BukkitCommandBuilder withIgnoreNonPresent() {
+    public @NotNull BukkitCommandBuilder withIgnoreNonPresent() {
         return this.with(new IgnoreNonPresentProperty());
     }
 
     @Override
-    public BukkitCommandBuilder withExceptionCatching() {
+    public @NotNull BukkitCommandBuilder withExceptionCatching() {
         return this.with(new CatchExceptionProperty());
     }
 
     @Override
-    public BukkitCommandBuilder withPermission(PermissionTier tier) {
+    public @NotNull BukkitCommandBuilder withPermission(PermissionTier tier) {
         return this.with(tier);
     }
 
     @Override
-    public BukkitCommandBuilder withPermission(String permission, PermissionTier parent) {
+    public @NotNull BukkitCommandBuilder withPermission(String permission, PermissionTier parent) {
         return this.with(new StandardPermission(permission, parent));
     }
 
     @Override
-    public BukkitCommandBuilder withPermission(String permission) {
+    public @NotNull BukkitCommandBuilder withPermission(String permission) {
         return this.withPermission(new StandardPermission(permission));
     }
 
     @Override
-    public BukkitCommandBuilder withOperatorPermission() {
+    public @NotNull BukkitCommandBuilder withOperatorPermission() {
         return this.withPermission(PermissionTierType.OPERATOR.getTier());
     }
 
     @Override
-    public BukkitCommandBuilder withGlobalPermission() {
+    public @NotNull BukkitCommandBuilder withGlobalPermission() {
         return this.withPermission(PermissionTierType.GLOBAL.getTier());
     }
 

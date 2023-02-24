@@ -13,6 +13,7 @@ import com.github.polyrocketmatt.delegate.core.command.definition.AliasDefinitio
 import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
 import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Implements the {@link DelegateCommand} interface and provides a class that stores
@@ -58,12 +59,12 @@ public class VerifiedDelegateCommand extends DelegateCommand {
     }
 
     @Override
-    public NameDefinition getNameDefinition() {
+    public @NotNull NameDefinition getNameDefinition() {
         return this.nameDefinition;
     }
 
     @Override
-    public DescriptionDefinition getDescriptionDefinition() {
+    public @NotNull DescriptionDefinition getDescriptionDefinition() {
         return this.descriptionDefinition;
     }
 
