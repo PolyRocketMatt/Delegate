@@ -108,6 +108,7 @@ public class InternalCommandHandler extends DelegateCommandHandler {
                 //  Since we're adding a root, we must register the command with the platform
                 //  We only need to do this for the root, as the children will be "registered" when they are added
                 getDelegate().getPlatform().registerToPlatform(node.getCommand());
+                getDelegate().getPlatform().registerToPlayers(node.getCommand());
             }
 
             //  Otherwise, we must add the node as a child of the parent

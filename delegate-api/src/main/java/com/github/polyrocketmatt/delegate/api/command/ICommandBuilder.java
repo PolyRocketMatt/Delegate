@@ -10,6 +10,7 @@ import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
 import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Builder that allows to build a command.
@@ -20,33 +21,39 @@ public interface ICommandBuilder {
 
     @NotNull IDelegateCommand build();
 
-    @NotNull ICommandBuilder with(ICommandAttribute attribute);
+    @NotNull ICommandBuilder with(@NotNull ICommandAttribute attribute);
 
-    @NotNull ICommandBuilder withAlias(String alias);
+    @NotNull ICommandBuilder withAlias(@NotNull String alias);
 
-    @NotNull ICommandBuilder withAliases(String... aliases);
+    @NotNull ICommandBuilder withAliases(@NotNull String... aliases);
 
-    @NotNull ICommandBuilder withAction(CommandAction action);
+    @NotNull ICommandBuilder withAction(@NotNull CommandAction action);
 
-    @NotNull ICommandBuilder withArgument(CommandArgument<?> argument);
+    @NotNull ICommandBuilder withArgument(@NotNull CommandArgument<?> argument);
 
-    @NotNull ICommandBuilder withFloat(String name, String description);
+    @NotNull ICommandBuilder withDouble(@NotNull String name, @NotNull String description);
 
-    @NotNull ICommandBuilder withFloat(String name, String description, float defaultValue);
+    @NotNull ICommandBuilder withDouble(@NotNull String name, @NotNull String description, double defaultValue);
 
-    @NotNull ICommandBuilder withInt(String name, String description);
+    @NotNull ICommandBuilder withFloat(@NotNull String name, @NotNull String description);
 
-    @NotNull ICommandBuilder withInt(String name, String description, int defaultValue);
+    @NotNull ICommandBuilder withFloat(@NotNull String name, @NotNull String description, float defaultValue);
 
-    @NotNull ICommandBuilder withString(String name, String description);
+    @NotNull ICommandBuilder withInt(@NotNull String name, @NotNull String description);
 
-    @NotNull ICommandBuilder withString(String name, String description, String defaultValue);
+    @NotNull ICommandBuilder withInt(@NotNull String name, @NotNull String description, int defaultValue);
 
-    @NotNull ICommandBuilder withDefinition(CommandDefinition<?> definition);
+    @NotNull ICommandBuilder withString(@NotNull String name, @NotNull String description);
 
-    @NotNull ICommandBuilder withSubcommand(CommandDefinition<?> subcommand);
+    @NotNull ICommandBuilder withString(@NotNull String name, @NotNull String description, @Nullable String defaultValue);
 
-    @NotNull ICommandBuilder withProperty(CommandProperty property);
+    @NotNull ICommandBuilder withDefinition(@NotNull CommandDefinition<?> definition);
+
+    @NotNull ICommandBuilder withSubcommand(@NotNull CommandDefinition<?> subcommand);
+
+    @NotNull ICommandBuilder withSubcommand(@NotNull String name, @NotNull String description);
+
+    @NotNull ICommandBuilder withProperty(@NotNull CommandProperty property);
 
     @NotNull ICommandBuilder withAsync();
 
@@ -56,11 +63,11 @@ public interface ICommandBuilder {
 
     @NotNull ICommandBuilder withExceptionCatching();
 
-    @NotNull ICommandBuilder withPermission(PermissionTier tier);
+    @NotNull ICommandBuilder withPermission(@NotNull PermissionTier tier);
 
-    @NotNull ICommandBuilder withPermission(String permission, PermissionTier parent);
+    @NotNull ICommandBuilder withPermission(@NotNull String permission, @NotNull PermissionTier parent);
 
-    @NotNull ICommandBuilder withPermission(String permission);
+    @NotNull ICommandBuilder withPermission(@NotNull String permission);
 
     @NotNull ICommandBuilder withOperatorPermission();
 

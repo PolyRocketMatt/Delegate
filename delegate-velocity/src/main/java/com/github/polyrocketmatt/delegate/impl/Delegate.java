@@ -7,6 +7,7 @@ import com.github.polyrocketmatt.delegate.api.DelegateAPI;
 import com.github.polyrocketmatt.delegate.api.IPlatform;
 import com.github.polyrocketmatt.delegate.api.PlatformType;
 import com.github.polyrocketmatt.delegate.api.command.CommandDispatchInformation;
+import com.github.polyrocketmatt.delegate.api.command.ICommandBuilder;
 import com.github.polyrocketmatt.delegate.api.command.ICommandFactory;
 import com.github.polyrocketmatt.delegate.api.command.IDelegateCommand;
 import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
@@ -95,9 +96,13 @@ public class Delegate implements IPlatform {
     }
 
     @Override
+    public @NotNull VelocityCommandBuilder createCommand(@NotNull String name, @NotNull String description) {
+        return factory.create(name, description);
+    }
+
+    @Override
     public void registerToPlatform(@NotNull IDelegateCommand command) throws CommandRegisterException {
         //  TODO: Implement Brigadier support
-
     }
 
     @Override

@@ -4,6 +4,7 @@
 package com.github.polyrocketmatt.delegate.api;
 
 import com.github.polyrocketmatt.delegate.api.command.CommandDispatchInformation;
+import com.github.polyrocketmatt.delegate.api.command.ICommandBuilder;
 import com.github.polyrocketmatt.delegate.api.command.ICommandFactory;
 import com.github.polyrocketmatt.delegate.api.command.IDelegateCommand;
 import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
@@ -20,7 +21,11 @@ public interface IPlatform {
 
     @NotNull ICommandFactory getFactoryImplementation();
 
+    @NotNull ICommandBuilder createCommand(@NotNull String name, @NotNull String description);
+
     void registerToPlatform(@NotNull IDelegateCommand name) throws CommandRegisterException;
+
+    void registerToPlayers(@NotNull IDelegateCommand name) throws CommandRegisterException;
 
     boolean execute(@NotNull CommandDispatchInformation information) throws CommandExecutionException;
 

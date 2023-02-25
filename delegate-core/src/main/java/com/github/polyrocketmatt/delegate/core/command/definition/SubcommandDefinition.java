@@ -7,6 +7,7 @@ import com.github.polyrocketmatt.delegate.api.command.definition.CommandDefiniti
 import com.github.polyrocketmatt.delegate.core.command.DelegateCommandBuilder;
 
 import static com.github.polyrocketmatt.delegate.api.StringUtils.newId;
+import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
 
 /**
  * Represents a {@link CommandDefinition} that describes a subcommand
@@ -24,5 +25,15 @@ public class SubcommandDefinition extends CommandDefinition<DelegateCommandBuild
      * @param chain The chain of attributes that describe the subcommand.
      */
     public SubcommandDefinition(DelegateCommandBuilder chain) { super(newId(), chain); }
+
+    /**
+     * Creates a new subcommand definition with the given name and description.
+     *
+     * @param name The name of the subcommand.
+     * @param description The description of the subcommand.
+     */
+    public SubcommandDefinition(String name, String description) {
+        super(newId(), (DelegateCommandBuilder) getDelegate().getPlatform().createCommand(name, description));
+    }
 
 }

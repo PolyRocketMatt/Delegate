@@ -145,9 +145,6 @@ public abstract class DelegateCommandBuilder implements ICommandBuilder {
         for (CommandAttribute attribute : attributes)
             if (attribute instanceof ExceptAction)
                 actions.add((ExceptAction) attribute);
-
-        System.out.println("Getting except actions: " + actions.size() + " actions.");
-
         return actions;
     }
 

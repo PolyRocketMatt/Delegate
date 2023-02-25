@@ -22,6 +22,7 @@ import com.github.polyrocketmatt.delegate.impl.entity.PaperPlayerCommander;
 import com.github.polyrocketmatt.delegate.impl.event.DelegateCommandEvent;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandMap;
@@ -36,6 +37,7 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,12 +109,15 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
         return factory;
     }
 
+    @Override
+    public @NotNull PaperCommandBuilder createCommand(@NotNull String name, @NotNull String description) {
+        return factory.create(name, description);
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public void registerToPlatform(@NotNull IDelegateCommand command) throws CommandRegisterException {
         validate("command", IDelegateCommand.class, command);
-
-        System.out.println("Registering command -> " + command.getNameDefinition().getValue());
 
         if (this.getPlugin() == null)
             throw new CommandRegisterException("Plugin is not hooked into Delegate!");
@@ -138,6 +143,19 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
             cmd.setDescription(command.getDescriptionDefinition().getValue());
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException ex) {
             throw new CommandRegisterException("Unable to register command: %s".formatted(command.getNameDefinition().getValue()), ex);
+        }
+    }
+
+    @Override
+    public void registerToPlayers(@NotNull IDelegateCommand name) throws CommandRegisterException {
+        try {
+            Server server = Bukkit.getServer();
+            Method syncCommandMethod = server.getClass().getDeclaredMethod("syncCommands");
+
+            syncCommandMethod.setAccessible(true);
+            syncCommandMethod.invoke(server);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
+            throw new CommandRegisterException("Unable to sync commands to players", ex);
         }
     }
 

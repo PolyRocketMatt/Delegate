@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 public class TestCommandBuilder extends DelegateCommandBuilder {
 
     @Override
-    public @NotNull TestCommandBuilder with(ICommandAttribute attribute) {
+    public @NotNull TestCommandBuilder with(@NotNull ICommandAttribute attribute) {
         if (attribute instanceof CommandAction && ((CommandAction) attribute).getPrecedence() < 0)
             throw new AttributeException("Action precedence must be greater than 0");
         this.attributes.add((CommandAttribute) attribute);
@@ -36,7 +36,7 @@ public class TestCommandBuilder extends DelegateCommandBuilder {
     }
 
     @Override
-    public @NotNull TestCommandBuilder withAlias(String alias) {
+    public @NotNull TestCommandBuilder withAlias(@NotNull String alias) {
         return this.with(new AliasDefinition(alias));
     }
 
@@ -48,7 +48,7 @@ public class TestCommandBuilder extends DelegateCommandBuilder {
     }
 
     @Override
-    public @NotNull TestCommandBuilder withAction(CommandAction action) {
+    public @NotNull TestCommandBuilder withAction(@NotNull CommandAction action) {
         //  Check that action precedence is greater than or equal to 0
         if (action.getPrecedence() <= 0)
             throw new AttributeException("Action precedence must be greater than 0");
@@ -56,54 +56,54 @@ public class TestCommandBuilder extends DelegateCommandBuilder {
     }
 
     @Override
-    public @NotNull TestCommandBuilder withArgument(CommandArgument<?> argument) {
+    public @NotNull TestCommandBuilder withArgument(@NotNull CommandArgument<?> argument) {
         return this.with(argument);
     }
 
     @Override
-    public @NotNull TestCommandBuilder withFloat(String name, String description) {
+    public @NotNull TestCommandBuilder withFloat(@NotNull String name, @NotNull String description) {
         return this.with(FloatArgument.of(name, description));
     }
 
     @Override
-    public @NotNull TestCommandBuilder withFloat(String name, String description, float defaultValue) {
+    public @NotNull TestCommandBuilder withFloat(@NotNull String name, @NotNull String description, float defaultValue) {
         return this.with(FloatArgument.of(name, description, defaultValue));
     }
 
     @Override
-    public @NotNull TestCommandBuilder withInt(String name, String description) {
+    public @NotNull TestCommandBuilder withInt(@NotNull String name, @NotNull String description) {
         return this.with(IntArgument.of(name, description));
     }
 
     @Override
-    public @NotNull TestCommandBuilder withInt(String name, String description, int defaultValue) {
+    public @NotNull TestCommandBuilder withInt(@NotNull String name, @NotNull String description, int defaultValue) {
         return this.with(IntArgument.of(name, description, defaultValue));
     }
 
     @Override
-    public @NotNull TestCommandBuilder withString(String name, String description) {
+    public @NotNull TestCommandBuilder withString(@NotNull String name, @NotNull String description) {
         return this.with(StringArgument.of(name, description));
     }
 
     @Override
-    public @NotNull TestCommandBuilder withString(String name, String description, String defaultValue) {
+    public @NotNull TestCommandBuilder withString(@NotNull String name, @NotNull String description, @NotNull String defaultValue) {
         return this.with(StringArgument.of(name, description, defaultValue));
     }
 
     @Override
-    public @NotNull TestCommandBuilder withDefinition(CommandDefinition<?> definition) {
+    public @NotNull TestCommandBuilder withDefinition(@NotNull CommandDefinition<?> definition) {
         return this.with(definition);
     }
 
     @Override
-    public @NotNull TestCommandBuilder withSubcommand(CommandDefinition<?> subcommand) {
+    public @NotNull TestCommandBuilder withSubcommand(@NotNull CommandDefinition<?> subcommand) {
         if (!(subcommand instanceof SubcommandDefinition))
             throw new AttributeException("Subcommand must be a SubcommandDefinition");
         return this.with(subcommand);
     }
 
     @Override
-    public @NotNull TestCommandBuilder withProperty(CommandProperty property) {
+    public @NotNull TestCommandBuilder withProperty(@NotNull CommandProperty property) {
         return this.with(property);
     }
 
@@ -128,17 +128,17 @@ public class TestCommandBuilder extends DelegateCommandBuilder {
     }
 
     @Override
-    public @NotNull TestCommandBuilder withPermission(PermissionTier tier) {
+    public @NotNull TestCommandBuilder withPermission(@NotNull PermissionTier tier) {
         return this.with(tier);
     }
 
     @Override
-    public @NotNull TestCommandBuilder withPermission(String permission, PermissionTier parent) {
+    public @NotNull TestCommandBuilder withPermission(@NotNull String permission, @NotNull PermissionTier parent) {
         return this.with(new StandardPermission(permission, parent));
     }
 
     @Override
-    public @NotNull TestCommandBuilder withPermission(String permission) {
+    public @NotNull TestCommandBuilder withPermission(@NotNull String permission) {
         return this.withPermission(new StandardPermission(permission));
     }
 
