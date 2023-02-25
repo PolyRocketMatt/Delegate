@@ -106,6 +106,11 @@ public class Delegate implements IPlatform {
     }
 
     @Override
+    public void registerToPlayers(@NotNull IDelegateCommand name) throws CommandRegisterException {
+
+    }
+
+    @Override
     public boolean execute(@NotNull CommandDispatchInformation information) throws CommandExecutionException {
         return getDelegateAPI().getCommandHandler().handle(information);
     }

@@ -5,12 +5,14 @@ package com.github.polyrocketmatt.delegate.core.command;
 
 import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
 import com.github.polyrocketmatt.delegate.api.command.ICommandAttribute;
+import com.github.polyrocketmatt.delegate.api.command.ICommandBuilder;
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
 import com.github.polyrocketmatt.delegate.api.command.definition.CommandDefinition;
 import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
 import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
 import com.github.polyrocketmatt.delegate.api.exception.AttributeException;
+import com.github.polyrocketmatt.delegate.core.command.argument.DoubleArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.FloatArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.IntArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.StringArgument;
@@ -65,6 +67,16 @@ public class AttributedDelegateCommandTest {
         }
 
         @Override
+        public @NotNull ICommandBuilder withDouble(@NotNull String name, @NotNull String description) {
+            return this.withArgument(DoubleArgument.of(name, description));
+        }
+
+        @Override
+        public @NotNull ICommandBuilder withDouble(@NotNull String name, @NotNull String description, double defaultValue) {
+            return this.withArgument(DoubleArgument.of(name, description, defaultValue));
+        }
+
+        @Override
         public @NotNull TestCommandBuilder withFloat(@NotNull String name, @NotNull String description) {
             return this.with(FloatArgument.of(name, description));
         }
@@ -104,6 +116,11 @@ public class AttributedDelegateCommandTest {
             if (!(subcommand instanceof SubcommandDefinition))
                 throw new AttributeException("Subcommand must be a SubcommandDefinition");
             return this.with(subcommand);
+        }
+
+        @Override
+        public @NotNull ICommandBuilder withSubcommand(@NotNull String name, @NotNull String description) {
+            return this.withDefinition(new SubcommandDefinition(name, description));
         }
 
         @Override
