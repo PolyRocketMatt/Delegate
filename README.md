@@ -15,18 +15,13 @@ contexts and execute actions.
 
 ## Why choose Delegate?
 
-In the past, many command frameworks have been created for various Minecraft server
-implementations. Personally, I felt like most of these weren't exactly what I
-was looking for. These command frameworks where either lacking features, 
-became convoluted very quickly, or simply didn't support enough platforms.
-
-Delegate mitigates these problems by allowing the creation of simple commands, but 
-also allows for the creation of complex commands with subcommands, tab completion,
-brigadier support and more. Unlike most command frameworks, at it's core Delegate
-does not use annotation based command creation (it is however possible to use 
-annotations). Furthermore, Delegate is available for every major
-Minecraft server implementation. If your implementation is not supported, it is possible
-to implement the framework for your platform in minimal time.
+In the past, many command frameworks have tried to solve the problem of allowing developers to
+create commands in a simple and intuitive way. However, most of these frameworks either
+became convoluted very quickly, or simply didn't support enough platforms. Delegate
+aims to solve these problems by allowing the creation of simple commands, but also allows
+for the creation of complex commands with subcommands, tab completion, brigadier support
+and more. Furthermore, Delegate is completely tested with unit tests and use-case tests, ensuring
+the default implementations will work as intended on all platforms.
 
 ## Features
 
