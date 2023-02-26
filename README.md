@@ -1,5 +1,5 @@
 ![State](https://img.shields.io/badge/State-ALPHA-red?style=for-the-badge)
-![Build Status](https://img.shields.io/badge/Build-Passing-%2368AD63?style=for-the-badge)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/PolYRocketMatt/delegate/build_deploy.yml?color=68AD63&style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-%2368AD63?style=for-the-badge)
 ![Kotlin](https://img.shields.io/badge/Java-16-%233e7fa8?logo=java&style=for-the-badge)
 
