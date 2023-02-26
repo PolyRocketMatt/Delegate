@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 import static com.github.polyrocketmatt.delegate.api.StringUtils.newId;
 import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
 
@@ -136,10 +137,10 @@ public class RunnableAction extends CommandAction {
 
     @Override
     public @NotNull ActionItem<?> run(@NotNull CommanderEntity commander, @NotNull List<Argument<?>> arguments) {
-        if (commander == null)
-            throw new IllegalArgumentException("Commander cannot be null");
-        if (arguments == null)
-            throw new IllegalArgumentException("Arguments cannot be null");
+        validate("commander", CommanderEntity.class, commander);
+        validate("arguments", List.class, arguments);
+        for (Argument<?> argument : arguments)
+            validate("argument", Argument.class, argument);
 
         try {
             action.run();

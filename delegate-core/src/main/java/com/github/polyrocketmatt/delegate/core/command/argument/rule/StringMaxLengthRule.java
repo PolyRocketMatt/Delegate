@@ -25,10 +25,8 @@ public class StringMaxLengthRule extends ArgumentRule<Boolean> {
      */
     public StringMaxLengthRule(int maxLength, boolean inclusive) {
         super(input -> {
-            try {
-                int value = input.length();
-                return new RuleData<>(inclusive ? value <= maxLength : value < maxLength);
-            } catch (NumberFormatException ex) { return new RuleData<>(false); }
+            int value = input.length();
+            return new RuleData<>(inclusive ? value <= maxLength : value < maxLength);
         });
 
         this.maxLength = maxLength;

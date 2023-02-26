@@ -8,10 +8,13 @@ import com.github.polyrocketmatt.delegate.api.command.tree.ICommandNode;
 import com.github.polyrocketmatt.delegate.core.command.DelegateCommand;
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 
 /**
  * Represents a node in the command tree. It contains a parent node,
@@ -22,7 +25,7 @@ import java.util.List;
  */
 public class CommandNode implements ICommandNode {
 
-    private final CommandNode parent;
+    private CommandNode parent;
     private final List<CommandNode> children;
     private DelegateCommand command;
 
@@ -32,7 +35,9 @@ public class CommandNode implements ICommandNode {
      *
      * @param command The command to execute at this depth in the tree.
      */
-    public CommandNode(DelegateCommand command) {
+    public CommandNode(@NotNull DelegateCommand command) {
+        validate("command", DelegateCommand.class, command);
+
         this.parent = null;
         this.children = new ArrayList<>();
         this.command = command;
@@ -45,10 +50,17 @@ public class CommandNode implements ICommandNode {
      * @param parent The parent node.
      * @param command The command to execute at this depth in the tree.
      */
-    public CommandNode(CommandNode parent, DelegateCommand command) {
+    public CommandNode(@NotNull CommandNode parent, @NotNull DelegateCommand command) {
+        validate("parent", CommandNode.class, parent);
+        validate("command", DelegateCommand.class, command);
+
         this.parent = parent;
         this.children = new ArrayList<>();
         this.command = command;
+
+        //  If the parent doesn't have this node as a child, add it.
+        if (!parent.getChildren().contains(this))
+            parent.getChildren().add(this);
     }
 
     /**
@@ -56,7 +68,7 @@ public class CommandNode implements ICommandNode {
      *
      * @return The parent node.
      */
-    public CommandNode getParent() {
+    public @Nullable CommandNode getParent() {
         return parent;
     }
 
@@ -65,11 +77,13 @@ public class CommandNode implements ICommandNode {
      *
      * @return The command to execute at this depth in the tree.
      */
-    public DelegateCommand getCommand() {
+    public @NotNull DelegateCommand getCommand() {
         return command;
     }
 
-    public void setCommand(DelegateCommand command) {
+    public void setCommand(@NotNull DelegateCommand command) {
+        validate("command", DelegateCommand.class, command);
+
         this.command = command;
     }
 
@@ -89,8 +103,21 @@ public class CommandNode implements ICommandNode {
      *
      * @param child The child node to add.
      */
-    public void addChild(CommandNode child) {
+    public void addChild(@NotNull CommandNode child) {
+        validate("child", CommandNode.class, child);
+
+        //  Child must have this node as a parent
+        if (child.getParent() != this)
+            setParent(this);
+
+        //  If the child already exists, don't add it again
+        if (this.children.contains(child))
+            throw new IllegalArgumentException("Child node already exists");
         this.children.add(child);
+    }
+
+    private void setParent(@NotNull CommandNode parent) {
+        this.parent = parent;
     }
 
     /**
@@ -116,7 +143,12 @@ public class CommandNode implements ICommandNode {
      * @param names The array of names to search for.
      * @return The {@link QueryResultNode} that contains the node that was found
      */
-    public QueryResultNode findDeepest(String commandPattern, String[] names) {
+    public QueryResultNode findDeepest(@NotNull String commandPattern, @NotNull String[] names) {
+        validate("commandPattern", String.class, commandPattern);
+        validate("names", String[].class, names);
+        for (String name : names)
+            validate("name", String.class, name);
+
         if (this.children.isEmpty() || names.length == 0)
             return new QueryResultNode(this, commandPattern, names);
 
@@ -134,11 +166,25 @@ public class CommandNode implements ICommandNode {
 
     @Override
     public @NotNull CommandDefinition<String> getNameDefinition() {
-        return command.getNameDefinition();
+        return this.command.getNameDefinition();
     }
 
     @Override
     public @NotNull CommandDefinition<String> getDescriptionDefinition() {
-        return command.getDescriptionDefinition();
+        return this.command.getDescriptionDefinition();
+    }
+
+    @Override
+    public @NotNull CommandDefinition<String>[] getAliasDefinitions() {
+        return this.command.getAliases();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof CommandNode node)) return false;
+
+        //  We assume equality if the commands are equal
+        return this.command.equals(node.getCommand());
     }
 }

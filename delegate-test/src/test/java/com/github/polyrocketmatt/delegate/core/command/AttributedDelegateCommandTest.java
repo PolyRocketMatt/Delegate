@@ -17,6 +17,8 @@ import com.github.polyrocketmatt.delegate.core.command.argument.FloatArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.IntArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.StringArgument;
 import com.github.polyrocketmatt.delegate.core.command.definition.AliasDefinition;
+import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
+import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.SubcommandDefinition;
 import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTierType;
 import com.github.polyrocketmatt.delegate.core.command.permission.StandardPermission;
@@ -27,6 +29,7 @@ import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProp
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AttributedDelegateCommandTest {
@@ -176,8 +179,23 @@ public class AttributedDelegateCommandTest {
 
     @Test
     public void testWithNullChain() {
-        assertThrows(NullPointerException.class, () -> new AttributedDelegateCommand(null));
+        assertThrows(IllegalArgumentException.class, () -> new AttributedDelegateCommand(null));
     }
 
+    @Test
+    public void testAttributedCommand() {
+        AttributedDelegateCommand command = new AttributedDelegateCommand(
+                new TestCommandBuilder()
+                        .withDefinition(new NameDefinition("test"))
+                        .withDefinition(new DescriptionDefinition("test"))
+                        .withAliases("a", "b")
+        );
+
+        assertEquals("test", command.getNameDefinition().getValue());
+        assertEquals("test", command.getDescriptionDefinition().getValue());
+        assertEquals(2, command.getAliases().length);
+        assertEquals("a", command.getAliases()[0].getValue());
+        assertEquals("b", command.getAliases()[1].getValue());
+    }
 
 }

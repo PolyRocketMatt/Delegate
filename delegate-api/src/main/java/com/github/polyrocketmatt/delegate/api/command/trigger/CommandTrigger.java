@@ -37,7 +37,7 @@ public abstract class CommandTrigger extends CommandAttribute implements Buffera
         trigger.accept(information, capture);
     }
 
-    public abstract boolean shouldTrigger(List<ActionItem.Result> results);
+    public abstract boolean shouldTrigger(@NotNull List<ActionItem.Result> results);
 
     @Override
     public @NotNull AttributeType getType() {

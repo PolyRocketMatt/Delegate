@@ -36,6 +36,11 @@ public class GlobalPermissionTest {
             public void sendMessage(@NotNull String message) {
 
             }
+
+            @Override
+            public boolean isPlayer() {
+                return true;
+            }
         }));
     }
 

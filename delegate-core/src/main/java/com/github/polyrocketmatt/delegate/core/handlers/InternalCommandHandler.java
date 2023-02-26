@@ -91,6 +91,7 @@ public class InternalCommandHandler extends DelegateCommandHandler {
             boolean hasExcepts = rootCommand.getExceptBuffer() != null && !(rootCommand.getExceptBuffer().size() == 0);
             boolean hasTriggers = rootCommand.getTriggerBuffer() != null && !(rootCommand.getTriggerBuffer().size() == 0);
 
+            //  ! This replaces the command
             if (!hasActions && !hasExcepts && !hasTriggers)
                 match.setCommand(node.getCommand());
             else
@@ -125,7 +126,7 @@ public class InternalCommandHandler extends DelegateCommandHandler {
      * Handles the given {@link CommandDispatchInformation} and tries to execute the
      * command associated with the information.
      *
-     * @param information The {@link CommandDispatchInformation} to handle.
+     * @param commandDispatchInformation The {@link CommandDispatchInformation} to handle.
      * @return True if the information was handled successfully, false otherwise.
      * @throws CommandExecutionException If an error occurred while parsing the information.
      */
@@ -143,7 +144,7 @@ public class InternalCommandHandler extends DelegateCommandHandler {
 
         //  If the root is null, the command doesn't exist
         if (root == null)
-            return false;
+            return generateEventFromException(information, exceptOrThrow(information, null, FeedbackType.COMMAND_NON_EXISTENT, commandName));
 
         QueryResultNode queryResultNode = root.findDeepest(commandName, commandArguments);
         CommandNode executionNode = queryResultNode.node();

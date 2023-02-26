@@ -22,7 +22,7 @@ public class TestCommandTrigger {
         }
 
         @Override
-        public boolean shouldTrigger(List<ActionItem.Result> results) {
+        public boolean shouldTrigger(@NotNull List<ActionItem.Result> results) {
             return results.stream().allMatch(ActionItem.Result::isSuccess);
         }
 

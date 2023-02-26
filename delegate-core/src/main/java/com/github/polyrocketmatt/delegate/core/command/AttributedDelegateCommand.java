@@ -3,11 +3,12 @@
 
 package com.github.polyrocketmatt.delegate.core.command;
 
-import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException;
 import com.github.polyrocketmatt.delegate.core.command.definition.AliasDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
 import org.jetbrains.annotations.NotNull;
+
+import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 
 /**
  * Implements the {@link DelegateCommand} interface and provides a class that
@@ -29,9 +30,9 @@ public class AttributedDelegateCommand extends DelegateCommand{
      *
      * @param attributeChain The attribute chain that is used to store the attributes of the command.
      */
-    public AttributedDelegateCommand(DelegateCommandBuilder attributeChain) {
-        if (attributeChain == null)
-            throw new NullPointerException("The attribute chain cannot be null");
+    public AttributedDelegateCommand(@NotNull DelegateCommandBuilder attributeChain) {
+        validate("attributeChain", DelegateCommandBuilder.class, attributeChain);
+
         this.nameDefinition = (NameDefinition) attributeChain.find(NameDefinition.class);
         this.descriptionDefinition = (DescriptionDefinition) attributeChain.find(DescriptionDefinition.class);
         this.aliases = attributeChain.filter(AliasDefinition.class)
@@ -46,7 +47,7 @@ public class AttributedDelegateCommand extends DelegateCommand{
      *
      * @return The attribute chain that is used to store the attributes of the command.
      */
-    public DelegateCommandBuilder getAttributeChain() {
+    public @NotNull DelegateCommandBuilder getAttributeChain() {
         return attributeChain;
     }
 
@@ -61,7 +62,7 @@ public class AttributedDelegateCommand extends DelegateCommand{
     }
 
     @Override
-    public AliasDefinition[] getAliases() {
+    public @NotNull AliasDefinition[] getAliases() {
         return aliases;
     }
 }

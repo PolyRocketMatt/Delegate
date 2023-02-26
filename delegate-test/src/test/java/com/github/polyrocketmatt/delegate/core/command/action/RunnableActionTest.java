@@ -39,6 +39,11 @@ public class RunnableActionTest {
             System.out.println(message);
         }
 
+        @Override
+        public boolean isPlayer() {
+            return false;
+        }
+
     }
 
     @Test

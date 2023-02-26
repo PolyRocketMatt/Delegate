@@ -92,9 +92,7 @@ public class AttributeHandler implements IHandler {
             //  Add tree to command handler
             getDelegate().registerCommand(rootNode);
         } else {
-            CommandNode childNode = new CommandNode(parent, verifiedCommand);
-
-            parent.addChild(childNode);
+            new CommandNode(parent, verifiedCommand);
         }
 
         return verifiedCommand;

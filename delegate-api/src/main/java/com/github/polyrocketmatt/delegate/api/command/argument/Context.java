@@ -5,6 +5,7 @@ package com.github.polyrocketmatt.delegate.api.command.argument;
 
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
@@ -25,17 +26,19 @@ public class Context {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> @NotNull T find(@NotNull String identifier) {
+    public <T> @Nullable T find(@NotNull String identifier) {
         validate("identifier", String.class, identifier);
 
         Optional<Argument<?>> element = arguments.stream()
                 .filter(argument -> argument.identifier().equals(identifier))
                 .findFirst();
-        return element.map(argument -> (T) argument.output()).orElseThrow(() -> new IllegalArgumentException("No argument with identifier " + identifier + " found"));
+        if (element.isEmpty())
+            throw new IllegalArgumentException("No argument with identifier " + identifier + " found");
+        return element.map(value -> (T) value.output()).orElse(null);
     }
 
     @SuppressWarnings("unchecked")
-    public <T> @NotNull T find(@NotNull String identifier, @NotNull Class<T> type) {
+    public <T> @Nullable T find(@NotNull String identifier, @NotNull Class<T> type) {
         validate("identifier", String.class, identifier);
 
         Optional<Argument<?>> element = arguments.stream()
@@ -44,7 +47,9 @@ public class Context {
                 .filter(argument -> argument.output() != null)
                 .filter(argument -> argument.output().getClass().equals(type))
                 .findFirst();
-        return element.map(argument -> (T) argument.output()).orElseThrow(() -> new IllegalArgumentException("No argument with identifier " + identifier + " found"));
+        if (element.isEmpty())
+            throw new IllegalArgumentException("No argument with identifier " + identifier + " found with type " + type.getSimpleName());
+        return element.map(value -> (T) value.output()).orElse(null);
     }
 
     public @NotNull Argument<?> get(int index) throws IndexOutOfBoundsException {

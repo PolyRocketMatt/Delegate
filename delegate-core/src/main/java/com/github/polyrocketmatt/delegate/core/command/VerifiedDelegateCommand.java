@@ -15,6 +15,8 @@ import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition
 import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 /**
  * Implements the {@link DelegateCommand} interface and provides a class that stores
  * the name and description of the command together with the {@link CommandAction}s,
@@ -145,12 +147,12 @@ public class VerifiedDelegateCommand extends DelegateCommand {
         private NameDefinition nameDefinition;
         private DescriptionDefinition descriptionDefinition;
         private AliasDefinition[] aliasDefinitions;
-        private CommandBuffer<CommandArgument<?>> argumentBuffer;
-        private CommandBuffer<CommandProperty> propertyBuffer;
-        private CommandBuffer<CommandAction> actionBuffer;
-        private CommandBuffer<CommandTrigger> triggerBuffer;
-        private CommandBuffer<PermissionTier> permissionBuffer;
-        private CommandBuffer<ExceptAction> exceptBuffer;
+        private CommandBuffer<CommandArgument<?>> argumentBuffer = new CommandBuffer<>(List.of());
+        private CommandBuffer<CommandProperty> propertyBuffer = new CommandBuffer<>(List.of());
+        private CommandBuffer<CommandAction> actionBuffer = new CommandBuffer<>(List.of());
+        private CommandBuffer<CommandTrigger> triggerBuffer = new CommandBuffer<>(List.of());
+        private CommandBuffer<PermissionTier> permissionBuffer = new CommandBuffer<>(List.of());
+        private CommandBuffer<ExceptAction> exceptBuffer = new CommandBuffer<>(List.of());
 
         /**
          * Builds a new {@link NameDefinition} and stores it in the builder.

@@ -25,10 +25,8 @@ public class StringMinLengthRule extends ArgumentRule<Boolean> {
      */
     public StringMinLengthRule(int minLength, boolean inclusive) {
         super(input -> {
-            try {
-                int value = input.length();
-                return new RuleData<>(inclusive ? minLength <= value : minLength < value);
-            } catch (NumberFormatException ex) { return new RuleData<>(false); }
+            int value = input.length();
+            return new RuleData<>(inclusive ? minLength <= value : minLength < value);
         });
 
         this.minLength = minLength;
@@ -59,7 +57,7 @@ public class StringMinLengthRule extends ArgumentRule<Boolean> {
         if (!(output.value() instanceof Boolean result))
             return new ArgumentRuleResult(ArgumentRuleResult.Result.FAILURE, "Expected result of rule did not match");
         if (!result)
-            return new ArgumentRuleResult(ArgumentRuleResult.Result.FAILURE, "Value was null or not a number greater than the minimum: %s (min %s)".formatted(input, minLength));
+            return new ArgumentRuleResult(ArgumentRuleResult.Result.FAILURE, "String length was null or not a number greater than the minimum: %s (min %s)".formatted(input, minLength));
         return new ArgumentRuleResult(ArgumentRuleResult.Result.SUCCESS, "Successfully passed %s".formatted(getClass().getSimpleName()));
     }
 }
