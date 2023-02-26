@@ -53,8 +53,8 @@ public class TestCommandBuilder extends DelegateCommandBuilder {
     @Override
     public @NotNull TestCommandBuilder withAction(@NotNull CommandAction action) {
         //  Check that action precedence is greater than or equal to 0
-        if (action.getPrecedence() <= 0)
-            throw new AttributeException("Action precedence must be greater than 0");
+        if (action.getPrecedence() < 0)
+            throw new AttributeException("Action precedence must be greater or equal 0");
         return this.with(action);
     }
 
@@ -64,12 +64,12 @@ public class TestCommandBuilder extends DelegateCommandBuilder {
     }
 
     @Override
-    public @NotNull ICommandBuilder withDouble(@NotNull String name, @NotNull String description) {
+    public @NotNull TestCommandBuilder withDouble(@NotNull String name, @NotNull String description) {
         return this.withArgument(DoubleArgument.of(name, description));
     }
 
     @Override
-    public @NotNull ICommandBuilder withDouble(@NotNull String name, @NotNull String description, double defaultValue) {
+    public @NotNull TestCommandBuilder withDouble(@NotNull String name, @NotNull String description, double defaultValue) {
         return this.withArgument(DoubleArgument.of(name, description, defaultValue));
     }
 
@@ -116,7 +116,7 @@ public class TestCommandBuilder extends DelegateCommandBuilder {
     }
 
     @Override
-    public @NotNull ICommandBuilder withSubcommand(@NotNull String name, @NotNull String description) {
+    public @NotNull TestCommandBuilder withSubcommand(@NotNull String name, @NotNull String description) {
         return this.withSubcommand(new SubcommandDefinition(name, description));
     }
 

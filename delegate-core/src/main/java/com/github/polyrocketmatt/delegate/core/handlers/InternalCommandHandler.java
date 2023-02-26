@@ -144,7 +144,7 @@ public class InternalCommandHandler extends DelegateCommandHandler {
 
         //  If the root is null, the command doesn't exist
         if (root == null)
-            return false;
+            return generateEventFromException(information, exceptOrThrow(information, null, FeedbackType.COMMAND_NON_EXISTENT, commandName));
 
         QueryResultNode queryResultNode = root.findDeepest(commandName, commandArguments);
         CommandNode executionNode = queryResultNode.node();

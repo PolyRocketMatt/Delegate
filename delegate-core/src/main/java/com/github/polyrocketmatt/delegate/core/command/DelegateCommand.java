@@ -38,15 +38,19 @@ public abstract class DelegateCommand implements IDelegateCommand {
      *
      * @return The alias definitions of this command.
      */
-    public abstract AliasDefinition[] getAliases();
+    public abstract @NotNull AliasDefinition[] getAliases();
 
     @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null) return false;
         if (!(obj instanceof DelegateCommand other)) return false;
-        return this.getNameDefinition().equals(other.getNameDefinition()) &&
-                this.getDescriptionDefinition().equals(other.getDescriptionDefinition()) &&
-                Arrays.equals(this.getAliases(), other.getAliases());
+
+        //  Check alias matching
+        if (this.getAliases().length != other.getAliases().length) return false;
+        for (int i = 0; i < this.getAliases().length; i++)
+            if (!this.getAliases()[i].getValue().equals(other.getAliases()[i].getValue())) return false;
+        return this.getNameDefinition().getValue().equals(other.getNameDefinition().getValue()) &&
+                this.getDescriptionDefinition().getValue().equals(other.getDescriptionDefinition().getValue());
     }
 }

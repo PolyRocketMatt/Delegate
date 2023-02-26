@@ -5,9 +5,12 @@ package com.github.polyrocketmatt.delegate.core.command.tree;
 
 import com.github.polyrocketmatt.delegate.api.command.tree.ICommandTree;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 
 /**
  * Represents the root of multiple possible {@link CommandNode}s as roots.
@@ -38,7 +41,13 @@ public class CommandTree implements ICommandTree {
      *
      * @param root The root to add.
      */
-    public void add(CommandNode root) {
+    public void add(@NotNull CommandNode root) {
+        validate("root", CommandNode.class, root);
+
+        //  If the root already exists, throw an exception.
+        if (this.roots.contains(root))
+            throw new IllegalArgumentException("The root already exists in the tree");
+
         this.roots.add(root);
     }
 
@@ -48,7 +57,9 @@ public class CommandTree implements ICommandTree {
      * @param identifier The identifier to search for.
      * @return The root with the given identifier, or null if none was found.
      */
-    public CommandNode find(String identifier) {
+    public @Nullable CommandNode find(@NotNull String identifier) {
+        validate("identifier", String.class, identifier);
+
         for (CommandNode node : this.roots)
             if (node.getCommand().getNameDefinition().getValue().equalsIgnoreCase(identifier))
                 return node;

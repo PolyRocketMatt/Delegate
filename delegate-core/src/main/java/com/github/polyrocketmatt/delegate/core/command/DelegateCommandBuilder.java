@@ -13,11 +13,13 @@ import com.github.polyrocketmatt.delegate.api.command.trigger.CommandTrigger;
 import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
 import com.github.polyrocketmatt.delegate.core.command.action.ExceptAction;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
 
+import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
 
 /**
@@ -50,7 +52,9 @@ public abstract class DelegateCommandBuilder implements ICommandBuilder {
      * @return A list of attributes of the specified type.
      * @param <T> The type of attribute to filter for.
      */
-    public <T extends CommandAttribute> List<CommandAttribute> filter(Class<T> instance) {
+    public <T extends CommandAttribute> @NotNull List<CommandAttribute> filter(@NotNull Class<T> instance) {
+        validate("instance", Class.class, instance);
+
         List<CommandAttribute> filtered = new LinkedList<>();
         for (CommandAttribute attribute : attributes)
             if (instance.isInstance(attribute))
@@ -64,7 +68,9 @@ public abstract class DelegateCommandBuilder implements ICommandBuilder {
      * @param rule The rule to filter for.
      * @return A list of attributes that fulfill the specified rule.
      */
-    public List<CommandAttribute> filter(Function<CommandAttribute, Boolean> rule) {
+    public @NotNull List<CommandAttribute> filter(@NotNull Function<CommandAttribute, Boolean> rule) {
+        validate("rule", Function.class, rule);
+
         List<CommandAttribute> filtered = new LinkedList<>();
         for (CommandAttribute attribute : attributes)
             if (rule.apply(attribute))
@@ -77,7 +83,7 @@ public abstract class DelegateCommandBuilder implements ICommandBuilder {
      *
      * @return A list of all actions in the chain.
      */
-    public List<CommandAction> getActions() {
+    public @NotNull List<CommandAction> getActions() {
         List<CommandAction> actions = new LinkedList<>();
         for (CommandAttribute attribute : attributes)
             if (attribute instanceof CommandAction)
@@ -90,7 +96,7 @@ public abstract class DelegateCommandBuilder implements ICommandBuilder {
      *
      * @return A list of all arguments in the chain.
      */
-    public List<CommandArgument<?>> getArguments() {
+    public @NotNull List<CommandArgument<?>> getArguments() {
         List<CommandArgument<?>> arguments = new LinkedList<>();
         for (CommandAttribute attribute : attributes)
             if (attribute instanceof CommandArgument<?>)
@@ -103,7 +109,7 @@ public abstract class DelegateCommandBuilder implements ICommandBuilder {
      *
      * @return A list of all definitions in the chain.
      */
-    public List<CommandDefinition<?>> getDefinitions() {
+    public @NotNull List<CommandDefinition<?>> getDefinitions() {
         List<CommandDefinition<?>> definitions = new LinkedList<>();
         for (CommandAttribute attribute : attributes)
             if (attribute instanceof CommandDefinition<?>)
@@ -116,7 +122,7 @@ public abstract class DelegateCommandBuilder implements ICommandBuilder {
      *
      * @return A list of all properties in the chain.
      */
-    public List<CommandProperty> getProperties() {
+    public @NotNull List<CommandProperty> getProperties() {
         List<CommandProperty> properties = new LinkedList<>();
         for (CommandAttribute attribute : attributes)
             if (attribute instanceof CommandProperty)
@@ -124,7 +130,7 @@ public abstract class DelegateCommandBuilder implements ICommandBuilder {
         return properties;
     }
 
-    public List<CommandTrigger> getTriggers() {
+    public @NotNull List<CommandTrigger> getTriggers() {
         List<CommandTrigger> triggers = new LinkedList<>();
         for (CommandAttribute attribute : attributes)
             if (attribute instanceof CommandTrigger)
@@ -132,7 +138,7 @@ public abstract class DelegateCommandBuilder implements ICommandBuilder {
         return triggers;
     }
 
-    public List<PermissionTier> getPermissionTiers() {
+    public @NotNull List<PermissionTier> getPermissionTiers() {
         List<PermissionTier> tiers = new LinkedList<>();
         for (CommandAttribute attribute : attributes)
             if (attribute instanceof PermissionTier)
@@ -140,7 +146,7 @@ public abstract class DelegateCommandBuilder implements ICommandBuilder {
         return tiers;
     }
 
-    public List<ExceptAction> getExceptActions() {
+    public @NotNull List<ExceptAction> getExceptActions() {
         List<ExceptAction> actions = new LinkedList<>();
         for (CommandAttribute attribute : attributes)
             if (attribute instanceof ExceptAction)
@@ -155,7 +161,7 @@ public abstract class DelegateCommandBuilder implements ICommandBuilder {
      * @return The first attribute of the specified type.
      * @param <T> The type of attribute to find.
      */
-    public <T extends CommandAttribute> CommandAttribute find(Class<T> instance) {
+    public <T extends CommandAttribute> @Nullable CommandAttribute find(Class<T> instance) {
         for (CommandAttribute attribute : attributes)
             if (instance.isInstance(attribute))
                 return attribute;
