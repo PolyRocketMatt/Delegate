@@ -25,4 +25,9 @@ public class ConsoleCommanderTest {
         assertThrows(IllegalArgumentException.class, () -> consoleCommander.sendMessage(null));
     }
 
+    @Test
+    public void testIsPlayer() {
+        assertFalse(consoleCommander.isPlayer());
+    }
+
 }

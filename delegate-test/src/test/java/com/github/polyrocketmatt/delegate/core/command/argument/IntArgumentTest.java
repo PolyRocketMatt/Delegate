@@ -84,6 +84,15 @@ public class IntArgumentTest {
     }
 
     @Test
+    public void testInternalParserInputNull() {
+        IntArgument argumentA = IntArgument.of("identifier", "description");
+        IntArgument argumentB = IntArgument.of("identifier", "description", 1);
+
+        assertThrows(ArgumentParseException.class, () -> argumentA.parse((String) null));
+        assertEquals(1, argumentB.parse((String) null).output());
+    }
+
+    @Test
     public void testInternalParserFailure() {
         IntArgument argument = IntArgument.of("identifier", "description");
 

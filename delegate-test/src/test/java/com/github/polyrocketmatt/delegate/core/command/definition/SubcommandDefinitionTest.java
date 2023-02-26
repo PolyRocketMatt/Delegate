@@ -23,7 +23,7 @@ public class SubcommandDefinitionTest {
     }
 
     @Test
-    public void testConstructor() {
+    public void testConstructorPrimary() {
         SubcommandDefinition definition = new SubcommandDefinition(builder);
 
         assertNotNull(definition.getIdentifier());
@@ -32,8 +32,17 @@ public class SubcommandDefinitionTest {
     }
 
     @Test
-    public void testConstructorWithNull() {
+    public void testConstructorPrimaryWithNull() {
         assertThrows(IllegalArgumentException.class, () -> new SubcommandDefinition(null));
+    }
+
+    @Test
+    public void testConstructorSecondary() {
+        SubcommandDefinition definition = new SubcommandDefinition("test", "A simple test description");
+
+        assertEquals("test", definition.getIdentifier());
+        assertNotNull(definition.getValue());
+        assertEquals(AttributeType.DEFINITION, definition.getType());
     }
 
 }

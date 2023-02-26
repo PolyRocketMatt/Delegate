@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class FloatArgumentTest {
+public class DoubleArgumentTest {
 
     @BeforeEach
     public void setup() {
@@ -25,33 +25,33 @@ public class FloatArgumentTest {
 
     @Test
     public void testPrimaryConstructor() {
-        FloatArgument argument = FloatArgument.of("identifier", "description");
+        DoubleArgument argument = DoubleArgument.of("identifier", "description");
 
         assertEquals("identifier", argument.getIdentifier());
         assertEquals("description", argument.getArgumentDescription());
         assertEquals(AttributeType.ARGUMENT, argument.getType());
-        assertEquals(Float.class, argument.getArgumentType());
+        assertEquals(Double.class, argument.getArgumentType());
     }
 
     @Test
     public void testSecondaryConstructor() {
-        FloatArgument argument = FloatArgument.of("identifier", "description", 0.0f);
+        DoubleArgument argument = DoubleArgument.of("identifier", "description", 0.0f);
 
         assertEquals("identifier", argument.getIdentifier());
         assertEquals("description", argument.getArgumentDescription());
         assertEquals(AttributeType.ARGUMENT, argument.getType());
-        assertEquals(Float.class, argument.getArgumentType());
-        assertEquals(0.0f, argument.getDefault().output());
+        assertEquals(Double.class, argument.getArgumentType());
+        assertEquals(0.0, argument.getDefault().output());
     }
 
     @Test
     public void testTernaryConstructor() {
-        FloatArgument argument = FloatArgument.of("identifier", "description", new NonNullRule());
+        DoubleArgument argument = DoubleArgument.of("identifier", "description", new NonNullRule());
 
         assertEquals("identifier", argument.getIdentifier());
         assertEquals("description", argument.getArgumentDescription());
         assertEquals(AttributeType.ARGUMENT, argument.getType());
-        assertEquals(Float.class, argument.getArgumentType());
+        assertEquals(Double.class, argument.getArgumentType());
         assertEquals(1, argument.getArgumentRules().size());
         assertTrue(argument.getArgumentRules().get(0) instanceof NonNullRule);
         assertNull(argument.getDefault().output());
@@ -59,41 +59,41 @@ public class FloatArgumentTest {
 
     @Test
     public void testQuaternaryConstructor() {
-        FloatArgument argument = FloatArgument.of("identifier", "description", 0.0f,
+        DoubleArgument argument = DoubleArgument.of("identifier", "description", 0.0f,
                 new FloatMinRule(0.0f), new FloatMaxRule(1.0f));
 
         assertEquals("identifier", argument.getIdentifier());
         assertEquals("description", argument.getArgumentDescription());
         assertEquals(AttributeType.ARGUMENT, argument.getType());
-        assertEquals(Float.class, argument.getArgumentType());
+        assertEquals(Double.class, argument.getArgumentType());
         assertEquals(2, argument.getArgumentRules().size());
         assertTrue(argument.getArgumentRules().get(0) instanceof FloatMinRule);
         assertTrue(argument.getArgumentRules().get(1) instanceof FloatMaxRule);
-        assertEquals(0.0f, argument.getDefault().output());
+        assertEquals(0.0, argument.getDefault().output());
     }
 
     @Test
     public void testInternalParserSuccess() {
-        FloatArgument argument = FloatArgument.of("identifier", "description", 0.0f);
-        Argument<Float> parsedArgumentA = argument.parse("0.0");
-        Argument<Float> parsedArgumentB = argument.parse("100");
+        DoubleArgument argument = DoubleArgument.of("identifier", "description", 0.0f);
+        Argument<Double> parsedArgumentA = argument.parse("0.0");
+        Argument<Double> parsedArgumentB = argument.parse("100");
 
-        assertEquals(0.0f, parsedArgumentA.output());
-        assertEquals(100.0f, parsedArgumentB.output());
+        assertEquals(0.0, parsedArgumentA.output());
+        assertEquals(100.0, parsedArgumentB.output());
     }
 
     @Test
     public void testInternalParserInputNull() {
-        FloatArgument argumentA = FloatArgument.of("identifier", "description");
-        FloatArgument argumentB = FloatArgument.of("identifier", "description", 1.0f);
+        DoubleArgument argumentA = DoubleArgument.of("identifier", "description");
+        DoubleArgument argumentB = DoubleArgument.of("identifier", "description", 1.0);
 
         assertThrows(ArgumentParseException.class, () -> argumentA.parse((String) null));
-        assertEquals(1.0f, argumentB.parse((String) null).output());
+        assertEquals(1.0, argumentB.parse((String) null).output());
     }
 
     @Test
     public void testInternalParserFailure() {
-        FloatArgument argument = FloatArgument.of("identifier", "description");
+        DoubleArgument argument = DoubleArgument.of("identifier", "description");
 
         assertThrows(ArgumentParseException.class, () -> argument.parse("0.0ff"));
         assertThrows(ArgumentParseException.class, () -> argument.parse("not a number"));
@@ -103,29 +103,29 @@ public class FloatArgumentTest {
 
     @Test
     public void testInternalParserFailureWithDefault() {
-        FloatArgument argument = FloatArgument.of("identifier", "description", 0.0f);
-        Argument<Float> parsedArgumentA = argument.parse("0.0ff");
-        Argument<Float> parsedArgumentB = argument.parse("not a number");
-        Argument<Float> parsedArgumentC = argument.parse("0.0.0");
-        Argument<Float> parsedArgumentD = argument.parse("0_0");
+        DoubleArgument argument = DoubleArgument.of("identifier", "description", 0.0);
+        Argument<Double> parsedArgumentA = argument.parse("0.0ff");
+        Argument<Double> parsedArgumentB = argument.parse("not a number");
+        Argument<Double> parsedArgumentC = argument.parse("0.0.0");
+        Argument<Double> parsedArgumentD = argument.parse("0_0");
 
-        assertEquals(0.0f, parsedArgumentA.output());
-        assertEquals(0.0f, parsedArgumentB.output());
-        assertEquals(0.0f, parsedArgumentC.output());
-        assertEquals(0.0f, parsedArgumentD.output());
+        assertEquals(0.0, parsedArgumentA.output());
+        assertEquals(0.0, parsedArgumentB.output());
+        assertEquals(0.0, parsedArgumentC.output());
+        assertEquals(0.0, parsedArgumentD.output());
     }
 
     @Test
     public void testBrigadierParserSuccess() {
-        FloatArgument argument = FloatArgument.of("identifier", "description", 0.0f);
+        DoubleArgument argument = DoubleArgument.of("identifier", "description", 0.0);
         StringReader reader = new StringReader("0.0f");
 
-        assertEquals(0.0f, argument.parse(reader));
+        assertEquals(0.0, argument.parse(reader));
     }
 
     @Test
     public void testBrigadierParserFailure() {
-        FloatArgument argument = FloatArgument.of("identifier", "description");
+        DoubleArgument argument = DoubleArgument.of("identifier", "description");
         StringReader readerA = new StringReader("not a number");
         StringReader readerB = new StringReader("0.0.0");
 
@@ -135,12 +135,12 @@ public class FloatArgumentTest {
 
     @Test
     public void testBrigadierParserFailureWithDefault() {
-        FloatArgument argument = FloatArgument.of("identifier", "description", 0.0f);
+        DoubleArgument argument = DoubleArgument.of("identifier", "description", 0.0);
         StringReader readerA = new StringReader("not a number");
         StringReader readerB = new StringReader("0.0.0");
 
-        assertEquals(0.0f, argument.parse(readerA));
-        assertEquals(0.0f, argument.parse(readerB));
+        assertEquals(0.0, argument.parse(readerA));
+        assertEquals(0.0, argument.parse(readerB));
     }
 
 }

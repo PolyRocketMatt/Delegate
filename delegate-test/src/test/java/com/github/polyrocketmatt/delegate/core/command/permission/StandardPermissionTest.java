@@ -30,6 +30,11 @@ public class StandardPermissionTest {
         public void sendMessage(@NotNull String message) {
 
         }
+
+        @Override
+        public boolean isPlayer() {
+            return true;
+        }
     };
 
     @Test

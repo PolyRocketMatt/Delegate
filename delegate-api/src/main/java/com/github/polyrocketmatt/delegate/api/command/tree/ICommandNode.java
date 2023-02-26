@@ -18,4 +18,6 @@ public interface ICommandNode {
 
     @NotNull CommandDefinition<String> getDescriptionDefinition();
 
+    @NotNull CommandDefinition<String>[] getAliasDefinitions();
+
 }

@@ -42,6 +42,11 @@ public class FunctionActionTest {
             System.out.println(message);
         }
 
+        @Override
+        public boolean isPlayer() {
+            return false;
+        }
+
     }
 
     @Test

@@ -9,6 +9,8 @@ import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDef
 import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+
 /**
  * Defines a command that has a name and description.
  *
@@ -38,4 +40,13 @@ public abstract class DelegateCommand implements IDelegateCommand {
      */
     public abstract AliasDefinition[] getAliases();
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null) return false;
+        if (!(obj instanceof DelegateCommand other)) return false;
+        return this.getNameDefinition().equals(other.getNameDefinition()) &&
+                this.getDescriptionDefinition().equals(other.getDescriptionDefinition()) &&
+                Arrays.equals(this.getAliases(), other.getAliases());
+    }
 }

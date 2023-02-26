@@ -42,6 +42,10 @@ public class ConsumerActionTest {
             System.out.println(message);
         }
 
+        @Override
+        public boolean isPlayer() {
+            return false;
+        }
     }
 
     @Test

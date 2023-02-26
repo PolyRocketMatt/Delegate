@@ -25,6 +25,11 @@ public class PlayerCommanderTest {
         public void sendMessage(@NotNull String message) {
             System.out.println(message);
         }
+
+        @Override
+        public boolean isPlayer() {
+            return true;
+        }
     };
 
     @Test
@@ -48,6 +53,11 @@ public class PlayerCommanderTest {
             @Override
             public void sendMessage(@NotNull String message) {
                 System.out.println(message);
+            }
+
+            @Override
+            public boolean isPlayer() {
+                return true;
             }
         });
     }
@@ -82,9 +92,13 @@ public class PlayerCommanderTest {
             }
 
             @Override
-            public void sendMessage(@NotNull String message) {
+            public void sendMessage(@NotNull String message) {}
 
+            @Override
+            public boolean isPlayer() {
+                return true;
             }
+
         };
 
         assertEquals(playerCommander, comparison);

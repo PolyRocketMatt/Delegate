@@ -46,7 +46,7 @@ public class ContextTest {
         assertEquals(1, (Integer) context.find("arg2"));
         assertEquals(true, context.find("arg3"));
         assertNull(context.find("arg4"));
-        assertNull(context.find("arg5"));
+        assertThrows(IllegalArgumentException.class, () -> context.find("arg5"));
     }
 
     @Test
@@ -57,8 +57,8 @@ public class ContextTest {
         assertEquals(1, context.find("arg2", Integer.class));
         assertEquals(true, context.find("arg3", Boolean.class));
         assertNull(context.find("arg4"));
-        assertNull(context.find("arg5"));
-        assertNull(context.find("arg1", Integer.class));
+        assertThrows(IllegalArgumentException.class, () -> context.find("arg5"));
+        assertThrows(IllegalArgumentException.class, () -> context.find("arg1", Integer.class));
     }
 
     @Test

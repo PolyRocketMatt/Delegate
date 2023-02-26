@@ -37,6 +37,12 @@ public class OperatorPermissionTest {
             public void sendMessage(@NotNull String message) {
 
             }
+
+            @Override
+            public boolean isPlayer() {
+                return true;
+            }
+
         }));
 
         assertFalse(permission.hasPermission(new PlayerCommander(UUID.randomUUID()) {
@@ -53,6 +59,11 @@ public class OperatorPermissionTest {
             @Override
             public void sendMessage(@NotNull String message) {
 
+            }
+
+            @Override
+            public boolean isPlayer() {
+                return true;
             }
         }));
     }
