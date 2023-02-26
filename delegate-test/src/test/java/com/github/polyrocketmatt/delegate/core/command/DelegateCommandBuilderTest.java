@@ -98,28 +98,27 @@ public class DelegateCommandBuilderTest {
         }
     }
 
-    private DelegateCommandBuilder builder;
+    private final DelegateCommandBuilder builder =  new TestCommandBuilder()
+            .withDefinition(new NameDefinition("test"))
+            .withDefinition(new DescriptionDefinition("Just a simple description"))
+            .withAlias("alias1")
+            .withAction(new RunnableAction(() -> System.out.println("Hello, World!")))
+            .withInt("int", "int argument", 0)
+            .withDouble("double", "double argument", 0.0)
+            .withFloat("float", "float argument", 0.0f)
+            .withString("string", "string argument", "default")
+            .withSubcommand("subcommand", "Just a subcommand description")
+            .withAsync()
+            .withIgnoreNull()
+            .withPermission("permission.primary")
+            .withOperatorPermission()
+            .with(new FailureTrigger(((information, captures) -> System.out.println("Failed!"))))
+            .with(new ExceptAction((commander, feedback, actions) -> System.out.println("Exception!")));
 
     @BeforeEach
     public void setUp() {
         if (getDelegate().getPlatform() == null)
             getDelegate().setPlatform(new PlatformImpl());
-        this.builder = new TestCommandBuilder()
-                .withDefinition(new NameDefinition("test"))
-                .withDefinition(new DescriptionDefinition("Just a simple description"))
-                .withAlias("alias1")
-                .withAction(new RunnableAction(() -> System.out.println("Hello, World!")))
-                .withInt("int", "int argument", 0)
-                .withDouble("double", "double argument", 0.0)
-                .withFloat("float", "float argument", 0.0f)
-                .withString("string", "string argument", "default")
-                .withSubcommand("subcommand", "Just a subcommand description")
-                .withAsync()
-                .withIgnoreNull()
-                .withPermission("permission.primary")
-                .withOperatorPermission()
-                .with(new FailureTrigger(((information, captures) -> System.out.println("Failed!"))))
-                .with(new ExceptAction((commander, feedback, actions) -> System.out.println("Exception!")));
     }
 
     @Test

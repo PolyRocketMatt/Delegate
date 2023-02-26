@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SubcommandDefinitionTest {
 
-    private TestCommandBuilder builder;
+    private final TestCommandBuilder builder = new TestCommandBuilder();
 
     private static class PlatformImpl implements IPlatform {
 
@@ -86,13 +86,13 @@ public class SubcommandDefinitionTest {
     @BeforeEach
     public void setup() {
         getDelegate().setVerbose(true);
-        if (getDelegate().getPlatform() == null)
-            getDelegate().setPlatform(new PlatformImpl());
-        this.builder = new TestCommandBuilder();
     }
 
     @Test
     public void testConstructorPrimary() {
+        if (getDelegate().getPlatform() == null)
+            getDelegate().setPlatform(new PlatformImpl());
+
         SubcommandDefinition definition = new SubcommandDefinition(builder);
 
         assertNotNull(definition.getIdentifier());
@@ -107,6 +107,9 @@ public class SubcommandDefinitionTest {
 
     @Test
     public void testConstructorSecondary() {
+        if (getDelegate().getPlatform() == null)
+            getDelegate().setPlatform(new PlatformImpl());
+
         SubcommandDefinition definition = new SubcommandDefinition("test", "A simple test description");
 
         assertNotNull(definition.getIdentifier());

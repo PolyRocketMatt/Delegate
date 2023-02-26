@@ -11,6 +11,7 @@ import com.github.polyrocketmatt.delegate.api.exception.ArgumentParseException;
 import com.mojang.brigadier.StringReader;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -103,6 +104,8 @@ public class CommandArgumentTest {
 
     @Test
     public void testWithRule() {
+        argumentRules.clear();
+
         CommandArgumentImpl argument = new CommandArgumentImpl(identifier, argumentDescription, argumentType,
                 defaultValue, false, argumentRules);
 
@@ -116,6 +119,8 @@ public class CommandArgumentTest {
 
     @Test
     public void testWithRules() {
+        argumentRules.clear();
+
         CommandArgumentImpl argument = new CommandArgumentImpl(identifier, argumentDescription, argumentType,
                 defaultValue, false, argumentRules);
 
@@ -130,6 +135,8 @@ public class CommandArgumentTest {
 
     @Test
     public void testWithDefault() {
+        argumentRules.clear();
+
         CommandArgumentImpl argument = new CommandArgumentImpl(identifier, argumentDescription, argumentType,
                 defaultValue, false, argumentRules);
         Argument<String> newDefault = new Argument<>(newId(), "newDefault");
@@ -145,6 +152,8 @@ public class CommandArgumentTest {
 
     @Test
     public void testParseRules() {
+        argumentRules.clear();
+
         CommandArgumentImpl argument = new CommandArgumentImpl(identifier, argumentDescription, argumentType,
                 defaultValue, false, argumentRules);
 
