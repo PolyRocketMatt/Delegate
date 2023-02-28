@@ -143,7 +143,7 @@ public class CommandNode implements ICommandNode {
      * @param names The array of names to search for.
      * @return The {@link QueryResultNode} that contains the node that was found
      */
-    public QueryResultNode findDeepest(@NotNull String commandPattern, @NotNull String[] names) {
+    public @NotNull QueryResultNode findDeepest(@NotNull String commandPattern, @NotNull String[] names) {
         validate("commandPattern", String.class, commandPattern);
         validate("names", String[].class, names);
         for (String name : names)

@@ -18,12 +18,12 @@ public class DelegateCore implements DelegateAPI {
 
     private static final DelegateCore instance = new DelegateCore();
 
-    private IPlatform platform;
     private final DelegateConfiguration configuration;
     private final AttributeHandler attributeHandler;
-    private DelegateCommandHandler delegateCommandHandler;
     private final BrigadierCommandHandler brigadierCommandHandler;
     private final InternalCommandHandler internalCommandHandler;
+    private IPlatform platform;
+    private DelegateCommandHandler delegateCommandHandler;
     private boolean isVerbose = false;
     private boolean isBrigadier = false;
 

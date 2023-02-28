@@ -23,9 +23,12 @@ import com.github.polyrocketmatt.delegate.core.command.definition.SubcommandDefi
 import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
 import com.github.polyrocketmatt.delegate.api.exception.AttributeException;
 import com.github.polyrocketmatt.delegate.core.utils.Tuple;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
 
 /**
@@ -51,13 +54,14 @@ public class AttributeHandler implements IHandler {
      * @return A {@link VerifiedDelegateCommand} if the command is valid.
      * @throws AttributeException If the command is invalid.
      */
-    public VerifiedDelegateCommand process(CommandNode parent, AttributedDelegateCommand command) {
+    public VerifiedDelegateCommand process(@Nullable CommandNode parent, @NotNull AttributedDelegateCommand command) {
+        validate("command", AttributedDelegateCommand.class, command);
+
         DelegateCommandBuilder chain = command.getAttributeChain();
         Tuple<NameDefinition, DescriptionDefinition> header = processHeader(command.getAttributeChain());
         AliasDefinition[] aliases = processAliases(chain);
 
         this.checkUniqueName(parent, header.a().getValue());
-        this.checkIdentifiers(chain);
 
         //  Check if all aliases are unique
         for (AliasDefinition alias : aliases)
@@ -69,6 +73,9 @@ public class AttributeHandler implements IHandler {
         CommandBuffer<CommandTrigger> triggerBuffer = new CommandBuffer<>(this.processTriggers(chain));
         CommandBuffer<PermissionTier> permissionBuffer = new CommandBuffer<>(this.processPermissionTiers(chain));
         CommandBuffer<ExceptAction> exceptBuffer = new CommandBuffer<>(this.processExceptions(chain));
+
+        //  Check identifiers after all attributes have been processed
+        this.checkIdentifiers(chain);
 
         VerifiedDelegateCommand verifiedCommand = VerifiedDelegateCommand.create()
                 .buildNameDefinition(header.a())
@@ -91,10 +98,8 @@ public class AttributeHandler implements IHandler {
 
             //  Add tree to command handler
             getDelegate().registerCommand(rootNode);
-        } else {
+        } else
             new CommandNode(parent, verifiedCommand);
-        }
-
         return verifiedCommand;
     }
 
@@ -189,7 +194,7 @@ public class AttributeHandler implements IHandler {
                     .filter(i -> subCommandNames.indexOf(i) != subCommandNames.lastIndexOf(i))
                     .distinct()
                     .toList();
-            throw new AttributeException("Sub-command names must be unique: %s".formatted(duplicates.get(0)));
+            throw new AttributeException("Subcommand names must be unique: %s".formatted(duplicates.get(0)));
         }
     }
 
