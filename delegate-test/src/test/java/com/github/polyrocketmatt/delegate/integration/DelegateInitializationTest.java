@@ -3,6 +3,7 @@ package com.github.polyrocketmatt.delegate.integration;
 import com.github.polyrocketmatt.delegate.api.IPlatform;
 import com.github.polyrocketmatt.delegate.core.DelegateCore;
 import com.github.polyrocketmatt.delegate.core.PlatformImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,6 +12,11 @@ import static org.junit.jupiter.api.Assertions.*;
  * Tests the initialization of the DelegateCore class.
  */
 public class DelegateInitializationTest {
+
+    @BeforeEach
+    public void reset() {
+        DelegateCore.getDelegate().setPlatform(null);
+    }
 
     @Test
     public void testDelegateInit() {
@@ -33,7 +39,7 @@ public class DelegateInitializationTest {
         assertNotNull(DelegateCore.getDelegate().getConfiguration());
 
         //  Basic config
-        assertFalse(DelegateCore.getDelegate().isVerbose());
+        assertTrue(DelegateCore.getDelegate().isVerbose());
         assertFalse(DelegateCore.getDelegate().useBrigadier());
     }
 
