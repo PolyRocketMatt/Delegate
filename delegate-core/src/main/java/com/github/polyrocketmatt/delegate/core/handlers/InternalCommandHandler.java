@@ -88,20 +88,6 @@ public class InternalCommandHandler extends DelegateCommandHandler {
 
                 //  Since we checked if the node is verified, we can safely overwrite it here
                 level.setCommand(node.getCommand());
-
-                //  We must now check the sub-nodes of the current node
-                for (CommandNode subNode : node.getChildren()) {
-                    for (CommandNode child : level.getChildren()) {
-                        if (match(child, subNode)) {
-                            //  If the sub-node has no children, we cannot overwrite
-                            if (subNode.getChildren().isEmpty() || child.getChildren().isEmpty())
-                                throw new CommandRegisterException("Cannot overwrite command node with no children");
-
-                            insertIntoTree(subNode, child, level);
-                            break;
-                        }
-                    }
-                }
             } else {
                 //  If the parent is null, we must add the node to the root
                 if (parent == null) {
@@ -113,6 +99,20 @@ public class InternalCommandHandler extends DelegateCommandHandler {
                 } else
                     //  If the parent is not null, we must add the node to the parent, there is no need to register
                     parent.addChild(node);
+            }
+        }
+
+        //  Finally, we check the sub-nodes of the current node
+        for (CommandNode subNode : node.getChildren()) {
+            for (CommandNode child : level.getChildren()) {
+                if (match(child, subNode)) {
+                    //  If the sub-node has no children, we cannot overwrite
+                    if (subNode.getChildren().isEmpty() || child.getChildren().isEmpty())
+                        throw new CommandRegisterException("Cannot overwrite command node with no children");
+
+                    insertIntoTree(subNode, child, level);
+                    break;
+                }
             }
         }
     }

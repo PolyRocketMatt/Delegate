@@ -10,13 +10,15 @@ import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException
 import com.github.polyrocketmatt.delegate.core.CommandBuilderImpl;
 import com.github.polyrocketmatt.delegate.core.CommanderEntityImpl;
 import com.github.polyrocketmatt.delegate.core.DelegateCore;
+import com.github.polyrocketmatt.delegate.core.InvalidCommandNodeImpl;
 import com.github.polyrocketmatt.delegate.core.PlatformImpl;
+import com.github.polyrocketmatt.delegate.core.command.AttributedDelegateCommand;
 import com.github.polyrocketmatt.delegate.core.command.DelegateCommand;
 import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
 import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTierType;
+import com.github.polyrocketmatt.delegate.core.command.tree.CommandNode;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,11 +27,16 @@ import java.util.List;
 import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests the registration of (in)valid and duplicate commands.
+ */
 public class DelegateCommandRegistrationTest {
 
-    private static IPlatform PLATFORM = new PlatformImpl();
+    private static final IPlatform PLATFORM = new PlatformImpl();
+    private static final CommanderEntityImpl ENTITY = new CommanderEntityImpl();
     private static CommandBuilderImpl BUILDER = new CommandBuilderImpl();
-    private static CommanderEntityImpl ENTITY = new CommanderEntityImpl();
+
+
 
     @BeforeEach
     public void reset() {
@@ -44,11 +51,23 @@ public class DelegateCommandRegistrationTest {
 
     @Test
     public void testInvalidCommandNodeRegistration() {
-        assertThrows(CommandRegisterException.class, () -> { DelegateCore.getDelegate().registerCommand(null); }, "Node cannot be null");
+        assertThrows(CommandRegisterException.class, () -> DelegateCore.getDelegate().registerCommand(null), "Node cannot be null");
+        assertThrows(CommandRegisterException.class, () -> DelegateCore.getDelegate().registerCommand(new InvalidCommandNodeImpl()), "Node must be an instance of CommandNode");
     }
 
     @Test
     public void testValidCommandNodeRegistration() {
+        DelegateCommand command = new AttributedDelegateCommand(BUILDER
+                .withDefinition(new NameDefinition("test"))
+                .withDefinition(new DescriptionDefinition("This is a test command"))
+        );
+        CommandNode node = new CommandNode(command);
+
+        assertTrue(DelegateCore.getDelegate().registerCommand(node));
+    }
+
+    @Test
+    public void testValidBuiltCommandNodeRegistration() {
         final int[] a = { 0 };
 
         DelegateCommand command = BUILDER.withDefinition(new NameDefinition("test"))

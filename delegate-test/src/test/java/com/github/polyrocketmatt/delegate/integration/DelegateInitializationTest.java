@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests the initialization of the DelegateCore class.
+ */
 public class DelegateInitializationTest {
 
     @Test
