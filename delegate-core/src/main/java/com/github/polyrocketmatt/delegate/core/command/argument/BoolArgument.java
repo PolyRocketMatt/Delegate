@@ -22,7 +22,7 @@ import java.util.List;
 public class BoolArgument extends CommandArgument<Boolean> {
 
     /**
-     * Creates a new {@link DoubleArgument} with an identifier, a description, a default value and a
+     * Creates a new {@link BoolArgument} with an identifier, a description, a default value and a
      * list of {@link ArgumentRule}s.
      *
      * @param identifier The identifier of the argument.
@@ -39,7 +39,7 @@ public class BoolArgument extends CommandArgument<Boolean> {
     public @NotNull Argument<Boolean> parse(@Nullable String input) {
         if (input == null) {
             if (getDefault().output() == null)
-                throw new ArgumentParseException("The argument '" + getIdentifier() + "' must be a boolean", Double.class);
+                throw new ArgumentParseException("The argument '" + getIdentifier() + "' must be a boolean", Boolean.class);
             return getDefault();
         }
 
@@ -55,7 +55,7 @@ public class BoolArgument extends CommandArgument<Boolean> {
             reader.setCursor(start);
 
             if (getDefault().output() == null)
-                throw new ArgumentParseException("The argument '" + getIdentifier() + "' must be a boolean", Float.class);
+                throw new ArgumentParseException("The argument '" + getIdentifier() + "' must be a boolean", Boolean.class);
             return getDefault().output();
         }
     }
