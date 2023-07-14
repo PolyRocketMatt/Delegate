@@ -31,7 +31,7 @@ public class BoolArgument extends CommandArgument<Boolean> {
      * @param isOptional Whether the argument is optional.
      * @param rules The rules of the argument.
      */
-    private BoolArgument(String identifier, String argumentDescription, boolean defaultValue, boolean isOptional, List<ArgumentRule<?>> rules) {
+    private BoolArgument(String identifier, String argumentDescription, Boolean defaultValue, boolean isOptional, List<ArgumentRule<?>> rules) {
         super(identifier, argumentDescription, Boolean.class, new Argument<>(identifier, defaultValue), isOptional, rules);
     }
 
@@ -43,7 +43,15 @@ public class BoolArgument extends CommandArgument<Boolean> {
             return getDefault();
         }
 
-        return new Argument<>(getIdentifier(), Boolean.parseBoolean(input));
+        try {
+            if (!input.equalsIgnoreCase("true") && !input.equalsIgnoreCase("false"))
+                throw new ArgumentParseException("", Boolean.class);
+            return new Argument<>(getIdentifier(), Boolean.parseBoolean(input));
+        } catch (ArgumentParseException ex) {
+            if (getDefault().output() == null)
+                throw new ArgumentParseException("The argument '" + getIdentifier() + "' must be a boolean", Boolean.class);
+            return getDefault();
+        }
     }
 
     @Override
@@ -68,7 +76,7 @@ public class BoolArgument extends CommandArgument<Boolean> {
      * @return The created {@link BoolArgument}.
      */
     public static BoolArgument of(String identifier, String argumentDescription) {
-        return new BoolArgument(identifier, argumentDescription, false, false, List.of());
+        return new BoolArgument(identifier, argumentDescription, null, false, List.of());
     }
 
     /**
@@ -94,7 +102,7 @@ public class BoolArgument extends CommandArgument<Boolean> {
      */
     public static BoolArgument of(String identifier, String argumentDescription, ArgumentRule<?>... rules) {
         boolean isOptional = Arrays.stream(rules).noneMatch(rule -> rule instanceof NonNullRule);
-        return new BoolArgument(identifier, argumentDescription, false, isOptional, List.of(rules));
+        return new BoolArgument(identifier, argumentDescription, null, isOptional, List.of(rules));
     }
 
     /**

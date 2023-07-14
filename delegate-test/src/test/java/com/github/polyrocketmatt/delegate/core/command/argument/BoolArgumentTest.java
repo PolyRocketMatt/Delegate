@@ -2,6 +2,7 @@ package com.github.polyrocketmatt.delegate.core.command.argument;
 
 import com.github.polyrocketmatt.delegate.api.AttributeType;
 import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
+import com.github.polyrocketmatt.delegate.api.exception.ArgumentParseException;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.ConditionRule;
 import com.github.polyrocketmatt.delegate.core.command.argument.rule.NonNullRule;
 import com.mojang.brigadier.StringReader;
@@ -50,7 +51,7 @@ public class BoolArgumentTest {
         assertEquals(Boolean.class, argument.getArgumentType());
         assertEquals(1, argument.getArgumentRules().size());
         assertTrue(argument.getArgumentRules().get(0) instanceof NonNullRule);
-        assertFalse(argument.getDefault().output());
+        assertNull(argument.getDefault().output());
     }
 
     @Test
@@ -82,9 +83,19 @@ public class BoolArgumentTest {
         BoolArgument argumentA = BoolArgument.of("identifier", "description");
         BoolArgument argumentB = BoolArgument.of("identifier", "description", true);
 
-        assertEquals(false, argumentA.parse((String) null).output());
+        assertThrows(ArgumentParseException.class, () -> argumentA.parse((String) null).output());
         assertEquals(true, argumentB.parse((String) null).output());
     }
+
+    @Test
+    public void testInternalParserFailure() {
+        IntArgument argument = IntArgument.of("identifier", "description");
+
+        assertThrows(ArgumentParseException.class, () -> argument.parse("tr.ue"));
+        assertThrows(ArgumentParseException.class, () -> argument.parse("ttrue"));
+        assertThrows(ArgumentParseException.class, () -> argument.parse("tru e"));
+    }
+
 
     @Test
     public void testInternalParserFailureWithDefault() {
@@ -93,11 +104,13 @@ public class BoolArgumentTest {
         Argument<Boolean> parsedArgumentB = argument.parse("ttrue");
         Argument<Boolean> parsedArgumentC = argument.parse("tru e");
         Argument<Boolean> parsedArgumentD = argument.parse("true");
+        Argument<Boolean> parsedArgumentE = argument.parse("false");
 
         assertEquals(false, parsedArgumentA.output());
         assertEquals(false, parsedArgumentB.output());
         assertEquals(false, parsedArgumentC.output());
         assertEquals(true, parsedArgumentD.output());
+        assertEquals(false, parsedArgumentE.output());
     }
 
     @Test

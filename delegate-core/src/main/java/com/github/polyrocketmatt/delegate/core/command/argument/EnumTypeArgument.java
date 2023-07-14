@@ -61,8 +61,8 @@ public class EnumTypeArgument<T extends Enum<T>> extends CommandArgument<T>{
             for (T enumConstant : enumConstants)
                 if (enumConstant.name().equalsIgnoreCase(input))
                     return new Argument<>(getIdentifier(), enumConstant);
-            throw new IllegalStateException("Enum constant not found");
-        } catch (IllegalStateException ex) {
+            throw new ArgumentParseException("Enum constant not found", classType);
+        } catch (ArgumentParseException ex) {
             if (getDefault().output() == null)
                 throw new ArgumentParseException("The argument '" + getIdentifier() + "' must be of enum type" + classType.getSimpleName(), classType);
             return getDefault();
@@ -79,12 +79,12 @@ public class EnumTypeArgument<T extends Enum<T>> extends CommandArgument<T>{
             for (T enumConstant : enumConstants)
                 if (enumConstant.name().equalsIgnoreCase(value))
                     return enumConstant;
-            throw new IllegalStateException("Enum constant not found");
-        } catch (CommandSyntaxException | IllegalStateException ex) {
+            throw new ArgumentParseException("Enum constant not found", classType);
+        } catch (CommandSyntaxException | ArgumentParseException ex) {
             reader.setCursor(start);
 
             if (getDefault().output() == null)
-                throw new ArgumentParseException("The argument '" + getIdentifier() + "' must be a double", Float.class);
+                throw new ArgumentParseException("The argument '" + getIdentifier() + "' must be of enum type" + classType.getSimpleName(), classType);
             return getDefault().output();
         }
     }

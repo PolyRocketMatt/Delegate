@@ -31,7 +31,7 @@ public class LongArgument extends CommandArgument<Long> {
      * @param isOptional Whether the argument is optional.
      * @param rules The rules of the argument.
      */
-    private LongArgument(String identifier, String argumentDescription, long defaultValue, boolean isOptional, List<ArgumentRule<?>> rules) {
+    private LongArgument(String identifier, String argumentDescription, Long defaultValue, boolean isOptional, List<ArgumentRule<?>> rules) {
         super(identifier, argumentDescription, Long.class, new Argument<>(identifier, defaultValue), isOptional, rules);
     }
 
@@ -74,7 +74,7 @@ public class LongArgument extends CommandArgument<Long> {
      * @return The created {@link LongArgument}.
      */
     public static LongArgument of(String identifier, String argumentDescription) {
-        return new LongArgument(identifier, argumentDescription, 0L, false, List.of());
+        return new LongArgument(identifier, argumentDescription, null, false, List.of());
     }
 
     /**
@@ -100,7 +100,7 @@ public class LongArgument extends CommandArgument<Long> {
      */
     public static LongArgument of(String identifier, String argumentDescription, ArgumentRule<?>... rules) {
         boolean isOptional = Arrays.stream(rules).noneMatch(rule -> rule instanceof NonNullRule);
-        return new LongArgument(identifier, argumentDescription, 0L, isOptional, List.of(rules));
+        return new LongArgument(identifier, argumentDescription, null, isOptional, List.of(rules));
     }
 
     /**
