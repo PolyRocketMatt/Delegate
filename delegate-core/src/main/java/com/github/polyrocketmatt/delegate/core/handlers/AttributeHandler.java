@@ -3,6 +3,7 @@
 
 package com.github.polyrocketmatt.delegate.core.handlers;
 
+import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException;
 import com.github.polyrocketmatt.delegate.api.handlers.IHandler;
 import com.github.polyrocketmatt.delegate.api.command.trigger.CommandTrigger;
 import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
@@ -54,7 +55,7 @@ public class AttributeHandler implements IHandler {
      * @return A {@link VerifiedDelegateCommand} if the command is valid.
      * @throws AttributeException If the command is invalid.
      */
-    public VerifiedDelegateCommand process(@Nullable CommandNode parent, @NotNull AttributedDelegateCommand command) {
+    public VerifiedDelegateCommand process(@Nullable CommandNode parent, @NotNull AttributedDelegateCommand command) throws CommandRegisterException {
         validate("command", AttributedDelegateCommand.class, command);
 
         DelegateCommandBuilder chain = command.getAttributeChain();

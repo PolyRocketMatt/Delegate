@@ -34,6 +34,8 @@ public abstract class DelegateCommandHandler extends CommandHandler {
         this.maxStealCount = maxStealCount;
     }
 
+    public abstract void clearCommandCache();
+
     protected boolean generateEventFromException(CommandDispatchInformation information, Exception ex) {
         StackTraceElement[] stackTrace = ex.getStackTrace();
         StringBuilder builder = new StringBuilder("\n");
@@ -86,15 +88,15 @@ public abstract class DelegateCommandHandler extends CommandHandler {
         ExecutorService executor = new ForkJoinPool(threadCount);
 
         for (int precedence : precedences) {
-            List<CommandAction> actionsWithPrecedence = actions.stream()
+            List<CommandAction> actionsWithCurrentPrecedence = actions.stream()
                     .filter(action -> action.getPrecedence() == precedence)
                     .toList();
 
             if (async) {
-                for (CommandAction action : actionsWithPrecedence)
+                for (CommandAction action : actionsWithCurrentPrecedence)
                     executor.execute(() -> captures.add(new CommandCapture.Capture(action.getIdentifier(), action.run(commander, arguments))));
             } else {
-                for (CommandAction action : actionsWithPrecedence)
+                for (CommandAction action : actionsWithCurrentPrecedence)
                     captures.add(new CommandCapture.Capture(action.getIdentifier(), action.run(commander, arguments)));
             }
         }

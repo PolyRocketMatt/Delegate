@@ -61,14 +61,8 @@ public class InternalCommandHandler extends DelegateCommandHandler {
      *
      * @param node The {@link CommandNode} to add.
      */
-    public boolean registerCommand(CommandNode node) {
-        try {
-            insertIntoTree(node, null, null);
-        } catch (CommandRegisterException ex) {
-            ex.printStackTrace();
-
-            return false;
-        }
+    public boolean registerCommand(CommandNode node) throws CommandRegisterException {
+        insertIntoTree(node, null, null);
 
         return true;
     }
@@ -156,6 +150,7 @@ public class InternalCommandHandler extends DelegateCommandHandler {
         if (root == null)
             return generateEventFromException(information, exceptOrThrow(information, null, FeedbackType.COMMAND_NON_EXISTENT, commandName));
 
+        //  Parse in arguments to find the deepest node
         QueryResultNode queryResultNode = root.findDeepest(commandName, commandArguments);
         CommandNode executionNode = queryResultNode.node();
         String matchedCommandPattern = queryResultNode.commandPattern();
@@ -384,4 +379,8 @@ public class InternalCommandHandler extends DelegateCommandHandler {
         return parsedArguments;
     }
 
+    @Override
+    public void clearCommandCache() {
+        this.commandTree.clear();
+    }
 }

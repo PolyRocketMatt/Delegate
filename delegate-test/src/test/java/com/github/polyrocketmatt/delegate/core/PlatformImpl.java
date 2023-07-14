@@ -10,10 +10,11 @@ import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.exception.CommandExecutionException;
 import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException;
 import com.github.polyrocketmatt.delegate.core.command.DelegateCommandBuilder;
-import com.github.polyrocketmatt.delegate.core.command.TestCommandBuilder;
 import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
 import org.jetbrains.annotations.NotNull;
+
+import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegateAPI;
 
 public class PlatformImpl implements IPlatform {
 
@@ -29,7 +30,7 @@ public class PlatformImpl implements IPlatform {
 
     @Override
     public @NotNull DelegateCommandBuilder createCommand(@NotNull String name, @NotNull String description) {
-        return new TestCommandBuilder()
+        return new CommandBuilderImpl()
                 .withDefinition(new NameDefinition(name))
                 .withDefinition(new DescriptionDefinition(description));
     }
@@ -46,7 +47,7 @@ public class PlatformImpl implements IPlatform {
 
     @Override
     public boolean execute(@NotNull CommandDispatchInformation information) throws CommandExecutionException {
-        return false;
+        return getDelegateAPI().getCommandHandler().handle(information);
     }
 
     @Override

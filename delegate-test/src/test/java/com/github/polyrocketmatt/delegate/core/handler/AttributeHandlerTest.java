@@ -5,7 +5,7 @@ import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException
 import com.github.polyrocketmatt.delegate.core.DelegateCommandImpl;
 import com.github.polyrocketmatt.delegate.core.PlatformImpl;
 import com.github.polyrocketmatt.delegate.core.command.AttributedDelegateCommand;
-import com.github.polyrocketmatt.delegate.core.command.TestCommandBuilder;
+import com.github.polyrocketmatt.delegate.core.CommandBuilderImpl;
 import com.github.polyrocketmatt.delegate.core.command.VerifiedDelegateCommand;
 import com.github.polyrocketmatt.delegate.core.command.action.ExceptAction;
 import com.github.polyrocketmatt.delegate.core.command.action.RunnableAction;
@@ -28,10 +28,13 @@ public class AttributeHandlerTest {
     public void setup() {
         if (getDelegate().getPlatform() == null)
             getDelegate().setPlatform(new PlatformImpl());
+
+        //  Clear command roots
+        getDelegate().getCommandHandler().clearCommandCache();
     }
 
-    private TestCommandBuilder getBuilder() {
-        return new TestCommandBuilder()
+    private CommandBuilderImpl getBuilder() {
+        return new CommandBuilderImpl()
                 .withDefinition(new NameDefinition("test"))
                 .withDefinition(new DescriptionDefinition("Just a simple description"))
                 .withAlias("alias1")
@@ -76,7 +79,7 @@ public class AttributeHandlerTest {
         if (getDelegate().getPlatform() == null)
             getDelegate().setPlatform(new PlatformImpl());
 
-        AttributedDelegateCommand command = new AttributedDelegateCommand(new TestCommandBuilder());
+        AttributedDelegateCommand command = new AttributedDelegateCommand(new CommandBuilderImpl());
 
 
         assertThrows(AttributeException.class, () -> this.handler.process(null, command), "Attribute chain must contain a name attribute");
@@ -87,7 +90,7 @@ public class AttributeHandlerTest {
         if (getDelegate().getPlatform() == null)
             getDelegate().setPlatform(new PlatformImpl());
 
-        AttributedDelegateCommand command = new AttributedDelegateCommand(new TestCommandBuilder()
+        AttributedDelegateCommand command = new AttributedDelegateCommand(new CommandBuilderImpl()
                 .withDefinition(new NameDefinition("test")));
 
         assertThrows(AttributeException.class, () -> this.handler.process(null, command), "Attribute chain must contain a description attribute");
@@ -98,13 +101,13 @@ public class AttributeHandlerTest {
         if (getDelegate().getPlatform() == null)
             getDelegate().setPlatform(new PlatformImpl());
 
-        AttributedDelegateCommand parent = new AttributedDelegateCommand(new TestCommandBuilder()
+        AttributedDelegateCommand parent = new AttributedDelegateCommand(new CommandBuilderImpl()
                 .withDefinition(new NameDefinition("parent"))
                 .withDefinition(new DescriptionDefinition("Just a simple description")));
-        AttributedDelegateCommand commandA = new AttributedDelegateCommand(new TestCommandBuilder()
+        AttributedDelegateCommand commandA = new AttributedDelegateCommand(new CommandBuilderImpl()
                 .withDefinition(new NameDefinition("test"))
                 .withDefinition(new DescriptionDefinition("Just a simple description")));
-        AttributedDelegateCommand commandB = new AttributedDelegateCommand(new TestCommandBuilder()
+        AttributedDelegateCommand commandB = new AttributedDelegateCommand(new CommandBuilderImpl()
                 .withDefinition(new NameDefinition("test"))
                 .withDefinition(new DescriptionDefinition("Just another simple description")));
 
@@ -118,15 +121,15 @@ public class AttributeHandlerTest {
         if (getDelegate().getPlatform() == null)
             getDelegate().setPlatform(new PlatformImpl());
 
-        AttributedDelegateCommand commandA = new AttributedDelegateCommand(new TestCommandBuilder()
+        AttributedDelegateCommand commandA = new AttributedDelegateCommand(new CommandBuilderImpl()
                 .withDefinition(new NameDefinition("test"))
                 .withDefinition(new DescriptionDefinition("Just a simple description")));
-        AttributedDelegateCommand commandB = new AttributedDelegateCommand(new TestCommandBuilder()
+        AttributedDelegateCommand commandB = new AttributedDelegateCommand(new CommandBuilderImpl()
                 .withDefinition(new NameDefinition("test"))
                 .withDefinition(new DescriptionDefinition("Just another simple description")));
 
-        this.handler.process(null, commandA);
-        assertThrows(CommandRegisterException.class, () -> this.handler.process(null, commandB), "Cannot register command with the same name as a root command: %s".formatted("test"));
+        assertDoesNotThrow(() -> this.handler.process(null, commandA));
+        assertThrows(CommandRegisterException.class, () -> this.handler.process(null, commandB), "Cannot overwrite command node with the same name: %s".formatted("test"));
     }
 
     @Test
@@ -134,7 +137,7 @@ public class AttributeHandlerTest {
         if (getDelegate().getPlatform() == null)
             getDelegate().setPlatform(new PlatformImpl());
 
-        AttributedDelegateCommand command = new AttributedDelegateCommand(new TestCommandBuilder()
+        AttributedDelegateCommand command = new AttributedDelegateCommand(new CommandBuilderImpl()
                 .withDefinition(new NameDefinition("test"))
                 .withDefinition(new DescriptionDefinition("Just a simple description"))
                 .withInt("int", "int argument", 0)
@@ -147,7 +150,7 @@ public class AttributeHandlerTest {
         if (getDelegate().getPlatform() == null)
             getDelegate().setPlatform(new PlatformImpl());
 
-        AttributedDelegateCommand command = new AttributedDelegateCommand(new TestCommandBuilder()
+        AttributedDelegateCommand command = new AttributedDelegateCommand(new CommandBuilderImpl()
                 .withDefinition(new NameDefinition("parent"))
                 .withDefinition(new DescriptionDefinition("Just a simple description"))
                 .withSubcommand("test", "Just a simple description")

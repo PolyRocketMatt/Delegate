@@ -3,6 +3,7 @@
 
 package com.github.polyrocketmatt.delegate.core.command;
 
+import com.github.polyrocketmatt.delegate.core.CommandBuilderImpl;
 import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ public class AttributedDelegateCommandTest {
     @Test
     public void testAttributedCommand() {
         AttributedDelegateCommand command = new AttributedDelegateCommand(
-                new TestCommandBuilder()
+                new CommandBuilderImpl()
                         .withDefinition(new NameDefinition("test"))
                         .withDefinition(new DescriptionDefinition("test"))
                         .withAliases("a", "b")

@@ -43,13 +43,7 @@ public class BoolArgument extends CommandArgument<Boolean> {
             return getDefault();
         }
 
-        try {
-            return new Argument<>(getIdentifier(), Boolean.parseBoolean(input));
-        } catch (NumberFormatException ex) {
-            if (getDefault().output() == null)
-                throw new ArgumentParseException("The argument '" + getIdentifier() + "' must be a boolean", Double.class);
-            return getDefault();
-        }
+        return new Argument<>(getIdentifier(), Boolean.parseBoolean(input));
     }
 
     @Override
