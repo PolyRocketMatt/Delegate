@@ -47,6 +47,10 @@ public interface ICommandBuilder {
 
     @NotNull ICommandBuilder withString(@NotNull String name, @NotNull String description, @Nullable String defaultValue);
 
+    @NotNull ICommandBuilder withBool(@NotNull String name, @NotNull String description);
+
+    @NotNull ICommandBuilder withBool(@NotNull String name, @NotNull String description, boolean defaultValue);
+
     @NotNull ICommandBuilder withDefinition(@NotNull CommandDefinition<?> definition);
 
     @NotNull ICommandBuilder withSubcommand(@NotNull CommandDefinition<?> subcommand);
