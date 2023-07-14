@@ -17,35 +17,38 @@ import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition
 import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTierType;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DelegateCommandRegistrationTest {
 
-    private static IPlatform PLATFORM;
-    private static CommandBuilderImpl BUILDER;
-    private static CommanderEntityImpl ENTITY;
+    private static IPlatform PLATFORM = new PlatformImpl();
+    private static CommandBuilderImpl BUILDER = new CommandBuilderImpl();
+    private static CommanderEntityImpl ENTITY = new CommanderEntityImpl();
 
-    @BeforeAll
-    public static void setup() {
-        PLATFORM = new PlatformImpl();
+    @BeforeEach
+    public void reset() {
+        if (getDelegate().getPlatform() == null)
+            getDelegate().setPlatform(PLATFORM);
+
         BUILDER = new CommandBuilderImpl();
-        ENTITY = new CommanderEntityImpl();
 
-        DelegateCore.getDelegate().setPlatform(PLATFORM);
+        //  Clear command roots
+        getDelegate().getCommandHandler().clearCommandCache();
     }
 
     @Test
-    public void testIllegalCommandNodeRegistration() {
+    public void testInvalidCommandNodeRegistration() {
         assertThrows(CommandRegisterException.class, () -> { DelegateCore.getDelegate().registerCommand(null); }, "Node cannot be null");
     }
 
     @Test
-    public void testNormalCommandNodeRegistration() {
+    public void testValidCommandNodeRegistration() {
         final int[] a = { 0 };
 
         DelegateCommand command = BUILDER.withDefinition(new NameDefinition("test"))
@@ -63,6 +66,21 @@ public class DelegateCommandRegistrationTest {
 
         PLATFORM.execute(information);
         assertEquals(1, a[0]);
+    }
+
+    @Test
+    public void testDuplicateCommandRegistration() {
+        CommandBuilderImpl command = BUILDER.withDefinition(new NameDefinition("test"))
+                .withDefinition(new DescriptionDefinition("This is a test command"))
+                .withAction(new CommandAction("a1", PermissionTierType.OPERATOR.getTier(), 0) {
+                    @Override
+                    public @NotNull ActionItem<?> run(@NotNull CommanderEntity commander, @NotNull List<Argument<?>> arguments) {
+                        return new ActionItem<>(ActionItem.Result.SUCCESS, true);
+                    }
+                });
+
+        assertDoesNotThrow(command::build);
+        assertThrows(CommandRegisterException.class, command::build, "Cannot overwrite command node with the same name: test");
     }
 
 }

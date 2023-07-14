@@ -25,7 +25,7 @@ public class AttributeHandlerTest {
     private final AttributeHandler handler = new AttributeHandler();
 
     @BeforeEach
-    public void setup() {
+    public void reset() {
         if (getDelegate().getPlatform() == null)
             getDelegate().setPlatform(new PlatformImpl());
 
