@@ -24,6 +24,7 @@ import com.github.polyrocketmatt.delegate.core.command.action.ExceptAction;
 import com.github.polyrocketmatt.delegate.core.command.action.FunctionAction;
 import com.github.polyrocketmatt.delegate.core.command.action.RunnableAction;
 import com.github.polyrocketmatt.delegate.core.command.action.SupplierAction;
+import com.github.polyrocketmatt.delegate.core.command.argument.BoolArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.DoubleArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.FloatArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.IntArgument;
@@ -219,6 +220,31 @@ public class PaperCommandBuilder extends DelegateCommandBuilder {
     @Override
     public @NotNull PaperCommandBuilder withString(@NotNull String name, @NotNull String description, @Nullable String defaultValue) {
         return this.with(StringArgument.of(name, description, defaultValue));
+    }
+
+    /**
+     * Append a new {@link BoolArgument} to the chain with the given description.
+     *
+     * @param name The name of the argument.
+     * @param description The description of the argument.
+     * @return The current chain.
+     */
+    @Override
+    public @NotNull PaperCommandBuilder withBool(@NotNull String name, @NotNull String description) {
+        return this.with(BoolArgument.of(name, description));
+    }
+
+    /**
+     * Append a new {@link BoolArgument} to the chain with the given description and default value.
+     *
+     * @param name The name of the argument.
+     * @param description The description of the argument.
+     * @param defaultValue The default value of the argument.
+     * @return The current chain.
+     */
+    @Override
+    public @NotNull PaperCommandBuilder withBool(@NotNull String name, @NotNull String description, boolean defaultValue) {
+        return this.with(BoolArgument.of(name, description, defaultValue));
     }
 
     /**

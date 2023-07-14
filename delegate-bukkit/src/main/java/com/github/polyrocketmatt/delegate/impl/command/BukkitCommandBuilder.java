@@ -223,7 +223,7 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
     }
 
     /**
-     * Append a new {@link StringArgument} to the chain with the given description.
+     * Append a new {@link BoolArgument} to the chain with the given description.
      *
      * @param name The name of the argument.
      * @param description The description of the argument.
@@ -235,7 +235,7 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
     }
 
     /**
-     * Append a new {@link StringArgument} to the chain with the given description and default value.
+     * Append a new {@link BoolArgument} to the chain with the given description and default value.
      *
      * @param name The name of the argument.
      * @param description The description of the argument.
