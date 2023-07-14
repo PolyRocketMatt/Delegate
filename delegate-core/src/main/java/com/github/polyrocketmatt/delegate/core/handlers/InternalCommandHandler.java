@@ -120,18 +120,9 @@ public class InternalCommandHandler extends DelegateCommandHandler {
         CommandNode executionNode = queryResultNode.node();
         String matchedCommandPattern = queryResultNode.commandPattern();
 
-        //  Check if this is
-        /*
-        if (executionNode == null)
-            if (safeExecuteTopLevel) {
-                try {
-                    throw exceptOrThrow(information, null, FeedbackType.COMMAND_NON_EXISTENT, matchedCommandPattern);
-                } catch (Exception ex) {
-                    return generateEventFromException(information, ex);
-                }
-            } else
-                return false;
-         */
+        //  Check that the execution node is the actual intended command
+        if (!executionNode.getNameDefinition().getValue().equals(commandName))
+            return generateEventFromException(information, exceptOrThrow(information, null, FeedbackType.COMMAND_NON_EXISTENT, commandName));
 
         //  Check if the command is verified
         if (!executionNode.isVerified())

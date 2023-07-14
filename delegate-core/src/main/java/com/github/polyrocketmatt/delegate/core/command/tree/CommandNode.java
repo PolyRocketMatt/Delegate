@@ -155,9 +155,9 @@ public class CommandNode implements ICommandNode {
     public @NotNull QueryResultNode findDeepest(@NotNull String commandPattern, @NotNull String[] names) {
         validate("commandPattern", String.class, commandPattern);
         validate("names", String[].class, names);
+
         for (String name : names)
             validate("name", String.class, name);
-
         if (this.children.isEmpty() || names.length == 0)
             return new QueryResultNode(this, commandPattern, names);
 
