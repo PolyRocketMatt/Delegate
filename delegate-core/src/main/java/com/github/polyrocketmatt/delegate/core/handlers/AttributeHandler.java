@@ -52,10 +52,11 @@ public class AttributeHandler implements IHandler {
      *
      * @param parent The parent {@link CommandNode} to add the command to.
      * @param command The {@link AttributedDelegateCommand} to process.
+     * @param register Whether to register the command.
      * @return A {@link VerifiedDelegateCommand} if the command is valid.
      * @throws AttributeException If the command is invalid.
      */
-    public VerifiedDelegateCommand process(@Nullable CommandNode parent, @NotNull AttributedDelegateCommand command) throws CommandRegisterException {
+    public VerifiedDelegateCommand process(@Nullable CommandNode parent, @NotNull AttributedDelegateCommand command, boolean register) throws CommandRegisterException {
         validate("command", AttributedDelegateCommand.class, command);
 
         DelegateCommandBuilder chain = command.getAttributeChain();
@@ -91,16 +92,16 @@ public class AttributeHandler implements IHandler {
                 .build();
 
         //  If this is a super command, register the command and process the subcommands
-        if (parent == null) {
-            CommandNode rootNode = new CommandNode(verifiedCommand);
+        CommandNode rootNode = (parent == null) ? new CommandNode(verifiedCommand) : new CommandNode(parent, verifiedCommand);
 
-            //  Compute all sub-commands
-            this.processSubCommands(rootNode, chain);
+        //  Parse the CURRENT command's subcommands -> Auto-register to the parent in constructor
+        this.processSubCommands(rootNode, chain);
 
-            //  Add tree to command handler
+        //  Next, register the root node
+        if (register)
             getDelegate().registerCommand(rootNode);
-        } else
-            new CommandNode(parent, verifiedCommand);
+
+        //  Finally return the verified command
         return verifiedCommand;
     }
 
@@ -175,15 +176,19 @@ public class AttributeHandler implements IHandler {
                 .map(SubcommandDefinition.class::cast)
                 .map(SubcommandDefinition::getValue)
                 .toList();
+
+        //  Early abort if there are no sub-commands
+        if (subCommandChains.isEmpty())
+            return;
+
         List<AttributedDelegateCommand> attributedSubCommands = subCommandChains.stream()
                 .map(AttributedDelegateCommand::new)
                 .toList();
 
         //  Process all attributed sub-commands
         List<VerifiedDelegateCommand> processedSubCommands = attributedSubCommands.stream()
-                .map(command -> this.process(parent, command))
+                .map(command -> this.process(parent, command, false))
                 .toList();
-
 
         //  Make sure all verified sub-commands have unique names
         List<String> subCommandNames = processedSubCommands.stream()

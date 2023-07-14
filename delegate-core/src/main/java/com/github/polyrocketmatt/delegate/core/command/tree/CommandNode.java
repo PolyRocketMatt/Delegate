@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 
@@ -96,6 +97,14 @@ public class CommandNode implements ICommandNode {
     @Override
     public @NotNull List<CommandNode> getChildren() {
         return children;
+    }
+
+    @Override
+    public int size() {
+        AtomicInteger result = new AtomicInteger(children.size());
+        children.forEach(child -> result.addAndGet(child.size()));
+
+        return result.get();
     }
 
     /**

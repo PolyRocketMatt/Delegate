@@ -59,7 +59,7 @@ public class AttributeHandlerTest {
 
         CommandNode parent = new CommandNode(new DelegateCommandImpl("parent", "A parent command"));
         AttributedDelegateCommand command = new AttributedDelegateCommand(getBuilder());
-        VerifiedDelegateCommand verifiedCommand = this.handler.process(parent, command);
+        VerifiedDelegateCommand verifiedCommand = this.handler.process(parent, command, true);
 
         assertEquals(verifiedCommand, parent.getChildren().get(0).getCommand());
         assertEquals("test", verifiedCommand.getNameDefinition().getValue());
@@ -82,7 +82,7 @@ public class AttributeHandlerTest {
         AttributedDelegateCommand command = new AttributedDelegateCommand(new CommandBuilderImpl());
 
 
-        assertThrows(AttributeException.class, () -> this.handler.process(null, command), "Attribute chain must contain a name attribute");
+        assertThrows(AttributeException.class, () -> this.handler.process(null, command, true), "Attribute chain must contain a name attribute");
     }
 
     @Test
@@ -93,7 +93,7 @@ public class AttributeHandlerTest {
         AttributedDelegateCommand command = new AttributedDelegateCommand(new CommandBuilderImpl()
                 .withDefinition(new NameDefinition("test")));
 
-        assertThrows(AttributeException.class, () -> this.handler.process(null, command), "Attribute chain must contain a description attribute");
+        assertThrows(AttributeException.class, () -> this.handler.process(null, command, true), "Attribute chain must contain a description attribute");
     }
 
     @Test
@@ -111,9 +111,9 @@ public class AttributeHandlerTest {
                 .withDefinition(new NameDefinition("test"))
                 .withDefinition(new DescriptionDefinition("Just another simple description")));
 
-        CommandNode parentNode = new CommandNode(this.handler.process(null, parent));
-        this.handler.process(parentNode, commandA);
-        assertThrows(AttributeException.class, () -> this.handler.process(parentNode, commandB), "Command name must be unique: %s".formatted("test"));
+        CommandNode parentNode = new CommandNode(this.handler.process(null, parent, true));
+        this.handler.process(parentNode, commandA, true);
+        assertThrows(AttributeException.class, () -> this.handler.process(parentNode, commandB, true), "Command name must be unique: %s".formatted("test"));
     }
 
     @Test
@@ -128,8 +128,8 @@ public class AttributeHandlerTest {
                 .withDefinition(new NameDefinition("test"))
                 .withDefinition(new DescriptionDefinition("Just another simple description")));
 
-        assertDoesNotThrow(() -> this.handler.process(null, commandA));
-        assertThrows(CommandRegisterException.class, () -> this.handler.process(null, commandB), "Cannot overwrite command node with the same name: %s".formatted("test"));
+        assertDoesNotThrow(() -> this.handler.process(null, commandA, true));
+        assertThrows(CommandRegisterException.class, () -> this.handler.process(null, commandB, true), "Cannot overwrite command node with the same name: %s".formatted("test"));
     }
 
     @Test
@@ -142,7 +142,7 @@ public class AttributeHandlerTest {
                 .withDefinition(new DescriptionDefinition("Just a simple description"))
                 .withInt("int", "int argument", 0)
                 .withInt("int", "int argument", 1));
-        assertThrows(AttributeException.class, () -> this.handler.process(null, command), "Attribute identifiers must be unique: %s".formatted("int"));
+        assertThrows(AttributeException.class, () -> this.handler.process(null, command, true), "Attribute identifiers must be unique: %s".formatted("int"));
     }
 
     @Test
@@ -156,7 +156,7 @@ public class AttributeHandlerTest {
                 .withSubcommand("test", "Just a simple description")
                 .withSubcommand("test", "Just another simple description"));
 
-        assertThrows(AttributeException.class, () -> this.handler.process(null, command), "Subcommand names must be unique: %s".formatted("test"));
+        assertThrows(AttributeException.class, () -> this.handler.process(null, command, true), "Subcommand names must be unique: %s".formatted("test"));
     }
 
     @Test
@@ -166,8 +166,8 @@ public class AttributeHandlerTest {
 
         AttributedDelegateCommand command = new AttributedDelegateCommand(getBuilder());
 
-        assertDoesNotThrow(() -> this.handler.process(null, command));
-        assertThrows(IllegalArgumentException.class, () -> this.handler.process(null, null));
+        assertDoesNotThrow(() -> this.handler.process(null, command, true));
+        assertThrows(IllegalArgumentException.class, () -> this.handler.process(null, null, true));
     }
 
 }

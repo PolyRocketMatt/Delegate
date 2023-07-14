@@ -17,6 +17,11 @@ public class InvalidCommandNodeImpl implements ICommandNode {
     }
 
     @Override
+    public int size() {
+        return 0;
+    }
+
+    @Override
     public @NotNull CommandDefinition<String> getNameDefinition() {
         return new NameDefinition("INVALID");
     }
@@ -31,4 +36,5 @@ public class InvalidCommandNodeImpl implements ICommandNode {
     public @NotNull CommandDefinition<String>[] getAliasDefinitions() {
         return new CommandDefinition[] { new SubcommandDefinition(null) };
     }
+
 }

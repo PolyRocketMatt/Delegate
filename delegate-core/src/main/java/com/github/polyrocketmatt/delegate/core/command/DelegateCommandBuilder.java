@@ -42,7 +42,7 @@ public abstract class DelegateCommandBuilder implements ICommandBuilder {
      */
     @Override
     public @NotNull DelegateCommand build() {
-        return getDelegate().getAttributeHandler().process(null, new AttributedDelegateCommand(this));
+        return getDelegate().getAttributeHandler().process(null, new AttributedDelegateCommand(this), true);
     }
 
     /**

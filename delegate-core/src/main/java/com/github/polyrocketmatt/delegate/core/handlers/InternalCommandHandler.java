@@ -62,12 +62,12 @@ public class InternalCommandHandler extends DelegateCommandHandler {
      * @param node The {@link CommandNode} to add.
      */
     public boolean registerCommand(CommandNode node) throws CommandRegisterException {
-        insertIntoTree(node, null, null);
+        insertIntoTree(node, node.getParent());
 
         return true;
     }
 
-    private void insertIntoTree(CommandNode node, CommandNode level, CommandNode parent) throws CommandRegisterException {
+    private void insertIntoTree(CommandNode node, CommandNode level) throws CommandRegisterException {
         //  We check the current node against the current parent's sub-commands
         if (level == null) {
             //  If the parent is null, we're just checking the root nodes
@@ -79,41 +79,6 @@ public class InternalCommandHandler extends DelegateCommandHandler {
                 //  Since we're adding a root, we must register the command with the platform
                 registerToServer(node.getCommand());
             }
-        } else {
-            //  If the current name and the level name are the same, we can propagate the node through the tree
-            if (match(node, level)) {
-                //  If the command at this level has actions, triggers or excepts, we cannot overwrite it
-                if (level.isVerified())
-                    throw new CommandRegisterException("Cannot overwrite verified command node");
-
-                //  Since we checked if the node is verified, we can safely overwrite it here
-                level.setCommand(node.getCommand());
-            } else {
-                //  If the parent is null, we must add the node to the root
-                if (parent == null) {
-                    this.commandTree.add(node);
-
-                    //  Since we're adding a root, we must register the command with the platform
-                    registerToServer(node.getCommand());
-
-                } else
-                    //  If the parent is not null, we must add the node to the parent, there is no need to register
-                    parent.addChild(node);
-            }
-        }
-
-        //  Finally, we check the sub-nodes of the current node
-        for (CommandNode subNode : node.getChildren()) {
-            for (CommandNode child : level.getChildren()) {
-                if (match(child, subNode)) {
-                    //  If the sub-node has no children, we cannot overwrite
-                    if (subNode.getChildren().isEmpty() || child.getChildren().isEmpty())
-                        throw new CommandRegisterException("Cannot overwrite command node with no children");
-
-                    insertIntoTree(subNode, child, level);
-                    break;
-                }
-            }
         }
     }
 
@@ -124,6 +89,18 @@ public class InternalCommandHandler extends DelegateCommandHandler {
 
     private boolean match(CommandNode left, CommandNode right) {
         return left.getNameDefinition().getValue().equals(right.getNameDefinition().getValue());
+    }
+
+    private CommandNode findTrueParent(CommandNode node) {
+        //  Find the true root node assigned to the given node, i.e. the node which has a null parent
+        CommandNode parent = node.getParent();
+
+        while (parent != null) {
+            node = parent;
+            parent = node.getParent();
+        }
+
+        return node;
     }
 
     /**

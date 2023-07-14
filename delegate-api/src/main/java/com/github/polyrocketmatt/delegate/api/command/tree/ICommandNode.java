@@ -14,6 +14,8 @@ public interface ICommandNode {
 
     <T extends ICommandNode> @NotNull List<T> getChildren();
 
+    int size();
+
     @NotNull CommandDefinition<String> getNameDefinition();
 
     @NotNull CommandDefinition<String> getDescriptionDefinition();
