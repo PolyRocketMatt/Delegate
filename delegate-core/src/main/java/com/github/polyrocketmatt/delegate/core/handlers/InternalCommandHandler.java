@@ -91,18 +91,6 @@ public class InternalCommandHandler extends DelegateCommandHandler {
         return left.getNameDefinition().getValue().equals(right.getNameDefinition().getValue());
     }
 
-    private CommandNode findTrueParent(CommandNode node) {
-        //  Find the true root node assigned to the given node, i.e. the node which has a null parent
-        CommandNode parent = node.getParent();
-
-        while (parent != null) {
-            node = parent;
-            parent = node.getParent();
-        }
-
-        return node;
-    }
-
     /**
      * Handles the given {@link CommandDispatchInformation} and tries to execute the
      * command associated with the information.
