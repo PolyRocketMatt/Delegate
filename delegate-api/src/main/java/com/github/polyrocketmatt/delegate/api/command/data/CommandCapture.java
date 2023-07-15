@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
@@ -25,7 +26,7 @@ public class CommandCapture implements Iterable<CommandCapture.Capture> {
         this.captures = captures;
     }
 
-    public @Nullable ActionItem<?> getResultOf(@NotNull String name) {
+    public @Nullable ActionItem<?> getActionItemOf(@NotNull String name) {
         validate("name", String.class, name);
 
         return captures.stream()
@@ -33,6 +34,20 @@ public class CommandCapture implements Iterable<CommandCapture.Capture> {
                 .findFirst()
                 .map(Capture::result)
                 .orElse(null);
+    }
+
+    @SuppressWarnings("unchecked")
+    public @Nullable <T> T getResultOf(@NotNull String name) {
+        validate("name", String.class, name);
+
+        Optional<ActionItem.Result> result = captures.stream()
+                .filter(capture -> capture.action().equals(name))
+                .findFirst()
+                .map(Capture::result)
+                .map(ActionItem::getResult);
+
+        //  If the result is not present, return null.
+        return (T) result.orElse(null);
     }
 
     public @Nullable Capture getCaptureOf(@NotNull String name) {

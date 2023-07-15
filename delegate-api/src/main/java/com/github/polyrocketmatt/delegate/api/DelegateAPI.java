@@ -5,6 +5,7 @@ package com.github.polyrocketmatt.delegate.api;
 
 import com.github.polyrocketmatt.delegate.api.command.tree.ICommandNode;
 import com.github.polyrocketmatt.delegate.api.configuration.DelegateConfiguration;
+import com.github.polyrocketmatt.delegate.api.exception.BaseNonExistentException;
 import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException;
 import com.github.polyrocketmatt.delegate.api.handlers.CommandHandler;
 import com.github.polyrocketmatt.delegate.api.handlers.IHandler;

@@ -122,8 +122,8 @@ public class InternalCommandHandler extends DelegateCommandHandler {
 
         //  Check that the execution node is the actual intended command
         //  TODO: Refactor this...
-        if (!executionNode.getNameDefinition().getValue().equals(commandName))
-            return generateEventFromException(information, exceptOrThrow(information, null, FeedbackType.COMMAND_NON_EXISTENT, commandName));
+        //if (!executionNode.getNameDefinition().getValue().equals(commandName))
+        //    return generateEventFromException(information, exceptOrThrow(information, null, FeedbackType.COMMAND_NON_EXISTENT, commandName));
 
         //  Check if the command is verified
         if (!executionNode.isVerified())

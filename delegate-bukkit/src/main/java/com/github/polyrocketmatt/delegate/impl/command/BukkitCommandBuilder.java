@@ -31,6 +31,8 @@ import com.github.polyrocketmatt.delegate.core.command.argument.IntArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.LongArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.StringArgument;
 import com.github.polyrocketmatt.delegate.core.command.definition.AliasDefinition;
+import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
+import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.SubcommandDefinition;
 import com.github.polyrocketmatt.delegate.core.command.properties.AsyncProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.CatchExceptionProperty;
@@ -51,6 +53,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class BukkitCommandBuilder extends DelegateCommandBuilder {
 
@@ -298,8 +301,27 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
     }
 
     @Override
-    public @NotNull ICommandBuilder withSubcommand(@NotNull String name, @NotNull String description) {
+    public @NotNull BukkitCommandBuilder withSubcommand(@NotNull String name, @NotNull String description) {
         return this.with(new SubcommandDefinition(name, description));
+    }
+
+    @Override
+    public @NotNull BukkitCommandBuilder withSubcommand(@NotNull DelegateCommandBuilder builder) {
+        List<NameDefinition> name = builder.getDefinitions()
+                .stream()
+                .filter(def -> def instanceof NameDefinition)
+                .map(def -> (NameDefinition) def)
+                .toList();
+        List<DescriptionDefinition> description = builder.getDefinitions()
+                .stream()
+                .filter(def -> def instanceof DescriptionDefinition)
+                .map(def -> (DescriptionDefinition) def)
+                .toList();
+        if (name.size() != 1)
+            throw new AttributeException("Subcommand must have exactly one name");
+        if (description.size() != 1)
+            throw new AttributeException("Subcommand must have exactly one description");
+        return this.with(new SubcommandDefinition(name.get(0).getValue(), description.get(0).getValue()));
     }
 
     /**
@@ -373,55 +395,58 @@ public class BukkitCommandBuilder extends DelegateCommandBuilder {
         return this.withPermission(PermissionTierType.GLOBAL.getTier());
     }
 
-    public BukkitCommandBuilder executes(BiConsumer<CommanderEntity, Context> action) {
-        return this.withConsumerAction(action);
-    }
-
-    public BukkitCommandBuilder executes(Runnable action) {
-        return this.withRunnableAction(action);
-    }
-
-    public BukkitCommandBuilder withConsumerAction(BiConsumer<CommanderEntity, Context> action) {
+    @Override
+    public @NotNull BukkitCommandBuilder withConsumerAction(@NotNull BiConsumer<CommanderEntity, Context> action) {
         return this.with(new ConsumerAction(action));
     }
 
-    public BukkitCommandBuilder withConsumerAction(String identifier, BiConsumer<CommanderEntity, Context> action) {
+    @Override
+    public @NotNull BukkitCommandBuilder withConsumerAction(@NotNull String identifier, @NotNull BiConsumer<CommanderEntity, Context> action) {
         return this.with(new ConsumerAction(identifier, action));
     }
 
-    public BukkitCommandBuilder withFunctionAction(BiFunction<CommanderEntity, Context, ?> action) {
+    @Override
+    public @NotNull BukkitCommandBuilder withFunctionAction(@NotNull BiFunction<CommanderEntity, Context, ?> action) {
         return this.with(new FunctionAction(action));
     }
 
-    public BukkitCommandBuilder withFunctionAction(String identifier, BiFunction<CommanderEntity, Context, ?> action) {
+    @Override
+    public @NotNull BukkitCommandBuilder withFunctionAction(@NotNull String identifier, @NotNull BiFunction<CommanderEntity, Context, ?> action) {
         return this.with(new FunctionAction(identifier, action));
     }
 
-    public BukkitCommandBuilder withRunnableAction(Runnable action) {
+    @Override
+    public @NotNull BukkitCommandBuilder withRunnableAction(@NotNull Runnable action) {
         return this.with(new RunnableAction(action));
     }
 
-    public BukkitCommandBuilder withRunnableAction(String identifier, Runnable action) {
+    @Override
+    public @NotNull BukkitCommandBuilder withRunnableAction(@NotNull String identifier, @NotNull Runnable action) {
         return this.with(new RunnableAction(identifier, action));
     }
 
-    public <T> BukkitCommandBuilder withSupplierAction(Supplier<T> action) {
+    @Override
+    public <T> @NotNull BukkitCommandBuilder withSupplierAction(@NotNull Supplier<T> action) {
         return this.with(new SupplierAction<>(action));
     }
 
-    public <T> BukkitCommandBuilder withSupplierAction(String identifier, Supplier<T> action) {
+    @Override
+    public <T> @NotNull BukkitCommandBuilder withSupplierAction(@NotNull String identifier, @NotNull Supplier<T> action) {
         return this.with(new SupplierAction<>(identifier, action));
     }
 
-    public BukkitCommandBuilder onExcept(TriConsumer<CommanderEntity, FeedbackType, List<String>> action) {
+    @Override
+    public @NotNull BukkitCommandBuilder onExcept(@NotNull TriConsumer<CommanderEntity, FeedbackType, List<String>> action) {
         return this.with(new ExceptAction(action));
     }
 
-    public BukkitCommandBuilder onSucces(BiConsumer<CommandDispatchInformation, CommandCapture> onSuccess) {
+    @Override
+    public @NotNull BukkitCommandBuilder onSucces(@NotNull BiConsumer<CommandDispatchInformation, CommandCapture> onSuccess) {
         return this.with(new SuccessTrigger(onSuccess));
     }
 
-    public BukkitCommandBuilder onFail(BiConsumer<CommandDispatchInformation, CommandCapture> onFail) {
+    @Override
+    public @NotNull BukkitCommandBuilder onFail(@NotNull BiConsumer<CommandDispatchInformation, CommandCapture> onFail) {
         return this.with(new FailureTrigger(onFail));
     }
 

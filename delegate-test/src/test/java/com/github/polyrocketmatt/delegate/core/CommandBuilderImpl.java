@@ -3,22 +3,36 @@
 
 package com.github.polyrocketmatt.delegate.core;
 
+import com.github.polyrocketmatt.delegate.api.TriConsumer;
 import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
+import com.github.polyrocketmatt.delegate.api.command.CommandDispatchInformation;
 import com.github.polyrocketmatt.delegate.api.command.ICommandAttribute;
 import com.github.polyrocketmatt.delegate.api.command.ICommandBuilder;
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
+import com.github.polyrocketmatt.delegate.api.command.argument.Context;
+import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
 import com.github.polyrocketmatt.delegate.api.command.definition.CommandDefinition;
+import com.github.polyrocketmatt.delegate.api.command.feedback.FeedbackType;
 import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
 import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
+import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.exception.AttributeException;
 import com.github.polyrocketmatt.delegate.core.command.DelegateCommandBuilder;
+import com.github.polyrocketmatt.delegate.core.command.action.ConsumerAction;
+import com.github.polyrocketmatt.delegate.core.command.action.ExceptAction;
+import com.github.polyrocketmatt.delegate.core.command.action.FunctionAction;
+import com.github.polyrocketmatt.delegate.core.command.action.RunnableAction;
+import com.github.polyrocketmatt.delegate.core.command.action.SupplierAction;
 import com.github.polyrocketmatt.delegate.core.command.argument.BoolArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.DoubleArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.FloatArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.IntArgument;
+import com.github.polyrocketmatt.delegate.core.command.argument.LongArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.StringArgument;
 import com.github.polyrocketmatt.delegate.core.command.definition.AliasDefinition;
+import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
+import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.SubcommandDefinition;
 import com.github.polyrocketmatt.delegate.core.command.permission.PermissionTierType;
 import com.github.polyrocketmatt.delegate.core.command.permission.StandardPermission;
@@ -26,8 +40,15 @@ import com.github.polyrocketmatt.delegate.core.command.properties.AsyncProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.CatchExceptionProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNonPresentProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.IgnoreNullProperty;
+import com.github.polyrocketmatt.delegate.core.command.trigger.FailureTrigger;
+import com.github.polyrocketmatt.delegate.core.command.trigger.SuccessTrigger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 public class CommandBuilderImpl extends DelegateCommandBuilder {
 
@@ -105,13 +126,23 @@ public class CommandBuilderImpl extends DelegateCommandBuilder {
     }
 
     @Override
-    public @NotNull ICommandBuilder withBool(@NotNull String name, @NotNull String description) {
+    public @NotNull CommandBuilderImpl withBool(@NotNull String name, @NotNull String description) {
         return this.with(BoolArgument.of(name, description));
     }
 
     @Override
-    public @NotNull ICommandBuilder withBool(@NotNull String name, @NotNull String description, boolean defaultValue) {
+    public @NotNull CommandBuilderImpl withBool(@NotNull String name, @NotNull String description, boolean defaultValue) {
         return this.with(BoolArgument.of(name, description, defaultValue));
+    }
+
+    @Override
+    public @NotNull CommandBuilderImpl withLong(@NotNull String name, @NotNull String description) {
+        return this.with(LongArgument.of(name, description));
+    }
+
+    @Override
+    public @NotNull CommandBuilderImpl withLong(@NotNull String name, @NotNull String description, long defaultValue) {
+        return this.with(LongArgument.of(name, description, defaultValue));
     }
 
     @Override
@@ -129,6 +160,25 @@ public class CommandBuilderImpl extends DelegateCommandBuilder {
     @Override
     public @NotNull CommandBuilderImpl withSubcommand(@NotNull String name, @NotNull String description) {
         return this.withSubcommand(new SubcommandDefinition(name, description));
+    }
+
+    @Override
+    public @NotNull CommandBuilderImpl withSubcommand(@NotNull DelegateCommandBuilder builder) {
+        List<NameDefinition> name = builder.getDefinitions()
+                .stream()
+                .filter(def -> def instanceof NameDefinition)
+                .map(def -> (NameDefinition) def)
+                .toList();
+        List<DescriptionDefinition> description = builder.getDefinitions()
+                .stream()
+                .filter(def -> def instanceof DescriptionDefinition)
+                .map(def -> (DescriptionDefinition) def)
+                .toList();
+        if (name.size() != 1)
+            throw new AttributeException("Subcommand must have exactly one name");
+        if (description.size() != 1)
+            throw new AttributeException("Subcommand must have exactly one description");
+        return this.with(new SubcommandDefinition(name.get(0).getValue(), description.get(0).getValue()));
     }
 
     @Override
@@ -179,5 +229,60 @@ public class CommandBuilderImpl extends DelegateCommandBuilder {
     @Override
     public @NotNull CommandBuilderImpl withGlobalPermission() {
         return this.withPermission(PermissionTierType.GLOBAL.getTier());
+    }
+
+    @Override
+    public @NotNull CommandBuilderImpl withConsumerAction(@NotNull BiConsumer<CommanderEntity, Context> action) {
+        return this.with(new ConsumerAction(action));
+    }
+
+    @Override
+    public @NotNull CommandBuilderImpl withConsumerAction(@NotNull String identifier, @NotNull BiConsumer<CommanderEntity, Context> action) {
+        return this.with(new ConsumerAction(identifier, action));
+    }
+
+    @Override
+    public @NotNull CommandBuilderImpl withFunctionAction(@NotNull BiFunction<CommanderEntity, Context, ?> action) {
+        return this.with(new FunctionAction(action));
+    }
+
+    @Override
+    public @NotNull CommandBuilderImpl withFunctionAction(@NotNull String identifier, @NotNull BiFunction<CommanderEntity, Context, ?> action) {
+        return this.with(new FunctionAction(identifier, action));
+    }
+
+    @Override
+    public @NotNull CommandBuilderImpl withRunnableAction(@NotNull Runnable action) {
+        return this.with(new RunnableAction(action));
+    }
+
+    @Override
+    public @NotNull CommandBuilderImpl withRunnableAction(@NotNull String identifier, @NotNull Runnable action) {
+        return this.with(new RunnableAction(identifier, action));
+    }
+
+    @Override
+    public <T> @NotNull CommandBuilderImpl withSupplierAction(@NotNull Supplier<T> action) {
+        return this.with(new SupplierAction<>(action));
+    }
+
+    @Override
+    public <T> @NotNull CommandBuilderImpl withSupplierAction(@NotNull String identifier, @NotNull Supplier<T> action) {
+        return this.with(new SupplierAction<>(identifier, action));
+    }
+
+    @Override
+    public @NotNull CommandBuilderImpl onExcept(@NotNull TriConsumer<CommanderEntity, FeedbackType, List<String>> action) {
+        return this.with(new ExceptAction(action));
+    }
+
+    @Override
+    public @NotNull CommandBuilderImpl onSucces(@NotNull BiConsumer<CommandDispatchInformation, CommandCapture> onSuccess) {
+        return this.with(new SuccessTrigger(onSuccess));
+    }
+
+    @Override
+    public @NotNull CommandBuilderImpl onFail(@NotNull BiConsumer<CommandDispatchInformation, CommandCapture> onFail) {
+        return this.with(new FailureTrigger(onFail));
     }
 }

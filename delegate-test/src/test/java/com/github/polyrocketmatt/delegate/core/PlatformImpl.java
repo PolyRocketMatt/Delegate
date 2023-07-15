@@ -5,6 +5,7 @@ import com.github.polyrocketmatt.delegate.api.PlatformType;
 import com.github.polyrocketmatt.delegate.api.command.CommandDispatchInformation;
 import com.github.polyrocketmatt.delegate.api.command.ICommandFactory;
 import com.github.polyrocketmatt.delegate.api.command.IDelegateCommand;
+import com.github.polyrocketmatt.delegate.api.command.data.ActionItem;
 import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.exception.CommandExecutionException;
@@ -14,9 +15,21 @@ import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDef
 import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegateAPI;
 
 public class PlatformImpl implements IPlatform {
+
+    private CommandCapture commandCapture;
+
+    public CommandCapture getCommandCapture() {
+        return commandCapture;
+    }
+
+    public void flush() {
+        commandCapture = null;
+    }
 
     @Override
     public @NotNull PlatformType getPlatformType() {
@@ -62,7 +75,10 @@ public class PlatformImpl implements IPlatform {
 
     @Override
     public boolean dispatch(@NotNull CommandDispatchInformation information, @NotNull CommandCapture capture) {
-        return false;
+        System.out.println("Dispatched command: " + information.command());
+
+        this.commandCapture = capture;
+        return true;
     }
 
     @Override

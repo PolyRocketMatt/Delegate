@@ -318,55 +318,55 @@ public class VelocityCommandBuilder extends DelegateCommandBuilder {
         return this.withPermission(PermissionTierType.GLOBAL.getTier());
     }
 
-    public VelocityCommandBuilder executes(BiConsumer<CommanderEntity, Context> action) {
+    public @NotNull VelocityCommandBuilder executes(@NotNull BiConsumer<CommanderEntity, Context> action) {
         return this.withConsumerAction(action);
     }
 
-    public VelocityCommandBuilder executes(Runnable action) {
+    public @NotNull VelocityCommandBuilder executes(@NotNull Runnable action) {
         return this.withRunnableAction(action);
     }
 
-    public VelocityCommandBuilder withConsumerAction(BiConsumer<CommanderEntity, Context> action) {
+    public @NotNull VelocityCommandBuilder withConsumerAction(@NotNull BiConsumer<CommanderEntity, Context> action) {
         return this.with(new ConsumerAction(action));
     }
 
-    public VelocityCommandBuilder withConsumerAction(String identifier, BiConsumer<CommanderEntity, Context> action) {
+    public @NotNull VelocityCommandBuilder withConsumerAction(@NotNull String identifier, @NotNull BiConsumer<CommanderEntity, Context> action) {
         return this.with(new ConsumerAction(identifier, action));
     }
 
-    public VelocityCommandBuilder withFunctionAction(BiFunction<CommanderEntity, Context, ?> action) {
+    public @NotNull VelocityCommandBuilder withFunctionAction(@NotNull BiFunction<CommanderEntity, Context, ?> action) {
         return this.with(new FunctionAction(action));
     }
 
-    public VelocityCommandBuilder withFunctionAction(String identifier, BiFunction<CommanderEntity, Context, ?> action) {
+    public @NotNull VelocityCommandBuilder withFunctionAction(@NotNull String identifier, @NotNull BiFunction<CommanderEntity, Context, ?> action) {
         return this.with(new FunctionAction(identifier, action));
     }
 
-    public VelocityCommandBuilder withRunnableAction(Runnable action) {
+    public @NotNull VelocityCommandBuilder withRunnableAction(@NotNull Runnable action) {
         return this.with(new RunnableAction(action));
     }
 
-    public VelocityCommandBuilder withRunnableAction(String identifier, Runnable action) {
+    public @NotNull VelocityCommandBuilder withRunnableAction(@NotNull String identifier, @NotNull Runnable action) {
         return this.with(new RunnableAction(identifier, action));
     }
 
-    public <T> VelocityCommandBuilder withSupplierAction(Supplier<T> action) {
+    public <T> @NotNull VelocityCommandBuilder withSupplierAction(@NotNull Supplier<T> action) {
         return this.with(new SupplierAction<>(action));
     }
 
-    public <T> VelocityCommandBuilder withSupplierAction(String identifier, Supplier<T> action) {
+    public <T> @NotNull VelocityCommandBuilder withSupplierAction(@NotNull String identifier, @NotNull Supplier<T> action) {
         return this.with(new SupplierAction<>(identifier, action));
     }
 
-    public VelocityCommandBuilder onExcept(TriConsumer<CommanderEntity, FeedbackType, List<String>> action) {
+    public @NotNull VelocityCommandBuilder onExcept(@NotNull TriConsumer<CommanderEntity, FeedbackType, List<String>> action) {
         return this.with(new ExceptAction(action));
     }
 
-    public VelocityCommandBuilder onSucces(BiConsumer<CommandDispatchInformation, CommandCapture> onSuccess) {
+    public @NotNull VelocityCommandBuilder onSucces(@NotNull BiConsumer<CommandDispatchInformation, CommandCapture> onSuccess) {
         return this.with(new SuccessTrigger(onSuccess));
     }
 
-    public VelocityCommandBuilder onFail(BiConsumer<CommandDispatchInformation, CommandCapture> onFail) {
+    public @NotNull VelocityCommandBuilder onFail(@NotNull BiConsumer<CommandDispatchInformation, CommandCapture> onFail) {
         return this.with(new FailureTrigger(onFail));
     }
 

@@ -23,7 +23,8 @@ import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
  * @author Matthias Kovacic 
  */
 @API(status = API.Status.STABLE, since = "0.0.1")
-public record CommandDispatchInformation(@NotNull CommanderEntity commander, @NotNull String command,
+public record CommandDispatchInformation(@NotNull CommanderEntity commander,
+                                         @NotNull String command,
                                          @NotNull String[] arguments) {
 
     public CommandDispatchInformation {

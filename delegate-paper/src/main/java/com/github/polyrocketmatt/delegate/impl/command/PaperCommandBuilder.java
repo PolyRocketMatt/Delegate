@@ -31,6 +31,8 @@ import com.github.polyrocketmatt.delegate.core.command.argument.IntArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.LongArgument;
 import com.github.polyrocketmatt.delegate.core.command.argument.StringArgument;
 import com.github.polyrocketmatt.delegate.core.command.definition.AliasDefinition;
+import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
+import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.SubcommandDefinition;
 import com.github.polyrocketmatt.delegate.core.command.properties.AsyncProperty;
 import com.github.polyrocketmatt.delegate.core.command.properties.CatchExceptionProperty;
@@ -51,6 +53,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class PaperCommandBuilder extends DelegateCommandBuilder {
@@ -299,9 +302,29 @@ public class PaperCommandBuilder extends DelegateCommandBuilder {
     }
 
     @Override
-    public @NotNull ICommandBuilder withSubcommand(@NotNull String name, @NotNull String description) {
+    public @NotNull PaperCommandBuilder withSubcommand(@NotNull String name, @NotNull String description) {
         return this.with(new SubcommandDefinition(name, description));
     }
+
+    @Override
+    public @NotNull PaperCommandBuilder withSubcommand(@NotNull DelegateCommandBuilder builder) {
+        List<NameDefinition> name = builder.getDefinitions()
+                .stream()
+                .filter(def -> def instanceof NameDefinition)
+                .map(def -> (NameDefinition) def)
+                .toList();
+        List<DescriptionDefinition> description = builder.getDefinitions()
+                .stream()
+                .filter(def -> def instanceof DescriptionDefinition)
+                .map(def -> (DescriptionDefinition) def)
+                .toList();
+        if (name.size() != 1)
+            throw new AttributeException("Subcommand must have exactly one name");
+        if (description.size() != 1)
+            throw new AttributeException("Subcommand must have exactly one description");
+        return this.with(new SubcommandDefinition(name.get(0).getValue(), description.get(0).getValue()));
+    }
+
 
     /**
      * Append a new {@link CommandProperty} to the chain.
@@ -374,55 +397,58 @@ public class PaperCommandBuilder extends DelegateCommandBuilder {
         return this.withPermission(PermissionTierType.GLOBAL.getTier());
     }
 
-    public PaperCommandBuilder executes(BiConsumer<CommanderEntity, Context> action) {
-        return this.withConsumerAction(action);
-    }
-
-    public PaperCommandBuilder executes(Runnable action) {
-        return this.withRunnableAction(action);
-    }
-
-    public PaperCommandBuilder withConsumerAction(BiConsumer<CommanderEntity, Context> action) {
+    @Override
+    public @NotNull PaperCommandBuilder withConsumerAction(@NotNull BiConsumer<CommanderEntity, Context> action) {
         return this.with(new ConsumerAction(action));
     }
 
-    public PaperCommandBuilder withConsumerAction(String identifier, BiConsumer<CommanderEntity, Context> action) {
+    @Override
+    public @NotNull PaperCommandBuilder withConsumerAction(@NotNull String identifier, @NotNull BiConsumer<CommanderEntity, Context> action) {
         return this.with(new ConsumerAction(identifier, action));
     }
 
-    public PaperCommandBuilder withFunctionAction(BiFunction<CommanderEntity, Context, ?> action) {
+    @Override
+    public @NotNull PaperCommandBuilder withFunctionAction(@NotNull BiFunction<CommanderEntity, Context, ?> action) {
         return this.with(new FunctionAction(action));
     }
 
-    public PaperCommandBuilder withFunctionAction(String identifier, BiFunction<CommanderEntity, Context, ?> action) {
+    @Override
+    public @NotNull PaperCommandBuilder withFunctionAction(@NotNull String identifier, @NotNull BiFunction<CommanderEntity, Context, ?> action) {
         return this.with(new FunctionAction(identifier, action));
     }
 
-    public PaperCommandBuilder withRunnableAction(Runnable action) {
+    @Override
+    public @NotNull PaperCommandBuilder withRunnableAction(@NotNull Runnable action) {
         return this.with(new RunnableAction(action));
     }
 
-    public PaperCommandBuilder withRunnableAction(String identifier, Runnable action) {
+    @Override
+    public @NotNull PaperCommandBuilder withRunnableAction(@NotNull String identifier, @NotNull Runnable action) {
         return this.with(new RunnableAction(identifier, action));
     }
 
-    public <T> PaperCommandBuilder withSupplierAction(Supplier<T> action) {
+    @Override
+    public <T> @NotNull PaperCommandBuilder withSupplierAction(@NotNull Supplier<T> action) {
         return this.with(new SupplierAction<>(action));
     }
 
-    public <T> PaperCommandBuilder withSupplierAction(String identifier, Supplier<T> action) {
+    @Override
+    public <T> @NotNull PaperCommandBuilder withSupplierAction(@NotNull String identifier, @NotNull Supplier<T> action) {
         return this.with(new SupplierAction<>(identifier, action));
     }
 
-    public PaperCommandBuilder onExcept(TriConsumer<CommanderEntity, FeedbackType, List<String>> action) {
+    @Override
+    public @NotNull PaperCommandBuilder onExcept(@NotNull TriConsumer<CommanderEntity, FeedbackType, List<String>> action) {
         return this.with(new ExceptAction(action));
     }
 
-    public PaperCommandBuilder onSucces(BiConsumer<CommandDispatchInformation, CommandCapture> onSuccess) {
+    @Override
+    public @NotNull PaperCommandBuilder onSucces(@NotNull BiConsumer<CommandDispatchInformation, CommandCapture> onSuccess) {
         return this.with(new SuccessTrigger(onSuccess));
     }
 
-    public PaperCommandBuilder onFail(BiConsumer<CommandDispatchInformation, CommandCapture> onFail) {
+    @Override
+    public @NotNull PaperCommandBuilder onFail(@NotNull BiConsumer<CommandDispatchInformation, CommandCapture> onFail) {
         return this.with(new FailureTrigger(onFail));
     }
 

@@ -86,25 +86,25 @@ public class CommandCaptureTest {
     public void testGetResultOf() {
         CommandCapture capture = new CommandCapture(validCaptures);
 
-        assertNotNull(capture.getResultOf("a1"));
-        assertEquals(true, capture.getResultOf("a1").getItem());
+        assertNotNull(capture.getActionItemOf("a1"));
+        assertEquals(true, capture.getActionItemOf("a1").getItem());
 
-        assertNotNull(capture.getResultOf("a2"));
-        assertEquals(1, capture.getResultOf("a2").getItem());
+        assertNotNull(capture.getActionItemOf("a2"));
+        assertEquals(1, capture.getActionItemOf("a2").getItem());
 
-        assertNotNull(capture.getResultOf("a3"));
-        assertEquals("result", capture.getResultOf("a3").getItem());
+        assertNotNull(capture.getActionItemOf("a3"));
+        assertEquals("result", capture.getActionItemOf("a3").getItem());
 
-        assertNotNull(capture.getResultOf("a4"));
-        assertNull(capture.getResultOf("a4").getItem());
+        assertNotNull(capture.getActionItemOf("a4"));
+        assertNull(capture.getActionItemOf("a4").getItem());
     }
 
     @Test
     public void testGetResultOfIllegal() {
         CommandCapture capture = new CommandCapture(validCaptures);
 
-        assertThrows(IllegalArgumentException.class, () -> capture.getResultOf(null));
-        assertNull(capture.getResultOf("a5"));
+        assertThrows(IllegalArgumentException.class, () -> capture.getActionItemOf(null));
+        assertNull(capture.getActionItemOf("a5"));
     }
 
     @Test

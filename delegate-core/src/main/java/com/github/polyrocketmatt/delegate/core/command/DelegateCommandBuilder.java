@@ -3,21 +3,30 @@
 
 package com.github.polyrocketmatt.delegate.core.command;
 
+import com.github.polyrocketmatt.delegate.api.TriConsumer;
 import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
+import com.github.polyrocketmatt.delegate.api.command.CommandDispatchInformation;
 import com.github.polyrocketmatt.delegate.api.command.ICommandBuilder;
 import com.github.polyrocketmatt.delegate.api.command.action.CommandAction;
 import com.github.polyrocketmatt.delegate.api.command.argument.CommandArgument;
+import com.github.polyrocketmatt.delegate.api.command.argument.Context;
+import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
 import com.github.polyrocketmatt.delegate.api.command.definition.CommandDefinition;
+import com.github.polyrocketmatt.delegate.api.command.feedback.FeedbackType;
 import com.github.polyrocketmatt.delegate.api.command.property.CommandProperty;
 import com.github.polyrocketmatt.delegate.api.command.trigger.CommandTrigger;
 import com.github.polyrocketmatt.delegate.api.command.permission.PermissionTier;
+import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.core.command.action.ExceptAction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegate;
@@ -176,5 +185,45 @@ public abstract class DelegateCommandBuilder implements ICommandBuilder {
     public int size() {
         return attributes.size();
     }
+
+    public abstract @NotNull DelegateCommandBuilder withSubcommand(@NotNull DelegateCommandBuilder builder);
+
+    public @NotNull DelegateCommandBuilder executes(@NotNull BiConsumer<CommanderEntity, Context> action) {
+        return this.withConsumerAction(action);
+    }
+
+    public @NotNull DelegateCommandBuilder executes(@NotNull Runnable action) {
+        return this.withRunnableAction(action);
+    }
+
+    public @NotNull DelegateCommandBuilder executes(@NotNull BiFunction<CommanderEntity, Context, ?> action) {
+        return this.withFunctionAction(action);
+    }
+
+    public <T> @NotNull DelegateCommandBuilder executes(@NotNull Supplier<T> action) {
+        return this.withSupplierAction(action);
+    }
+
+    public abstract @NotNull DelegateCommandBuilder withConsumerAction(@NotNull BiConsumer<CommanderEntity, Context> action);
+
+    public abstract @NotNull DelegateCommandBuilder withConsumerAction(@NotNull String identifier, @NotNull BiConsumer<CommanderEntity, Context> action);
+
+    public abstract @NotNull DelegateCommandBuilder withFunctionAction(@NotNull BiFunction<CommanderEntity, Context, ?> action);
+
+    public abstract @NotNull DelegateCommandBuilder withFunctionAction(@NotNull String identifier, @NotNull BiFunction<CommanderEntity, Context, ?> action);
+
+    public abstract @NotNull DelegateCommandBuilder withRunnableAction(@NotNull Runnable action);
+
+    public abstract @NotNull DelegateCommandBuilder withRunnableAction(@NotNull String identifier, @NotNull Runnable action);
+
+    public abstract <T> @NotNull DelegateCommandBuilder withSupplierAction(@NotNull Supplier<T> action);
+
+    public abstract <T> @NotNull DelegateCommandBuilder withSupplierAction(@NotNull String identifier, @NotNull Supplier<T> action);
+
+    public abstract @NotNull DelegateCommandBuilder onExcept(@NotNull TriConsumer<CommanderEntity, FeedbackType, List<String>> action);
+
+    public abstract @NotNull DelegateCommandBuilder onSucces(@NotNull BiConsumer<CommandDispatchInformation, CommandCapture> onSuccess);
+
+    public abstract @NotNull DelegateCommandBuilder onFail(@NotNull BiConsumer<CommandDispatchInformation, CommandCapture> onFail);
 
 }
