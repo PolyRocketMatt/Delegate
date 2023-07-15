@@ -22,7 +22,7 @@ public class DescriptionDefinition extends CommandDefinition<String> {
      * @param description The description of the command.
      */
     public DescriptionDefinition(String description) {
-        super("commandDescription_" + newId(), description);
+        super("commandDescription", description);
     }
 
     @Override

@@ -322,7 +322,7 @@ public class PaperCommandBuilder extends DelegateCommandBuilder {
             throw new AttributeException("Subcommand must have exactly one name");
         if (description.size() != 1)
             throw new AttributeException("Subcommand must have exactly one description");
-        return this.with(new SubcommandDefinition(name.get(0).getValue(), description.get(0).getValue()));
+        return this.with(new SubcommandDefinition(builder));
     }
 
 

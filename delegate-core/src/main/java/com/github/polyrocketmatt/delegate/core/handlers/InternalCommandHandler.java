@@ -52,9 +52,9 @@ public class InternalCommandHandler extends DelegateCommandHandler {
         this.commandTree = new CommandTree();
     }
 
-    public CommandTree getCommandTree() {
-        return commandTree;
-    }
+    //public CommandTree getCommandTree() {
+    //    return commandTree;
+    //}
 
     /**
      * Adds a {@link CommandNode} to the command tree structure.
@@ -174,16 +174,17 @@ public class InternalCommandHandler extends DelegateCommandHandler {
             //  Call event for other plugins possibly?
             return getDelegate().getPlatform().dispatch(information, capture);
         } catch (CommandExecutionException ex) {
-            if (safeExecute)
+            if (safeExecute) {
+                //  Inform the commander of the error
+                commander.sendMessage(ex.getFeedback());
+
                 return generateEventFromException(information, ex);
-
-            //  Inform the commander of the error
-            commander.sendMessage(ex.getFeedback());
+            } else
+                throw ex;
         }
-
-        return false;
     }
 
+    //  TODO: Fix this method to utilize the new Command Tree structure
     public List<String> findCompletions(String[] matched) {
         String commandName = matched[0];
         String[] commandArguments = Arrays.copyOfRange(matched, 1, matched.length);
@@ -258,7 +259,7 @@ public class InternalCommandHandler extends DelegateCommandHandler {
         return new CommandDispatchInformation(information.commander(), information.command(), combinedStringArguments.toArray(String[]::new));
     }
 
-    private String[] verifyArguments(CommandDispatchInformation information, VerifiedDelegateCommand command, String[] arguments) {
+    private String[] verifyArguments(CommandDispatchInformation information, VerifiedDelegateCommand command, String[] arguments) throws CommandExecutionException {
         CommandBuffer<CommandProperty> commandProperties = command.getPropertyBuffer();
         CommandBuffer<CommandArgument<?>> commandArguments = command.getArgumentBuffer();
         String[] verifiedArguments = new String[arguments.length];
@@ -317,7 +318,7 @@ public class InternalCommandHandler extends DelegateCommandHandler {
         return verifiedArguments;
     }
 
-    private List<Argument<?>> parseArguments(CommandDispatchInformation information, VerifiedDelegateCommand command, String[] arguments) {
+    private List<Argument<?>> parseArguments(CommandDispatchInformation information, VerifiedDelegateCommand command, String[] arguments) throws CommandExecutionException {
         List<Argument<?>> parsedArguments = new ArrayList<>();
         CommandBuffer<CommandArgument<?>> commandArguments = command.getArgumentBuffer();
 

@@ -40,14 +40,13 @@ public class CommandCapture implements Iterable<CommandCapture.Capture> {
     public @Nullable <T> T getResultOf(@NotNull String name) {
         validate("name", String.class, name);
 
-        Optional<ActionItem.Result> result = captures.stream()
+        Optional<ActionItem<?>> result = captures.stream()
                 .filter(capture -> capture.action().equals(name))
                 .findFirst()
-                .map(Capture::result)
-                .map(ActionItem::getResult);
+                .map(Capture::result);
 
         //  If the result is not present, return null.
-        return (T) result.orElse(null);
+        return result.map(actionItem -> (T) actionItem.getItem()).orElse(null);
     }
 
     public @Nullable Capture getCaptureOf(@NotNull String name) {

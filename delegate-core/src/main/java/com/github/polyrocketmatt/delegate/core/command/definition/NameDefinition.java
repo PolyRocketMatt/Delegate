@@ -22,7 +22,7 @@ public class NameDefinition extends CommandDefinition<String> {
      * @param name The name of the command.
      */
     public NameDefinition(String name) {
-        super("commandName_" + newId(), name);
+        super("commandName", name);
     }
 
     @Override

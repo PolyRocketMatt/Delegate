@@ -75,8 +75,6 @@ public class PlatformImpl implements IPlatform {
 
     @Override
     public boolean dispatch(@NotNull CommandDispatchInformation information, @NotNull CommandCapture capture) {
-        System.out.println("Dispatched command: " + information.command());
-
         this.commandCapture = capture;
         return true;
     }
