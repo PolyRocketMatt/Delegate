@@ -52,4 +52,5 @@ public abstract class CommandDefinition<T> extends CommandAttribute {
     public @NotNull AttributeType getType() {
         return AttributeType.DEFINITION;
     }
+
 }

@@ -15,6 +15,14 @@ public class AliasDefinition extends CommandDefinition<String> {
      * @param alias The alias of the command.
      */
     public AliasDefinition(String alias) {
-        super(newId(), alias);
+        super("commandAlias_" + newId(), alias);
+    }
+
+    @Override
+    public String toString() {
+        return "AliasDefinition{" +
+                "alias='" + getValue() + '\'' +
+                ", id='" + getIdentifier() + '\'' +
+                '}';
     }
 }

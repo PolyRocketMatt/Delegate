@@ -34,4 +34,5 @@ public abstract class PermissionTier extends CommandAttribute implements Buffera
     public boolean equals(Object obj) {
         return obj instanceof PermissionTier;
     }
+
 }

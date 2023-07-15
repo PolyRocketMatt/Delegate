@@ -5,6 +5,8 @@ package com.github.polyrocketmatt.delegate.core.command.definition;
 
 import com.github.polyrocketmatt.delegate.api.command.definition.CommandDefinition;
 
+import static com.github.polyrocketmatt.delegate.api.StringUtils.newId;
+
 /**
  * Represents a {@link CommandDefinition} that describes the name
  * of the command.
@@ -20,7 +22,14 @@ public class NameDefinition extends CommandDefinition<String> {
      * @param name The name of the command.
      */
     public NameDefinition(String name) {
-        super("commandName", name);
+        super("commandName_" + newId(), name);
     }
 
+    @Override
+    public String toString() {
+        return "NameDefinition{" +
+                "name='" + getValue() + '\'' +
+                ", id='" + getIdentifier() + '\'' +
+                '}';
+    }
 }

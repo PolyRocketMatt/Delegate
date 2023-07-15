@@ -36,4 +36,10 @@ public class SubcommandDefinition extends CommandDefinition<DelegateCommandBuild
         super(newId(), (DelegateCommandBuilder) getDelegate().getPlatform().createCommand(name, description));
     }
 
+    @Override
+    public String toString() {
+        return "SubcommandDefinition{" +
+                "id='" + getIdentifier() + '\'' +
+                '}';
+    }
 }
