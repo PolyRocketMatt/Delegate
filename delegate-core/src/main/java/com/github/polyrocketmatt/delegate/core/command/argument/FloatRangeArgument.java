@@ -47,7 +47,10 @@ public class FloatRangeArgument extends CommandArgument<DelegateFloatRange> {
         try {
             String[] bounds = input.split("-");
             if (bounds.length != 2)
-                throw new ArgumentParseException("Expected integer range to contain only 2 bounds (min, max)", DelegateFloatRange.class);
+                if (getDefault().output() == null)
+                    throw new ArgumentParseException("Expected integer range to contain only 2 bounds (min, max)", DelegateFloatRange.class);
+                else
+                    return getDefault();
 
             float min = Float.parseFloat(bounds[0]);
             float max = Float.parseFloat(bounds[1]);
@@ -66,7 +69,10 @@ public class FloatRangeArgument extends CommandArgument<DelegateFloatRange> {
         try {
             String[] bounds = reader.readString().split("-");
             if (bounds.length != 2)
-                throw new ArgumentParseException("Expected integer range to contain only 2 bounds (min, max)", DelegateFloatRange.class);
+                if (getDefault().output() == null)
+                    throw new ArgumentParseException("Expected integer range to contain only 2 bounds (min, max)", DelegateFloatRange.class);
+                else
+                    return getDefault().output();
 
             float min = Float.parseFloat(bounds[0]);
             float max = Float.parseFloat(bounds[1]);

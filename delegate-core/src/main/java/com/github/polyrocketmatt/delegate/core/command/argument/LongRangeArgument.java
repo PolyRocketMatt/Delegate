@@ -47,7 +47,10 @@ public class LongRangeArgument extends CommandArgument<DelegateLongRange> {
         try {
             String[] bounds = input.split("-");
             if (bounds.length != 2)
-                throw new ArgumentParseException("Expected integer range to contain only 2 bounds (min, max)", DelegateLongRange.class);
+                if (getDefault().output() == null)
+                    throw new ArgumentParseException("Expected integer range to contain only 2 bounds (min, max)", DelegateLongRange.class);
+                else
+                    return getDefault();
 
             long min = Long.parseLong(bounds[0]);
             long max = Long.parseLong(bounds[1]);
@@ -66,7 +69,10 @@ public class LongRangeArgument extends CommandArgument<DelegateLongRange> {
         try {
             String[] bounds = reader.readString().split("-");
             if (bounds.length != 2)
-                throw new ArgumentParseException("Expected integer range to contain only 2 bounds (min, max)", DelegateLongRange.class);
+                if (getDefault().output() == null)
+                    throw new ArgumentParseException("Expected integer range to contain only 2 bounds (min, max)", DelegateLongRange.class);
+                else
+                    return getDefault().output();
 
             long min = Long.parseLong(bounds[0]);
             long max = Long.parseLong(bounds[1]);

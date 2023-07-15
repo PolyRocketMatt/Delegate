@@ -20,4 +20,10 @@ public abstract class DelegateRange<T> {
 
     public abstract boolean contains(T value);
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof DelegateRange<?> range)
+            return range.getMin().equals(min) && range.getMax().equals(max);
+        return false;
+    }
 }

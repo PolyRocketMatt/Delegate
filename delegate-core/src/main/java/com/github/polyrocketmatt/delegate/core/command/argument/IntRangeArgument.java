@@ -47,7 +47,10 @@ public class IntRangeArgument extends CommandArgument<DelegateIntRange> {
         try {
             String[] bounds = input.split("-");
             if (bounds.length != 2)
-                throw new ArgumentParseException("Expected integer range to contain only 2 bounds (min, max)", DelegateIntRange.class);
+                if (getDefault().output() == null)
+                    throw new ArgumentParseException("Expected integer range to contain only 2 bounds (min, max)", DelegateIntRange.class);
+                else
+                    return getDefault();
 
             int min = Integer.parseInt(bounds[0]);
             int max = Integer.parseInt(bounds[1]);
@@ -66,7 +69,10 @@ public class IntRangeArgument extends CommandArgument<DelegateIntRange> {
         try {
             String[] bounds = reader.readString().split("-");
             if (bounds.length != 2)
-                throw new ArgumentParseException("Expected integer range to contain only 2 bounds (min, max)", DelegateIntRange.class);
+                if (getDefault().output() == null)
+                    throw new ArgumentParseException("Expected integer range to contain only 2 bounds (min, max)", DelegateIntRange.class);
+                else
+                    return getDefault().output();
 
             int min = Integer.parseInt(bounds[0]);
             int max = Integer.parseInt(bounds[1]);

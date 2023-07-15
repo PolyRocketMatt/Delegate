@@ -10,4 +10,5 @@ public class DelegateDoubleRange extends DelegateRange<Double> {
     public boolean contains(Double value) {
         return value >= getMin() && value <= getMax();
     }
+
 }

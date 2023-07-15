@@ -26,4 +26,14 @@ public class DelegateIntRangeTest {
         assertFalse(delegateIntRange.contains(11));
     }
 
+    @Test
+    public void testEquals() {
+        DelegateIntRange rangeA = new DelegateIntRange(0, 10);
+        DelegateIntRange rangeB = new DelegateIntRange(0, 10);
+        DelegateIntRange rangeC = new DelegateIntRange(1, 2);
+
+        assertEquals(rangeA, rangeB);
+        assertNotEquals(rangeA, rangeC);
+    }
+
 }

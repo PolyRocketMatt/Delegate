@@ -25,4 +25,14 @@ public class DelegateLongRangeTest {
         assertFalse(delegateLongRange.contains(11L));
     }
 
+    @Test
+    public void testEquals() {
+        DelegateLongRange rangeA = new DelegateLongRange(0L, 10L);
+        DelegateLongRange rangeB = new DelegateLongRange(0L, 10L);
+        DelegateLongRange rangeC = new DelegateLongRange(10L, 20L);
+
+        assertEquals(rangeA, rangeB);
+        assertNotEquals(rangeA, rangeC);
+    }
+
 }

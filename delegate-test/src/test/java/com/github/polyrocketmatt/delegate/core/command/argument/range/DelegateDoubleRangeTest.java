@@ -25,4 +25,14 @@ public class DelegateDoubleRangeTest {
         assertFalse(delegateDoubleRange.contains(1.1));
     }
 
+    @Test
+    public void testEquals() {
+        DelegateDoubleRange rangeA = new DelegateDoubleRange(0.0, 1.0);
+        DelegateDoubleRange rangeB = new DelegateDoubleRange(0.0, 1.0);
+        DelegateDoubleRange rangeC = new DelegateDoubleRange(1.0, 2.0);
+
+        assertEquals(rangeA, rangeB);
+        assertNotEquals(rangeA, rangeC);
+    }
+
 }

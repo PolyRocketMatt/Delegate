@@ -26,4 +26,14 @@ public class DelegateFloatRangeTest {
         assertFalse(delegateFloatRange.contains(1.1f));
     }
 
+    @Test
+    public void testEquals() {
+        DelegateFloatRange rangeA = new DelegateFloatRange(0.0f, 1.0f);
+        DelegateFloatRange rangeB = new DelegateFloatRange(0.0f, 1.0f);
+        DelegateFloatRange rangeC = new DelegateFloatRange(1.0f, 2.0f);
+
+        assertEquals(rangeA, rangeB);
+        assertNotEquals(rangeA, rangeC);
+    }
+
 }
