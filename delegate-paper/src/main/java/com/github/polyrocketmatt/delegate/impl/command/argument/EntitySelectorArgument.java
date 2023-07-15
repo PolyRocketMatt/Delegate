@@ -25,7 +25,7 @@ public class EntitySelectorArgument<T extends Entity> extends CommandArgument<Li
     private final Class<T> entityType;
 
     /**
-     * Creates a new {@link PlayerArgument} with an identifier, a description, a default value and a
+     * Creates a new {@link EntitySelectorArgument} with an identifier, a description, a default value and a
      * list of {@link ArgumentRule}s.
      *
      * @param identifier The identifier of the argument.
