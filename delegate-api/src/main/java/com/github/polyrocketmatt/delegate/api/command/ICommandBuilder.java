@@ -17,11 +17,11 @@ import org.jetbrains.annotations.Nullable;
  *
  */
 @API(status = API.Status.STABLE, since = "0.0.1")
-public interface ICommandBuilder {
+public interface ICommandBuilder extends IPrimitiveCommandBuilder {
 
-    @NotNull IDelegateCommand build();
+    //@NotNull IDelegateCommand build();
 
-    @NotNull ICommandBuilder with(@NotNull ICommandAttribute attribute);
+    //@NotNull ICommandBuilder with(@NotNull ICommandAttribute attribute);
 
     @NotNull ICommandBuilder withAlias(@NotNull String alias);
 

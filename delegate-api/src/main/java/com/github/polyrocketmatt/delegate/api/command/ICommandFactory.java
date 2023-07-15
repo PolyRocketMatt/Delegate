@@ -18,4 +18,12 @@ public interface ICommandFactory {
      */
     @NotNull ICommandBuilder create(@NotNull String name, @NotNull String description);
 
+    /**
+     * Creates a new {@link ICommandFactory} from the given class.
+     *
+     * @param clazz The class that is to be parsed for command information.
+     * @return The new {@link ICommandFactory}.
+     */
+    @NotNull ICommandBuilder from(@NotNull Class<?> clazz);
+
 }

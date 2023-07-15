@@ -3,11 +3,16 @@
 
 package com.github.polyrocketmatt.delegate.impl.command;
 
+import com.github.polyrocketmatt.delegate.api.command.CommandAttribute;
 import com.github.polyrocketmatt.delegate.api.command.ICommandFactory;
 import com.github.polyrocketmatt.delegate.core.command.DelegateCommandBuilder;
 import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
 import com.github.polyrocketmatt.delegate.core.command.definition.NameDefinition;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+
+import static com.github.polyrocketmatt.delegate.core.DelegateCore.getDelegateAPI;
 
 public class BukkitCommandFactory implements ICommandFactory {
 
@@ -24,6 +29,23 @@ public class BukkitCommandFactory implements ICommandFactory {
 
         builder.withDefinition(new NameDefinition(name));
         builder.withDefinition(new DescriptionDefinition(description));
+
+        return builder;
+    }
+
+    /**
+     * Creates a new {@link BukkitCommandBuilder} from the given class.
+     *
+     * @param clazz The class that is to be parsed for command information.
+     * @return The new {@link BukkitCommandBuilder}.
+     */
+    @Override
+    public @NotNull BukkitCommandBuilder from(@NotNull Class<?> clazz) {
+        List<CommandAttribute> attributes = getDelegateAPI().getAnnotationHandler().process(clazz);
+        BukkitCommandBuilder builder = new BukkitCommandBuilder();
+
+        //  Add all the attributes to the builder
+        attributes.forEach(builder::with);
 
         return builder;
     }

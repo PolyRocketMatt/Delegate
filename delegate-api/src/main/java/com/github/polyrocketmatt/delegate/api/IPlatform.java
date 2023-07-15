@@ -7,6 +7,7 @@ import com.github.polyrocketmatt.delegate.api.command.CommandDispatchInformation
 import com.github.polyrocketmatt.delegate.api.command.ICommandBuilder;
 import com.github.polyrocketmatt.delegate.api.command.ICommandFactory;
 import com.github.polyrocketmatt.delegate.api.command.IDelegateCommand;
+import com.github.polyrocketmatt.delegate.api.command.annotation.IAnnotationHandler;
 import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.exception.CommandExecutionException;

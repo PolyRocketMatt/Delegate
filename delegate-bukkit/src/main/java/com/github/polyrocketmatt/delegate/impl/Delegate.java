@@ -4,7 +4,6 @@
 package com.github.polyrocketmatt.delegate.impl;
 
 import com.github.polyrocketmatt.delegate.api.command.CommandDispatchInformation;
-import com.github.polyrocketmatt.delegate.api.command.ICommandBuilder;
 import com.github.polyrocketmatt.delegate.api.command.ICommandFactory;
 import com.github.polyrocketmatt.delegate.api.command.IDelegateCommand;
 import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
@@ -118,6 +117,8 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
     @SuppressWarnings("unchecked")
     @Override
     public void registerToPlatform(@NotNull IDelegateCommand command) throws CommandRegisterException {
+        validate("command", IDelegateCommand.class, command);
+
         if (this.getPlugin() == null)
             throw new CommandRegisterException("Plugin is not hooked into Delegate!");
         if (this.commandMap == null)
@@ -195,7 +196,7 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, Command command, @NotNull String label, String[] args) {
         CommanderEntity entity = (sender instanceof Player) ? new BukkitPlayerCommander((Player) sender) : new ConsoleCommander();
         CommandDispatchInformation information = new CommandDispatchInformation(entity, command.getName(), args);
 
@@ -210,11 +211,16 @@ public class Delegate implements IPlatform, CommandExecutor, TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender commandSender, Command command, String label, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, String[] args) {
+        //  If we're using brigadier, we don't need to do anything here
+        if (getDelegateAPI().useBrigadier())
+            return null;
+
         String[] newArgs = new String[args.length + 1];
         newArgs[0] = command.getName();
         System.arraycopy(args, 0, newArgs, 1, args.length);
 
         return getDelegate().getInternalCommandHandler().findCompletions(newArgs);
     }
+
 }
