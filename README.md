@@ -9,27 +9,31 @@
 
 <h1 align="center">Delegate</h1>
 
-Delegate is a general-purpose command framework specifically designed for different Minecraft server platforms.
-Developers can use this framework, designed with fluent interfaces in mind to automatically parse commands, resolve
-contexts and execute actions.
+Delegate is a general-purpose, platform-agnostic command framework designed for different Minecraft servers.
+The core idea behind Delegate is the use of fluent interfaces to automatically parse commands,
+resolve command contexts and execute actions.
 
 ## Why choose Delegate?
 
 In the past, many command frameworks have tried to solve the problem of allowing developers to
-create commands in a simple and intuitive way. However, most of these frameworks either
-became convoluted very quickly, or simply didn't support enough platforms. Delegate
-aims to solve these problems by allowing the creation of simple commands, but also allows
-for the creation of complex commands with subcommands, tab completion, brigadier support
-and more. Furthermore, Delegate is completely tested with unit tests and use-case tests, ensuring
-the default implementations will work as intended on all platforms.
+create commands in a simple and intuitive way. However, most of these frameworks either:
 
-## Features
+- become convoluted very quickly
+- support not enough platforms for the developer's needs
 
-- Simple and powerful command creation/execution
+Delegate solves this problem by providing a framework that builds commands for a large set of
+platforms in a single way. Furthermore, Delegate is designed to be as simple as possible, while
+still allowing for complex commands to be created. Finally, Delegate is fully unit/integration 
+tested to ensure that it works on all platforms.
+
+## Main Features
+
+- Simple, powerful command creation/execution
 - Autonomous command handling
+- Automatic tab completion
+- Context resolver without the need to casting or parsing
 - Platform-agnostic ([Supported Platforms](#supported-platforms))
 - Brigadier integration
-- Automatic tab completion
 - Runtime-based command registration and execution
 - Optional use of annotations
 - Full test coverage with using unit tests and integration tests
@@ -42,21 +46,23 @@ the default implementations will work as intended on all platforms.
 
 Currently, Delegate supports the following platforms:
 
-- Bukkit
-- Spigot
-- Paper
-- Velocity
+- [x] Bukkit
+- [x] Spigot
+- [x] Paper
+- (WIP) Velocity
+- (WIP) Sponge
+- (WIP) BungeeCord
 
 ## Getting Started
 
-## Examples
+## Quickstart Example
 
 ```java
 public class ExamplePlugin extends JavaPlugin {
     
     @Override
     public void onEnable() {
-        //  Create / Register a new Delegate command
+        //  Creates and Register a new Delegate command in one step!
         Delegate.create("hello", "Broadcasts a message to the server")
                 .withString("name", "The name of the person you want to say hello to")
                 .withConsumerAction((commander, args) -> Bukkit.getServer().broadcastMessage("Hello, %s".formatted(args.get("name"))))
@@ -78,6 +84,7 @@ which are currently planned.
 |     Feature      | Spigot | Paper | Velocity | Sponge | BungeeCord | Waterfall | 
 |:----------------:|:------:|:-----:|:--------:|:------:|:----------:|:---------:|
 | Fluent Interface |   ✔    |   ✔   |   🏗️    |  🏗️   |     ❌      |     ❌     |
+| Context Resolver |   ✔    |   ✔   |   🏗️    |  🏗️   |     ❌      |     ❌     |
 |    Brigadier     |   ✔    |   ✔   |   🏗️    |  🏗️   |     ❌      |     ❌     |
 |  Tab Completion  |   ✔    |   ✔   |   🏗️    |  🏗️   |     ❌      |     ❌     |
 
