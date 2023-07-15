@@ -8,10 +8,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-@FunctionalInterface
 @API(status = API.Status.STABLE, since = "0.0.1")
 public interface ICommandTree {
 
     <T extends ICommandNode> @NotNull List<T> getRoots();
+
+    int size();
 
 }

@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.github.polyrocketmatt.delegate.api.DelegateValidator.validate;
 
@@ -98,6 +99,14 @@ public class CommandNode implements ICommandNode {
         return children;
     }
 
+    @Override
+    public int size() {
+        AtomicInteger result = new AtomicInteger(children.size());
+        children.forEach(child -> result.addAndGet(child.size()));
+
+        return result.get();
+    }
+
     /**
      * Adds a child node to this node.
      *
@@ -143,12 +152,12 @@ public class CommandNode implements ICommandNode {
      * @param names The array of names to search for.
      * @return The {@link QueryResultNode} that contains the node that was found
      */
-    public QueryResultNode findDeepest(@NotNull String commandPattern, @NotNull String[] names) {
+    public @NotNull QueryResultNode findDeepest(@NotNull String commandPattern, @NotNull String[] names) {
         validate("commandPattern", String.class, commandPattern);
         validate("names", String[].class, names);
+
         for (String name : names)
             validate("name", String.class, name);
-
         if (this.children.isEmpty() || names.length == 0)
             return new QueryResultNode(this, commandPattern, names);
 

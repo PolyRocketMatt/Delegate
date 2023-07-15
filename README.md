@@ -31,6 +31,8 @@ the default implementations will work as intended on all platforms.
 - Brigadier integration
 - Automatic tab completion
 - Runtime-based command registration and execution
+- Optional use of annotations
+- Full test coverage with using unit tests and integration tests
 - Many more...
 
 *Note*: Some features are only available on certain platforms. Please check the 

@@ -4,6 +4,7 @@
 package com.github.polyrocketmatt.delegate.core.handlers;
 
 import com.github.polyrocketmatt.delegate.api.command.CommandBuffer;
+import com.github.polyrocketmatt.delegate.api.command.IDelegateCommand;
 import com.github.polyrocketmatt.delegate.api.command.argument.Argument;
 import com.github.polyrocketmatt.delegate.api.command.data.CommandCapture;
 import com.github.polyrocketmatt.delegate.api.command.feedback.FeedbackType;
@@ -60,62 +61,30 @@ public class InternalCommandHandler extends DelegateCommandHandler {
      *
      * @param node The {@link CommandNode} to add.
      */
-    public boolean registerCommand(CommandNode node) {
-        if (commandTree.getRoots().size() == 0) {
-            registerCommand(node, null, null);
-        }else
-            for (CommandNode root : commandTree.getRoots()) {
-                try {
-                    registerCommand(node, root, null);
-                } catch (CommandExecutionException ex) {
-                    ex.printStackTrace();
-
-                    //  If any exception occurred, we did not successfully register the command
-                    return false;
-                }
-            }
+    public boolean registerCommand(CommandNode node) throws CommandRegisterException {
+        insertIntoTree(node, node.getParent());
 
         return true;
     }
 
-    private void registerCommand(CommandNode node, CommandNode match, CommandNode parent) throws CommandRegisterException {
-        //  We perform a "match check", checking if the node and match have the same definitions
-        if (match != null && match(node, match)) {
-            //  If the match is not verified, we cannot safely replace it, and we must throw an exception
-            if (!match.isVerified())
-                throw new CommandRegisterException("Cannot replace unverified command node with verified command node");
-            VerifiedDelegateCommand rootCommand = (VerifiedDelegateCommand) match.getCommand();
-
-            //  If the match has a command with no actions, excepts or triggers, we can safely replace it
-            boolean hasActions = rootCommand.getActionBuffer() != null && !(rootCommand.getActionBuffer().size() == 0);
-            boolean hasExcepts = rootCommand.getExceptBuffer() != null && !(rootCommand.getExceptBuffer().size() == 0);
-            boolean hasTriggers = rootCommand.getTriggerBuffer() != null && !(rootCommand.getTriggerBuffer().size() == 0);
-
-            //  ! This replaces the command
-            if (!hasActions && !hasExcepts && !hasTriggers)
-                match.setCommand(node.getCommand());
-            else
-                throw new CommandRegisterException("Cannot replace command node with verified command node that has actions, excepts or triggers");
-
-            //  For each child, we must now match check against the match's children
-            for (CommandNode childNode : node.getChildren())
-                for (CommandNode childMatch : match.getChildren())
-                    registerCommand(childNode, childMatch, match);
-        } else {
-            //  If the current parent is null, we're at the roots of the tree. This means we can just add the node as a root
-            if (parent == null) {
+    private void insertIntoTree(CommandNode node, CommandNode level) throws CommandRegisterException {
+        //  We check the current node against the current parent's sub-commands
+        if (level == null) {
+            //  If the parent is null, we're just checking the root nodes
+            if (this.commandTree.getRoots().stream().anyMatch(rootNode -> match(node, rootNode)))
+                throw new CommandRegisterException("Cannot overwrite command node with the same name: %s".formatted(node.getNameDefinition().getValue()));
+            else {
                 this.commandTree.add(node);
 
                 //  Since we're adding a root, we must register the command with the platform
-                //  We only need to do this for the root, as the children will be "registered" when they are added
-                getDelegate().getPlatform().registerToPlatform(node.getCommand());
-                getDelegate().getPlatform().registerToPlayers(node.getCommand());
+                registerToServer(node.getCommand());
             }
-
-            //  Otherwise, we must add the node as a child of the parent
-            else
-                parent.addChild(node);
         }
+    }
+
+    private void registerToServer(IDelegateCommand command) {
+        getDelegate().getPlatform().registerToPlatform(command);
+        getDelegate().getPlatform().registerToPlayers(command);
     }
 
     private boolean match(CommandNode left, CommandNode right) {
@@ -146,20 +115,15 @@ public class InternalCommandHandler extends DelegateCommandHandler {
         if (root == null)
             return generateEventFromException(information, exceptOrThrow(information, null, FeedbackType.COMMAND_NON_EXISTENT, commandName));
 
+        //  Parse in arguments to find the deepest node
         QueryResultNode queryResultNode = root.findDeepest(commandName, commandArguments);
         CommandNode executionNode = queryResultNode.node();
         String matchedCommandPattern = queryResultNode.commandPattern();
 
-        //  Check if this is
-        if (executionNode == null)
-            if (safeExecuteTopLevel) {
-                try {
-                    throw exceptOrThrow(information, null, FeedbackType.COMMAND_NON_EXISTENT, matchedCommandPattern);
-                } catch (Exception ex) {
-                    return generateEventFromException(information, ex);
-                }
-            } else
-                return false;
+        //  Check that the execution node is the actual intended command
+        //  TODO: Refactor this...
+        if (!executionNode.getNameDefinition().getValue().equals(commandName))
+            return generateEventFromException(information, exceptOrThrow(information, null, FeedbackType.COMMAND_NON_EXISTENT, commandName));
 
         //  Check if the command is verified
         if (!executionNode.isVerified())
@@ -372,4 +336,8 @@ public class InternalCommandHandler extends DelegateCommandHandler {
         return parsedArguments;
     }
 
+    @Override
+    public void clearCommandCache() {
+        this.commandTree.clear();
+    }
 }

@@ -14,15 +14,15 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Represents a {@link CommandArgument} that parses a double from the input.
+ * Represents a {@link CommandArgument} that parses a long from the input.
  *
  * @since 0.0.1
  * @author Matthias Kovacic
  */
-public class DoubleArgument extends CommandArgument<Double> {
+public class LongArgument extends CommandArgument<Long> {
 
     /**
-     * Creates a new {@link DoubleArgument} with an identifier, a description, a default value and a
+     * Creates a new {@link LongArgument} with an identifier, a description, a default value and a
      * list of {@link ArgumentRule}s.
      *
      * @param identifier The identifier of the argument.
@@ -31,91 +31,91 @@ public class DoubleArgument extends CommandArgument<Double> {
      * @param isOptional Whether the argument is optional.
      * @param rules The rules of the argument.
      */
-    private DoubleArgument(String identifier, String argumentDescription, Double defaultValue, boolean isOptional, List<ArgumentRule<?>> rules) {
-        super(identifier, argumentDescription, Double.class, new Argument<>(identifier, defaultValue), isOptional, rules);
+    private LongArgument(String identifier, String argumentDescription, Long defaultValue, boolean isOptional, List<ArgumentRule<?>> rules) {
+        super(identifier, argumentDescription, Long.class, new Argument<>(identifier, defaultValue), isOptional, rules);
     }
 
     @Override
-    public @NotNull Argument<Double> parse(@Nullable String input) {
+    public @NotNull Argument<Long> parse(@Nullable String input) {
         if (input == null) {
             if (getDefault().output() == null)
-                throw new ArgumentParseException("The argument '" + getIdentifier() + "' must be a double", Double.class);
+                throw new ArgumentParseException("The argument '" + getIdentifier() + "' must be a long", Long.class);
             return getDefault();
         }
 
         try {
-            return new Argument<>(getIdentifier(), Double.parseDouble(input));
+            return new Argument<>(getIdentifier(), Long.parseLong(input));
         } catch (NumberFormatException ex) {
             if (getDefault().output() == null)
-                throw new ArgumentParseException("The argument '" + getIdentifier() + "' must be a double", Double.class);
+                throw new ArgumentParseException("The argument '" + getIdentifier() + "' must be a long", Long.class);
             return getDefault();
         }
     }
 
     @Override
-    public @NotNull Double parse(@NotNull StringReader reader) {
+    public @NotNull Long parse(@NotNull StringReader reader) {
         int start = reader.getCursor();
         try {
-            return reader.readDouble();
+            return reader.readLong();
         } catch (CommandSyntaxException ex) {
             reader.setCursor(start);
 
             if (getDefault().output() == null)
-                throw new ArgumentParseException("The argument '" + getIdentifier() + "' must be a double", Float.class);
+                throw new ArgumentParseException("The argument '" + getIdentifier() + "' must be a long", Long.class);
             return getDefault().output();
         }
     }
 
     /**
-     * Creates a new {@link DoubleArgument} with an identifier and a description.
+     * Creates a new {@link LongArgument} with an identifier and a description.
      *
      * @param identifier The identifier of the argument.
      * @param argumentDescription The description of the argument.
-     * @return The created {@link DoubleArgument}.
+     * @return The created {@link LongArgument}.
      */
-    public static DoubleArgument of(String identifier, String argumentDescription) {
-        return new DoubleArgument(identifier, argumentDescription, null, false, List.of());
+    public static LongArgument of(String identifier, String argumentDescription) {
+        return new LongArgument(identifier, argumentDescription, null, false, List.of());
     }
 
     /**
-     * Creates a new {@link DoubleArgument} with an identifier, a description and a
+     * Creates a new {@link LongArgument} with an identifier, a description and a
      * default value.
      *
      * @param identifier The identifier of the argument.
      * @param argumentDescription The description of the argument.
      * @param defaultValue The default value of the argument.
-     * @return The created {@link DoubleArgument}.
+     * @return The created {@link LongArgument}.
      */
-    public static DoubleArgument of(String identifier, String argumentDescription, double defaultValue) {
-        return new DoubleArgument(identifier, argumentDescription, defaultValue, false, List.of());
+    public static LongArgument of(String identifier, String argumentDescription, long defaultValue) {
+        return new LongArgument(identifier, argumentDescription, defaultValue, false, List.of());
     }
 
     /**
-     * Creates a new {@link DoubleArgument} with an identifier, a description and an {@link ArgumentRule}.
+     * Creates a new {@link LongArgument} with an identifier, a description and an {@link ArgumentRule}.
      *
      * @param identifier The identifier of the argument.
      * @param argumentDescription The description of the argument.
      * @param rules The rules of the argument.
-     * @return The created {@link DoubleArgument}.
+     * @return The created {@link LongArgument}.
      */
-    public static DoubleArgument of(String identifier, String argumentDescription, ArgumentRule<?>... rules) {
+    public static LongArgument of(String identifier, String argumentDescription, ArgumentRule<?>... rules) {
         boolean isOptional = Arrays.stream(rules).noneMatch(rule -> rule instanceof NonNullRule);
-        return new DoubleArgument(identifier, argumentDescription, null, isOptional, List.of(rules));
+        return new LongArgument(identifier, argumentDescription, null, isOptional, List.of(rules));
     }
 
     /**
-     * Creates a new {@link DoubleArgument} with an identifier, a description, a default value and a
+     * Creates a new {@link LongArgument} with an identifier, a description, a default value and a
      * list of {@link ArgumentRule}s.
      *
      * @param identifier The identifier of the argument.
      * @param argumentDescription The description of the argument.
      * @param defaultValue The default value of the argument.
      * @param rules The rules of the argument.
-     * @return The created {@link DoubleArgument}.
+     * @return The created {@link LongArgument}.
      */
-    public static DoubleArgument of(String identifier, String argumentDescription, double defaultValue, ArgumentRule<?>... rules) {
+    public static LongArgument of(String identifier, String argumentDescription, long defaultValue, ArgumentRule<?>... rules) {
         boolean isOptional = Arrays.stream(rules).noneMatch(rule -> rule instanceof NonNullRule);
-        return new DoubleArgument(identifier, argumentDescription, defaultValue, isOptional, List.of(rules));
+        return new LongArgument(identifier, argumentDescription, defaultValue, isOptional, List.of(rules));
     }
 
 }

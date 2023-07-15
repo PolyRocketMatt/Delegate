@@ -36,7 +36,7 @@ import static com.mojang.brigadier.builder.RequiredArgumentBuilder.argument;
 
 public class BrigadierCommandHandler extends DelegateCommandHandler {
 
-    private final CommandDispatcher<CommanderEntity> dispatcher;
+    private CommandDispatcher<CommanderEntity> dispatcher;
 
     public BrigadierCommandHandler() {
         super(32, 8);
@@ -211,4 +211,8 @@ public class BrigadierCommandHandler extends DelegateCommandHandler {
         }
     }
 
+    @Override
+    public void clearCommandCache() {
+        this.dispatcher = new CommandDispatcher<>();
+    }
 }

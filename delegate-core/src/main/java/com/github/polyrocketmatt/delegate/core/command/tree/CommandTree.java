@@ -71,4 +71,9 @@ public class CommandTree implements ICommandTree {
     public @NotNull List<CommandNode> getRoots() {
         return roots;
     }
+
+    @Override
+    public int size() {
+        return roots.size() + roots.stream().mapToInt(CommandNode::size).sum();
+    }
 }

@@ -15,6 +15,7 @@ import com.github.polyrocketmatt.delegate.api.command.trigger.CommandTrigger;
 import com.github.polyrocketmatt.delegate.api.entity.CommanderEntity;
 import com.github.polyrocketmatt.delegate.api.exception.CommandExecutionException;
 import com.github.polyrocketmatt.delegate.api.exception.CommandRegisterException;
+import com.github.polyrocketmatt.delegate.core.CommandBuilderImpl;
 import com.github.polyrocketmatt.delegate.core.command.action.ExceptAction;
 import com.github.polyrocketmatt.delegate.core.command.action.RunnableAction;
 import com.github.polyrocketmatt.delegate.core.command.definition.DescriptionDefinition;
@@ -45,7 +46,7 @@ public class DelegateCommandBuilderTest {
 
         @Override
         public @NotNull DelegateCommandBuilder createCommand(@NotNull String name, @NotNull String description) {
-            return new TestCommandBuilder()
+            return new CommandBuilderImpl()
                     .withDefinition(new NameDefinition(name))
                     .withDefinition(new DescriptionDefinition(description));
         }
@@ -98,7 +99,7 @@ public class DelegateCommandBuilderTest {
         }
     }
 
-    private final DelegateCommandBuilder builder =  new TestCommandBuilder()
+    private final DelegateCommandBuilder builder =  new CommandBuilderImpl()
             .withDefinition(new NameDefinition("test"))
             .withDefinition(new DescriptionDefinition("Just a simple description"))
             .withAlias("alias1")
